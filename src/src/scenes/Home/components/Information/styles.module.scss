@@ -1,0 +1,37 @@
+@import "../../../../styles/sizes";
+
+.Information {
+  h2 {
+    text-shadow: 3px 3px var(--main-gold-color);
+    text-align: center;
+    margin-top: 20px;
+  }
+  .row {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 1fr;
+    img {
+      order: 1;
+      box-shadow: 3px 3px var(--main-gold-color);
+      width: 100%;
+    }
+    div {
+      order: 2;
+    }
+    @include lg {
+      grid-template-columns: 60% 40%;
+      div {
+        order: 0;
+      }
+    }
+  }
+  p {
+    font-size: 1.2em;
+    &:first-of-type {
+      margin-top: 0;
+    }
+  }
+  button {
+    margin: 30px auto;
+  }
+}

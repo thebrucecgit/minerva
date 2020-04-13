@@ -1,0 +1,21 @@
+.tagify {
+  font-family: "Open Sans", sans-serif;
+  &:hover {
+    border-color: var(--main-gold-color);
+  }
+  &.tagify--focus {
+    border-color: var(--secondary-gold-color);
+  }
+  &__dropdown {
+    &__wrapper {
+      border: 1px solid var(--main-gold-color);
+    }
+    &__item--active {
+      background: var(--secondary-gold-color);
+    }
+  }
+}
+
+.tagifyDropdown {
+  font-family: "Open Sans", sans-serif;
+}

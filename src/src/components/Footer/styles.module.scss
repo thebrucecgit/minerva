@@ -1,0 +1,39 @@
+@import "../../styles/sizes";
+
+.Footer {
+  padding: 30px 5%;
+  // background: var(--main-repeating-pattern);
+  background: rgb(20, 20, 20);
+  color: var(--main-gold-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  > div {
+    margin-top: 15px;
+  }
+  p {
+    font-size: 0.9em;
+    a,
+    a:visited {
+      color: #fff8d1;
+    }
+    a:hover {
+      color: #ffee8b;
+      border-bottom: 1px solid #ffee8b;
+    }
+  }
+  h6 {
+    font-size: 1.2em;
+    margin: 0;
+  }
+  button {
+    margin: 0;
+  }
+
+  @include lg {
+    flex-direction: row;
+    > div {
+      margin-top: 0;
+    }
+  }
+}

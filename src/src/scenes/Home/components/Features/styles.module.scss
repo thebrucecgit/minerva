@@ -1,0 +1,35 @@
+@import "../../../../styles/sizes";
+
+.Features {
+  margin: 8% 5%;
+  text-align: center;
+  h2 {
+    text-shadow: 3px 3px var(--main-gold-color);
+  }
+  .row {
+    display: grid;
+    grid-gap: 2%;
+    @include md {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @include xl {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    > div {
+      padding: 25px 10px;
+      box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
+      background-color: rgb(255, 247, 198);
+      border-radius: 10px;
+    }
+  }
+  h4 {
+    font-size: 1.5em;
+    margin-bottom: 0;
+  }
+  p {
+    margin: 5px 0;
+  }
+  button {
+    margin-top: 4rem;
+  }
+}

@@ -1,0 +1,107 @@
+$header-font: "Montserrat", sans-serif;
+$text-font: "Open Sans", sans-serif;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: $header-font;
+}
+
+h2 {
+  font-size: 4rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+p {
+  font-family: $text-font;
+  a,
+  a:visited {
+    color: rgb(0, 110, 255);
+    transition: color 300ms;
+  }
+  a:hover {
+    border-bottom: 1px solid rgb(0, 73, 168);
+    color: rgb(0, 73, 168);
+  }
+}
+
+ul {
+  font-family: $text-font;
+}
+
+img {
+  max-width: 100%;
+}
+
+:root {
+  --main-gold-color: #ffda0a;
+  --secondary-gold-color: #ffd20a;
+  --main-repeating-pattern: repeating-linear-gradient(
+    -45deg,
+    #fcd600 0 20px,
+    #ffd900 20px 40px
+  );
+}
+
+select {
+  font-size: 1rem;
+  padding: 0.5em;
+  width: 100%;
+  margin: 5px 0;
+  outline: none;
+  border-radius: 0;
+  appearance: none;
+  transition: border-color 300ms;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e7c500%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat, repeat;
+  background-position: right 0.7em top 50%, 0 0;
+  background-size: 0.65em auto, 100%;
+  border-color: #ddd;
+  font-family: $text-font;
+  &:hover {
+    border-color: var(--main-gold-color);
+  }
+}
+
+input:not([type="checkbox"]) {
+  font-size: 1rem;
+  padding: 0.5em;
+  width: 100%;
+  margin: 5px 0;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  outline: none;
+  font-family: $text-font;
+
+  transition: border-color 300ms;
+  &:hover {
+    border-color: var(--main-gold-color);
+  }
+}
+
+input[type="checkbox"] {
+  margin: 10px 0;
+}
+
+textarea {
+  outline: none;
+  font-size: 16px;
+  font-family: $text-font;
+  width: 100%;
+  box-sizing: border-box;
+  border-color: #ddd;
+  margin: 5px 0;
+  padding: 0.3em 0.5em;
+  resize: none;
+  &:hover,
+  &:focus {
+    border-color: var(--main-gold-color);
+  }
+}

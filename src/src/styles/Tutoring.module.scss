@@ -1,0 +1,52 @@
+@import "sizes";
+
+.Tutoring {
+  &.gold {
+    background-color: var(--main-gold-color);
+    border-bottom: 5px solid var(--secondary-gold-color);
+  }
+  h2 {
+    text-align: center;
+    text-shadow: 3px 3px #fff;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 4%;
+    @include sm {
+      grid-template-columns: 1fr 1fr;
+    }
+    .service {
+      border-radius: 10px;
+      box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.2);
+      transition: all 500ms;
+      padding: 30px;
+      filter: grayscale(10%);
+      h3 {
+        color: #fff;
+        text-align: center;
+        font-size: 2rem;
+      }
+      &:nth-of-type(1) {
+        background-image: url(../media/academic.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      &:nth-of-type(2) {
+        background-image: url(../media/extras.jpg);
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      &:hover {
+        transform: scale(1.05);
+        filter: grayscale(0);
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+  p {
+    font-size: 1.2em;
+    text-align: center;
+    margin: 50px 0;
+  }
+}

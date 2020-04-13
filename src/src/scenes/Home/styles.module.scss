@@ -1,0 +1,20 @@
+.Home__top {
+  position: relative;
+  right: 30px;
+  top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  .signIn {
+    margin: 0 2em;
+  }
+  .menutoggle {
+    font-size: 4em;
+    cursor: pointer;
+    color: #fff;
+    transition: color 300ms;
+    &:hover {
+      color: rgb(235, 227, 191);
+    }
+  }
+}

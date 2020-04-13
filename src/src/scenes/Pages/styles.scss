@@ -1,0 +1,29 @@
+@import "../../styles/sizes";
+
+.Document {
+  h1 {
+    font-size: 3em;
+  }
+  h2 {
+    font-size: 2em;
+  }
+}
+
+.header {
+  font-size: 2rem;
+  text-align: center;
+  background-color: var(--main-gold-color);
+  padding: 2% 0;
+  h1 {
+    padding: 2% 0;
+    margin: 0;
+    text-shadow: 3px 3px #fff;
+  }
+}
+
+.col {
+  display: grid;
+  @include lg {
+    grid-template-columns: 1fr 1fr;
+  }
+}
