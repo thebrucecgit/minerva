@@ -26,7 +26,7 @@ const Verification = ({
         })}
       >
         <div className={styles.content}>
-          {userType === "tutor" && (
+          {userType === "TUTOR" && (
             <div className={styles.field}>
               <label htmlFor="price">Select your price per hour? </label>
               {errors.price && <p className={styles.invalid}>{errors.price}</p>}

@@ -25,21 +25,23 @@ const Confirmation = ({
         })}
       >
         <div className={styles.content}>
-          <div className={classNames(styles.field, styles.checkbox)}>
+          <div className={styles.field}>
             {errors.agreement && (
               <p className={styles.invalid}>{errors.agreement}</p>
             )}
-            <input
-              type="checkbox"
-              name="agreement"
-              id="agreement"
-              checked={info.agreement}
-              onChange={onChange}
-              noValidate
-            />
-            <label htmlFor="agreement">
-              I agree to the the Terms of Services and the Privacy Policy
-            </label>
+            <div className={styles.checkbox}>
+              <input
+                type="checkbox"
+                name="agreement"
+                id="agreement"
+                checked={info.agreement}
+                onChange={onChange}
+                noValidate
+              />
+              <label htmlFor="agreement">
+                I agree to the the Terms of Services and the Privacy Policy
+              </label>
+            </div>
           </div>
           {errors.confirmation && (
             <p className={styles.invalid}>{errors.confirmation}</p>

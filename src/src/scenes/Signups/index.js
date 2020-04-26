@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, createRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 
 import ReCAPTCHA from "react-google-recaptcha";
-import useScript from "../../services/hooks/useScript";
+import useScript from "../../hooks/useScript";
 
 import SignIn from "./components/SignIn";
 import BasicInfo from "./components/BasicInfo";
@@ -24,7 +24,7 @@ const recaptchaRef = createRef();
 function Signups({ authService }) {
   const history = useHistory();
 
-  const userType = history.location.pathname === "/signup" ? "tutee" : "tutor";
+  const userType = history.location.pathname === "/signup" ? "TUTEE" : "TUTOR";
 
   const savedSignup = localStorage.getItem("signup");
 
@@ -51,6 +51,8 @@ function Signups({ authService }) {
     Confirmation: true,
   };
 
+  const [strategy, setStrategy] = useState("local");
+
   const [sectionClosed, setSectionClosed] = useState({
     ...sections,
     "Sign In": false,
@@ -74,33 +76,6 @@ function Signups({ authService }) {
     setInfo((st) => ({ ...st, [e.target.name]: value }));
   };
 
-  // Authentication with Google strategy
-  const onGoogleSignIn = async ({ tokenId }) => {
-    try {
-      const userInfo = await authService.login(tokenId);
-      if (userInfo.registered) return history.replace("/dashboard");
-      else
-        setInfo((st) => ({
-          ...st,
-          name: userInfo.name,
-          email: userInfo.email,
-          pfp: {
-            file: userInfo.picture,
-            name: "Google Account Picture",
-          },
-        }));
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
-  const onGoogleFailed = (err) => {
-    setErrors((st) => ({
-      ...st,
-      signIn: err,
-    }));
-  };
-
   const validate = (section) => {
     const newErrors = {};
 
@@ -110,7 +85,10 @@ function Signups({ authService }) {
           newErrors.name = "Name is too short";
         if (!info.email || !regex.email.test(info.email))
           newErrors.email = "Email is invalid";
-        if (!info.password || !regex.password.test(info.password))
+        if (
+          strategy === "local" &&
+          (!info.password || !regex.password.test(info.password))
+        )
           newErrors.password =
             "Password needs to be minimum of eight characters with at least one letter and one number";
         break;
@@ -124,7 +102,8 @@ function Signups({ authService }) {
         break;
       }
       case "Verification": {
-        if (!info.price) newErrors.price = "Please select a price";
+        if (userType === "TUTOR" && !info.price)
+          newErrors.price = "Please select a price";
         if (!info.biography)
           newErrors.biography = "Please write about yourself";
         if (!info.grades || !regex.url.test(info.grades))
@@ -144,7 +123,7 @@ function Signups({ authService }) {
     return Object.values(newErrors).length === 0;
   };
 
-  // Moves onto nexxt strategy
+  // Moves onto next strategy
   const onNext = (section) => {
     const validated = validate(section);
 
@@ -190,6 +169,7 @@ function Signups({ authService }) {
 
   // For cloudinary upload widget
   const uploadCallback = useCallback(() => {
+    // Upload pfp from Google
     const widget = window.cloudinary.createUploadWidget(
       uploadWidgetSettings,
       (err, result) => {
@@ -208,23 +188,84 @@ function Signups({ authService }) {
 
   useScript("https://widget.cloudinary.com/v2.0/global/all.js", uploadCallback);
 
+  const onGoogleSignedIn = (userInfo) => {
+    const userData = authService.currentUser || userInfo;
+
+    if (userData) {
+      const { user } = userData;
+      switch (user.registrationStatus) {
+        case "COMPLETE": {
+          history.replace("/dashboard");
+          break;
+        }
+        case "EMAIL_NOT_CONFIRMED": {
+          history.replace("/confirm");
+          break;
+        }
+        default:
+        case "GOOGLE_SIGNED_IN": {
+          setInfo((st) => ({
+            ...st,
+            name: user.name,
+            email: user.email,
+            pfp: {
+              file: user.pfp,
+              name: "Google Account Picture",
+            },
+          }));
+
+          onNext("Sign In");
+          setStrategy("google");
+        }
+      }
+    }
+  };
+
+  useEffect(onGoogleSignedIn, []);
+
+  // Authentication with Google strategy
+  const onGoogleSignIn = async ({ tokenId }) => {
+    try {
+      const userInfo = await authService.login(tokenId);
+      onGoogleSignedIn(userInfo);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const onGoogleFailed = (err) => {
+    setErrors((st) => ({
+      ...st,
+      signIn: err,
+    }));
+  };
+
   // After form is completed
   const onSubmit = (e) => {
-    const newErrors = validate("Confirmation");
-    if (newErrors) return;
+    const validated = validate("Confirmation");
+    if (!validated) return;
+
     recaptchaRef.current.execute();
   };
 
   const onCaptchaComplete = async (token) => {
     try {
-      const userInfo = await authService.register({
+      const { user } = await authService.register({
         ...info,
+        userType,
+        pfp: info?.pfp?.file,
+        yearGroup: parseInt(info.yearGroup),
         token,
       });
+
+      localStorage.removeItem("signup");
+
+      if (user.registrationStatus === "COMPLETE") history.replace("/dashboard");
+      else history.replace("/confirm");
     } catch (e) {
       setErrors((st) => ({
         ...st,
-        confirmation: e,
+        confirmation: e.message,
       }));
     }
   };
@@ -249,6 +290,7 @@ function Signups({ authService }) {
           <BasicInfo
             sectionStatus={sectionStatus[1]}
             sectionClosed={sectionClosed["Basic Info"]}
+            strategy={strategy}
             info={info}
             errors={errors}
             uploadImage={uploadFile && uploadFile.open}
@@ -289,12 +331,12 @@ function Signups({ authService }) {
       </div>
       <div className={styles.panel}>
         <h2>
-          {userType === "tutor"
+          {userType === "TUTOR"
             ? "We only have what we give. "
             : "Today is another chance to get better"}
         </h2>
         <p>Sign up now.</p>
-        {userType === "tutor" ? <TutorImg /> : <TuteeImg />}
+        {userType === "TUTOR" ? <TutorImg /> : <TuteeImg />}
       </div>
       <ReCAPTCHA
         ref={recaptchaRef}

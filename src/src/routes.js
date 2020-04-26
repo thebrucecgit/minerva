@@ -6,14 +6,13 @@ import Pages from "./scenes/Pages";
 import Signups from "./scenes/Signups";
 import Auth from "./scenes/Auth";
 
-// import Dashboard from "./scenes/Dashboard";
+import Dashboard from "./scenes/Dashboard";
 
 function Routes({ authService }) {
-  const { currentUser } = authService;
   return (
     <Switch>
       <Route exact path="/">
-        <Home />
+        <Home authService={authService} />
       </Route>
 
       <Route
@@ -25,8 +24,14 @@ function Routes({ authService }) {
 
       <Route
         path="/signup"
-        render={({ authService, match }) => <Signups match={match} />}
+        render={({ match }) => (
+          <Signups match={match} authService={authService} />
+        )}
       />
+
+      <Route path="/dashboard">
+        <Dashboard authService={authService} />
+      </Route>
 
       <Route path="/" render={({ match }) => <Pages match={match} />} />
     </Switch>

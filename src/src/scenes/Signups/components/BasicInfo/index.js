@@ -8,6 +8,7 @@ import styles from "../../styles.module.scss";
 const BasicInfo = ({
   sectionStatus,
   sectionClosed,
+  strategy,
   errors,
   info,
   uploadImage,
@@ -33,6 +34,7 @@ const BasicInfo = ({
               type="text"
               id="name"
               name="name"
+              autoComplete="name"
               value={info.name}
               onChange={onChange}
               noValidate
@@ -45,35 +47,43 @@ const BasicInfo = ({
               type="email"
               id="email"
               name="email"
+              autoComplete="email"
               value={info.email}
               onChange={onChange}
-              disabled={true}
+              disabled={strategy === "google"}
               noValidate
             />
           </div>
-          <div className={styles.field}>
-            <label htmlFor="password">Password:</label>
-            {errors.password && (
-              <p className={styles.invalid}>{errors.password}</p>
-            )}
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={info.password}
-              onChange={onChange}
-              noValidate
-            />
-          </div>
+          {strategy === "local" && (
+            <div className={styles.field}>
+              <label htmlFor="password">Password:</label>
+              {errors.password && (
+                <p className={styles.invalid}>{errors.password}</p>
+              )}
+              <input
+                type="password"
+                id="password"
+                name="password"
+                autoComplete="new-password"
+                value={info.password}
+                onChange={onChange}
+                noValidate
+              />
+            </div>
+          )}
           <div className={styles.field}>
             <label htmlFor="pfp">Picture:</label>
-            {info.pfp && (
+            {info.pfp?.file && (
               <>
                 <img
-                  src={`https://res.cloudinary.com/brucec/image/upload/c_crop,g_custom/w_200/${info.pfp.file}`}
+                  src={
+                    strategy === "local"
+                      ? `https://res.cloudinary.com/brucec/image/upload/c_crop,g_custom/w_200/${info.pfp.file}`
+                      : info.pfp.file
+                  }
                   alt="user uploaded pfp"
                 />
-                <p>Image {info.pfp.name}</p>
+                <p>{info.pfp.name}</p>
               </>
             )}
             <button onClick={uploadImage}>

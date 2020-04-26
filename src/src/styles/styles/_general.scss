@@ -1,6 +1,16 @@
 $header-font: "Montserrat", sans-serif;
 $text-font: "Open Sans", sans-serif;
 
+:root {
+  --main-gold-color: #ffda0a;
+  --secondary-gold-color: #ffd20a;
+  --main-repeating-pattern: repeating-linear-gradient(
+    -45deg,
+    #fcd600 0 20px,
+    #ffd900 20px 40px
+  );
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -39,16 +49,6 @@ img {
   max-width: 100%;
 }
 
-:root {
-  --main-gold-color: #ffda0a;
-  --secondary-gold-color: #ffd20a;
-  --main-repeating-pattern: repeating-linear-gradient(
-    -45deg,
-    #fcd600 0 20px,
-    #ffd900 20px 40px
-  );
-}
-
 select {
   font-size: 1rem;
   padding: 0.5em;
@@ -73,7 +73,9 @@ select {
 input:not([type="checkbox"]) {
   font-size: 1rem;
   padding: 0.5em;
+  display: block;
   width: 100%;
+  max-width: 400px;
   margin: 5px 0;
   box-sizing: border-box;
   border: 1px solid #ddd;
@@ -87,6 +89,11 @@ input:not([type="checkbox"]) {
 }
 
 input[type="checkbox"] {
+  margin: 10px 0;
+}
+
+label {
+  display: block;
   margin: 10px 0;
 }
 

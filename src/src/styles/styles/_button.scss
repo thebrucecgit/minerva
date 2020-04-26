@@ -7,14 +7,14 @@ button {
   text-transform: uppercase;
   display: block;
   background-color: var(--main-gold-color);
-  border-radius: 10px;
+  border-radius: 5px;
   box-shadow: 1px 1px var(--secondary-gold-color),
     2px 2px var(--secondary-gold-color), 3px 3px var(--secondary-gold-color);
   color: #000;
   font-weight: 300;
   letter-spacing: 1px;
   position: relative;
-  margin: 0 auto;
+  margin: 10px 0;
   &:hover {
     box-shadow: 2px 2px var(--secondary-gold-color);
     top: 1px;

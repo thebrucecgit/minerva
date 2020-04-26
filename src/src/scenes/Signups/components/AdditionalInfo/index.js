@@ -98,7 +98,7 @@ const AdditionalInfo = ({
           <div className={styles.field}>
             <label>
               Add academic subjects you want{" "}
-              {userType === "tutor" ? "to tutor" : "tutoring"} in (you can
+              {userType === "TUTOR" ? "to tutor" : "tutoring"} in (you can
               change this later):{" "}
             </label>
             {errors.academics && (
@@ -123,7 +123,7 @@ const AdditionalInfo = ({
           <div className={styles.field}>
             <label>
               Add any extra-curriculars activities you want{" "}
-              {userType === "tutor" ? "to tutor" : "tutoring"} in (you can
+              {userType === "TUTOR" ? "to tutor" : "tutoring"} in (you can
               change this later):{" "}
             </label>
             {errors.extras && <p className={styles.invalid}>{errors.extra}</p>}

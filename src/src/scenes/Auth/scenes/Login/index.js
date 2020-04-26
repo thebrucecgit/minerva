@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState } from "react";
+import { useHistory, Link } from "react-router-dom";
+import useAuth from "../../../../hooks/useAuth";
 import { GoogleLogin } from "react-google-login";
 
-function Login({ login, currentUser }) {
+import styles from "./styles.module.scss";
+
+const Login = ({ login, currentUser }) => {
   const history = useHistory();
 
-  useEffect(() => {
-    if (currentUser && currentUser.registered) history.replace("/dashboard");
-  }, [currentUser, history]);
+  useAuth(currentUser?.user?.registrationStatus, ["login"]);
 
   const [error, setError] = useState("");
   const [fields, setFields] = useState({});
@@ -19,11 +20,10 @@ function Login({ login, currentUser }) {
 
   const onGoogleSignIn = async ({ tokenId }) => {
     try {
-      const userInfo = await login(tokenId);
-      if (!userInfo.registered) history.replace("/signup");
-      else history.replace("/dashboard");
+      await login(tokenId);
+      history.replace("/dashboard");
     } catch (e) {
-      setError(e);
+      setError(e.message);
     }
   };
 
@@ -37,37 +37,55 @@ function Login({ login, currentUser }) {
     try {
       const { email, password } = fields;
       await login(email, password);
+      history.replace("/dashboard");
     } catch (e) {
       setError(e.message);
     }
   };
 
   return (
-    <div className="Login">
-      {error && <div className="Login--error">{error}</div>}
-      <GoogleLogin
-        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-        onSuccess={onGoogleSignIn}
-        onFailure={onGoogleFailed}
-        cookiePolicy="single_host_origin"
-      />
-      <form onSubmit={onSubmit}>
-        <input
-          name="email"
-          type="email"
-          value={fields.email || ""}
-          onChange={onFieldChange}
+    <div className={styles.Login}>
+      {error && <p className="error">{error}</p>}
+      <div>
+        <h1>Sign In</h1>
+        <p>
+          <Link to="/auth/passwordreset">Forgot Password</Link>
+        </p>
+        <form onSubmit={onSubmit}>
+          <div className="field">
+            <label htmlFor="email">Email: </label>
+            <input
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={fields.email || ""}
+              onChange={onFieldChange}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="password">Password: </label>
+            <input
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              value={fields.password || ""}
+              onChange={onFieldChange}
+            />
+          </div>
+          <button>Sign In</button>
+        </form>
+      </div>
+      <p> Or </p>
+      <div>
+        <GoogleLogin
+          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+          onSuccess={onGoogleSignIn}
+          onFailure={onGoogleFailed}
+          cookiePolicy="single_host_origin"
         />
-        <input
-          name="password"
-          type="password"
-          value={fields.password || ""}
-          onChange={onFieldChange}
-        />
-        <button>Login</button>
-      </form>
+      </div>
     </div>
   );
-}
+};
 
 export default Login;

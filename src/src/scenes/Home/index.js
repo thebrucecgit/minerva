@@ -13,16 +13,27 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./styles.module.scss";
 
-function Home() {
+function Home({ authService }) {
   const [menu, setMenu] = useState(false);
 
   return (
     <div className={styles.Home}>
       <Sidebar open={menu} set={setMenu} />
       <div className={styles.Home__top}>
-        <Link to="/auth">
-          <button className={styles.signIn}>Sign In</button>
-        </Link>
+        {authService.currentUser ? (
+          <>
+            <Link to="/dashboard">
+              <button className={styles.signIN}>Dashboard</button>
+            </Link>
+            <Link to="/auth/logout">
+              <button className={styles.signIn}>Log Out</button>
+            </Link>
+          </>
+        ) : (
+          <Link to="/auth">
+            <button className={styles.signIn}>Sign In</button>
+          </Link>
+        )}
         <div
           className={styles.menutoggle}
           onClick={() => {

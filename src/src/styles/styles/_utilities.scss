@@ -51,3 +51,20 @@ ul {
     max-width: 1060px;
   }
 }
+
+form {
+  .field {
+    margin: 15px 0;
+    .small {
+      font-size: 0.8rem;
+      color: rgb(50, 50, 50);
+      margin: 0;
+    }
+    .checkbox {
+      display: flex;
+      label {
+        margin-left: 20px;
+      }
+    }
+  }
+}

@@ -2,6 +2,9 @@
   position: relative;
   display: flex;
   padding: 10px 20px;
+  &.dark {
+    background-color: var(--main-gold-color);
+  }
   a {
     display: flex;
     align-items: flex-end;

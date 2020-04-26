@@ -1,24 +1,64 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
+
+import Navbar from "../../components/Navbar";
 
 import Login from "./scenes/Login";
+import EmailConfirmation from "./scenes/EmailConfirmation";
+import PasswordReset from "./scenes/PasswordReset";
 
 function Auth({ match, location, authService }) {
   const { path } = match;
-  const { login, logout, currentUser } = authService;
+  const {
+    login,
+    logout,
+    currentUser,
+    confirmUserEmail,
+    resetPassword,
+    updatePassword,
+  } = authService;
 
-  if (location.pathname === `${path}/logout`) logout();
+  if (location.pathname === `${path}/logout`) {
+    logout();
+    return null;
+  }
 
   return (
-    <Switch>
-      <Route exact path={path}>
-        <Login login={login} currentUser={currentUser} />
-      </Route>
+    <div>
+      <Navbar menu={false} dark />
+      <div className="container">
+        <Switch>
+          <Route exact path={path}>
+            <Login login={login} currentUser={currentUser} />
+          </Route>
 
-      {/* <Route exact path={`${path}/passwordreset`}>
-        <Logout logout={logout} currentUser={currentUser} />
-      </Route> */}
-    </Switch>
+          <Route path={`${path}/confirm`}>
+            <EmailConfirmation
+              confirmUserEmail={confirmUserEmail}
+              location={location}
+            />
+          </Route>
+
+          {/* <Route path={`${path}/confirm/:emailConfirmId`}>
+            <EmailConfirmation
+              currentUser={currentUser}
+              confirmUserEmail={confirmUserEmail}
+            />
+          </Route> */}
+
+          <Route exact path={`${path}/passwordreset`}>
+            <PasswordReset
+              resetPassword={resetPassword}
+              updatePassword={updatePassword}
+            />
+          </Route>
+
+          <Route path={path}>
+            <Redirect to={location.pathname.replace(path, "")} />
+          </Route>
+        </Switch>
+      </div>
+    </div>
   );
 }
 

@@ -2,11 +2,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  button {
-    margin: 0;
-  }
-
-  background: var(--main-gold-color);
+  background-color: var(--main-gold-color);
 
   .main {
     padding: 3rem;
@@ -46,22 +42,8 @@
         .content {
           margin: 2rem 3rem;
 
-          label {
-            display: block;
-            margin: 10px 0;
-            input {
-              display: block;
-            }
-          }
-
-          .field {
-            margin: 15px 0;
-            &.checkbox {
-              display: flex;
-              label {
-                margin-left: 20px;
-              }
-            }
+          input {
+            max-width: 100%;
           }
 
           .invalid + input,
