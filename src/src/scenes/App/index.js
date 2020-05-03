@@ -1,4 +1,5 @@
 import React from "react";
+import { ToastContainer } from "react-toastify";
 
 import Routes from "../../routes";
 import AuthHelpers from "../../services/AuthHelpers";
@@ -6,6 +7,7 @@ import Authentication from "../../services/Authentication";
 import Apollo from "../../services/Apollo";
 
 import "../../styles/app.scss";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -15,7 +17,12 @@ function App() {
           <Apollo authHelpers={authHelpers}>
             <Authentication
               authHelpers={authHelpers}
-              children={(authService) => <Routes authService={authService} />}
+              children={(authService) => (
+                <div>
+                  <Routes authService={authService} />
+                  <ToastContainer />
+                </div>
+              )}
             />
           </Apollo>
         )}

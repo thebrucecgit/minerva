@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
@@ -77,6 +78,8 @@ const UPDATE_CLASS = gql`
   }
 `;
 
+let toastId = null;
+
 const Class = ({ currentUser }) => {
   const { id } = useParams();
 
@@ -92,8 +95,6 @@ const Class = ({ currentUser }) => {
     sessions: true,
     location: true,
   });
-
-  const [updateError, setUpdateError] = useState("");
 
   const { loading, error, data } = useQuery(GET_CLASS, {
     variables: { id },
@@ -113,6 +114,7 @@ const Class = ({ currentUser }) => {
 
   const saveInfo = async () => {
     try {
+      toastId = toast("Updating class...", { autoClose: false });
       const info = await updateClass({
         variables: {
           description: JSON.stringify(classInfo.description),
@@ -126,8 +128,17 @@ const Class = ({ currentUser }) => {
         ...st,
         ...info.updateClass,
       }));
+      toast.update(toastId, {
+        render: "Successfully updated",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 5000,
+      });
     } catch (e) {
-      setUpdateError(e.message);
+      toast.update(toastId, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
     }
   };
 
@@ -140,9 +151,9 @@ const Class = ({ currentUser }) => {
   };
 
   const toggleDisabled = async (name) => {
+    if (!disabled[name]) saveInfo();
     setDisabled((st) => {
       // if saving
-      if (!st[name]) saveInfo();
       return {
         ...st,
         [name]: !st[name],
@@ -152,13 +163,11 @@ const Class = ({ currentUser }) => {
 
   const Edit = EditButton({ currentUser, disabled, toggleDisabled });
 
-  if (loading || !classInfo.name) return null;
   if (error) return error.message;
+  if (loading || !classInfo.name) return null;
 
   return (
     <div className={styles.Class}>
-      {updateLoading && <p>Updating...</p>}
-      {updateError && <p className="error">{updateError}</p>}
       <Content
         Edit={Edit}
         disabled={disabled}

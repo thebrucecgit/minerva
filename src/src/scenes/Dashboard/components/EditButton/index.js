@@ -8,12 +8,11 @@ import styles from "../../class.module.scss";
 
 const EditButton = ({ currentUser, disabled, toggleDisabled }) => {
   return ({ type }) => {
+    const onClick = () => toggleDisabled(type);
+
     if (currentUser.user.userType === "TUTOR")
       return (
-        <button
-          className={classNames("btn", styles.edit)}
-          onClick={() => toggleDisabled(type)}
-        >
+        <button className={classNames("btn", styles.edit)} onClick={onClick}>
           <FontAwesomeIcon icon={disabled[type] ? faPenAlt : faSave} />
         </button>
       );

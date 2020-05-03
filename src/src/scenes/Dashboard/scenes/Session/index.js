@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { format, addMinutes } from "date-fns";
 import ReactQuill from "react-quill";
+import { toast } from "react-toastify";
 
 import EditButton from "../../components/EditButton";
 import Tutors from "../../components/Tutors";
@@ -72,6 +73,8 @@ const UPDATE_SESSION = gql`
   }
 `;
 
+let toastId = null;
+
 const Session = ({ currentUser }) => {
   const { id } = useParams();
 
@@ -81,8 +84,6 @@ const Session = ({ currentUser }) => {
     location: true,
     notes: true,
   });
-
-  const [updateError, setUpdateError] = useState("");
 
   const { loading, error, data } = useQuery(GET_SESSION, {
     variables: { id },
@@ -94,6 +95,7 @@ const Session = ({ currentUser }) => {
 
   const saveInfo = async () => {
     try {
+      toastId = toast("Updating session...", { autoClose: false });
       const info = await updateSession({
         variables: {
           notes: JSON.stringify(sessionInfo.notes),
@@ -106,8 +108,17 @@ const Session = ({ currentUser }) => {
         ...st,
         ...info.updateSession,
       }));
+      toast.update(toastId, {
+        render: "Successfully updated",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 5000,
+      });
     } catch (e) {
-      setUpdateError(e.message);
+      toast.update(toastId, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
     }
   };
 
@@ -134,9 +145,8 @@ const Session = ({ currentUser }) => {
   };
 
   const toggleDisabled = async (name) => {
+    if (!disabled[name]) saveInfo();
     setDisabled((st) => {
-      // if saving
-      if (!st[name]) saveInfo();
       return {
         ...st,
         [name]: !st[name],
@@ -146,13 +156,11 @@ const Session = ({ currentUser }) => {
 
   const Edit = EditButton({ currentUser, disabled, toggleDisabled });
 
+  if (error) toast(error.message, { type: toast.TYPE.ERROR });
   if (loading || !sessionInfo.time) return null;
-  if (error) return error.message;
 
   return (
     <div className={styles.Class}>
-      {updateLoading && <p>Updating...</p>}
-      {updateError && <p className="error">{updateError}</p>}
       <div>
         <h1>{format(sessionInfo.time, "EEEE d MMMM, yyyy")}</h1>
         <p className={styles.padding}>
