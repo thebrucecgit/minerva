@@ -1,0 +1,9 @@
+.Classes {
+  padding: 2rem 3rem;
+}
+
+.classes_grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 3rem;
+}
