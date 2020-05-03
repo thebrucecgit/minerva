@@ -10,6 +10,12 @@ const sessionSchema = Schema({
     type: String,
     ref: "Class",
   },
+  tutors: [
+    {
+      type: String,
+      ref: "User",
+    },
+  ],
   attendance: [
     {
       tutee: {
@@ -23,11 +29,16 @@ const sessionSchema = Schema({
       reason: String,
     },
   ],
-  location: String,
-  pricePerTutee: Number,
-  time: {
-    type: Date,
+  location: {
+    address: String,
+    coords: {
+      lat: Number,
+      lng: Number,
+    },
   },
+  pricePerTutee: Number,
+  time: Date,
+  length: Number, // in minutes
   notes: String,
 });
 

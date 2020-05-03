@@ -18,10 +18,11 @@ const server = new ApolloServer({
   typeDefs: schemas,
   resolvers,
   context: async ({ req }) => {
-    const token = req.header("authorization");
-    if (!token) return;
-    const { _id } = await jwt.verify(token, JWT_SECRET);
-    return await User.findById(_id);
+    const authHeader = req.header("authorization");
+    if (!authHeader) return;
+    const token = authHeader.split(" ")[1];
+    const { id } = jwt.verify(token, JWT_SECRET);
+    return await User.findById(id);
   },
 });
 

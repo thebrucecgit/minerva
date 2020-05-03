@@ -29,7 +29,7 @@ const createUserObject = (user) => {
 
 export default {
   Query: {
-    login: async (_, { email, password, tokenId }) => {
+    async login(_, { email, password, tokenId }) {
       let user;
       if (tokenId) {
         const info = await verifyGoogleToken(tokenId);
@@ -67,7 +67,7 @@ export default {
     },
   },
   Mutation: {
-    register: async (_, args) => {
+    async register(_, args) {
       // Verify information
 
       // Verify Captcha
@@ -142,7 +142,7 @@ export default {
       // Return jwt user object
       return createUserObject(user);
     },
-    confirmUserEmail: async (_, { emailConfirmId }) => {
+    async confirmUserEmail(_, { emailConfirmId }) {
       const user = await User.findOneAndUpdate(
         { emailConfirmId },
         { registrationStatus: "COMPLETE" },
@@ -151,7 +151,7 @@ export default {
       if (!user) throw new Error("User not found");
       return createUserObject(user);
     },
-    resetPassword: async (_, { email }) => {
+    async resetPassword(_, { email }) {
       const passwordResetCode = Math.floor(100000 + Math.random() * 900000);
       const user = await User.findOneAndUpdate(
         { email },
@@ -178,7 +178,7 @@ export default {
 
       await sgMail.send(msg);
     },
-    updatePassword: async (_, { email, passwordResetCode, newPassword }) => {
+    async updatePassword(_, { email, passwordResetCode, newPassword }) {
       const user = await User.findOne({ email, passwordResetCode });
       if (!user) throw Error("Failed to change password");
       user.passwordResetCode = undefined;

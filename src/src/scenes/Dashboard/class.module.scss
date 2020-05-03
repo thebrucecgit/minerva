@@ -1,0 +1,82 @@
+@import "variables";
+
+.Class {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  padding: 1rem 3rem;
+
+  h1,
+  .name {
+    text-shadow: 2px 2px var(--main-gold-color);
+  }
+
+  .name {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 3rem;
+    padding: 0.5rem $text-padding;
+    margin-right: $text-padding;
+    max-width: 100%;
+  }
+
+  > div {
+    margin: 2rem;
+  }
+
+  .edit {
+    margin: 10px $text-padding 10px auto;
+    padding: 10px 15px;
+  }
+
+  .padding {
+    margin: 20px $text-padding;
+    span {
+      margin-right: 10px;
+      padding: 5px 14px;
+      border-radius: 3px;
+      background: #ff8686;
+    }
+  }
+
+  .date {
+    margin: 20px $text-padding;
+    font-weight: 400;
+    font-size: 1.5rem;
+    color: #ecc100;
+  }
+
+  img {
+    max-height: 300px;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+    h2 {
+      margin: 1rem $text-padding;
+    }
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.section {
+  background-color: #f7f7f7;
+  margin: 10px 0;
+  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.05);
+  // box-sizing: border-box;
+
+  h3 {
+    margin: 1rem $text-padding;
+    display: flex;
+    svg {
+      margin-left: auto;
+      margin-right: 0;
+    }
+  }
+}

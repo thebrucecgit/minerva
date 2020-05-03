@@ -1,0 +1,46 @@
+@import "../../variables";
+
+.upper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-gap: 2.5rem;
+  padding: 3rem;
+
+  h1 {
+    text-shadow: 2px 2px var(--main-gold-color);
+  }
+
+  .session {
+    padding: $text-padding;
+    background: linear-gradient(138.08deg, #ffeb78 28.31%, #fff4b5 90.12%);
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.02);
+  }
+}
+
+.lower {
+  background-color: #ffda0a;
+  padding: 3rem;
+  .tutors {
+    display: flex;
+    .tutor {
+      width: 250px;
+      background: #fff;
+      margin-right: 20px;
+      &:last-of-type a {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-right: 0;
+      }
+    }
+  }
+
+  h1 {
+    text-shadow: 2px 2px #fff;
+  }
+  h3 {
+    margin: 1rem $text-padding;
+  }
+}

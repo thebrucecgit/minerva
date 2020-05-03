@@ -1,6 +1,5 @@
-import { gql } from "apollo-boost";
+import gql from "graphql-tag";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { useHistory } from "react-router-dom";
 
 const LOGIN = gql`
   query Login($email: String, $password: String, $tokenId: String) {
@@ -9,6 +8,7 @@ const LOGIN = gql`
       exp
       user {
         name
+        userType
         pfp
         email
         registrationStatus
@@ -50,6 +50,7 @@ const REGISTER = gql`
       exp
       user {
         name
+        userType
         pfp
         email
         registrationStatus
@@ -65,6 +66,7 @@ const CONFIRM_EMAIL = gql`
       exp
       user {
         name
+        userType
         pfp
         email
         registrationStatus
@@ -94,6 +96,7 @@ const UPDATE_PASSWORD = gql`
       exp
       user {
         name
+        userType
         pfp
         email
         registrationStatus
@@ -108,9 +111,7 @@ const UPDATE_PASSWORD = gql`
  * @param {object.children} children
  */
 
-function Authentication({ children }) {
-  const history = useHistory();
-
+function Authentication({ authHelpers, children }) {
   const [registerReq] = useMutation(REGISTER);
   const [confirmEmailReq] = useMutation(CONFIRM_EMAIL);
   const [resetPasswordReq] = useMutation(RESET_PASSWORD);
@@ -163,11 +164,6 @@ function Authentication({ children }) {
     return userInfo;
   }
 
-  function logout() {
-    localStorage.removeItem("Auth");
-    history.replace("/");
-  }
-
   async function resetPassword(email) {
     const { error } = await resetPasswordReq({ variables: { email } });
     if (error) throw error;
@@ -185,18 +181,10 @@ function Authentication({ children }) {
   const authService = {
     register,
     login,
-    logout,
     confirmUserEmail,
     resetPassword,
     updatePassword,
-    get currentUser() {
-      const userInfoJSON = localStorage.getItem("Auth");
-      if (!userInfoJSON) return null;
-      const userInfo = JSON.parse(userInfoJSON);
-
-      if (Date.now() > userInfo.exp * 1000) return logout();
-      else return userInfo;
-    },
+    ...authHelpers,
   };
 
   return children(authService);

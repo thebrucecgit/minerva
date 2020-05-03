@@ -1,0 +1,32 @@
+@import "variables";
+
+.quill {
+  .ql-container h1 {
+    margin: 0;
+  }
+  &.disabled {
+    .ql-toolbar {
+      display: none;
+    }
+  }
+}
+
+.ql-toolbar.ql-snow {
+  font-family: "Montserrat", sans-serif;
+  padding: 8px $text-padding;
+  .ql-picker-label {
+    padding-left: 0;
+  }
+  button {
+    box-shadow: none;
+  }
+}
+
+.ql-container {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1rem;
+}
+
+.ql-editor {
+  padding: 12px $text-padding;
+}

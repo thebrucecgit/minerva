@@ -26,6 +26,7 @@ h2 {
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 p {
@@ -36,8 +37,9 @@ p {
     transition: color 300ms;
   }
   a:hover {
-    border-bottom: 1px solid rgb(0, 73, 168);
+    // border-bottom: 1px solid rgb(0, 73, 168);
     color: rgb(0, 73, 168);
+    text-decoration: underline;
   }
 }
 

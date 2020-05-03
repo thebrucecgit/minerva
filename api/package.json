@@ -19,12 +19,14 @@
     "build": "babel ./lib -d dist --source-maps",
     "watch": "nodemon --watch ./lib --exec npm start",
     "start": "npm run build && npm run serve",
-    "serve": "node ./dist/server.js"
+    "serve": "node ./dist/server.js",
+    "seed": "node dist/seed"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.5"
+    "@babel/preset-env": "^7.9.5",
+    "mongoose-seed": "^0.6.0"
   }
 }

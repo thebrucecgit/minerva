@@ -1,0 +1,26 @@
+.Sidebar {
+  top: 0;
+  position: sticky;
+  background-color: #ffeb78;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 250px;
+  height: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-size: 1.4rem;
+  font-family: "Montserrat", sans-serif;
+  padding: 2rem 0;
+
+  h3 {
+    padding: 1rem 2rem;
+    transition: background-color 200ms ease;
+    text-transform: uppercase;
+    color: black;
+    margin: 0;
+
+    &:hover {
+      background-color: #ffe555;
+    }
+  }
+}

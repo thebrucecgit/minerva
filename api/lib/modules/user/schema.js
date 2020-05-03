@@ -6,8 +6,9 @@ export default gql`
     TUTOR
   }
 
+  "A User (can be a tutor, a tutee or a parent)"
   type User {
-    id: ID!
+    _id: ID!
     userType: UserType!
     registrationStatus: String!
     name: String!
@@ -22,6 +23,7 @@ export default gql`
     price: Int
   }
 
+  "The object that is returned when a user is authenticated"
   type UserReq {
     jwt: String!
     exp: Int!

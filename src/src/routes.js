@@ -29,9 +29,16 @@ function Routes({ authService }) {
         )}
       />
 
-      <Route path="/dashboard">
-        <Dashboard authService={authService} />
-      </Route>
+      <Route
+        path="/dashboard"
+        render={({ match, location }) => (
+          <Dashboard
+            match={match}
+            location={location}
+            authService={authService}
+          />
+        )}
+      />
 
       <Route path="/" render={({ match }) => <Pages match={match} />} />
     </Switch>

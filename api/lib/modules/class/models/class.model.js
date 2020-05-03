@@ -6,6 +6,10 @@ const classSchema = Schema({
     type: String,
     default: shortid.generate,
   },
+  name: String,
+  tags: [String],
+  date: String,
+  image: String,
   sessions: [
     {
       type: String,
@@ -25,7 +29,13 @@ const classSchema = Schema({
     },
   ],
   description: String,
-  location: String,
+  location: {
+    address: String,
+    coords: {
+      lat: Number,
+      lng: Number,
+    },
+  },
   pricePerTutee: Number,
 });
 
