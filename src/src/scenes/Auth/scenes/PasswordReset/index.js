@@ -34,7 +34,7 @@ const PasswordReset = ({ resetPassword, updatePassword }) => {
           <>
             <p>You have successfully updated your password.</p>
             <Link to="/dashboard">
-              <button>Go to Dashboard</button>
+              <button className="btn">Go to Dashboard</button>
             </Link>
           </>
         ) : (
@@ -77,7 +77,9 @@ const PasswordReset = ({ resetPassword, updatePassword }) => {
                 />
               </div>
             </div>
-            <button>{reset ? "Reset Password" : "Send Reset Email"}</button>
+            <button className="btn">
+              {reset ? "Reset Password" : "Send Reset Email"}
+            </button>
           </>
         )}
       </form>

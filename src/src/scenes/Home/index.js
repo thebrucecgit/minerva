@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import classNames from "classnames";
 
 import Landing from "./components/Landing";
 import Information from "./components/Information";
@@ -23,15 +24,21 @@ function Home({ authService }) {
         {authService.currentUser ? (
           <>
             <Link to="/dashboard">
-              <button className={styles.signIN}>Dashboard</button>
+              <button className={classNames(styles.signIn, "btn")}>
+                Dashboard
+              </button>
             </Link>
             <Link to="/auth/logout">
-              <button className={styles.signIn}>Log Out</button>
+              <button className={classNames(styles.signIn, "btn")}>
+                Log Out
+              </button>
             </Link>
           </>
         ) : (
           <Link to="/auth">
-            <button className={styles.signIn}>Sign In</button>
+            <button className={classNames(styles.signIn, "btn")}>
+              Sign In
+            </button>
           </Link>
         )}
         <div

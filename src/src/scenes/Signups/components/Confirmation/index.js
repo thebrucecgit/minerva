@@ -46,7 +46,9 @@ const Confirmation = ({
           {errors.confirmation && (
             <p className={styles.invalid}>{errors.confirmation}</p>
           )}
-          <button onClick={onSubmit}>Submit</button>
+          <button className="btn" onClick={onSubmit}>
+            Submit
+          </button>
         </div>
       </div>
     </section>

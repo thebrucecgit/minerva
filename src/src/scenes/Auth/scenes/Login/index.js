@@ -72,7 +72,7 @@ const Login = ({ login, currentUser }) => {
               onChange={onFieldChange}
             />
           </div>
-          <button>Sign In</button>
+          <button className="btn">Sign In</button>
         </form>
       </div>
       <p> Or </p>

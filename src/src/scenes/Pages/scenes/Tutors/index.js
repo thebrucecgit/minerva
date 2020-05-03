@@ -8,9 +8,6 @@ const Tutors = () => {
         <h1>Tutoring Others</h1>
       </div>
       <div className="container">
-        <Link to="/signup/tutors">
-          <button>Sign Up Now!</button>
-        </Link>
         <p>
           As a tutor you are given the intellectual freedom to cater to both the
           student and your own academic interests. With your resúme we will
@@ -24,6 +21,9 @@ const Tutors = () => {
           overall academe will not interfere much in your individual teaching
           style, nor your material content.
         </p>
+        <Link to="/signup/tutors">
+          <button className="btn">Sign Up Now!</button>
+        </Link>
       </div>
     </div>
   );

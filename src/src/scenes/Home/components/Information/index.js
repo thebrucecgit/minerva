@@ -25,7 +25,7 @@ function Information() {
               to see what it is we have that interests you.
             </p>
             <a href="/about-us">
-              <button>Learn more</button>
+              <button className="btn">Learn more</button>
             </a>
           </div>
           <img src={deskStudying} alt="Studying on desk" />

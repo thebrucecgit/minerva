@@ -5,7 +5,7 @@ import {
   faMapMarkedAlt,
   faMoneyCheckAlt,
   faThumbsUp,
-  faLaughSquint
+  faLaughSquint,
 } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./styles.module.scss";
@@ -43,7 +43,7 @@ function Features() {
         </div>
       </div>
       <Link to="/signup">
-        <button>Get Started</button>
+        <button className="btn">Get Started</button>
       </Link>
     </section>
   );

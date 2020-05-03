@@ -141,7 +141,9 @@ const AdditionalInfo = ({
               name="extras"
             />
           </div>
-          <button onClick={onNext}>Next</button>
+          <button className="btn" onClick={onNext}>
+            Next
+          </button>
         </div>
       </div>
     </section>

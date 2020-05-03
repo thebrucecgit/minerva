@@ -33,7 +33,10 @@ const SignIn = ({
             onFailure={onGoogleFailed}
             cookiePolicy="single_host_origin"
           />{" "}
-          or <button onClick={onNext}>Sign in with Email</button>
+          or{" "}
+          <button className="btn" onClick={onNext}>
+            Sign in with Email
+          </button>
         </div>
       </div>
     </section>

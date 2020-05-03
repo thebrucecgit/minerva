@@ -86,11 +86,13 @@ const BasicInfo = ({
                 <p>{info.pfp.name}</p>
               </>
             )}
-            <button onClick={uploadImage}>
+            <button className="btn" onClick={uploadImage}>
               {info.pfp ? "Change" : "Upload"}
             </button>
           </div>
-          <button onClick={onNext}>Next</button>
+          <button className="btn" onClick={onNext}>
+            Next
+          </button>
         </div>
       </div>
     </section>

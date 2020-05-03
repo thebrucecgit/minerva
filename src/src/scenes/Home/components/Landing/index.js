@@ -32,10 +32,10 @@ function Landing() {
               Sign Up <FontAwesomeIcon icon={faUserGraduate} />
             </h2>
             <Link to="/signup">
-              <button>I want to get tutored</button>
+              <button className="btn">I want to get tutored</button>
             </Link>
             <Link to="/tutors">
-              <button>I want to tutor others</button>
+              <button className="btn">I want to tutor others</button>
             </Link>
           </div>
         </div>

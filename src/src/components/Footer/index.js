@@ -19,7 +19,7 @@ function Footer() {
           </a>
         </p>
         <Link to="/services">
-          <button className="secondary">I want to get tutored</button>
+          <button className="btn secondary">I want to get tutored</button>
         </Link>
       </div>
       <div>
