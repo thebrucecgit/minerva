@@ -100,7 +100,7 @@ const Class = ({ currentUser }) => {
     variables: { id },
   });
 
-  const [updateClass, { loading: updateLoading }] = useMutation(UPDATE_CLASS);
+  const [updateClass] = useMutation(UPDATE_CLASS);
 
   useEffect(() => {
     if (data) {

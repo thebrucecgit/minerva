@@ -89,9 +89,7 @@ const Session = ({ currentUser }) => {
     variables: { id },
   });
 
-  const [updateSession, { loading: updateLoading }] = useMutation(
-    UPDATE_SESSION
-  );
+  const [updateSession] = useMutation(UPDATE_SESSION);
 
   const saveInfo = async () => {
     try {

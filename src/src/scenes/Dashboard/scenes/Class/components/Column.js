@@ -6,7 +6,7 @@ import gql from "graphql-tag";
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 
-import Tutors from "../../../components/Tutors/";
+import Tutors from "../../../components/Tutors";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../../../class.module.scss";
