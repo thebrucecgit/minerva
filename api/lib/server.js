@@ -22,7 +22,8 @@ const server = new ApolloServer({
     if (!authHeader) return;
     const token = authHeader.split(" ")[1];
     const { id } = jwt.verify(token, JWT_SECRET);
-    return await User.findById(id);
+    const user = await User.findById(id);
+    return { user };
   },
 });
 
