@@ -6,16 +6,19 @@ const Appbar = () => {
   return (
     <div className={styles.Sidebar}>
       <div>
-        <Link to="">
+        <Link to="/dashboard">
+          <h3>Dashboard</h3>
+        </Link>
+        <Link to="/dashboard/search">
           <h3>Search</h3>
         </Link>
-        <Link to="">
+        <Link to="/dashboard/sessions">
           <h3>Sessions</h3>
         </Link>
-        <Link to="">
+        <Link to="/dashboard/classes">
           <h3>Classes</h3>
         </Link>
-        <Link to="">
+        <Link to="/dashboard">
           <h3>Tutors</h3>
         </Link>
       </div>
