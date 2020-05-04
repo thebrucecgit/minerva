@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import gql from "graphql-tag";
+import Loader from "../../../../components/Loader";
 
 import EditButton from "../../components/EditButton";
 import Column from "./components/Column";
@@ -164,7 +165,7 @@ const Class = ({ currentUser }) => {
   const Edit = EditButton({ currentUser, disabled, toggleDisabled });
 
   if (error) return error.message;
-  if (loading || !classInfo.name) return null;
+  if (loading || !classInfo.name) return <Loader />;
 
   return (
     <div className={styles.Class}>

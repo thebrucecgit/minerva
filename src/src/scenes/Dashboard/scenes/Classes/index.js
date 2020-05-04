@@ -2,6 +2,7 @@ import React from "react";
 import gql from "graphql-tag";
 import { useQuery } from "@apollo/react-hooks";
 import ClassSection from "./components/ClassSection";
+import Loader from "../../../../components/Loader";
 
 import styles from "./styles.module.scss";
 
@@ -19,7 +20,7 @@ const Classes = () => {
   const { data, error, loading } = useQuery(GET_CLASSES);
 
   if (error) return <p className="error">{error.message}</p>;
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
 
   const classes = data.getClasses;
 
@@ -28,7 +29,7 @@ const Classes = () => {
       <h1>Classes</h1>
       <div className={styles.classes_grid}>
         {classes.map((classInfo) => (
-          <ClassSection classInfo={classInfo} />
+          <ClassSection classInfo={classInfo} key={classInfo._id} />
         ))}
       </div>
     </div>

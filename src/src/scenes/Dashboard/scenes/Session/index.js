@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { format, addMinutes } from "date-fns";
 import ReactQuill from "react-quill";
 import { toast } from "react-toastify";
+import Loader from "../../../../components/Loader";
 
 import EditButton from "../../components/EditButton";
 import Tutors from "../../components/Tutors";
@@ -155,7 +156,7 @@ const Session = ({ currentUser }) => {
   const Edit = EditButton({ currentUser, disabled, toggleDisabled });
 
   if (error) toast(error.message, { type: toast.TYPE.ERROR });
-  if (loading || !sessionInfo.time) return null;
+  if (loading || !sessionInfo.time) return <Loader />;
 
   return (
     <div className={styles.Class}>
@@ -173,11 +174,13 @@ const Session = ({ currentUser }) => {
           )}`}
         </p>
         <Edit type="location" />
-        <Map
-          location={sessionInfo.location}
-          disabled={disabled.location}
-          setInfo={setSessionInfo}
-        />
+        <div className={styles.section}>
+          <Map
+            location={sessionInfo.location}
+            disabled={disabled.location}
+            setInfo={setSessionInfo}
+          />
+        </div>
 
         <h2 className={styles.padding}>What we did</h2>
         <ReactQuill

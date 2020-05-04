@@ -3,7 +3,8 @@
 .Class {
   display: grid;
   grid-template-columns: 3fr 1fr;
-  padding: 1rem 3rem;
+  grid-gap: 3rem;
+  padding: 2rem 4rem;
 
   h1,
   .name {
@@ -17,10 +18,6 @@
     padding: 0.5rem $text-padding;
     margin-right: $text-padding;
     max-width: 100%;
-  }
-
-  > div {
-    margin: 2rem;
   }
 
   .edit {
@@ -68,7 +65,7 @@
 .section {
   background-color: #f7f7f7;
   margin: 10px 0;
-  box-shadow: 3px 3px 0px rgba(0, 0, 0, 0.05);
+  box-shadow: 3px 3px 0px rgba(212, 209, 21, 0.05);
   // box-sizing: border-box;
 
   h3 {
