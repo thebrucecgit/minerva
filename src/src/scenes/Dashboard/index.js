@@ -2,11 +2,11 @@ import React from "react";
 import useAuth from "../../hooks/useAuth";
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import Appbar from "../../components/Appbar";
+import Appbar from "./components/Appbar";
 import Main from "./scenes/Main";
 import Search from "./scenes/Search";
 import Tutors from "./scenes/Tutors";
-import Tutor from "./scenes/Tutor";
+import User from "./scenes/User";
 import Sessions from "./scenes/Sessions";
 import Session from "./scenes/Session";
 import Classes from "./scenes/Classes";
@@ -36,7 +36,7 @@ const Dashboard = ({ location, match, authService }) => {
             <Tutors />
           </Route>
           <Route exact path={`${path}/tutors/:id`}>
-            <Tutor />
+            <User currentUser={currentUser} />
           </Route>
           <Route exact path={`${path}/sessions`}>
             <Sessions />

@@ -1,0 +1,17 @@
+.Tags {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .tag {
+    margin-right: 10px;
+    margin-bottom: 5px;
+    padding: 5px 14px;
+    border-radius: 3px;
+    background: #ff8686;
+
+    p {
+      margin: 0;
+    }
+  }
+}

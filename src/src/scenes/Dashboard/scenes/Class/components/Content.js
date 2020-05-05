@@ -3,6 +3,7 @@ import classNames from "classnames";
 import ReactQuill from "react-quill";
 
 import Map from "../../../components/Map";
+import Tags from "../../../components/Tags";
 import reactQuillModules from "../../reactQuillModules";
 
 import "react-quill/dist/quill.snow.css";
@@ -31,11 +32,9 @@ const Content = ({ Edit, classInfo, disabled, setClassInfo, onInfoChange }) => {
         )}
         <Edit type="name" />
       </div>
-      <p className={styles.padding}>
-        {classInfo.tags.map((tag, i) => (
-          <span key={i}>{tag}</span>
-        ))}
-      </p>
+      <div className={styles.padding}>
+        <Tags tags={classInfo.tags} />
+      </div>
       <div className={styles.section}>
         <img src={classInfo.image} alt="" />
       </div>

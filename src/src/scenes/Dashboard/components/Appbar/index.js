@@ -18,7 +18,7 @@ const Appbar = () => {
         <Link to="/dashboard/classes">
           <h3>Classes</h3>
         </Link>
-        <Link to="/dashboard">
+        <Link to="/dashboard/tutors">
           <h3>Tutors</h3>
         </Link>
       </div>

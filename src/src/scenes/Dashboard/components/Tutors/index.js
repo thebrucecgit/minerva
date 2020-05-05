@@ -13,7 +13,7 @@ import styles from "../../class.module.scss";
 
 const DragHandle = SortableHandle(() => <FontAwesomeIcon icon={faBars} />);
 const SortableItem = SortableElement(({ tutor, showHandle }) => (
-  <Link to={`/tutors/${tutor._id}`} className={styles.section}>
+  <Link to={`/dashboard/tutors/${tutor._id}`} className={styles.section}>
     {tutor.pfp && !showHandle && <img src={tutor.pfp} alt={tutor.name} />}
     <h3>
       {tutor.name}
