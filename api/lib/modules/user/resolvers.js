@@ -5,7 +5,11 @@ import shortid from "shortid";
 import { OAuth2Client } from "google-auth-library";
 import bcrypt from "bcrypt";
 
-import { AuthenticationError, UserInputError } from "apollo-server";
+import {
+  AuthenticationError,
+  UserInputError,
+  ApolloError,
+} from "apollo-server";
 import User from "./models/user.model";
 
 const { FRONTEND_DOMAIN, JWT_SECRET, CAPTCHA_SECRET_KEY } = process.env;
@@ -29,6 +33,20 @@ const createUserObject = (user) => {
 
 export default {
   Query: {
+    async getUser(_, { id }, { user }) {
+      return await User.findById(id);
+    },
+    async getTutors(_, __, { user }) {
+      const populated = await user.populate("classes").execPopulate();
+
+      const tutorsArray = populated.classes
+        .toObject()
+        .map((classInfo) => classInfo.tutors.toObject());
+
+      const tutors = [...new Set([].concat(...tutorsArray))];
+
+      return await User.find().where("_id").in(tutors).exec();
+    },
     async login(_, { email, password, tokenId }) {
       let user;
       if (tokenId) {
@@ -64,6 +82,20 @@ export default {
       }
 
       return createUserObject(user);
+    },
+  },
+  User: {
+    async classes(user, _, { user: reqUser }) {
+      if (reqUser.userType !== "TUTOR")
+        throw ApolloError("User unauthorized for this field", 401);
+      await user.populate("classes").execPopulate();
+      return user.classes;
+    },
+    async sessions(user, _, { user: reqUser }) {
+      if (reqUser.userType !== "TUTOR")
+        throw ApolloError("User unauthorized for this field", 401);
+      await user.populate("sessions").execPopulate();
+      return user.sessions;
     },
   },
   Mutation: {

@@ -21,6 +21,8 @@ export default gql`
     biography: String!
     grades: String
     price: Int
+    classes: [Class!]
+    sessions: [Session!]
   }
 
   "The object that is returned when a user is authenticated"
@@ -32,6 +34,8 @@ export default gql`
   }
 
   extend type Query {
+    getUser(id: ID!): User!
+    getTutors: [User!]
     login(email: String, password: String, tokenId: String): UserReq!
     resetPassword(email: String!): Boolean
   }
