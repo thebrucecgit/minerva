@@ -2,6 +2,18 @@ import { gql } from "apollo-server";
 
 export default gql`
   "A Class consisting with tutors and students"
+  type ClassPreference {
+    publicClass: Boolean!
+    studentInstantiation: Boolean!
+    studentAgreeSessions: Boolean!
+  }
+
+  input ClassPreferenceIn {
+    publicClass: Boolean
+    studentInstantiation: Boolean
+    studentAgreeSessions: Boolean
+  }
+
   type Class {
     _id: ID!
     name: String!
@@ -14,6 +26,7 @@ export default gql`
     tags: [String]
     date: String
     image: String
+    preferences: ClassPreference!
   }
 
   extend type Query {
@@ -34,6 +47,7 @@ export default gql`
       tags: [String]
       date: String
       image: String
+      preferences: ClassPreferenceIn
     ): Class!
   }
 `;

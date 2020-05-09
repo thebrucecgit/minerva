@@ -37,6 +37,20 @@ const classSchema = Schema({
     },
   },
   pricePerTutee: Number,
+  preferences: {
+    publicClass: {
+      type: Boolean,
+      default: false,
+    },
+    studentInstantiation: {
+      type: Boolean,
+      default: false,
+    },
+    studentAgreeSessions: {
+      type: Boolean,
+      default: false,
+    },
+  },
 });
 
 const Class = model("Class", classSchema);
