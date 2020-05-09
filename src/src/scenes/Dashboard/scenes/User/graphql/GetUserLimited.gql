@@ -1,0 +1,13 @@
+query($id: ID!) {
+  getUser(id: $id) {
+    _id
+    name
+    userType
+    email
+    pfp
+    yearGroup
+    biography
+    academics
+    extras
+  }
+}

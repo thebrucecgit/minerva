@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import gql from "graphql-tag";
+import { loader } from "graphql.macro";
 import classNames from "classnames";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { format, addMinutes } from "date-fns";
@@ -18,63 +18,8 @@ import reactQuillModules from "../reactQuillModules";
 import styles from "../../class.module.scss";
 import "react-quill/dist/quill.snow.css";
 
-const GET_SESSION = gql`
-  query GetSession($id: ID!) {
-    getSession(id: $id) {
-      class {
-        _id
-        name
-      }
-      tutors {
-        _id
-        pfp
-        name
-      }
-      location {
-        address
-        coords {
-          lat
-          lng
-        }
-      }
-      price
-      time
-      length
-      notes
-    }
-  }
-`;
-
-const UPDATE_SESSION = gql`
-  mutation UpdateSession(
-    $id: ID!
-    $notes: String
-    $location: LocationIn
-    $tutors: [ID!]
-  ) {
-    updateSession(
-      id: $id
-      notes: $notes
-      location: $location
-      tutors: $tutors
-    ) {
-      _id
-      notes
-      location {
-        address
-        coords {
-          lat
-          lng
-        }
-      }
-      tutors {
-        _id
-        name
-        pfp
-      }
-    }
-  }
-`;
+const GET_SESSION = loader("./graphql/GetSession.gql");
+const UPDATE_SESSION = loader("./graphql/UpdateSession.gql");
 
 let toastId = null;
 

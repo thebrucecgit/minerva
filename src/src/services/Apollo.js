@@ -7,8 +7,9 @@ import { onError } from "apollo-link-error";
 import { ApolloLink } from "apollo-link";
 import { withClientState } from "apollo-link-state";
 import { ApolloProvider } from "@apollo/react-hooks";
+import { loader } from "graphql.macro";
 
-import typeDefs from "./typedefs";
+const typeDefs = loader("./graphql/typedefs.gql");
 
 const cleanTypeName = new ApolloLink((operation, forward) => {
   if (operation.variables) {

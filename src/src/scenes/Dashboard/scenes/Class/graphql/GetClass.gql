@@ -1,0 +1,36 @@
+query GetClass($id: ID!) {
+  getClass(id: $id) {
+    _id
+    name
+    sessions {
+      _id
+      time
+    }
+    tutees {
+      _id
+      name
+    }
+    tutors {
+      _id
+      name
+      pfp
+    }
+    description
+    location {
+      address
+      coords {
+        lat
+        lng
+      }
+    }
+    pricePerTutee
+    tags
+    date
+    image
+    preferences {
+      publicClass
+      studentInstantiation
+      studentAgreeSessions
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import React from "react";
-import gql from "graphql-tag";
+import { gql } from "graphql.macro";
 import { useQuery } from "@apollo/react-hooks";
 import ClassSection from "./components/ClassSection";
 import Loader from "../../../../components/Loader";

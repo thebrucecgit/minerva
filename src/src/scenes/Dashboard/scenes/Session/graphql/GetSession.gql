@@ -1,0 +1,24 @@
+query GetSession($id: ID!) {
+  getSession(id: $id) {
+    class {
+      _id
+      name
+    }
+    tutors {
+      _id
+      pfp
+      name
+    }
+    location {
+      address
+      coords {
+        lat
+        lng
+      }
+    }
+    price
+    time
+    length
+    notes
+  }
+}

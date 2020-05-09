@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { loader } from "graphql.macro";
 import ReactQuill from "react-quill";
 import Loader from "../../../../components/Loader";
 import Modal from "../../../../components/Modal";
@@ -19,80 +19,8 @@ import Menu from "../../components/Menu";
 import "react-quill/dist/quill.snow.css";
 import styles from "../../class.module.scss";
 
-const GET_CLASS = gql`
-  query GetClass($id: ID!) {
-    getClass(id: $id) {
-      _id
-      name
-      sessions {
-        _id
-        time
-      }
-      tutees {
-        _id
-        name
-      }
-      tutors {
-        _id
-        name
-        pfp
-      }
-      description
-      location {
-        address
-        coords {
-          lat
-          lng
-        }
-      }
-      pricePerTutee
-      tags
-      date
-      image
-      preferences {
-        publicClass
-        studentInstantiation
-        studentAgreeSessions
-      }
-    }
-  }
-`;
-
-const UPDATE_CLASS = gql`
-  mutation UpdateClass(
-    $id: ID!
-    $name: String
-    $location: LocationIn
-    $description: String
-    $tutors: [ID!]
-    $preferences: ClassPreferenceIn
-  ) {
-    updateClass(
-      id: $id
-      name: $name
-      description: $description
-      tutors: $tutors
-      location: $location
-      preferences: $preferences
-    ) {
-      _id
-      name
-      description
-      location {
-        address
-        coords {
-          lat
-          lng
-        }
-      }
-      tutors {
-        _id
-        name
-        pfp
-      }
-    }
-  }
-`;
+const GET_CLASS = loader("./graphql/GetClass.gql");
+const UPDATE_CLASS = loader("./graphql/UpdateClass.gql");
 
 let toastId = null;
 
@@ -197,7 +125,9 @@ const Class = ({ currentUser }) => {
         ...st,
         [name]:
           typeof classInfo[name] === "object"
-            ? { ...classInfo[name] }
+            ? Array.isArray(classInfo[name])
+              ? [...classInfo[name]]
+              : { ...classInfo[name] }
             : classInfo[name],
       }));
     } else saveInfo(name);

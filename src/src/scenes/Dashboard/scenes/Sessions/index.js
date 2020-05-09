@@ -1,26 +1,13 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { loader } from "graphql.macro";
 import Loader from "../../../../components/Loader";
 
 import SessionSection from "./components/SessionSection";
 
 import styles from "./styles.module.scss";
 
-const GET_SESSIONS = gql`
-  query GetSessions {
-    getSessions {
-      _id
-      time
-      location {
-        address
-      }
-      tutors {
-        pfp
-      }
-    }
-  }
-`;
+const GET_SESSIONS = loader("./graphql/GetSessions.gql");
 
 const Sessions = () => {
   const { data, error, loading } = useQuery(GET_SESSIONS);

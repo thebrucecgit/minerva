@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useParams, useHistory } from "react-router-dom";
 import classNames from "classnames";
 import { useMutation } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { gql } from "graphql.macro";
 import { format } from "date-fns";
 import DatePicker from "react-datepicker";
 

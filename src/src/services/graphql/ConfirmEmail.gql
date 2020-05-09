@@ -1,0 +1,13 @@
+mutation ConfirmUserEmail($emailConfirmId: String!) {
+  confirmUserEmail(emailConfirmId: $emailConfirmId) {
+    jwt
+    exp
+    user {
+      name
+      userType
+      pfp
+      email
+      registrationStatus
+    }
+  }
+}

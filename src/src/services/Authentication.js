@@ -1,109 +1,11 @@
-import gql from "graphql-tag";
+import { loader } from "graphql.macro";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 
-const LOGIN = gql`
-  query Login($email: String, $password: String, $tokenId: String) {
-    login(email: $email, password: $password, tokenId: $tokenId) {
-      jwt
-      exp
-      user {
-        name
-        userType
-        pfp
-        email
-        registrationStatus
-      }
-    }
-  }
-`;
-
-const REGISTER = gql`
-  mutation Register(
-    $userType: UserType!
-    $name: String!
-    $email: String!
-    $password: String
-    $pfp: String
-    $yearGroup: Int!
-    $school: String!
-    $academics: [String!]!
-    $extras: [String!]
-    $biography: String!
-    $grades: String!
-    $token: String!
-  ) {
-    register(
-      userType: $userType
-      name: $name
-      email: $email
-      password: $password
-      pfp: $pfp
-      yearGroup: $yearGroup
-      school: $school
-      academics: $academics
-      extras: $extras
-      biography: $biography
-      grades: $grades
-      token: $token
-    ) {
-      jwt
-      exp
-      user {
-        name
-        userType
-        pfp
-        email
-        registrationStatus
-      }
-    }
-  }
-`;
-
-const CONFIRM_EMAIL = gql`
-  mutation ConfirmUserEmail($emailConfirmId: String!) {
-    confirmUserEmail(emailConfirmId: $emailConfirmId) {
-      jwt
-      exp
-      user {
-        name
-        userType
-        pfp
-        email
-        registrationStatus
-      }
-    }
-  }
-`;
-
-const RESET_PASSWORD = gql`
-  mutation ResetPassword($email: String!) {
-    resetPassword(email: $email)
-  }
-`;
-
-const UPDATE_PASSWORD = gql`
-  mutation UpdatePassword(
-    $email: String!
-    $passwordResetCode: Int!
-    $newPassword: String!
-  ) {
-    updatePassword(
-      email: $email
-      passwordResetCode: $passwordResetCode
-      newPassword: $newPassword
-    ) {
-      jwt
-      exp
-      user {
-        name
-        userType
-        pfp
-        email
-        registrationStatus
-      }
-    }
-  }
-`;
+const LOGIN = loader("./graphql/Login.gql");
+const REGISTER = loader("./graphql/Register.gql");
+const CONFIRM_EMAIL = loader("./graphql/ConfirmEmail.gql");
+const RESET_PASSWORD = loader("./graphql/ResetPassword.gql");
+const UPDATE_PASSWORD = loader("./graphql/UpdatePassword.gql");
 
 /**
  * Authentication Service provider

@@ -1,7 +1,7 @@
 import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../../../components/Loader";
-import gql from "graphql-tag";
+import { gql } from "graphql.macro";
 import { Link } from "react-router-dom";
 
 import styles from "./styles.module.scss";

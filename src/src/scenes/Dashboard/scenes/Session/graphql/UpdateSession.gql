@@ -1,0 +1,23 @@
+mutation UpdateSession(
+  $id: ID!
+  $notes: String
+  $location: LocationIn
+  $tutors: [ID!]
+) {
+  updateSession(id: $id, notes: $notes, location: $location, tutors: $tutors) {
+    _id
+    notes
+    location {
+      address
+      coords {
+        lat
+        lng
+      }
+    }
+    tutors {
+      _id
+      name
+      pfp
+    }
+  }
+}

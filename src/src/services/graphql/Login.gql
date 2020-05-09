@@ -1,0 +1,13 @@
+query Login($email: String, $password: String, $tokenId: String) {
+  login(email: $email, password: $password, tokenId: $tokenId) {
+    jwt
+    exp
+    user {
+      name
+      userType
+      pfp
+      email
+      registrationStatus
+    }
+  }
+}

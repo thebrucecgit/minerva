@@ -1,0 +1,12 @@
+query GetSessions {
+  getSessions {
+    _id
+    time
+    location {
+      address
+    }
+    tutors {
+      pfp
+    }
+  }
+}

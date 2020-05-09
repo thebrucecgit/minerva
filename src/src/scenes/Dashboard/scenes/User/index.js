@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../../../../components/Loader";
 import { useQuery } from "@apollo/react-hooks";
-import gql from "graphql-tag";
+import { loader } from "graphql.macro";
 import { format } from "date-fns";
 import classNames from "classnames";
 
@@ -13,46 +13,8 @@ import Tags from "../../components/Tags";
 
 import styles from "./styles.module.scss";
 
-const GET_USER_FULL = gql`
-  query($id: ID!) {
-    getUser(id: $id) {
-      _id
-      name
-      userType
-      email
-      pfp
-      yearGroup
-      biography
-      academics
-      extras
-      classes {
-        _id
-        name
-        image
-      }
-      sessions {
-        _id
-        time
-      }
-    }
-  }
-`;
-
-const GET_USER_LIMITED = gql`
-  query($id: ID!) {
-    getUser(id: $id) {
-      _id
-      name
-      userType
-      email
-      pfp
-      yearGroup
-      biography
-      academics
-      extras
-    }
-  }
-`;
+const GET_USER_FULL = loader("./graphql/GetUserFull.gql");
+const GET_USER_LIMITED = loader("./graphql/GetUserLimited.gql");
 
 const User = ({ currentUser }) => {
   const { id } = useParams();

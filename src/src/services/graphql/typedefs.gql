@@ -1,0 +1,21 @@
+scalar Date
+enum UserType {
+  TUTEE
+  TUTOR
+}
+
+input LocationIn {
+  address: String
+  coords: CoordIn
+}
+
+input CoordIn {
+  lat: Float
+  lng: Float
+}
+
+input ClassPreferenceIn {
+  publicClass: Boolean
+  studentInstantiation: Boolean
+  studentAgreeSessions: Boolean
+}

@@ -1,0 +1,39 @@
+mutation Register(
+  $userType: UserType!
+  $name: String!
+  $email: String!
+  $password: String
+  $pfp: String
+  $yearGroup: Int!
+  $school: String!
+  $academics: [String!]!
+  $extras: [String!]
+  $biography: String!
+  $grades: String!
+  $token: String!
+) {
+  register(
+    userType: $userType
+    name: $name
+    email: $email
+    password: $password
+    pfp: $pfp
+    yearGroup: $yearGroup
+    school: $school
+    academics: $academics
+    extras: $extras
+    biography: $biography
+    grades: $grades
+    token: $token
+  ) {
+    jwt
+    exp
+    user {
+      name
+      userType
+      pfp
+      email
+      registrationStatus
+    }
+  }
+}
