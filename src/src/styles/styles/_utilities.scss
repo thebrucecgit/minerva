@@ -60,11 +60,12 @@ form {
       color: rgb(50, 50, 50);
       margin: 0;
     }
-    .checkbox {
-      display: flex;
-      label {
-        margin-left: 20px;
-      }
+  }
+  .checkbox {
+    display: flex;
+    align-items: baseline;
+    label {
+      margin-left: 20px;
     }
   }
 }

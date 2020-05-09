@@ -51,7 +51,8 @@ const Column = (props) => {
         Edit={props.Edit}
         tutorsDisabled={props.disabled.tutors}
         tutors={props.classInfo.tutors}
-        setInfo={props.setClassInfo}
+        update={props.update.tutors}
+        setUpdate={props.setUpdate}
       />
       <div className={styles.flex}>
         <h2>Sessions </h2>

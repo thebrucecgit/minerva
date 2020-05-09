@@ -11,7 +11,7 @@ const Dashboard = lazy(() => import("./scenes/Dashboard"));
 
 function Routes({ authService }) {
   return (
-    <Suspense fallback={Loader}>
+    <Suspense fallback={<Loader />}>
       <Switch>
         <Route exact path="/">
           <Home authService={authService} />

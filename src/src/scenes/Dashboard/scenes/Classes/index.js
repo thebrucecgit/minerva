@@ -28,8 +28,8 @@ const Classes = () => {
     <div className={styles.Classes}>
       <h1>Classes</h1>
       <div className={styles.classes_grid}>
-        {classes.map((classInfo) => (
-          <ClassSection classInfo={classInfo} key={classInfo._id} />
+        {classes.map((classInfo, ind) => (
+          <ClassSection classInfo={classInfo} key={ind} />
         ))}
       </div>
     </div>

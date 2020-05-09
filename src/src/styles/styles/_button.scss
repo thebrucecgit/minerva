@@ -26,14 +26,12 @@
     left: 3px;
   }
   &.secondary {
-    background: linear-gradient(45deg, #fffbe3, #fff3b0);
+    background: #fff;
     box-shadow: none;
     position: static;
-    border: 3px solid var(--main-gold-color);
     transition: all 300ms;
     &:hover {
-      border: 3px solid var(--secondary-gold-color);
-      background: linear-gradient(45deg, #fff, #fff);
+      background: #eee;
     }
   }
 }

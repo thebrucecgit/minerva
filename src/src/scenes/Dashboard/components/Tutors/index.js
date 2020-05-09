@@ -35,9 +35,9 @@ const SortableList = SortableContainer(({ tutors, showHandle }) => (
   </div>
 ));
 
-const Tutors = ({ Edit, tutorsDisabled, tutors, setInfo }) => {
+const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate }) => {
   const onSortEnd = ({ oldIndex, newIndex }) => {
-    setInfo((st) => {
+    setUpdate((st) => {
       const reordered = [...st.tutors];
       const [removed] = reordered.splice(oldIndex, 1);
       reordered.splice(newIndex, 0, removed);
@@ -53,11 +53,20 @@ const Tutors = ({ Edit, tutorsDisabled, tutors, setInfo }) => {
         <Edit type="tutors" />
       </div>
       <SortableList
-        tutors={tutors}
+        tutors={tutorsDisabled ? tutors : update}
         onSortEnd={onSortEnd}
         useDragHandle
         showHandle={!tutorsDisabled}
       />
+      {!tutorsDisabled && (
+        <div className={styles.section}>
+          <div className={styles.padding}>
+            <label htmlFor="addTutor">Add tutor: </label>
+            <input type="text" name="addTutor" id="addTutor" />
+            <button className="btn">Add</button>
+          </div>
+        </div>
+      )}
     </>
   );
 };

@@ -21,8 +21,14 @@
   }
 
   .edit {
+    display: flex;
+    justify-content: flex-end;
     margin: 10px $text-padding 10px auto;
-    padding: 10px 15px;
+
+    button {
+      padding: 10px 15px;
+      margin: 0 0 0 10px;
+    }
   }
 
   .padding {

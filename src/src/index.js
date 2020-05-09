@@ -5,6 +5,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./scenes/App";
 
+import * as serviceWorker from "./serviceWorker";
+
 // import "./fonts.scss";
 
 ReactDOM.render(
@@ -15,3 +17,5 @@ ReactDOM.render(
   </React.StrictMode>,
   document.getElementById("root")
 );
+
+serviceWorker.register();

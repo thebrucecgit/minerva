@@ -1,0 +1,24 @@
+.Menu {
+  position: relative;
+  .content {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    right: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    min-width: 160px;
+    &.open {
+      display: block;
+    }
+    > div {
+      transition: background 300ms;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      display: block;
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
+}

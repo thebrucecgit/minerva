@@ -11,7 +11,7 @@ import styles from "./styles.module.scss";
 
 const libraries = ["places"];
 
-const Map = ({ location, disabled, setInfo }) => {
+const Map = ({ location, disabled, update, setUpdate }) => {
   const [autoComplete, setAutoComplete] = useState(null);
   const [zoom, setZoom] = useState(5);
 
@@ -21,7 +21,7 @@ const Map = ({ location, disabled, setInfo }) => {
 
   const onLocationChange = (e) => {
     e.persist();
-    setInfo((st) => ({
+    setUpdate((st) => ({
       ...st,
       location: {
         ...st.location,
@@ -39,7 +39,7 @@ const Map = ({ location, disabled, setInfo }) => {
         lng: place.geometry.location.lng(),
       };
 
-      setInfo((st) => ({
+      setUpdate((st) => ({
         ...st,
         location: {
           address: `${place.name}, ${place.formatted_address}`,
@@ -91,7 +91,7 @@ const Map = ({ location, disabled, setInfo }) => {
               type="text"
               className={styles.MapInput}
               disabled={disabled}
-              value={location.address || ""}
+              value={(disabled ? location.address : update.address) || ""}
               onChange={onLocationChange}
             />
           </Autocomplete>

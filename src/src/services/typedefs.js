@@ -16,4 +16,10 @@ export default gql`
     lat: Float
     lng: Float
   }
+
+  input ClassPreferenceIn {
+    publicClass: Boolean
+    studentInstantiation: Boolean
+    studentAgreeSessions: Boolean
+  }
 `;
