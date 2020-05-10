@@ -19,11 +19,11 @@ const EditButton = ({
       return (
         <div className={styles.edit}>
           {!disabled[type] && (
-            <button className="btn" onClick={onCancel}>
+            <button className="btn small" onClick={onCancel}>
               <FontAwesomeIcon icon={faTimes} size="lg" />
             </button>
           )}
-          <button className="btn" onClick={onClick}>
+          <button className="btn small" onClick={onClick}>
             <FontAwesomeIcon icon={disabled[type] ? faPenAlt : faSave} />
           </button>
         </div>

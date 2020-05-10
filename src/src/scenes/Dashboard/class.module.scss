@@ -26,7 +26,6 @@
     margin: 10px $text-padding 10px auto;
 
     button {
-      padding: 10px 15px;
       margin: 0 0 0 10px;
     }
   }
@@ -66,14 +65,45 @@
   background-color: #f7f7f7;
   margin: 10px 0;
   box-shadow: 3px 3px 0px rgba(212, 209, 21, 0.05);
-  // box-sizing: border-box;
 
   h3 {
     margin: 1rem $text-padding;
     display: flex;
-    svg {
-      margin-left: auto;
-      margin-right: 0;
+  }
+
+  .editTutor {
+    display: flex;
+    margin-left: auto;
+    margin-right: 0;
+    button {
+      margin: 0;
+    }
+    .draghandle {
+      margin: 10px 15px;
+    }
+  }
+}
+
+.autocomplete {
+  position: relative;
+}
+
+.suggestions {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  .suggestion {
+    .tutorName {
+      font-weight: bold;
+    }
+    cursor: pointer;
+    width: 100%;
+    margin-top: -5px;
+    box-sizing: border-box;
+    background: #fff;
+    padding: 0.5rem;
+    &:hover {
+      background: #eee;
     }
   }
 }

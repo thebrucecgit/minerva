@@ -53,6 +53,7 @@ const Column = (props) => {
         tutors={props.classInfo.tutors}
         update={props.update.tutors}
         setUpdate={props.setUpdate}
+        fetch={props.autocompleteFetch}
       />
       <div className={styles.flex}>
         <h2>Sessions </h2>

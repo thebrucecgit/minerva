@@ -1,0 +1,7 @@
+query($value: String!, $userType: UserType!) {
+  getUsers(value: $value, userType: $userType) {
+    _id
+    name
+    email
+  }
+}

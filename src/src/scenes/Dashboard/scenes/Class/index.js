@@ -16,11 +16,21 @@ import EditButton from "../../components/EditButton";
 import Column from "./components/Column";
 import Menu from "../../components/Menu";
 
+import useMenu from "../../hooks/useMenu";
+
 import "react-quill/dist/quill.snow.css";
 import styles from "../../class.module.scss";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenAlt,
+  faUserCog,
+  faUnlock,
+} from "@fortawesome/free-solid-svg-icons";
+
 const GET_CLASS = loader("./graphql/GetClass.gql");
 const UPDATE_CLASS = loader("./graphql/UpdateClass.gql");
+const AUTOCOMPLETE_TUTOR = loader("./graphql/Autocomplete.gql");
 
 let toastId = null;
 
@@ -53,13 +63,17 @@ const Class = ({ currentUser }) => {
 
   const [editEnabled, setEditEnabled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [rootClick, menuBind] = useMenu(false);
 
   const { loading, error, data } = useQuery(GET_CLASS, {
     variables: { id },
   });
 
   const [updateClass] = useMutation(UPDATE_CLASS);
+
+  const { refetch: autocompleteFetch } = useQuery(AUTOCOMPLETE_TUTOR, {
+    skip: true,
+  });
 
   useEffect(() => {
     if (data) {
@@ -103,7 +117,14 @@ const Class = ({ currentUser }) => {
         [name]: update[name],
       }));
 
-      await updateClass({ variables });
+      const { data } = await updateClass({ variables });
+
+      data.updateClass.description = JSON.parse(data.updateClass.description);
+
+      setClassInfo((st) => ({
+        ...st,
+        ...data.updateClass,
+      }));
 
       toast.update(toastId, {
         render: "Successfully updated",
@@ -153,11 +174,6 @@ const Class = ({ currentUser }) => {
     setModalOpen(false);
   };
 
-  // Clicking outside of the dropdown menu closes it
-  const rootClick = () => {
-    setMenuOpen(false);
-  };
-
   const onDescriptionChange = (content, delta, source, editor) => {
     if (!disabled.description)
       setUpdate((st) => ({
@@ -168,16 +184,25 @@ const Class = ({ currentUser }) => {
 
   const onPreferencesChange = (e) => {
     e.persist();
-    console.log("HIT");
+
     const { target } = e;
     setUpdate((st) => {
       const newState = { ...st };
       if (!st.preferences) newState.preferences = {};
       newState.preferences[target.name] =
         target.type === "checkbox" ? target.checked : target.value;
-      console.log(newState);
+
       return newState;
     });
+  };
+
+  const toggleEdit = () => {
+    setEditEnabled((st) => !st);
+  };
+
+  const openModal = () => {
+    toggleDisabled("preferences");
+    setModalOpen(true);
   };
 
   const onPreferencesSubmit = (e) => {
@@ -219,14 +244,17 @@ const Class = ({ currentUser }) => {
             <Tags tags={classInfo.tags} />
           </div>
           <div className={styles.edit}>
-            <Menu
-              menuOpen={menuOpen}
-              setMenuOpen={setMenuOpen}
-              setModalOpen={setModalOpen}
-              editEnabled={editEnabled}
-              setEditEnabled={setEditEnabled}
-              toggleDisabled={toggleDisabled}
-            />
+            <Menu {...menuBind}>
+              <>
+                <div onClick={toggleEdit}>
+                  {editEnabled ? "Lock Edits" : "Edit Page"}{" "}
+                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
+                </div>
+                <div onClick={openModal}>
+                  Preferences <FontAwesomeIcon icon={faUserCog} />
+                </div>
+              </>
+            </Menu>
           </div>
         </div>
 
@@ -276,6 +304,7 @@ const Class = ({ currentUser }) => {
         classInfo={classInfo}
         update={update}
         setUpdate={setUpdate}
+        autocompleteFetch={autocompleteFetch}
       />
       <Modal open={modalOpen} onClose={closeModal}>
         <div className={styles.padding}>

@@ -15,8 +15,17 @@ import Map from "../../components/Map";
 import Modal from "../../../../components/Modal";
 import reactQuillModules from "../reactQuillModules";
 
+import useMenu from "../../hooks/useMenu";
+
 import styles from "../../class.module.scss";
 import "react-quill/dist/quill.snow.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenAlt,
+  faUserCog,
+  faUnlock,
+} from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSION = loader("./graphql/GetSession.gql");
 const UPDATE_SESSION = loader("./graphql/UpdateSession.gql");
@@ -42,7 +51,7 @@ const Session = ({ currentUser }) => {
   });
 
   const [editEnabled, setEditEnabled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [rootClick, menuBind] = useMenu(false);
   const [modalOpen, setModalOpen] = useState(false);
 
   const { loading, error, data } = useQuery(GET_SESSION, {
@@ -138,16 +147,21 @@ const Session = ({ currentUser }) => {
     }));
   };
 
+  const toggleEdit = () => {
+    setEditEnabled((st) => !st);
+  };
+
+  const openModal = () => {
+    toggleDisabled("preferences");
+    setModalOpen(true);
+  };
+
   const Edit = EditButton({
     disabled,
     toggleDisabled,
     cancelUpdate,
     editEnabled,
   });
-
-  const rootClick = () => {
-    setMenuOpen(false);
-  };
 
   const closeModal = () => {
     setModalOpen(false);
@@ -173,14 +187,17 @@ const Session = ({ currentUser }) => {
             )}`}
           </p>
           <div className={styles.edit}>
-            <Menu
-              menuOpen={menuOpen}
-              setMenuOpen={setMenuOpen}
-              setModalOpen={setModalOpen}
-              editEnabled={editEnabled}
-              setEditEnabled={setEditEnabled}
-              toggleDisabled={toggleDisabled}
-            />
+            <Menu {...menuBind}>
+              <>
+                <div onClick={toggleEdit}>
+                  {editEnabled ? "Lock Edits" : "Edit Page"}{" "}
+                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
+                </div>
+                <div onClick={openModal}>
+                  Preferences <FontAwesomeIcon icon={faUserCog} />
+                </div>
+              </>
+            </Menu>
           </div>
         </div>
         <Edit type="location" />

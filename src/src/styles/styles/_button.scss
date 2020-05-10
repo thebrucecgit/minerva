@@ -34,4 +34,23 @@
       background: #eee;
     }
   }
+  &.danger {
+    background: #dc3545;
+    color: #fff;
+    $shadow: #b82b39;
+    box-shadow: 1px 1px $shadow, 2px 2px $shadow, 3px 3px $shadow;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    background: #eee;
+    $shadow: #ddd;
+    box-shadow: 1px 1px $shadow, 2px 2px $shadow, 3px 3px $shadow;
+    &:hover {
+      top: 0;
+      left: 0;
+    }
+  }
+  &.small {
+    padding: 10px 15px;
+  }
 }
