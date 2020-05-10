@@ -21,6 +21,10 @@ const verifyGoogleToken = async (idToken) => {
   return ticket.getPayload();
 };
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+\-?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
+
 const createUserObject = (user) => {
   return {
     jwt: jwt.sign({ id: user._id }, JWT_SECRET, {
@@ -35,6 +39,16 @@ export default {
   Query: {
     async getUser(_, { id }, { user }) {
       return await User.findById(id);
+    },
+    async getUsers(_, { value, userType }, { user }) {
+      if (user.userType !== "TUTOR") throw Error("Not authorized", 401);
+      const regex = new RegExp(escapeRegExp(value), "gi");
+
+      // Fuzzy search
+      return await User.find({
+        userType,
+        $or: [{ email: regex }, { name: regex }],
+      });
     },
     async getTutors(_, __, { user }) {
       const populated = await user.populate("classes").execPopulate();

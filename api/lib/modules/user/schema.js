@@ -35,6 +35,7 @@ export default gql`
 
   extend type Query {
     getUser(id: ID!): User!
+    getUsers(value: String!, userType: UserType!): [User!]
     getTutors: [User!]
     login(email: String, password: String, tokenId: String): UserReq!
     resetPassword(email: String!): Boolean
