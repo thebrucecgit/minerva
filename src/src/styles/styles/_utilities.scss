@@ -75,14 +75,21 @@ form {
   background: #fff;
   border-radius: $radius;
   margin-right: 10px;
-  box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.01);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 
   img {
-    border-radius: $radius $radius 0 0;
     object-fit: cover;
   }
 
+  .header {
+    background: #fcfcfc;
+    padding: 1rem 1.5rem;
+  }
+
   .body {
+    background: #000;
+    color: #fff;
     padding: 1rem 1.5rem;
     h3,
     p {

@@ -2,8 +2,8 @@ import React from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { loader } from "graphql.macro";
 import Loader from "../../../../components/Loader";
-
-import SessionSection from "./components/SessionSection";
+import { Link } from "react-router-dom";
+import { format } from "date-fns";
 
 import styles from "./styles.module.scss";
 
@@ -24,7 +24,18 @@ const Sessions = () => {
         {sessions
           .sort((a, b) => new Date(b.time) - new Date(a.time))
           .map((session) => (
-            <SessionSection session={session} key={session._id} />
+            <div>
+              <div className="card">
+                <div className="header">
+                  <Link to={`/dashboard/sessions/${session._id}`}>
+                    <h2>{format(session.time, "EEEE d MMMM, yyyy")}</h2>
+                  </Link>
+                </div>
+                <div className="body">
+                  <p>{session.location.address}</p>
+                </div>
+              </div>
+            </div>
           ))}
       </div>
     </div>
