@@ -56,48 +56,53 @@ const Map = ({ location, disabled, update, setUpdate }) => {
   };
 
   return (
-    <LoadScript
-      libraries={libraries}
-      googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-    >
-      <GoogleMap
-        mapContainerStyle={{ width: "100%", height: "400px" }}
-        zoom={zoom}
-        center={
-          location.coords.lat
-            ? location.coords
-            : {
-                lat: -41.69,
-                lng: 173.22,
-              }
-        }
+    <div className="card">
+      <LoadScript
+        libraries={libraries}
+        googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
       >
-        {location.coords?.lat && <Marker position={location.coords} />}
-        {(!disabled || location.address) && (
-          <Autocomplete
-            onLoad={onMapLoad}
-            onPlaceChanged={onPlaceChanged}
-            bounds={
-              // Bounds around New Zealand
-              {
-                east: 179.83,
-                north: -34.09,
-                south: -47.37,
-                west: 164.58,
+        <GoogleMap
+          mapContainerStyle={{ width: "100%", height: "400px" }}
+          zoom={zoom}
+          options={{
+            mapTypeControl: false,
+          }}
+          center={
+            location.coords.lat
+              ? location.coords
+              : {
+                  lat: -41.69,
+                  lng: 173.22,
+                }
+          }
+        >
+          {location.coords?.lat && <Marker position={location.coords} />}
+          {(!disabled || location.address) && (
+            <Autocomplete
+              onLoad={onMapLoad}
+              onPlaceChanged={onPlaceChanged}
+              bounds={
+                // Bounds around New Zealand
+                {
+                  east: 179.83,
+                  north: -34.09,
+                  south: -47.37,
+                  west: 164.58,
+                }
               }
-            }
-          >
-            <input
-              type="text"
-              className={styles.MapInput}
-              disabled={disabled}
-              value={(disabled ? location.address : update.address) || ""}
-              onChange={onLocationChange}
-            />
-          </Autocomplete>
-        )}
-      </GoogleMap>
-    </LoadScript>
+            >
+              <input
+                type="text"
+                className={styles.MapInput}
+                disabled={disabled}
+                value={(disabled ? location.address : update.address) || ""}
+                onChange={onLocationChange}
+              />
+            </Autocomplete>
+          )}
+        </GoogleMap>
+      </LoadScript>
+    </div>
   );
 };
 

@@ -249,7 +249,7 @@ const Class = ({ currentUser }) => {
           </div>
         </div>
 
-        <div className={styles.section}>
+        <div className="card">
           <img src={classInfo.image} alt="" />
         </div>
 
@@ -308,9 +308,9 @@ const Class = ({ currentUser }) => {
           <Link
             to={`/dashboard/sessions/${session._id}`}
             key={session._id}
-            className={styles.section}
+            className="card y"
           >
-            <h3>{format(session.time, "d MMMM, yyyy")}</h3>
+            <h3 className="body">{format(session.time, "d MMMM, yyyy")}</h3>
           </Link>
         ))}
 

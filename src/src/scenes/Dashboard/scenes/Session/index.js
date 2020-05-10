@@ -201,14 +201,13 @@ const Session = ({ currentUser }) => {
           </div>
         </div>
         <Edit type="location" />
-        <div className={styles.section}>
-          <Map
-            location={sessionInfo.location}
-            disabled={disabled.location}
-            update={update.location}
-            setUpdate={setUpdate}
-          />
-        </div>
+
+        <Map
+          location={sessionInfo.location}
+          disabled={disabled.location}
+          update={update.location}
+          setUpdate={setUpdate}
+        />
 
         <h2 className={styles.padding}>What we did</h2>
         <ReactQuill

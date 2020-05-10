@@ -71,7 +71,7 @@ const User = ({ currentUser }) => {
             <h2>Classes</h2>
             <div className={styles.classes}>
               {user.classes.map((classInfo, i) => (
-                <div key={i} className="card">
+                <div key={i} className="card x">
                   <Link to={`/dashboard/classes/${classInfo._id}`}>
                     <img src={classInfo.image} alt="" />
                     <div className="body">
@@ -85,7 +85,7 @@ const User = ({ currentUser }) => {
             <h2>Sessions</h2>
             <div className={styles.classes}>
               {user.sessions.map((session, i) => (
-                <div key={i} className="card">
+                <div key={i} className="card x">
                   <Link to={`/dashboard/sessions/${session._id}`}>
                     <div className="body">
                       <h3>{format(session.time, "EEEE d MMMM, yyyy")}</h3>

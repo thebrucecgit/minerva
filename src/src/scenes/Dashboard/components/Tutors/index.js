@@ -18,13 +18,13 @@ const DragHandle = SortableHandle(() => (
 const SortableItem = SortableElement(({ tutor, editEnabled, deleteTutor }) => (
   <Link
     to={`/dashboard/tutors/${tutor._id}`}
-    className={styles.section}
+    className={classNames("card", "y", styles.section)}
     onClick={(e) => {
       if (editEnabled) e.preventDefault();
     }}
   >
     {tutor.pfp && !editEnabled && <img src={tutor.pfp} alt={tutor.name} />}
-    <h3>
+    <h3 className="body">
       {tutor.name}
       {editEnabled && (
         <div className={styles.editTutor}>
@@ -140,8 +140,8 @@ const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate, fetch }) => {
         editEnabled={!tutorsDisabled}
       />
       {!tutorsDisabled && (
-        <div className={styles.section}>
-          <div className={styles.padding}>
+        <div className="card">
+          <div className="body">
             <label htmlFor="addTutor">Add tutor: </label>
             <div className={styles.autocomplete}>
               <input

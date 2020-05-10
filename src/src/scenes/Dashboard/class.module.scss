@@ -62,11 +62,6 @@
 }
 
 .section {
-  background-color: #000;
-  color: #fff;
-  margin: 10px 0;
-  box-shadow: 3px 3px 0px rgba(212, 209, 21, 0.05);
-
   h3 {
     margin: 1rem $text-padding;
     display: flex;
@@ -93,6 +88,7 @@
   position: absolute;
   z-index: 2;
   width: 100%;
+  color: black;
   .suggestion {
     .tutorName {
       font-weight: bold;
