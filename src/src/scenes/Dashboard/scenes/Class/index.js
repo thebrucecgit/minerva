@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { loader } from "graphql.macro";
+import { format } from "date-fns";
 import ReactQuill from "react-quill";
 import Loader from "../../../../components/Loader";
 import Modal from "../../../../components/Modal";
 
+import reactQuillModules from "../reactQuillModules";
 import Map from "../../components/Map";
 import Tags from "../../components/Tags";
-import reactQuillModules from "../reactQuillModules";
-
+import Tutors from "../../components/Tutors";
 import EditButton from "../../components/EditButton";
-import Column from "./components/Column";
 import Menu from "../../components/Menu";
+import InstantiateSession from "./components/InstantiateSession";
+import Preferences from "./components/Preferences";
 
 import useMenu from "../../hooks/useMenu";
+import useInstantiateSession from "./hooks/useInstantiateSession";
+import usePreferences from "./hooks/usePreferences";
 
 import "react-quill/dist/quill.snow.css";
 import styles from "../../class.module.scss";
@@ -64,6 +68,7 @@ const Class = ({ currentUser }) => {
   const [editEnabled, setEditEnabled] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [rootClick, menuBind] = useMenu(false);
+  const sessionBind = useInstantiateSession();
 
   const { loading, error, data } = useQuery(GET_CLASS, {
     variables: { id },
@@ -182,20 +187,6 @@ const Class = ({ currentUser }) => {
       }));
   };
 
-  const onPreferencesChange = (e) => {
-    e.persist();
-
-    const { target } = e;
-    setUpdate((st) => {
-      const newState = { ...st };
-      if (!st.preferences) newState.preferences = {};
-      newState.preferences[target.name] =
-        target.type === "checkbox" ? target.checked : target.value;
-
-      return newState;
-    });
-  };
-
   const toggleEdit = () => {
     setEditEnabled((st) => !st);
   };
@@ -205,17 +196,17 @@ const Class = ({ currentUser }) => {
     setModalOpen(true);
   };
 
-  const onPreferencesSubmit = (e) => {
-    e.preventDefault();
-    toggleDisabled("preferences");
-    setModalOpen(false);
-  };
-
   const Edit = EditButton({
     disabled,
     toggleDisabled,
     cancelUpdate,
     editEnabled,
+  });
+
+  const preferencesBind = usePreferences({
+    setUpdate,
+    toggleDisabled,
+    setModalOpen,
   });
 
   if (error) return error.message;
@@ -298,65 +289,36 @@ const Class = ({ currentUser }) => {
         />
         <Edit type="location" />
       </div>
-      <Column
-        Edit={Edit}
-        disabled={disabled}
-        classInfo={classInfo}
-        update={update}
-        setUpdate={setUpdate}
-        autocompleteFetch={autocompleteFetch}
-      />
-      <Modal open={modalOpen} onClose={closeModal}>
-        <div className={styles.padding}>
-          <h2>Preferences</h2>
-          <form onSubmit={onPreferencesSubmit}>
-            <div className="field checkbox">
-              <input
-                type="checkbox"
-                name="publicClass"
-                id="publicClass"
-                checked={update.preferences.publicClass}
-                onChange={onPreferencesChange}
-              />
-              <label htmlFor="publicClass">
-                Public class
-                <div className="small">
-                  If checked, anyone can view and request to join this class
-                </div>
-              </label>
-            </div>
-            <div className="field checkbox">
-              <input
-                type="checkbox"
-                name="studentInstantiation"
-                id="studentInstantiation"
-                checked={update.preferences.studentInstantiation}
-                onChange={onPreferencesChange}
-              />
-              <label htmlFor="studentInstantiation">
-                Students can instantiate sessions
-              </label>
-            </div>
-            <div className="field checkbox">
-              <input
-                type="checkbox"
-                name="studentAgreeSessions"
-                id="studentAgreeSessions"
-                checked={update.preferences.studentAgreeSessions}
-                onChange={onPreferencesChange}
-              />
-              <label htmlFor="studentAgreeSessions">
-                Require students to accept to session times
-                <div className="small">
-                  If checked, students will be prompted to "accept" or "decline"
-                  everytime a new session is created (recommended for larger
-                  classes)
-                </div>
-              </label>
-            </div>
-            <button className="btn">Save</button>
-          </form>
+
+      <div className={styles.column}>
+        <Tutors
+          Edit={Edit}
+          tutorsDisabled={disabled.tutors}
+          tutors={classInfo.tutors}
+          update={update.tutors}
+          setUpdate={setUpdate}
+          fetch={autocompleteFetch}
+        />
+
+        <div className={styles.flex}>
+          <h2>Sessions </h2>
+          <Edit type="sessions" />
         </div>
+        {classInfo.sessions.map((session) => (
+          <Link
+            to={`/dashboard/sessions/${session._id}`}
+            key={session._id}
+            className={styles.section}
+          >
+            <h3>{format(session.time, "d MMMM, yyyy")}</h3>
+          </Link>
+        ))}
+
+        {!disabled.sessions && <InstantiateSession {...sessionBind} />}
+      </div>
+
+      <Modal open={modalOpen} onClose={closeModal}>
+        <Preferences {...preferencesBind} update={update.tutors} />
       </Modal>
     </div>
   );

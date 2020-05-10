@@ -1,0 +1,5 @@
+mutation InstantiateSession($classId: ID!, $time: Date!, $length: Int!) {
+  instantiateSession(classId: $classId, time: $time, length: $length) {
+    _id
+  }
+}
