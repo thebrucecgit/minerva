@@ -16,7 +16,9 @@
     "shortid": "^2.2.15"
   },
   "scripts": {
-    "build": "babel ./lib -d dist --source-maps",
+    "clean": "rm -rf dist",
+    "build-babel": "babel ./lib -d dist -s",
+    "build": "npm run clean && npm run build-babel",
     "watch": "nodemon --watch ./lib --exec npm start",
     "start": "npm run build && npm run serve",
     "serve": "node ./dist/server.js",
