@@ -18,15 +18,19 @@ const useInstantiateSession = () => {
   const { id } = useParams();
 
   const newSession = async () => {
-    const { data, error } = await instantiateSession({
-      variables: {
-        classId: id,
-        time,
-        length: parseInt(length),
-      },
-    });
-    if (error) setInstantiationError(error.message);
-    else history.push(`/dashboard/sessions/${data.instantiateSession._id}`);
+    try {
+      const { data, error } = await instantiateSession({
+        variables: {
+          classId: id,
+          time,
+          length: parseInt(length),
+        },
+      });
+      if (error) setInstantiationError(error.message);
+      else history.push(`/dashboard/sessions/${data.instantiateSession._id}`);
+    } catch (e) {
+      setInstantiationError(e.message);
+    }
   };
 
   return { time, setTime, length, setLength, newSession, instantiationError };
