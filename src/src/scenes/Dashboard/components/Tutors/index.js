@@ -158,6 +158,7 @@ const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate, fetch }) => {
                     className={styles.suggestion}
                     onClick={selectSuggestion}
                     data-id={user._id}
+                    key={user._id}
                   >
                     <div className={styles.tutorName}>{user.name}</div>
                     {user.email}
