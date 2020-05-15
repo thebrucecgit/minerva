@@ -1,0 +1,20 @@
+query GetInfo {
+  getSessions(limit: 2) {
+    _id
+    startTime
+    location {
+      address
+    }
+  }
+  getClasses(limit: 1) {
+    _id
+    name
+    image
+    description
+  }
+  getTutors(limit: 3) {
+    _id
+    name
+    pfp
+  }
+}
