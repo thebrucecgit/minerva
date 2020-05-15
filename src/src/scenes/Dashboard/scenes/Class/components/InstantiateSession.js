@@ -14,7 +14,7 @@ const InstantiateSession = ({
   instantiationError,
 }) => {
   return (
-    <div>
+    <>
       <DatePicker
         selected={time}
         onChange={setTime}
@@ -38,7 +38,7 @@ const InstantiateSession = ({
       >
         New Session
       </button>
-    </div>
+    </>
   );
 };
 

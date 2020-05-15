@@ -22,7 +22,7 @@ const useInstantiateSession = () => {
       const { data, error } = await instantiateSession({
         variables: {
           classId: id,
-          time,
+          startTime: time,
           length: parseInt(length),
         },
       });

@@ -1,4 +1,4 @@
-const usePreferences = ({ setUpdate, toggleDisabled, setModalOpen }) => {
+const usePreferences = ({ setUpdate, closeModal }) => {
   const onChange = (e) => {
     e.persist();
 
@@ -15,8 +15,7 @@ const usePreferences = ({ setUpdate, toggleDisabled, setModalOpen }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    toggleDisabled("preferences");
-    setModalOpen(false);
+    closeModal("preferences");
   };
 
   return { onChange, onSubmit };

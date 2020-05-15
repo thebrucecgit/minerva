@@ -17,6 +17,7 @@ import EditButton from "../../components/EditButton";
 import Menu from "../../components/Menu";
 import InstantiateSession from "./components/InstantiateSession";
 import Preferences from "./components/Preferences";
+import Tutees from "./components/Tutees";
 
 import useMenu from "../../hooks/useMenu";
 import useInstantiateSession from "./hooks/useInstantiateSession";
@@ -32,11 +33,12 @@ import {
   faUnlock,
 } from "@fortawesome/free-solid-svg-icons";
 
+const SESSIONS_LIMIT = 5;
+
 const GET_CLASS = loader("./graphql/GetClass.gql");
 const UPDATE_CLASS = loader("./graphql/UpdateClass.gql");
-const AUTOCOMPLETE_TUTOR = loader("./graphql/Autocomplete.gql");
 
-let toastId = null;
+const toastId = {};
 
 const Class = ({ currentUser }) => {
   const { id } = useParams();
@@ -49,6 +51,7 @@ const Class = ({ currentUser }) => {
     name: true,
     description: true,
     tutors: true,
+    tutees: true,
     date: true,
     sessions: true,
     location: true,
@@ -59,6 +62,7 @@ const Class = ({ currentUser }) => {
     name: "",
     description: "",
     tutors: "",
+    tutees: "",
     date: "",
     sessions: "",
     location: "",
@@ -66,19 +70,45 @@ const Class = ({ currentUser }) => {
   });
 
   const [editEnabled, setEditEnabled] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalsOpen, setModalsOpen] = useState({});
   const [rootClick, menuBind] = useMenu(false);
   const sessionBind = useInstantiateSession();
 
-  const { loading, error, data } = useQuery(GET_CLASS, {
-    variables: { id },
-  });
+  const { loading, error, data, refetch: fetchAllSessions } = useQuery(
+    GET_CLASS,
+    {
+      variables: { id, sessionLimit: SESSIONS_LIMIT },
+    }
+  );
 
   const [updateClass] = useMutation(UPDATE_CLASS);
 
-  const { refetch: autocompleteFetch } = useQuery(AUTOCOMPLETE_TUTOR, {
-    skip: true,
-  });
+  const [loadedAllSessions, setLoadedAllSessions] = useState(false);
+
+  const seeAllSessions = async () => {
+    try {
+      toastId.sessions = toast("Fetching all sessions...", {
+        autoClose: false,
+      });
+
+      const { data } = await fetchAllSessions({ sessionLimit: null });
+
+      setClassInfo((st) => ({
+        ...st,
+        sessions: data.getClass.sessions,
+      }));
+      setLoadedAllSessions(true);
+
+      toast.dismiss(toastId.sessions);
+    } catch (e) {
+      console.error(e);
+      toast.update(toastId.sessions, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
+    }
+  };
 
   useEffect(() => {
     if (data) {
@@ -87,6 +117,7 @@ const Class = ({ currentUser }) => {
         ...data.getClass,
         description: JSON.parse(data.getClass.description),
       }));
+      setLoadedAllSessions(data.getClass.sessions.length < SESSIONS_LIMIT);
     }
   }, [data]);
 
@@ -100,7 +131,12 @@ const Class = ({ currentUser }) => {
 
   const saveInfo = async (name) => {
     try {
-      toastId = toast("Updating class...", { autoClose: false });
+      toastId.class = toast("Updating class...", { autoClose: false });
+
+      setDisabled((st) => ({
+        ...st,
+        [name]: true,
+      }));
 
       const variables = {
         id,
@@ -111,6 +147,8 @@ const Class = ({ currentUser }) => {
         variables.description = JSON.stringify(update.description);
       else if (name === "tutors")
         variables.tutors = update.tutors.map((tutor) => tutor._id);
+      else if (name === "tutees")
+        variables.tutees = update.tutees.map((tutee) => tutee._id);
 
       setUpdate((st) => ({
         ...st,
@@ -131,13 +169,14 @@ const Class = ({ currentUser }) => {
         ...data.updateClass,
       }));
 
-      toast.update(toastId, {
-        render: "Successfully updated",
+      toast.update(toastId.class, {
+        render: "Successfully updated class",
         type: toast.TYPE.SUCCESS,
         autoClose: 2000,
       });
     } catch (e) {
-      toast.update(toastId, {
+      console.error(e);
+      toast.update(toastId.class, {
         render: e.message,
         type: toast.TYPE.ERROR,
         autoClose: 5000,
@@ -145,21 +184,19 @@ const Class = ({ currentUser }) => {
     }
   };
 
-  const toggleDisabled = (name) => {
-    if (disabled[name]) {
-      setUpdate((st) => ({
-        ...st,
-        [name]:
-          typeof classInfo[name] === "object"
-            ? Array.isArray(classInfo[name])
-              ? [...classInfo[name]]
-              : { ...classInfo[name] }
-            : classInfo[name],
-      }));
-    } else saveInfo(name);
+  const startEdit = (name) => {
+    setUpdate((st) => ({
+      ...st,
+      [name]:
+        typeof classInfo[name] === "object"
+          ? Array.isArray(classInfo[name])
+            ? [...classInfo[name]]
+            : { ...classInfo[name] }
+          : classInfo[name],
+    }));
     setDisabled((st) => ({
       ...st,
-      [name]: !st[name],
+      [name]: false,
     }));
   };
 
@@ -174,9 +211,12 @@ const Class = ({ currentUser }) => {
     }));
   };
 
-  const closeModal = () => {
-    cancelUpdate("preferences");
-    setModalOpen(false);
+  const closeModal = (name) => {
+    cancelUpdate(name);
+    setModalsOpen((st) => ({
+      ...st,
+      [name]: false,
+    }));
   };
 
   const onDescriptionChange = (content, delta, source, editor) => {
@@ -191,22 +231,25 @@ const Class = ({ currentUser }) => {
     setEditEnabled((st) => !st);
   };
 
-  const openModal = () => {
-    toggleDisabled("preferences");
-    setModalOpen(true);
+  const openModal = (name) => {
+    startEdit(name);
+    setModalsOpen((st) => ({
+      ...st,
+      [name]: true,
+    }));
   };
 
   const Edit = EditButton({
     disabled,
-    toggleDisabled,
+    startEdit,
+    saveInfo,
     cancelUpdate,
     editEnabled,
   });
 
   const preferencesBind = usePreferences({
     setUpdate,
-    toggleDisabled,
-    setModalOpen,
+    closeModal,
   });
 
   if (error) return error.message;
@@ -241,7 +284,7 @@ const Class = ({ currentUser }) => {
                   {editEnabled ? "Lock Edits" : "Edit Page"}{" "}
                   <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
                 </div>
-                <div onClick={openModal}>
+                <div onClick={() => openModal("preferences")}>
                   Preferences <FontAwesomeIcon icon={faUserCog} />
                 </div>
               </>
@@ -297,28 +340,71 @@ const Class = ({ currentUser }) => {
           tutors={classInfo.tutors}
           update={update.tutors}
           setUpdate={setUpdate}
-          fetch={autocompleteFetch}
         />
 
         <div className={styles.flex}>
-          <h2>Sessions </h2>
+          <h2>Sessions</h2>
           <Edit type="sessions" />
         </div>
-        {classInfo.sessions.map((session) => (
-          <Link
-            to={`/dashboard/sessions/${session._id}`}
-            key={session._id}
-            className="card y"
-          >
-            <h3 className="body">{format(session.time, "d MMMM, yyyy")}</h3>
-          </Link>
-        ))}
+        {classInfo.sessions.length ? (
+          <>
+            {classInfo.sessions.map((session) => (
+              <Link
+                to={`/dashboard/sessions/${session._id}`}
+                key={session._id}
+                className="card y"
+              >
+                <h3 className="body">
+                  {format(session.startTime, "d MMMM, yyyy")}
+                </h3>
+              </Link>
+            ))}
+            {loadedAllSessions ? (
+              <p className={styles.padding}>
+                <em>All sessions have been loaded</em>
+              </p>
+            ) : (
+              <button className="btn" onClick={seeAllSessions}>
+                See all
+              </button>
+            )}
+          </>
+        ) : (
+          <p className={styles.padding}>
+            There have been no sessions created yet
+          </p>
+        )}
 
-        {!disabled.sessions && <InstantiateSession {...sessionBind} />}
+        {(currentUser.user.userType === "TUTOR" ||
+          (currentUser.user.userType === "TUTEE" &&
+            classInfo.preferences.studentInstantiation)) && (
+          <InstantiateSession {...sessionBind} />
+        )}
+
+        <h2>Tutees</h2>
+        <button
+          className="btn"
+          onClick={() => setModalsOpen((st) => ({ ...st, tutees: true }))}
+        >
+          View Tutees
+        </button>
       </div>
 
-      <Modal open={modalOpen} onClose={closeModal}>
+      <Modal
+        open={modalsOpen.preferences}
+        onClose={() => closeModal("preferences")}
+      >
         <Preferences {...preferencesBind} update={update.tutors} />
+      </Modal>
+
+      <Modal open={modalsOpen.tutees} onClose={() => closeModal("tutees")}>
+        <Tutees
+          update={update.tutees}
+          setUpdate={setUpdate}
+          classInfo={classInfo.tutees}
+          disabled={disabled.tutees}
+          Edit={Edit}
+        />
       </Modal>
     </div>
   );

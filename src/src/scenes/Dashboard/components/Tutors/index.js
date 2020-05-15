@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
+import useUserChange from "../../hooks/useUserChange";
+import Autocomplete from "../../components/Autocomplete";
 
 import {
   SortableContainer,
@@ -27,7 +29,7 @@ const SortableItem = SortableElement(({ tutor, editEnabled, deleteTutor }) => (
     <h3 className="body">
       {tutor.name}
       {editEnabled && (
-        <div className={styles.editTutor}>
+        <div className={styles.editUser}>
           <button
             className="btn danger small"
             onClick={deleteTutor}
@@ -58,40 +60,7 @@ const SortableList = SortableContainer(
   )
 );
 
-const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate, fetch }) => {
-  const [userInfo, setUserInfo] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [autocomplete, setAutocomplete] = useState("");
-  const [suggested, setSuggested] = useState([]);
-
-  const onAutocompleteChange = async (e) => {
-    const { value } = e.target;
-
-    setAutocomplete(value);
-    setUserInfo(null);
-
-    if (value.length > 1) {
-      setLoading(true);
-      const { data } = await fetch({
-        value: e.target.value,
-        userType: "TUTOR",
-      });
-
-      setSuggested(data.getUsers);
-      setLoading(false);
-    } else {
-      setSuggested([]);
-    }
-  };
-
-  const selectSuggestion = (e) => {
-    const { id } = e.currentTarget.dataset;
-    const user = suggested.find((suggestion) => suggestion._id === id);
-    setUserInfo({ _id: id, name: user.name });
-    setAutocomplete(user.email);
-    setSuggested([]);
-  };
-
+const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate }) => {
   const onSortEnd = ({ oldIndex, newIndex }) => {
     setUpdate((st) => {
       const reordered = [...st.tutors];
@@ -102,29 +71,10 @@ const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate, fetch }) => {
     });
   };
 
-  const addTutor = () => {
-    setUpdate((st) => {
-      const tutors = [...st.tutors];
-      tutors.push(userInfo);
-      return {
-        ...st,
-        tutors,
-      };
-    });
-    setAutocomplete("");
-    setUserInfo(null);
-  };
-
-  const deleteTutor = (e) => {
-    const { id } = e.currentTarget.dataset;
-    setUpdate((st) => {
-      const tutors = st.tutors.filter((tutor) => tutor._id !== id);
-      return {
-        ...st,
-        tutors,
-      };
-    });
-  };
+  const [tutorBinds, deleteTutor] = useUserChange({
+    setUpdate,
+    userType: "tutors",
+  });
 
   return (
     <>
@@ -142,33 +92,7 @@ const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate, fetch }) => {
       {!tutorsDisabled && (
         <div className="card">
           <div className="body">
-            <label htmlFor="addTutor">Add tutor: </label>
-            <div className={styles.autocomplete}>
-              <input
-                type="text"
-                name="addTutor"
-                id="addTutor"
-                placeholder="Enter name or email"
-                value={autocomplete}
-                onChange={onAutocompleteChange}
-              />
-              <div className={styles.suggestions}>
-                {suggested.map((user) => (
-                  <div
-                    className={styles.suggestion}
-                    onClick={selectSuggestion}
-                    data-id={user._id}
-                    key={user._id}
-                  >
-                    <div className={styles.tutorName}>{user.name}</div>
-                    {user.email}
-                  </div>
-                ))}
-              </div>
-            </div>
-            <button className="btn" disabled={!userInfo} onClick={addTutor}>
-              Add
-            </button>
+            <Autocomplete {...tutorBinds} userType="tutor" />
           </div>
         </div>
       )}

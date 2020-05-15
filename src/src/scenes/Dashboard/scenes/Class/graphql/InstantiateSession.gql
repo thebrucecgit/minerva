@@ -1,5 +1,9 @@
-mutation InstantiateSession($classId: ID!, $time: Date!, $length: Int!) {
-  instantiateSession(classId: $classId, time: $time, length: $length) {
+mutation InstantiateSession($classId: ID!, $startTime: Date!, $length: Int!) {
+  instantiateSession(
+    classId: $classId
+    startTime: $startTime
+    length: $length
+  ) {
     _id
   }
 }

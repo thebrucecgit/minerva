@@ -7,25 +7,33 @@ import styles from "../../class.module.scss";
 
 const EditButton = ({
   disabled,
-  toggleDisabled,
+  startEdit,
+  saveInfo,
   cancelUpdate,
   editEnabled,
 }) => {
-  return ({ type }) => {
+  return ({ type, editEnabled: enabledOverride }) => {
     const onCancel = () => cancelUpdate(type);
-    const onClick = () => toggleDisabled(type);
+    const onEdit = () => startEdit(type);
+    const onSave = () => saveInfo(type);
 
-    if (editEnabled)
+    if (enabledOverride ?? editEnabled)
       return (
         <div className={styles.edit}>
-          {!disabled[type] && (
-            <button className="btn small" onClick={onCancel}>
-              <FontAwesomeIcon icon={faTimes} size="lg" />
+          {disabled[type] ? (
+            <button className="btn small" onClick={onEdit}>
+              <FontAwesomeIcon icon={faPenAlt} />
             </button>
+          ) : (
+            <>
+              <button className="btn small" onClick={onCancel}>
+                <FontAwesomeIcon icon={faTimes} size="lg" />
+              </button>
+              <button className="btn small" onClick={onSave}>
+                <FontAwesomeIcon icon={faSave} />
+              </button>
+            </>
           )}
-          <button className="btn small" onClick={onClick}>
-            <FontAwesomeIcon icon={disabled[type] ? faPenAlt : faSave} />
-          </button>
         </div>
       );
     return null;

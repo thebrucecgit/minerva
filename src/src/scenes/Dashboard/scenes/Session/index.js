@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { loader } from "graphql.macro";
 import classNames from "classnames";
 import { useQuery, useMutation } from "@apollo/react-hooks";
-import { format, addMinutes } from "date-fns";
+import { format } from "date-fns";
 import ReactQuill from "react-quill";
 import { toast } from "react-toastify";
 import Loader from "../../../../components/Loader";
@@ -168,12 +168,12 @@ const Session = ({ currentUser }) => {
   };
 
   if (error) toast(error.message, { type: toast.TYPE.ERROR });
-  if (loading || !sessionInfo.time) return <Loader />;
+  if (loading || !sessionInfo.startTime) return <Loader />;
 
   return (
     <div className={styles.Class} onClick={rootClick}>
       <div>
-        <h1>{format(sessionInfo.time, "EEEE d MMMM, yyyy")}</h1>
+        <h1>{format(sessionInfo.startTime, "EEEE d MMMM, yyyy")}</h1>
         <p className={styles.padding}>
           <Link to={`/dashboard/classes/${sessionInfo.class._id}`}>
             {sessionInfo.class.name}
@@ -181,8 +181,8 @@ const Session = ({ currentUser }) => {
         </p>
         <div className={styles.flex}>
           <p className={styles.date}>
-            {`${format(sessionInfo.time, "h:mm aa")} - ${format(
-              addMinutes(sessionInfo.time, sessionInfo.length),
+            {`${format(sessionInfo.startTime, "h:mm aa")} - ${format(
+              sessionInfo.endTime,
               "h:mm aa"
             )}`}
           </p>

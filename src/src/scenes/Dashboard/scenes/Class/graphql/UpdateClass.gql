@@ -4,6 +4,7 @@ mutation UpdateClass(
   $location: LocationIn
   $description: String
   $tutors: [ID!]
+  $tutees: [ID!]
   $preferences: ClassPreferenceIn
 ) {
   updateClass(
@@ -11,6 +12,7 @@ mutation UpdateClass(
     name: $name
     description: $description
     tutors: $tutors
+    tutees: $tutees
     location: $location
     preferences: $preferences
   ) {
@@ -28,6 +30,10 @@ mutation UpdateClass(
       _id
       name
       pfp
+    }
+    tutees {
+      _id
+      name
     }
   }
 }

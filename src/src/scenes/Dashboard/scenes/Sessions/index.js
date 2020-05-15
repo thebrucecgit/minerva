@@ -28,7 +28,7 @@ const Sessions = () => {
               <div className="card">
                 <div className="header">
                   <Link to={`/dashboard/sessions/${session._id}`}>
-                    <h2>{format(session.time, "EEEE d MMMM, yyyy")}</h2>
+                    <h2>{format(session.startTime, "EEEE d MMMM, yyyy")}</h2>
                   </Link>
                 </div>
                 <div className="body">

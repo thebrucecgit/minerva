@@ -17,7 +17,8 @@ query GetSession($id: ID!) {
       }
     }
     price
-    time
+    startTime
+    endTime
     length
     notes
   }

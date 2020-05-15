@@ -31,7 +31,7 @@
   }
 
   .padding {
-    margin: 20px $text-padding;
+    margin: 10px $text-padding;
   }
 
   .date {
@@ -67,13 +67,15 @@
     display: flex;
   }
 
-  .editTutor {
+  button {
+    margin: 0;
+  }
+
+  .editUser {
     display: flex;
     margin-left: auto;
     margin-right: 0;
-    button {
-      margin: 0;
-    }
+
     .draghandle {
       margin: 10px 15px;
     }
@@ -90,7 +92,7 @@
   width: 100%;
   color: black;
   .suggestion {
-    .tutorName {
+    .userName {
       font-weight: bold;
     }
     cursor: pointer;
