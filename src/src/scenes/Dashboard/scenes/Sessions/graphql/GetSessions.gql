@@ -1,7 +1,8 @@
-query GetSessions {
-  getSessions {
+query GetSessions($old: Boolean!) {
+  getSessions(limit: 10, old: $old) {
     _id
     startTime
+    endTime
     location {
       address
     }
