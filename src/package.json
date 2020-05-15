@@ -18,7 +18,6 @@
     "apollo-link-error": "^1.1.13",
     "apollo-link-http": "^1.5.17",
     "apollo-link-state": "^0.4.2",
-    "apollo-server-express": "^2.13.1",
     "classnames": "^2.2.6",
     "date-fns": "^2.13.0",
     "graphql": "^14.6.0",
