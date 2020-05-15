@@ -85,6 +85,10 @@ form {
     margin-bottom: 1.5rem;
   }
 
+  &.current {
+    border: 3px solid var(--main-gold-color);
+  }
+
   img {
     object-fit: cover;
   }
