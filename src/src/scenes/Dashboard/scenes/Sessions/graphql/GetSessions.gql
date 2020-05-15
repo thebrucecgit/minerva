@@ -6,8 +6,5 @@ query GetSessions($old: Boolean!) {
     location {
       address
     }
-    tutors {
-      pfp
-    }
   }
 }

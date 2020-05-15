@@ -42,7 +42,7 @@ const Sessions = () => {
         timeoutIds.forEach((id) => clearTimeout(id));
       };
     }
-  }, [data]);
+  }, [data, isOld, refetch]);
 
   if (error) return <p className="error">{error.message}</p>;
   if (loading) return <Loader />;
