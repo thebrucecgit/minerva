@@ -89,6 +89,10 @@ form {
     border: 3px solid var(--main-gold-color);
   }
 
+  &.square {
+    border-radius: 0;
+  }
+
   img {
     object-fit: cover;
   }

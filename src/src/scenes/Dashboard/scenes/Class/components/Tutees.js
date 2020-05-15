@@ -44,7 +44,7 @@ const Tutees = ({ update, setUpdate, classInfo, disabled, Edit }) => {
           <em>There are no registered tutees</em>
         </p>
       )}
-      <p className={styles.padding}>Waiting for tutee confirmation: </p>
+      <p className={styles.padding}>Awaiting user confirmation: </p>
       {/* todo */}
 
       {!disabled && (
