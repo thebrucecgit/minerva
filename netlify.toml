@@ -1,6 +1,6 @@
 [build]
   base = "src/"
-  publish = "src/build/"
+  publish = "build/"
   command = "npm run build"
 
 [[redirects]]
