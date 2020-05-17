@@ -234,9 +234,10 @@ function Signups({ authService }) {
   };
 
   const onGoogleFailed = (err) => {
+    console.error(err);
     setErrors((st) => ({
       ...st,
-      signIn: err,
+      signIn: err.details,
     }));
   };
 
