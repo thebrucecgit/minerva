@@ -1,4 +1,5 @@
 #vscode
 /.vscode
-/strapi
-temp.scss
+
+# Local Netlify folder
+.netlify
