@@ -19,9 +19,7 @@ function Authentication({ authHelpers, children }) {
   const [resetPasswordReq] = useMutation(RESET_PASSWORD);
   const [updatePasswordReq] = useMutation(UPDATE_PASSWORD);
 
-  async function storeUserInfo(userInfo) {
-    localStorage.setItem("Auth", JSON.stringify(userInfo));
-  }
+  const { storeUserInfo } = authHelpers;
 
   async function register(info) {
     const { data, error } = await registerReq({ variables: info });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import Navbar from "../../components/Navbar";
@@ -18,10 +18,11 @@ function Auth({ match, location, authService }) {
     updatePassword,
   } = authService;
 
-  if (location.pathname === `${path}/logout`) {
-    logout();
-    return null;
-  }
+  useEffect(() => {
+    if (location.pathname === `${path}/logout`) logout();
+  }, [path, logout, location.pathname]);
+
+  if (location.pathname === `${path}/logout`) return null;
 
   return (
     <div>
