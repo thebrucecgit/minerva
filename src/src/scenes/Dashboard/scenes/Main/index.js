@@ -29,7 +29,7 @@ const Main = () => {
               <Link
                 to={`/dashboard/sessions/${session._id}`}
                 key={session._id}
-                className="card square x"
+                className="card square y"
               >
                 <div className="body">
                   <h2>{format(session.startTime, "d MMMM, yyyy")}</h2>
@@ -50,7 +50,7 @@ const Main = () => {
               <Link
                 to={`/dashboard/classes/${classInfo._id}`}
                 key={classInfo._id}
-                className="card square"
+                className="card square y"
               >
                 <img src={classInfo.image} alt={classInfo.name} />
                 <div className="body">
