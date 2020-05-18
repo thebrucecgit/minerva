@@ -1,34 +1,33 @@
 {
   "main": "server.js",
   "dependencies": {
-    "@babel/runtime": "^7.9.2",
-    "@sendgrid/mail": "^7.0.1",
-    "apollo-server": "^2.12.0",
+    "@babel/runtime": "^7.9.6",
+    "@sendgrid/mail": "^7.1.1",
+    "apollo-server": "^2.13.1",
     "axios": "^0.19.2",
     "bcrypt": "^4.0.1",
     "cors": "^2.8.5",
+    "date-fns": "^2.13.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "googleapis": "^48.0.0",
     "graphql": "^14.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.9",
+    "mongoose": "github:Automattic/mongoose",
     "shortid": "^2.2.15"
   },
   "scripts": {
     "clean": "rm -rf dist",
-    "build-babel": "babel ./lib -d dist -s",
-    "build": "npm run clean && npm run build-babel",
+    "build-swc": "npx swc lib -d dist",
+    "build": "npm run clean && npm run build-swc",
     "watch": "nodemon --watch ./lib --exec npm start",
     "start": "npm run build && npm run serve",
     "serve": "node ./dist/server.js",
     "seed": "node dist/seed"
   },
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
-    "@babel/plugin-transform-runtime": "^7.9.0",
-    "@babel/preset-env": "^7.9.5",
+    "@swc/cli": "^0.1.24",
+    "@swc/core": "^1.1.42",
     "mongoose-seed": "^0.6.0"
   }
 }
