@@ -43,6 +43,10 @@ export default {
       await session.populate("tutors").execPopulate();
       return session.tutors;
     },
+    async tutees(session) {
+      await session.populate("tutees").execPopulate();
+      return session.tutees;
+    },
   },
   Mutation: {
     async instantiateSession(_, { classId, startTime, length }, { user }) {
