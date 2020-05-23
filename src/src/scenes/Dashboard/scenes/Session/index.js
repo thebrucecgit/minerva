@@ -16,6 +16,7 @@ import Modal from "../../../../components/Modal";
 import reactQuillModules from "../reactQuillModules";
 
 import useMenu from "../../hooks/useMenu";
+import useEdits from "../../hooks/useEdits";
 
 import styles from "../../class.module.scss";
 import "react-quill/dist/quill.snow.css";
@@ -40,14 +41,14 @@ const Session = ({ currentUser }) => {
     tutors: "",
     location: "",
     notes: "",
-    preferences: "",
+    settings: "",
   });
 
   const [disabled, setDisabled] = useState({
     tutors: true,
     location: true,
     notes: true,
-    preferences: true,
+    settings: true,
   });
 
   const [editEnabled, setEditEnabled] = useState(false);
@@ -64,6 +65,11 @@ const Session = ({ currentUser }) => {
     try {
       toastId = toast("Updating session...", { autoClose: false });
 
+      setDisabled((st) => ({
+        ...st,
+        [name]: true,
+      }));
+
       const variables = {
         id,
         [name]: update[name],
@@ -73,17 +79,24 @@ const Session = ({ currentUser }) => {
       else if (name === "tutors")
         variables.tutors = update.tutors.map((tutor) => tutor._id);
 
-      setUpdate((st) => ({
-        ...st,
-        [name]: "",
-      }));
-
       setSessionInfo((st) => ({
         ...st,
         [name]: update[name],
       }));
 
-      await updateSession({ variables });
+      setUpdate((st) => ({
+        ...st,
+        [name]: "",
+      }));
+
+      const { data } = await updateSession({ variables });
+
+      data.updateSession.notes = JSON.parse(data.updateSession.notes);
+
+      setSessionInfo((st) => ({
+        ...st,
+        ...data.updateSession,
+      }));
 
       toast.update(toastId, {
         render: "Successfully updated",
@@ -109,42 +122,14 @@ const Session = ({ currentUser }) => {
     }
   }, [data]);
 
+  const [startEdit, cancelEdit] = useEdits({
+    info: sessionInfo,
+    setUpdate,
+    setDisabled,
+  });
+
   const onNotesChange = (content, delta, source, editor) => {
     setUpdate((st) => ({ ...st, notes: editor.getContents() }));
-  };
-
-  const onInfoChange = (e) => {
-    e.persist();
-    setUpdate((st) => ({
-      ...st,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const toggleDisabled = async (name) => {
-    if (disabled[name])
-      setUpdate((st) => ({
-        ...st,
-        [name]: sessionInfo[name],
-      }));
-    else saveInfo(name);
-    setDisabled((st) => {
-      return {
-        ...st,
-        [name]: !st[name],
-      };
-    });
-  };
-
-  const cancelUpdate = (name) => {
-    setUpdate((st) => ({
-      ...st,
-      [name]: "",
-    }));
-    setDisabled((st) => ({
-      ...st,
-      [name]: true,
-    }));
   };
 
   const toggleEdit = () => {
@@ -152,18 +137,20 @@ const Session = ({ currentUser }) => {
   };
 
   const openModal = () => {
-    toggleDisabled("preferences");
+    startEdit("settings");
     setModalOpen(true);
   };
 
   const Edit = EditButton({
     disabled,
-    toggleDisabled,
-    cancelUpdate,
+    startEdit,
+    cancelEdit,
     editEnabled,
+    saveInfo,
   });
 
   const closeModal = () => {
+    cancelEdit("settings");
     setModalOpen(false);
   };
 
@@ -194,7 +181,7 @@ const Session = ({ currentUser }) => {
                   <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
                 </div>
                 <div onClick={openModal}>
-                  Preferences <FontAwesomeIcon icon={faUserCog} />
+                  Settings <FontAwesomeIcon icon={faUserCog} />
                 </div>
               </>
             </Menu>
@@ -218,7 +205,20 @@ const Session = ({ currentUser }) => {
           onChange={onNotesChange}
           modules={reactQuillModules}
         />
-        <Edit type="notes" />
+        <Edit
+          type="notes"
+          editEnabled={
+            (currentUser.user.userType === "TUTOR" &&
+              sessionInfo.tutors.some(
+                (tutor) => tutor._id === currentUser.user._id
+              )) ||
+            (currentUser.user.userType === "TUTEE" &&
+              sessionInfo.tutees.some(
+                (tutee) => tutee._id === currentUser.user._id
+              ) &&
+              sessionInfo.settings.studentEditNotes)
+          }
+        />
       </div>
       <div className={styles.column}>
         <Tutors
@@ -231,7 +231,12 @@ const Session = ({ currentUser }) => {
       </div>
       <Modal open={modalOpen} onClose={closeModal}>
         <div className={styles.padding}>
-          <h2>Preferences</h2>
+          <h2>Settings</h2>
+        </div>
+      </Modal>
+      <Modal>
+        <div className={styles.padding}>
+          <h2>Attendance</h2>
         </div>
       </Modal>
     </div>

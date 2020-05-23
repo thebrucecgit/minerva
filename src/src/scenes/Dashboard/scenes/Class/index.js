@@ -20,6 +20,7 @@ import Preferences from "./components/Preferences";
 import Tutees from "./components/Tutees";
 
 import useMenu from "../../hooks/useMenu";
+import useEdits from "../../hooks/useEdits";
 import useInstantiateSession from "./hooks/useInstantiateSession";
 import usePreferences from "./hooks/usePreferences";
 
@@ -150,14 +151,14 @@ const Class = ({ currentUser }) => {
       else if (name === "tutees")
         variables.tutees = update.tutees.map((tutee) => tutee._id);
 
-      setUpdate((st) => ({
-        ...st,
-        [name]: "",
-      }));
-
       setClassInfo((st) => ({
         ...st,
         [name]: update[name],
+      }));
+
+      setUpdate((st) => ({
+        ...st,
+        [name]: "",
       }));
 
       const { data } = await updateClass({ variables });
@@ -184,35 +185,14 @@ const Class = ({ currentUser }) => {
     }
   };
 
-  const startEdit = (name) => {
-    setUpdate((st) => ({
-      ...st,
-      [name]:
-        typeof classInfo[name] === "object"
-          ? Array.isArray(classInfo[name])
-            ? [...classInfo[name]]
-            : { ...classInfo[name] }
-          : classInfo[name],
-    }));
-    setDisabled((st) => ({
-      ...st,
-      [name]: false,
-    }));
-  };
-
-  const cancelUpdate = (name) => {
-    setUpdate((st) => ({
-      ...st,
-      [name]: "",
-    }));
-    setDisabled((st) => ({
-      ...st,
-      [name]: true,
-    }));
-  };
+  const [startEdit, cancelEdit] = useEdits({
+    info: classInfo,
+    setUpdate,
+    setDisabled,
+  });
 
   const closeModal = (name) => {
-    cancelUpdate(name);
+    cancelEdit(name);
     setModalsOpen((st) => ({
       ...st,
       [name]: false,
@@ -243,7 +223,7 @@ const Class = ({ currentUser }) => {
     disabled,
     startEdit,
     saveInfo,
-    cancelUpdate,
+    cancelEdit,
     editEnabled,
   });
 

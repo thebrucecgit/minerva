@@ -9,11 +9,11 @@ const EditButton = ({
   disabled,
   startEdit,
   saveInfo,
-  cancelUpdate,
+  cancelEdit,
   editEnabled,
 }) => {
   return ({ type, editEnabled: enabledOverride }) => {
-    const onCancel = () => cancelUpdate(type);
+    const onCancel = () => cancelEdit(type);
     const onEdit = () => startEdit(type);
     const onSave = () => saveInfo(type);
 
