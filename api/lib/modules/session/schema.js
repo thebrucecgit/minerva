@@ -20,6 +20,11 @@ export default gql`
     lng: Float
   }
 
+  "Settings for this session (inherits from class initially)"
+  type SessionSettings {
+    studentEditNotes: Boolean!
+  }
+
   input AttendanceIn {
     tutee: ID!
     attended: Boolean!
@@ -44,18 +49,20 @@ export default gql`
     tutors: [User!]!
     location: Location
     price: String
-    time: Date
+    startTime: Date
+    endTime: Date
     length: Int
     notes: String
+    settings: SessionSettings
   }
 
   extend type Query {
     getSession(id: ID!): Session!
-    getSessions: [Session!]!
+    getSessions(limit: Int, old: Boolean, time: Date): [Session!]!
   }
 
   extend type Mutation {
-    instantiateSession(classId: ID!, time: Date!, length: Int!): Session!
+    instantiateSession(classId: ID!, startTime: Date!, length: Int!): Session!
     updateSession(
       id: ID!
       class: ID
@@ -63,7 +70,7 @@ export default gql`
       tutors: [ID!]
       location: LocationIn
       price: String
-      time: Date
+      startTime: Date
       length: Int
       notes: String
     ): Session!

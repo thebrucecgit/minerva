@@ -14,10 +14,11 @@ export default gql`
     studentAgreeSessions: Boolean
   }
 
+  "A class, from which sessions can be constructed from"
   type Class {
     _id: ID!
     name: String!
-    sessions: [Session!]!
+    sessions(time: Date, limit: Int, old: Boolean): [Session!]
     tutees: [User!]!
     tutors: [User!]!
     description: String
@@ -31,7 +32,7 @@ export default gql`
 
   extend type Query {
     getClass(id: ID!): Class!
-    getClasses: [Class!]!
+    getClasses(limit: Int): [Class!]!
   }
 
   extend type Mutation {

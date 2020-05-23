@@ -16,6 +16,12 @@ const sessionSchema = Schema({
       ref: "User",
     },
   ],
+  tutees: [
+    {
+      type: String,
+      ref: "User",
+    },
+  ],
   attendance: [
     {
       tutee: {
@@ -36,8 +42,23 @@ const sessionSchema = Schema({
       lng: Number,
     },
   },
+  settings: {
+    studentEditNotes: {
+      type: Boolean,
+      default: false,
+    },
+    syncTutorsWithClass: {
+      type: Boolean,
+      default: true,
+    },
+    syncTuteesWithClass: {
+      type: Boolean,
+      default: true,
+    },
+  },
   pricePerTutee: Number,
-  time: Date,
+  startTime: Date,
+  endTime: Date,
   length: Number, // in minutes
   notes: String,
 });

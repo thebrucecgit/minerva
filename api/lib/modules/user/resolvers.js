@@ -38,6 +38,9 @@ const createUserObject = (user) => {
 export default {
   Query: {
     async getUser(_, { id }, { user }) {
+      // Not the user himself or a tutor
+      if (user.userType !== "TUTOR" && user._id !== id)
+        throw Error("Not authorized", 401);
       return await User.findById(id);
     },
     async getUsers(_, { value, userType }, { user }) {
@@ -50,7 +53,7 @@ export default {
         $or: [{ email: regex }, { name: regex }],
       });
     },
-    async getTutors(_, __, { user }) {
+    async getTutors(_, { limit }, { user }) {
       const populated = await user.populate("classes").execPopulate();
 
       const tutorsArray = populated.classes
@@ -59,43 +62,51 @@ export default {
 
       const tutors = [...new Set([].concat(...tutorsArray))];
 
-      return await User.find().where("_id").in(tutors).exec();
+      return await User.find(
+        { _id: { $in: tutors }, userType: "TUTOR" },
+        null,
+        { limit }
+      );
     },
     async login(_, { email, password, tokenId }) {
-      let user;
-      if (tokenId) {
-        const info = await verifyGoogleToken(tokenId);
-        const oldUser = await User.findOne({ googleId: info.sub });
+      try {
+        let user;
+        if (tokenId) {
+          const info = await verifyGoogleToken(tokenId);
+          const oldUser = await User.findOne({ googleId: info.sub });
 
-        const newUser = {
-          email: info.email,
-          pfp: info.picture,
-          googleId: info.sub,
-          name: info.name,
-          registrationStatus: oldUser?.registrationStatus ?? "GOOGLE_SIGNED_IN",
-          lastAuthenticated: Date.now(),
-        };
+          const newUser = {
+            email: info.email,
+            pfp: info.picture,
+            googleId: info.sub,
+            name: info.name,
+            registrationStatus:
+              oldUser?.registrationStatus ?? "GOOGLE_SIGNED_IN",
+            lastAuthenticated: Date.now(),
+          };
 
-        user = await User.findOneAndUpdate({ googleId: info.sub }, newUser, {
-          new: true,
-          upsert: true,
-          setDefaultsOnInsert: true,
-        });
-      } else {
-        user = await User.findOneAndUpdate(
-          { email },
-          { lastAuthenticated: Date.now() },
-          { new: true }
-        );
+          user = await User.findOneAndUpdate({ googleId: info.sub }, newUser, {
+            new: true,
+            upsert: true,
+            setDefaultsOnInsert: true,
+          });
+        } else {
+          user = await User.findOneAndUpdate(
+            { email },
+            { lastAuthenticated: Date.now() },
+            { new: true }
+          );
 
-        if (!user) throw new UserInputError("User not found");
+          if (!user) throw new UserInputError("User not found");
 
-        const pass = await bcrypt.compare(password, user.password);
-        if (!pass)
-          throw new UserInputError("The email or password is incorrect");
+          const pass = await bcrypt.compare(password, user.password);
+          if (!pass)
+            throw new UserInputError("The email or password is incorrect");
+        }
+        return createUserObject(user);
+      } catch (e) {
+        console.error(e);
       }
-
-      return createUserObject(user);
     },
   },
   User: {
@@ -224,13 +235,17 @@ export default {
 
       await sgMail.send(msg);
     },
-    async updatePassword(_, { email, passwordResetCode, newPassword }) {
-      const user = await User.findOne({ email, passwordResetCode });
-      if (!user) throw Error("Failed to change password");
-      user.passwordResetCode = undefined;
-      user.password = await bcrypt.hash(newPassword, 12);
-      await user.save();
-      return createUserObject(user);
+    async updatePassword(
+      _,
+      { email, passwordResetCode, newPassword },
+      { user }
+    ) {
+      const update = user ?? (await User.findOne({ email, passwordResetCode }));
+      if (!update) throw Error("Failed to change password");
+      update.passwordResetCode = undefined;
+      update.password = await bcrypt.hash(newPassword, 12);
+      await update.save();
+      return createUserObject(update);
     },
   },
 };
