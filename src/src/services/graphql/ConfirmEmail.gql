@@ -3,6 +3,7 @@ mutation ConfirmUserEmail($emailConfirmId: String!) {
     jwt
     exp
     user {
+      _id
       name
       userType
       pfp

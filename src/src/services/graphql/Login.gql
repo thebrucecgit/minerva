@@ -3,6 +3,7 @@ query Login($email: String, $password: String, $tokenId: String) {
     jwt
     exp
     user {
+      _id
       name
       userType
       pfp

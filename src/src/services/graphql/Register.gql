@@ -29,6 +29,7 @@ mutation Register(
     jwt
     exp
     user {
+      _id
       name
       userType
       pfp
