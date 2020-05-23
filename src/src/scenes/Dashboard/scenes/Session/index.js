@@ -17,6 +17,7 @@ import reactQuillModules from "../reactQuillModules";
 
 import useMenu from "../../hooks/useMenu";
 import useEdits from "../../hooks/useEdits";
+import useModal from "../../hooks/useModal";
 
 import styles from "../../class.module.scss";
 import "react-quill/dist/quill.snow.css";
@@ -53,7 +54,6 @@ const Session = ({ currentUser }) => {
 
   const [editEnabled, setEditEnabled] = useState(false);
   const [rootClick, menuBind] = useMenu(false);
-  const [modalOpen, setModalOpen] = useState(false);
 
   const { loading, error, data } = useQuery(GET_SESSION, {
     variables: { id },
@@ -136,10 +136,17 @@ const Session = ({ currentUser }) => {
     setEditEnabled((st) => !st);
   };
 
-  const openModal = () => {
-    startEdit("settings");
-    setModalOpen(true);
+  const modalHooks = {
+    onOpen: startEdit,
+    onClose: cancelEdit,
   };
+
+  const [openSettings, settingsBinds] = useModal(false, "settings", modalHooks);
+  const [openAttendances, attendancesBinds] = useModal(
+    false,
+    "attendance",
+    modalHooks
+  );
 
   const Edit = EditButton({
     disabled,
@@ -148,11 +155,6 @@ const Session = ({ currentUser }) => {
     editEnabled,
     saveInfo,
   });
-
-  const closeModal = () => {
-    cancelEdit("settings");
-    setModalOpen(false);
-  };
 
   if (error) toast(error.message, { type: toast.TYPE.ERROR });
   if (loading || !sessionInfo.startTime) return <Loader />;
@@ -180,7 +182,7 @@ const Session = ({ currentUser }) => {
                   {editEnabled ? "Lock Edits" : "Edit Page"}{" "}
                   <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
                 </div>
-                <div onClick={openModal}>
+                <div onClick={openSettings}>
                   Settings <FontAwesomeIcon icon={faUserCog} />
                 </div>
               </>
@@ -228,15 +230,23 @@ const Session = ({ currentUser }) => {
           update={update.tutors}
           setUpdate={setUpdate}
         />
+        <button className="btn" onClick={openAttendances}>
+          Attendance
+        </button>
       </div>
-      <Modal open={modalOpen} onClose={closeModal}>
+      <Modal {...settingsBinds}>
         <div className={styles.padding}>
           <h2>Settings</h2>
         </div>
       </Modal>
-      <Modal>
+      <Modal {...attendancesBinds}>
         <div className={styles.padding}>
           <h2>Attendance</h2>
+          {sessionInfo.tutees.map((tutee) => (
+            <div>
+              <h3>{tutee.name}</h3>
+            </div>
+          ))}
         </div>
       </Modal>
     </div>

@@ -21,6 +21,7 @@ import Tutees from "./components/Tutees";
 
 import useMenu from "../../hooks/useMenu";
 import useEdits from "../../hooks/useEdits";
+import useModal from "../../hooks/useModal";
 import useInstantiateSession from "./hooks/useInstantiateSession";
 import usePreferences from "./hooks/usePreferences";
 
@@ -71,7 +72,6 @@ const Class = ({ currentUser }) => {
   });
 
   const [editEnabled, setEditEnabled] = useState(false);
-  const [modalsOpen, setModalsOpen] = useState({});
   const [rootClick, menuBind] = useMenu(false);
   const sessionBind = useInstantiateSession();
 
@@ -191,13 +191,17 @@ const Class = ({ currentUser }) => {
     setDisabled,
   });
 
-  const closeModal = (name) => {
-    cancelEdit(name);
-    setModalsOpen((st) => ({
-      ...st,
-      [name]: false,
-    }));
+  const modalHooks = {
+    onOpen: startEdit,
+    onClose: cancelEdit,
   };
+
+  const [openPreferences, preferencesBinds] = useModal(
+    false,
+    "preferences",
+    modalHooks
+  );
+  const [openTutees, tuteesBinds] = useModal(false, "tutees", modalHooks);
 
   const onDescriptionChange = (content, delta, source, editor) => {
     if (!disabled.description)
@@ -211,14 +215,6 @@ const Class = ({ currentUser }) => {
     setEditEnabled((st) => !st);
   };
 
-  const openModal = (name) => {
-    startEdit(name);
-    setModalsOpen((st) => ({
-      ...st,
-      [name]: true,
-    }));
-  };
-
   const Edit = EditButton({
     disabled,
     startEdit,
@@ -229,7 +225,7 @@ const Class = ({ currentUser }) => {
 
   const preferencesBind = usePreferences({
     setUpdate,
-    closeModal,
+    closeModal: preferencesBinds.onClose,
   });
 
   if (error) return error.message;
@@ -264,7 +260,7 @@ const Class = ({ currentUser }) => {
                   {editEnabled ? "Lock Edits" : "Edit Page"}{" "}
                   <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
                 </div>
-                <div onClick={() => openModal("preferences")}>
+                <div onClick={openPreferences}>
                   Preferences <FontAwesomeIcon icon={faUserCog} />
                 </div>
               </>
@@ -362,22 +358,16 @@ const Class = ({ currentUser }) => {
         )}
 
         <h2>Tutees</h2>
-        <button
-          className="btn"
-          onClick={() => setModalsOpen((st) => ({ ...st, tutees: true }))}
-        >
+        <button className="btn" onClick={() => openTutees(false)}>
           View Tutees
         </button>
       </div>
 
-      <Modal
-        open={modalsOpen.preferences}
-        onClose={() => closeModal("preferences")}
-      >
+      <Modal {...preferencesBind}>
         <Preferences {...preferencesBind} update={update.tutors} />
       </Modal>
 
-      <Modal open={modalsOpen.tutees} onClose={() => closeModal("tutees")}>
+      <Modal {...tuteesBinds}>
         <Tutees
           update={update.tutees}
           setUpdate={setUpdate}
