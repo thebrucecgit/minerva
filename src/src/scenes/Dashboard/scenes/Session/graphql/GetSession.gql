@@ -9,6 +9,10 @@ query GetSession($id: ID!) {
       pfp
       name
     }
+    tutees {
+      _id
+      name
+    }
     location {
       address
       coords {

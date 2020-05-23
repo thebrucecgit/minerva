@@ -3,7 +3,7 @@ import { gql } from "apollo-server";
 export default gql`
   "Recording attendance of a class"
   type Attendance {
-    tutee: User!
+    tutee: ID!
     attended: Boolean!
     reason: String
   }
@@ -47,6 +47,7 @@ export default gql`
     class: Class!
     attendance: [Attendance!]!
     tutors: [User!]!
+    tutees: [User!]!
     location: Location
     price: String
     startTime: Date
@@ -68,6 +69,7 @@ export default gql`
       class: ID
       attendance: [AttendanceIn!]
       tutors: [ID!]
+      tutees: [ID!]
       location: LocationIn
       price: String
       startTime: Date
