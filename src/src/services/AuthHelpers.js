@@ -9,7 +9,8 @@ const AuthHelpers = ({ children }) => {
     if (!userInfoJSON) return null;
     const currentUser = JSON.parse(userInfoJSON);
     if (Date.now() > currentUser.exp * 1000) {
-      logout();
+      localStorage.removeItem("Auth");
+      history.replace("/");
       return null;
     } else return currentUser;
   });
