@@ -76,5 +76,7 @@ export default gql`
       length: Int
       notes: String
     ): Session!
+    "Deletes Session and removes session from relations"
+    deleteSession(id: ID!): Boolean
   }
 `;

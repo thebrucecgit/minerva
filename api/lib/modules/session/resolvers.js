@@ -117,11 +117,14 @@ export default {
         new: true,
       });
     },
+    async deleteSession(_, { id }, { user }) {
+      const session = await Session.findById(id);
+      if (!session) throw new Error("Session not found", 404);
+
+      if (!(user.userType === "TUTOR" && session.tutors.includes(user._id)))
+        throw Error("Not authorized to delete session", 401);
+
+      await session.remove();
+    },
   },
 };
-
-User.update(
-  { _id: "7fCzBZf3_Q" },
-  { $addToSet: { sessions: "newish!" } },
-  () => {}
-);

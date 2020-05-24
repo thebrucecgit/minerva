@@ -144,5 +144,14 @@ export default {
       const [classInfo] = await Promise.all(reqs);
       return classInfo;
     },
+    async deleteClass(_, { id }, { user }) {
+      const classInfo = Class.findById(id);
+      if (!classInfo) throw new Error("Class not found", 404);
+
+      if (!(user.userType === "TUTOR" && classInfo.tutors.includes(user._id)))
+        throw new Error("Not authorized to delete class", 401);
+
+      await classInfo.remove();
+    },
   },
 };

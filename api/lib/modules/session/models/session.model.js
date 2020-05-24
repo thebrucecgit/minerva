@@ -1,5 +1,7 @@
 import { Schema, model } from "mongoose";
 import shortid from "shortid";
+import Class from "../../class/models/class.model";
+import User from "../../user/models/user.model";
 
 const sessionSchema = Schema({
   _id: {
@@ -61,6 +63,25 @@ const sessionSchema = Schema({
   endTime: Date,
   length: Number, // in minutes
   notes: String,
+});
+
+sessionSchema.pre("remove", async function () {
+  await Class.updateOne({ _id: this.class }, { $pull: { sessions: this._id } });
+
+  await User.bulkWrite([
+    {
+      updateMany: {
+        filter: { _id: { $in: this.tutors }, userType: "TUTOR" },
+        update: { $pull: { sessions: this._id } },
+      },
+    },
+    {
+      updateMany: {
+        filter: { _id: { $in: this.tutees }, userType: "TUTEE" },
+        update: { $pull: { sessions: this._id } },
+      },
+    },
+  ]);
 });
 
 const Session = model("Session", sessionSchema);

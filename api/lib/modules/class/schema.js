@@ -37,7 +37,7 @@ export default gql`
 
   extend type Mutation {
     updateClass(
-      id: ID
+      id: ID!
       name: String
       sessions: [ID!]
       tutees: [ID!]
@@ -50,5 +50,6 @@ export default gql`
       image: String
       preferences: ClassPreferenceIn
     ): Class!
+    deleteClass(id: ID!): Boolean
   }
 `;
