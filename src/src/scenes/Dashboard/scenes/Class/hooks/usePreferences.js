@@ -1,4 +1,4 @@
-const usePreferences = ({ setUpdate, closeModal }) => {
+const usePreferences = ({ saveInfo, setUpdate }) => {
   const onChange = (e) => {
     e.persist();
 
@@ -15,7 +15,7 @@ const usePreferences = ({ setUpdate, closeModal }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    closeModal("preferences");
+    saveInfo("preferences", { resetUpdate: false });
   };
 
   return { onChange, onSubmit };

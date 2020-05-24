@@ -62,7 +62,7 @@ const Session = ({ currentUser }) => {
 
   const [updateSession] = useMutation(UPDATE_SESSION);
 
-  const saveInfo = async (name, { resetUpdate = true }) => {
+  const saveInfo = async (name, { resetUpdate = true } = {}) => {
     try {
       toastId = toast("Updating session...", { autoClose: false });
 

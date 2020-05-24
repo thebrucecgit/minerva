@@ -130,7 +130,7 @@ const Class = ({ currentUser }) => {
     }));
   };
 
-  const saveInfo = async (name, { resetUpdate = true }) => {
+  const saveInfo = async (name, { resetUpdate = true } = {}) => {
     try {
       toastId.class = toast("Updating class...", { autoClose: false });
 
@@ -150,6 +150,8 @@ const Class = ({ currentUser }) => {
         variables.tutors = update.tutors.map((tutor) => tutor._id);
       else if (name === "tutees")
         variables.tutees = update.tutees.map((tutee) => tutee._id);
+
+      console.log(variables);
 
       setClassInfo((st) => ({
         ...st,
@@ -226,7 +228,7 @@ const Class = ({ currentUser }) => {
 
   const preferencesBind = usePreferences({
     setUpdate,
-    closeModal: preferencesBinds.onClose,
+    saveInfo,
   });
 
   if (error) return error.message;
@@ -364,8 +366,8 @@ const Class = ({ currentUser }) => {
         </button>
       </div>
 
-      <Modal {...preferencesBind}>
-        <Preferences {...preferencesBind} update={update.tutors} />
+      <Modal {...preferencesBinds}>
+        <Preferences {...preferencesBind} update={update.preferences} />
       </Modal>
 
       <Modal {...tuteesBinds}>
