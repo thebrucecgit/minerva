@@ -27,7 +27,7 @@ export default gql`
 
   input AttendanceIn {
     tutee: ID!
-    attended: Boolean!
+    attended: Boolean
     reason: String
   }
 

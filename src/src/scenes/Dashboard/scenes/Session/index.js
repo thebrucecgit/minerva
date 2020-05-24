@@ -8,6 +8,7 @@ import ReactQuill from "react-quill";
 import { toast } from "react-toastify";
 import Loader from "../../../../components/Loader";
 
+import Attendance from "./components/Attendance";
 import EditButton from "../../components/EditButton";
 import Menu from "../../components/Menu";
 import Tutors from "../../components/Tutors";
@@ -61,7 +62,7 @@ const Session = ({ currentUser }) => {
 
   const [updateSession] = useMutation(UPDATE_SESSION);
 
-  const saveInfo = async (name) => {
+  const saveInfo = async (name, { resetUpdate = true }) => {
     try {
       toastId = toast("Updating session...", { autoClose: false });
 
@@ -78,20 +79,30 @@ const Session = ({ currentUser }) => {
       if (name === "notes") variables.notes = JSON.stringify(update.notes);
       else if (name === "tutors")
         variables.tutors = update.tutors.map((tutor) => tutor._id);
+      else if (name === "attendance")
+        variables.attendance = Object.entries(
+          update.attendance
+        ).map(([tutee, info]) => ({ ...info, tutee }));
 
       setSessionInfo((st) => ({
         ...st,
         [name]: update[name],
       }));
 
-      setUpdate((st) => ({
-        ...st,
-        [name]: "",
-      }));
+      if (resetUpdate)
+        setUpdate((st) => ({
+          ...st,
+          [name]: "",
+        }));
 
       const { data } = await updateSession({ variables });
 
       data.updateSession.notes = JSON.parse(data.updateSession.notes);
+      const attendance = {};
+      data.updateSession.attendance.forEach(
+        (attend) => (attendance[attend.tutee] = attend)
+      );
+      data.updateSession.attendance = attendance;
 
       setSessionInfo((st) => ({
         ...st,
@@ -114,10 +125,15 @@ const Session = ({ currentUser }) => {
 
   useEffect(() => {
     if (data) {
+      const attendance = {};
+      data.getSession.attendance.forEach(
+        (attend) => (attendance[attend.tutee] = attend)
+      );
       setSessionInfo((st) => ({
         ...st,
         ...data.getSession,
         notes: JSON.parse(data.getSession.notes),
+        attendance,
       }));
     }
   }, [data]);
@@ -240,14 +256,13 @@ const Session = ({ currentUser }) => {
         </div>
       </Modal>
       <Modal {...attendancesBinds}>
-        <div className={styles.padding}>
-          <h2>Attendance</h2>
-          {sessionInfo.tutees.map((tutee) => (
-            <div>
-              <h3>{tutee.name}</h3>
-            </div>
-          ))}
-        </div>
+        <Attendance
+          Edit={Edit}
+          update={update}
+          setUpdate={setUpdate}
+          tutees={sessionInfo.tutees}
+          saveInfo={saveInfo}
+        />
       </Modal>
     </div>
   );

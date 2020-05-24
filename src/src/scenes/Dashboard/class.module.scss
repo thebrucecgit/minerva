@@ -80,6 +80,23 @@
       margin: 10px 15px;
     }
   }
+
+  .addReason {
+    cursor: pointer;
+    opacity: 0;
+    margin: 10px;
+    font-size: 1rem;
+    font-weight: normal;
+    color: #555;
+    transition: opacity 300ms;
+    > svg {
+      margin-left: 10px;
+    }
+  }
+
+  &:hover .addReason {
+    opacity: 0.9;
+  }
 }
 
 .autocomplete {

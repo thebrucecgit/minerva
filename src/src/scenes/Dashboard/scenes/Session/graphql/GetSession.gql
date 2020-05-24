@@ -20,6 +20,11 @@ query GetSession($id: ID!) {
         lng
       }
     }
+    attendance {
+      tutee
+      attended
+      reason
+    }
     price
     startTime
     endTime

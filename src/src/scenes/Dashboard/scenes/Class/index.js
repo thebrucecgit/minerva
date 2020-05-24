@@ -130,7 +130,7 @@ const Class = ({ currentUser }) => {
     }));
   };
 
-  const saveInfo = async (name) => {
+  const saveInfo = async (name, { resetUpdate = true }) => {
     try {
       toastId.class = toast("Updating class...", { autoClose: false });
 
@@ -156,10 +156,11 @@ const Class = ({ currentUser }) => {
         [name]: update[name],
       }));
 
-      setUpdate((st) => ({
-        ...st,
-        [name]: "",
-      }));
+      if (resetUpdate)
+        setUpdate((st) => ({
+          ...st,
+          [name]: "",
+        }));
 
       const { data } = await updateClass({ variables });
 
