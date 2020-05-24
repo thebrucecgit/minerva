@@ -13,7 +13,7 @@
     "googleapis": "^48.0.0",
     "graphql": "^14.6.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "github:Automattic/mongoose",
+    "mongoose": "^5.9.15",
     "shortid": "^2.2.15"
   },
   "scripts": {
