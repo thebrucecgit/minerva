@@ -145,7 +145,7 @@ export default {
       return classInfo;
     },
     async deleteClass(_, { id }, { user }) {
-      const classInfo = Class.findById(id);
+      const classInfo = await Class.findById(id);
       if (!classInfo) throw new Error("Class not found", 404);
 
       if (!(user.userType === "TUTOR" && classInfo.tutors.includes(user._id)))

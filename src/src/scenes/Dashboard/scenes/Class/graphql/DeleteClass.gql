@@ -1,0 +1,3 @@
+mutation DeleteClass($id: ID!) {
+  deleteClass(id: $id)
+}

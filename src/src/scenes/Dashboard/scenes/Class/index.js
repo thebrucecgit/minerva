@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { loader } from "graphql.macro";
 import { format } from "date-fns";
+import { useHistory } from "react-router-dom";
 import ReactQuill from "react-quill";
 import Loader from "../../../../components/Loader";
 import Modal from "../../../../components/Modal";
@@ -33,16 +34,19 @@ import {
   faPenAlt,
   faUserCog,
   faUnlock,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SESSIONS_LIMIT = 5;
 
 const GET_CLASS = loader("./graphql/GetClass.gql");
 const UPDATE_CLASS = loader("./graphql/UpdateClass.gql");
+const DELETE_CLASS = loader("./graphql/DeleteClass.gql");
 
 const toastId = {};
 
 const Class = ({ currentUser }) => {
+  const history = useHistory();
   const { id } = useParams();
 
   const [classInfo, setClassInfo] = useState({
@@ -83,6 +87,8 @@ const Class = ({ currentUser }) => {
   );
 
   const [updateClass] = useMutation(UPDATE_CLASS);
+
+  const [deleteClassReq] = useMutation(DELETE_CLASS);
 
   const [loadedAllSessions, setLoadedAllSessions] = useState(false);
 
@@ -205,6 +211,26 @@ const Class = ({ currentUser }) => {
     modalHooks
   );
   const [openTutees, tuteesBinds] = useModal(false, "tutees", modalHooks);
+  const [openDeletion, deletionBinds] = useModal(false);
+
+  const deleteClass = async () => {
+    try {
+      toastId.deletion = toast("Deleting class...", { autoClose: false });
+      await deleteClassReq({ variables: { id } });
+      toast.update(toastId.deletion, {
+        render: "Class successfully deleted",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 2000,
+      });
+      history.replace("/dashboard");
+    } catch (e) {
+      toast.update(toastId.deletion, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
+    }
+  };
 
   const onDescriptionChange = (content, delta, source, editor) => {
     if (!disabled.description)
@@ -260,11 +286,14 @@ const Class = ({ currentUser }) => {
             <Menu {...menuBind}>
               <>
                 <div onClick={toggleEdit}>
-                  {editEnabled ? "Lock Edits" : "Edit Page"}{" "}
-                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
+                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
+                  {editEnabled ? "Lock Edits" : "Edit Page"}
                 </div>
                 <div onClick={openPreferences}>
-                  Preferences <FontAwesomeIcon icon={faUserCog} />
+                  <FontAwesomeIcon icon={faUserCog} /> Preferences
+                </div>
+                <div onClick={openDeletion} className="danger">
+                  <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
                 </div>
               </>
             </Menu>
@@ -378,6 +407,19 @@ const Class = ({ currentUser }) => {
           disabled={disabled.tutees}
           Edit={Edit}
         />
+      </Modal>
+
+      <Modal {...deletionBinds}>
+        <div className={styles.padding}>
+          <h2>Delete Class</h2>
+          <p>
+            Are you certain that you want to delete this class? You cannot
+            revert this decision.
+          </p>
+          <button className="btn danger" onClick={deleteClass}>
+            Delete Class
+          </button>
+        </div>
       </Modal>
     </div>
   );
