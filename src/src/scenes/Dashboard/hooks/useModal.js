@@ -1,15 +1,15 @@
 import { useState } from "react";
 
-const useModal = (initial, name, { onOpen, onClose }) => {
+const useModal = (initial, name, { onOpen, onClose } = {}) => {
   const [open, setOpen] = useState(initial);
 
   function openModal(useHook) {
-    if (useHook) onOpen(name);
+    if (useHook && onOpen) onOpen(name);
     setOpen(true);
   }
 
   function closeModal(useHook) {
-    if (useHook) onClose(name);
+    if (useHook && onClose) onClose(name);
     setOpen(false);
   }
 
