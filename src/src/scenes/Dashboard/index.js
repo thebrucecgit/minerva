@@ -45,7 +45,7 @@ const Dashboard = ({ location, match, authService }) => {
             <Session currentUser={currentUser} />
           </Route>
           <Route exact path={`${path}/classes`}>
-            <Classes />
+            <Classes currentUser={currentUser} />
           </Route>
           <Route exact path={`${path}/classes/:id`}>
             <Class currentUser={currentUser} />

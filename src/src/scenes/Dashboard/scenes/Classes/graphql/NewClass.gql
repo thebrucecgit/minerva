@@ -1,5 +1,0 @@
-mutation NewClass($name: String!) {
-  newClass(name: $name) {
-    _id
-  }
-}

@@ -8,10 +8,23 @@ const classSchema = Schema({
     type: String,
     default: shortid.generate,
   },
-  name: String,
-  tags: [String],
-  date: String,
-  image: String,
+  name: {
+    type: String,
+    required: true,
+  },
+  tags: {
+    type: [String],
+    default: ["Mathematics", "English"],
+  },
+  date: {
+    type: String,
+    default: "Saturdays, 3pm",
+  },
+  image: {
+    type: String,
+    default:
+      "https://images.unsplash.com/photo-1543165796-5426273eaab3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+  },
   sessions: [
     {
       type: String,
@@ -30,7 +43,9 @@ const classSchema = Schema({
       ref: "User",
     },
   ],
-  description: String,
+  description: {
+    type: String, // Stringified JSON
+  },
   location: {
     address: String,
     coords: {
@@ -38,7 +53,10 @@ const classSchema = Schema({
       lng: Number,
     },
   },
-  pricePerTutee: Number,
+  pricePerTutee: {
+    type: Number,
+    default: 10,
+  },
   preferences: {
     publicClass: {
       type: Boolean,

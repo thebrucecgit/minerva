@@ -36,6 +36,7 @@ export default gql`
   }
 
   extend type Mutation {
+    createClass(name: String!): Class!
     updateClass(
       id: ID!
       name: String

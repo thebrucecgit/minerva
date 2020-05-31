@@ -9,17 +9,18 @@ import Loader from "../../../../components/Loader";
 import Modal from "../../../../components/Modal";
 import useModal from "../../hooks/useModal";
 import styles from "./styles.module.scss";
+import general from "../../class.module.scss";
 
 const GET_CLASSES = loader("./graphql/GetClasses.gql");
-const NEW_CLASS = loader("./graphql/NewClass.gql");
+const CREATE_CLASS = loader("./graphql/CreateClass.gql");
 
 let newClassToastId = null;
 
-const Classes = () => {
+const Classes = ({ currentUser }) => {
   const history = useHistory();
 
   const { data, error, loading } = useQuery(GET_CLASSES);
-  const [createClassReq] = useMutation(NEW_CLASS);
+  const [createClassReq] = useMutation(CREATE_CLASS);
 
   const [inputs, setInputs] = useState({});
   const [openNewClass, newClassBinds] = useModal(false);
@@ -37,7 +38,8 @@ const Classes = () => {
     try {
       newClassToastId = toast("Creating new class...", { autoClose: false });
       const { data } = await createClassReq({ variables: inputs });
-      history.replace(`/dashboard/class/${data._id}`);
+      console.log(data);
+      history.replace(`/dashboard/classes/${data.createClass._id}`);
       toast.update(newClassToastId, {
         render: "Successfully created class",
         type: toast.TYPE.SUCCESS,
@@ -66,22 +68,28 @@ const Classes = () => {
           <ClassSection classInfo={classInfo} key={ind} />
         ))}
       </div>
-      <button className="btn" onClick={openNewClass}>
-        New Class
-      </button>
+
+      {currentUser.user.userType === "TUTOR" && (
+        <button className="btn" onClick={openNewClass}>
+          New Class
+        </button>
+      )}
+
       <Modal {...newClassBinds}>
-        <h2>New Class</h2>
-        <form onSubmit={createClass}>
-          <label htmlFor="name">Give it a name: </label>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            value={inputs.name ?? ""}
-            onChange={onInputChange}
-          />
-          <button className="btn">Create Class</button>
-        </form>
+        <div className={general.padding}>
+          <h2>New Class</h2>
+          <form onSubmit={createClass}>
+            <label htmlFor="name">Give it a name: </label>
+            <input
+              type="text"
+              name="name"
+              id="name"
+              value={inputs.name ?? ""}
+              onChange={onInputChange}
+            />
+            <button className="btn">Create Class</button>
+          </form>
+        </div>
       </Modal>
     </div>
   );
