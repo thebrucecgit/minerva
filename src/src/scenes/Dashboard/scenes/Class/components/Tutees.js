@@ -8,7 +8,14 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "../../../class.module.scss";
 
-const Tutees = ({ update, setUpdate, classInfo, disabled, Edit }) => {
+const Tutees = ({
+  update,
+  setUpdate,
+  classInfo,
+  disabled,
+  Edit,
+  currentUser,
+}) => {
   const [tuteeBinds, deleteTutee] = useUserChange({
     setUpdate,
     userType: "tutees",
@@ -44,17 +51,21 @@ const Tutees = ({ update, setUpdate, classInfo, disabled, Edit }) => {
           <em>There are no registered tutees</em>
         </p>
       )}
-      <p className={styles.padding}>Awaiting user confirmation: </p>
-      {/* todo */}
+      {currentUser.user.userType === "TUTOR" && (
+        <>
+          <p className={styles.padding}>Awaiting user confirmation: </p>
+          {/* todo */}
 
-      {!disabled && (
-        <div className="card y">
-          <div className="body">
-            <Autocomplete {...tuteeBinds} userType="tutee" />
-          </div>
-        </div>
+          {!disabled && (
+            <div className="card y">
+              <div className="body">
+                <Autocomplete {...tuteeBinds} userType="tutee" />
+              </div>
+            </div>
+          )}
+          <Edit type="tutees" editEnabled={true} />
+        </>
       )}
-      <Edit type="tutees" editEnabled={true} />
     </div>
   );
 };

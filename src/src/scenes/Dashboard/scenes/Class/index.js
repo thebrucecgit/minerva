@@ -283,20 +283,22 @@ const Class = ({ currentUser }) => {
             <Tags tags={classInfo.tags} />
           </div>
           <div className={styles.edit}>
-            <Menu {...menuBind}>
-              <>
-                <div onClick={toggleEdit}>
-                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
-                  {editEnabled ? "Lock Edits" : "Edit Page"}
-                </div>
-                <div onClick={openPreferences}>
-                  <FontAwesomeIcon icon={faUserCog} /> Preferences
-                </div>
-                <div onClick={openDeletion} className="danger">
-                  <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
-                </div>
-              </>
-            </Menu>
+            {currentUser.user.userType === "TUTOR" && (
+              <Menu {...menuBind}>
+                <>
+                  <div onClick={toggleEdit}>
+                    <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
+                    {editEnabled ? "Lock Edits" : "Edit Page"}
+                  </div>
+                  <div onClick={openPreferences}>
+                    <FontAwesomeIcon icon={faUserCog} /> Preferences
+                  </div>
+                  <div onClick={openDeletion} className="danger">
+                    <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
+                  </div>
+                </>
+              </Menu>
+            )}
           </div>
         </div>
 
@@ -406,6 +408,7 @@ const Class = ({ currentUser }) => {
           classInfo={classInfo.tutees}
           disabled={disabled.tutees}
           Edit={Edit}
+          currentUser={currentUser}
         />
       </Modal>
 

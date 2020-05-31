@@ -217,20 +217,22 @@ const Session = ({ currentUser }) => {
             )}`}
           </p>
           <div className={styles.edit}>
-            <Menu {...menuBind}>
-              <>
-                <div onClick={toggleEdit}>
-                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
-                  {editEnabled ? "Lock Edits" : "Edit Page"}
-                </div>
-                <div onClick={openSettings}>
-                  <FontAwesomeIcon icon={faUserCog} /> Settings
-                </div>
-                <div onClick={openDeletion}>
-                  <FontAwesomeIcon icon={faTrashAlt} /> Delete Session
-                </div>
-              </>
-            </Menu>
+            {currentUser.user.userType === "TUTOR" && (
+              <Menu {...menuBind}>
+                <>
+                  <div onClick={toggleEdit}>
+                    <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
+                    {editEnabled ? "Lock Edits" : "Edit Page"}
+                  </div>
+                  <div onClick={openSettings}>
+                    <FontAwesomeIcon icon={faUserCog} /> Settings
+                  </div>
+                  <div onClick={openDeletion}>
+                    <FontAwesomeIcon icon={faTrashAlt} /> Delete Session
+                  </div>
+                </>
+              </Menu>
+            )}
           </div>
         </div>
         <Edit type="location" />
@@ -274,9 +276,11 @@ const Session = ({ currentUser }) => {
           update={update.tutors}
           setUpdate={setUpdate}
         />
-        <button className="btn" onClick={openAttendances}>
-          Attendance
-        </button>
+        {currentUser.user.userType === "TUTOR" && (
+          <button className="btn" onClick={openAttendances}>
+            Attendance
+          </button>
+        )}
       </div>
       <Modal {...settingsBinds}>
         <div className={styles.padding}>
