@@ -12,7 +12,7 @@ const Modal = ({ children, onClose, open = false }) => {
     <div className={styles.Modal}>
       <div className={styles.box}>
         <button onClick={onClose} className={styles.close}>
-          <FontAwesomeIcon icon={faTimes} size={"2x"} />
+          <FontAwesomeIcon icon={faTimes} size="2x" />
         </button>
         {children}
       </div>
