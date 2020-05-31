@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { useQuery, useMutation } from "@apollo/react-hooks";
 import { format } from "date-fns";
 import ReactQuill from "react-quill";
+import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../../../../components/Loader";
 
@@ -28,14 +29,17 @@ import {
   faPenAlt,
   faUserCog,
   faUnlock,
+  faTrashAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSION = loader("./graphql/GetSession.gql");
 const UPDATE_SESSION = loader("./graphql/UpdateSession.gql");
+const DELETE_SESSION = loader("./graphql/DeleteSession.gql");
 
-let toastId = null;
+const toastId = {};
 
 const Session = ({ currentUser }) => {
+  const history = useHistory();
   const { id } = useParams();
 
   const [sessionInfo, setSessionInfo] = useState({});
@@ -61,10 +65,11 @@ const Session = ({ currentUser }) => {
   });
 
   const [updateSession] = useMutation(UPDATE_SESSION);
+  const [deleteSessionReq] = useMutation(DELETE_SESSION);
 
   const saveInfo = async (name, { resetUpdate = true } = {}) => {
     try {
-      toastId = toast("Updating session...", { autoClose: false });
+      toastId.update = toast("Updating session...", { autoClose: false });
 
       setDisabled((st) => ({
         ...st,
@@ -109,13 +114,13 @@ const Session = ({ currentUser }) => {
         ...data.updateSession,
       }));
 
-      toast.update(toastId, {
+      toast.update(toastId.update, {
         render: "Successfully updated",
         type: toast.TYPE.SUCCESS,
         autoClose: 2000,
       });
     } catch (e) {
-      toast.update(toastId, {
+      toast.update(toastId.update, {
         render: e.message,
         type: toast.TYPE.ERROR,
         autoClose: 5000,
@@ -148,6 +153,25 @@ const Session = ({ currentUser }) => {
     setUpdate((st) => ({ ...st, notes: editor.getContents() }));
   };
 
+  const deleteSession = async () => {
+    try {
+      toastId.deletion = toast("Deleting session...", { autoClose: false });
+      await deleteSessionReq({ variables: { id } });
+      toast.update(toastId.deletion, {
+        render: "Session successfully deleted",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 2000,
+      });
+      history.replace(`/dashboard/classes/${sessionInfo.class._id}`);
+    } catch (e) {
+      toast.update(toastId.deletion, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
+    }
+  };
+
   const toggleEdit = () => {
     setEditEnabled((st) => !st);
   };
@@ -163,6 +187,7 @@ const Session = ({ currentUser }) => {
     "attendance",
     modalHooks
   );
+  const [openDeletion, deletionBinds] = useModal(false);
 
   const Edit = EditButton({
     disabled,
@@ -195,11 +220,14 @@ const Session = ({ currentUser }) => {
             <Menu {...menuBind}>
               <>
                 <div onClick={toggleEdit}>
-                  {editEnabled ? "Lock Edits" : "Edit Page"}{" "}
-                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />
+                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
+                  {editEnabled ? "Lock Edits" : "Edit Page"}
                 </div>
                 <div onClick={openSettings}>
-                  Settings <FontAwesomeIcon icon={faUserCog} />
+                  <FontAwesomeIcon icon={faUserCog} /> Settings
+                </div>
+                <div onClick={openDeletion}>
+                  <FontAwesomeIcon icon={faTrashAlt} /> Delete Session
                 </div>
               </>
             </Menu>
@@ -255,6 +283,7 @@ const Session = ({ currentUser }) => {
           <h2>Settings</h2>
         </div>
       </Modal>
+
       <Modal {...attendancesBinds}>
         <Attendance
           Edit={Edit}
@@ -263,6 +292,19 @@ const Session = ({ currentUser }) => {
           tutees={sessionInfo.tutees}
           saveInfo={saveInfo}
         />
+      </Modal>
+
+      <Modal {...deletionBinds}>
+        <div className={styles.padding}>
+          <h2>Delete Session</h2>
+          <p>
+            Are you certain that you want to delete this session? You cannot
+            revert this decision.
+          </p>
+          <button className="btn danger" onClick={deleteSession}>
+            Delete Session
+          </button>
+        </div>
       </Modal>
     </div>
   );
