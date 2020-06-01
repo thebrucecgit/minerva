@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import ReactQuill from "react-quill";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import DatePicker from "react-datepicker";
 import Loader from "../../../../components/Loader";
 
 import Attendance from "./components/Attendance";
@@ -48,6 +49,8 @@ const Session = ({ currentUser }) => {
     location: "",
     notes: "",
     settings: "",
+    startTime: "",
+    length: "",
   });
 
   const [disabled, setDisabled] = useState({
@@ -55,6 +58,8 @@ const Session = ({ currentUser }) => {
     location: true,
     notes: true,
     settings: true,
+    startTime: true,
+    length: true,
   });
 
   const [editEnabled, setEditEnabled] = useState(false);
@@ -71,34 +76,60 @@ const Session = ({ currentUser }) => {
     try {
       toastId.update = toast("Updating session...", { autoClose: false });
 
-      setDisabled((st) => ({
-        ...st,
-        [name]: true,
-      }));
+      const names = Array.isArray(name) ? name : [name];
 
-      const variables = {
-        id,
-        [name]: update[name],
-      };
+      setDisabled((st) => {
+        const disabledUpdate = { ...st };
+        names.forEach((n) => {
+          disabledUpdate[n] = true;
+        });
+        return disabledUpdate;
+      });
 
-      if (name === "notes") variables.notes = JSON.stringify(update.notes);
-      else if (name === "tutors")
-        variables.tutors = update.tutors.map((tutor) => tutor._id);
-      else if (name === "attendance")
-        variables.attendance = Object.entries(
-          update.attendance
-        ).map(([tutee, info]) => ({ ...info, tutee }));
+      const variables = { id };
 
-      setSessionInfo((st) => ({
-        ...st,
-        [name]: update[name],
-      }));
+      names.forEach((n) => {
+        switch (n) {
+          case "notes": {
+            variables.notes = JSON.stringify(update.notes);
+            break;
+          }
+          case "tutors": {
+            variables.tutors = update.tutors.map((tutor) => tutor._id);
+            break;
+          }
+          case "attendance": {
+            variables.attendance = Object.entries(
+              update.attendance
+            ).map(([tutee, info]) => ({ ...info, tutee }));
+            break;
+          }
+          case "length": {
+            variables.length = parseInt(update.length);
+            break;
+          }
+          default: {
+            variables[n] = update[n];
+          }
+        }
+      });
+
+      setSessionInfo((st) => {
+        const sessionInfoUpdate = { ...st };
+        names.forEach((n) => {
+          sessionInfoUpdate[n] = update[n];
+        });
+        return sessionInfoUpdate;
+      });
 
       if (resetUpdate)
-        setUpdate((st) => ({
-          ...st,
-          [name]: "",
-        }));
+        setUpdate((st) => {
+          const resets = { ...st };
+          names.forEach((n) => {
+            resets[n] = "";
+          });
+          return resets;
+        });
 
       const { data } = await updateSession({ variables });
 
@@ -189,6 +220,21 @@ const Session = ({ currentUser }) => {
   );
   const [openDeletion, deletionBinds] = useModal(false);
 
+  const onTimeChange = (startTime) => {
+    setUpdate((st) => ({
+      ...st,
+      startTime,
+    }));
+  };
+
+  const onInfoChange = (e) => {
+    e.persist();
+    setUpdate((st) => ({
+      ...st,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const Edit = EditButton({
     disabled,
     startEdit,
@@ -203,7 +249,35 @@ const Session = ({ currentUser }) => {
   return (
     <div className={styles.Class} onClick={rootClick}>
       <div>
-        <h1>{format(sessionInfo.startTime, "EEEE d MMMM, yyyy")}</h1>
+        <div className={styles.flex}>
+          {disabled.startTime ? (
+            <h1>{format(sessionInfo.startTime, "EEEE d MMMM, yyyy")}</h1>
+          ) : (
+            <>
+              <DatePicker
+                selected={update.startTime}
+                onChange={onTimeChange}
+                showTimeSelect
+                timeFormat="h:mm aa"
+                timeIntervals={15}
+                timeCaption="Time"
+                dateFormat="d MMMM, yyyy h:mm aa"
+              />
+              <select
+                name="length"
+                value={update.length}
+                onChange={onInfoChange}
+              >
+                <option value="30">30 Minutes</option>
+                <option value="45">45 Minutes</option>
+                <option value="60">60 Minutes</option>
+                <option value="90">90 Minutes</option>
+                <option value="120">120 Minutes</option>
+              </select>
+            </>
+          )}
+          <Edit type={["startTime", "length"]} />
+        </div>
         <p className={styles.padding}>
           <Link to={`/dashboard/classes/${sessionInfo.class._id}`}>
             {sessionInfo.class.name}

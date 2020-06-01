@@ -13,14 +13,22 @@ const EditButton = ({
   editEnabled,
 }) => {
   return ({ type, editEnabled: enabledOverride }) => {
-    const onCancel = () => cancelEdit(type);
-    const onEdit = () => startEdit(type);
-    const onSave = () => saveInfo(type);
+    const onCancel = () => {
+      if (Array.isArray(type)) type.forEach((t) => cancelEdit(t));
+      cancelEdit(type);
+    };
+    const onEdit = () => {
+      if (Array.isArray(type)) type.forEach((t) => startEdit(t));
+      startEdit(type);
+    };
+    const onSave = () => {
+      saveInfo(type);
+    };
 
     if (enabledOverride ?? editEnabled)
       return (
         <div className={styles.edit}>
-          {disabled[type] ? (
+          {(Array.isArray(type) ? disabled[type[0]] : disabled[type]) ? (
             <button className="btn small" onClick={onEdit}>
               <FontAwesomeIcon icon={faPenAlt} />
             </button>

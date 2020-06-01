@@ -1,5 +1,7 @@
 mutation UpdateSession(
   $id: ID!
+  $startTime: Date
+  $length: Int
   $notes: String
   $location: LocationIn
   $tutors: [ID!]
@@ -11,6 +13,8 @@ mutation UpdateSession(
     location: $location
     tutors: $tutors
     attendance: $attendance
+    startTime: $startTime
+    length: $length
   ) {
     _id
     notes
@@ -31,5 +35,8 @@ mutation UpdateSession(
       attended
       reason
     }
+    startTime
+    endTime
+    length
   }
 }

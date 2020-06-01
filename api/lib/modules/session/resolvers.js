@@ -96,6 +96,8 @@ export default {
     },
     async updateSession(_, args, { user }) {
       const edits = { ...args };
+      if (args.startTime && args.length)
+        edits.endTime = addMinutes(args.startTime, args.length);
       const session = await Session.findById(args.id);
 
       if (user.userType === "TUTEE") {

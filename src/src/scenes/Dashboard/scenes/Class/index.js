@@ -380,9 +380,7 @@ const Class = ({ currentUser }) => {
             )}
           </>
         ) : (
-          <p className={styles.padding}>
-            There have been no sessions created yet
-          </p>
+          <p className={styles.padding}>No session has been created yet</p>
         )}
 
         {(currentUser.user.userType === "TUTOR" ||
