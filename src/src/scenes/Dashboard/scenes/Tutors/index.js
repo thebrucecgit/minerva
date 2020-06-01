@@ -28,16 +28,20 @@ const Tutors = () => {
     <div className="container">
       <h1>Tutors</h1>
       <div className={styles.tutors}>
-        {tutors.map((tutor) => (
-          <div className="card" key={tutor._id}>
-            <Link to={`/dashboard/tutors/${tutor._id}`}>
-              <img src={tutor.pfp} alt="" />
-              <div className="body">
-                <h3>{tutor.name}</h3>
-              </div>
-            </Link>
-          </div>
-        ))}
+        {tutors.length ? (
+          tutors.map((tutor) => (
+            <div className="card" key={tutor._id}>
+              <Link to={`/dashboard/tutors/${tutor._id}`}>
+                <img src={tutor.pfp} alt="" />
+                <div className="body">
+                  <h3>{tutor.name}</h3>
+                </div>
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p>You have no tutors</p>
+        )}
       </div>
     </div>
   );
