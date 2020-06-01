@@ -25,19 +25,23 @@ const Main = () => {
         <div className={styles.wrapper}>
           <h1>Sessions</h1>
           <div className={styles.group}>
-            {data.getSessions.map((session) => (
-              <Link
-                to={`/dashboard/sessions/${session._id}`}
-                key={session._id}
-                className="card square y"
-              >
-                <div className="body">
-                  <h2>{format(session.startTime, "d MMMM, yyyy")}</h2>
-                  <h3>{format(session.startTime, "h:mm aa")}</h3>
-                  <p>{session.location.address}</p>
-                </div>
-              </Link>
-            ))}
+            {data.getSessions.length ? (
+              data.getSessions.map((session) => (
+                <Link
+                  to={`/dashboard/sessions/${session._id}`}
+                  key={session._id}
+                  className="card square y"
+                >
+                  <div className="body">
+                    <h2>{format(session.startTime, "d MMMM, yyyy")}</h2>
+                    <h3>{format(session.startTime, "h:mm aa")}</h3>
+                    <p>{session.location.address}</p>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p>You have no upcoming sessions.</p>
+            )}
             <p>
               <Link to="/dashboard/sessions">See all</Link>
             </p>
@@ -46,18 +50,22 @@ const Main = () => {
         <div className={styles.wrapper}>
           <h1>Class</h1>
           <div className={styles.group}>
-            {data.getClasses.map((classInfo) => (
-              <Link
-                to={`/dashboard/classes/${classInfo._id}`}
-                key={classInfo._id}
-                className="card square y"
-              >
-                <img src={classInfo.image} alt={classInfo.name} />
-                <div className="body">
-                  <h2>{classInfo.name}</h2>
-                </div>
-              </Link>
-            ))}
+            {data.getClasses.length ? (
+              data.getClasses.map((classInfo) => (
+                <Link
+                  to={`/dashboard/classes/${classInfo._id}`}
+                  key={classInfo._id}
+                  className="card square y"
+                >
+                  <img src={classInfo.image} alt={classInfo.name} />
+                  <div className="body">
+                    <h2>{classInfo.name}</h2>
+                  </div>
+                </Link>
+              ))
+            ) : (
+              <p>You are not part of any class.</p>
+            )}
             <p>
               <Link to="/dashboard/classes">See all</Link>
             </p>

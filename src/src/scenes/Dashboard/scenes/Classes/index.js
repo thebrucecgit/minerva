@@ -64,9 +64,13 @@ const Classes = ({ currentUser }) => {
     <div className={styles.Classes}>
       <h1>Classes</h1>
       <div className={styles.classes_grid}>
-        {classes.map((classInfo, ind) => (
-          <ClassSection classInfo={classInfo} key={ind} />
-        ))}
+        {classes.length ? (
+          classes.map((classInfo, ind) => (
+            <ClassSection classInfo={classInfo} key={ind} />
+          ))
+        ) : (
+          <p>You are not part of any class.</p>
+        )}
       </div>
 
       {currentUser.user.userType === "TUTOR" && (

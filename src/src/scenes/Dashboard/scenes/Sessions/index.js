@@ -67,9 +67,8 @@ const Sessions = () => {
       </form>
 
       <div className={styles.sessions_grid}>
-        {sessions
-          // .sort((a, b) => new Date(b.time) - new Date(a.time))
-          .map((session) => (
+        {sessions.length ? (
+          sessions.map((session) => (
             <div key={session._id}>
               <div
                 className={classNames("card", {
@@ -89,7 +88,10 @@ const Sessions = () => {
                 </div>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <p>You have no upcoming sessions.</p>
+        )}
       </div>
     </div>
   );
