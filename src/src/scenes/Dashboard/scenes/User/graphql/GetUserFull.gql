@@ -16,7 +16,7 @@ query($id: ID!) {
     }
     sessions {
       _id
-      time
+      startTime
     }
   }
 }
