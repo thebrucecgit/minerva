@@ -1,7 +1,7 @@
-export default {
-  year: [7, 8, 9, 10, 11, 12, 13],
-  school: ["Christ's College", "Other"],
-  academic: [
+{
+  "year": [7, 8, 9, 10, 11, 12, 13],
+  "school": ["Christ's College", "Other"],
+  "academic": [
     "Mathematics",
     "English",
     "History",
@@ -13,9 +13,9 @@ export default {
     "General Science",
     "Economics",
     "Accounting",
-    "Financial Literacy",
+    "Financial Literacy"
   ],
-  extra: [
+  "extra": [
     "Programming",
     "Piano",
     "Violin",
@@ -25,6 +25,6 @@ export default {
     "Speech Training",
     "On Stage Direction",
     "Lighting/Sound",
-    "Philosophy",
-  ],
-};
+    "Philosophy"
+  ]
+}

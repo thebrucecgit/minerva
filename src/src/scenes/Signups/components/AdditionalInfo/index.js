@@ -3,7 +3,7 @@ import Tags from "@yaireo/tagify/dist/react.tagify";
 import classNames from "classnames";
 
 import StatusSymbol from "../StatusSymbol";
-import selections from "./selections";
+import selections from "../../../../config/whitelist.json";
 
 import styles from "../../styles.module.scss";
 

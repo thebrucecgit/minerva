@@ -6,6 +6,7 @@ import { useQuery, useMutation } from "@apollo/react-hooks";
 import { loader } from "graphql.macro";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
+import TagsEdit from "@yaireo/tagify/dist/react.tagify";
 import ReactQuill from "react-quill";
 import Loader from "../../../../components/Loader";
 import Modal from "../../../../components/Modal";
@@ -26,6 +27,8 @@ import useModal from "../../hooks/useModal";
 import useInstantiateSession from "./hooks/useInstantiateSession";
 import usePreferences from "./hooks/usePreferences";
 
+import selections from "../../../../config/whitelist.json";
+
 import "react-quill/dist/quill.snow.css";
 import styles from "../../class.module.scss";
 
@@ -45,6 +48,8 @@ const DELETE_CLASS = loader("./graphql/DeleteClass.gql");
 
 const toastId = {};
 
+const whitelist = [...selections.academic, ...selections.extra];
+
 const Class = ({ currentUser }) => {
   const history = useHistory();
   const { id } = useParams();
@@ -62,6 +67,7 @@ const Class = ({ currentUser }) => {
     sessions: true,
     location: true,
     preferences: true,
+    tags: true,
   });
 
   const [update, setUpdate] = useState({
@@ -73,6 +79,7 @@ const Class = ({ currentUser }) => {
     sessions: "",
     location: "",
     preferences: "",
+    tags: "",
   });
 
   const [oldSessions, setOldSessions] = useState(false);
@@ -157,8 +164,6 @@ const Class = ({ currentUser }) => {
         variables.tutors = update.tutors.map((tutor) => tutor._id);
       else if (name === "tutees")
         variables.tutees = update.tutees.map((tutee) => tutee._id);
-
-      console.log(variables);
 
       setClassInfo((st) => ({
         ...st,
@@ -258,6 +263,13 @@ const Class = ({ currentUser }) => {
     saveInfo,
   });
 
+  const onTagsChange = (e, name) => {
+    setUpdate((st) => ({
+      ...st,
+      [name]: e.detail.tagify.value.map((tag) => tag.value),
+    }));
+  };
+
   if (error) return error.message;
   if (loading || !classInfo.name) return <Loader />;
 
@@ -280,25 +292,45 @@ const Class = ({ currentUser }) => {
         </div>
 
         <div className={styles.flex}>
-          <div className={styles.padding}>
-            <Tags tags={classInfo.tags} />
+          <div className={classNames(styles.padding, styles.tags)}>
+            {disabled.tags ? (
+              <Tags tags={classInfo.tags} />
+            ) : (
+              <TagsEdit
+                settings={{
+                  placeholder: "eg. English, Mathematics",
+                  whitelist,
+                  callbacks: {
+                    add: (e) => onTagsChange(e, "tags"),
+                    remove: (e) => onTagsChange(e, "tags"),
+                  },
+                }}
+                value={update.tags}
+                name="extras"
+              />
+            )}
           </div>
           <div className={styles.edit}>
             {currentUser.user.userType === "TUTOR" && (
-              <Menu {...menuBind}>
-                <>
-                  <div onClick={toggleEdit}>
-                    <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
-                    {editEnabled ? "Lock Edits" : "Edit Page"}
-                  </div>
-                  <div onClick={openPreferences}>
-                    <FontAwesomeIcon icon={faUserCog} /> Preferences
-                  </div>
-                  <div onClick={openDeletion} className="danger">
-                    <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
-                  </div>
-                </>
-              </Menu>
+              <>
+                <Edit type="tags" />
+                <Menu {...menuBind}>
+                  <>
+                    <div onClick={toggleEdit}>
+                      <FontAwesomeIcon
+                        icon={editEnabled ? faUnlock : faPenAlt}
+                      />{" "}
+                      {editEnabled ? "Lock Edits" : "Edit Page"}
+                    </div>
+                    <div onClick={openPreferences}>
+                      <FontAwesomeIcon icon={faUserCog} /> Preferences
+                    </div>
+                    <div onClick={openDeletion} className="danger">
+                      <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
+                    </div>
+                  </>
+                </Menu>
+              </>
             )}
           </div>
         </div>
