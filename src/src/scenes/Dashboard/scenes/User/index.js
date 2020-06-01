@@ -70,30 +70,40 @@ const User = ({ currentUser }) => {
           <>
             <h2>Classes</h2>
             <div className={styles.classes}>
-              {user.classes.map((classInfo, i) => (
-                <div key={i} className="card x">
-                  <Link to={`/dashboard/classes/${classInfo._id}`}>
-                    <img src={classInfo.image} alt="" />
-                    <div className="body">
-                      <h3>{classInfo.name}</h3>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+              {user.classes.length ? (
+                user.classes.map((classInfo, i) => (
+                  <div key={i} className="card x">
+                    <Link to={`/dashboard/classes/${classInfo._id}`}>
+                      <img src={classInfo.image} alt="" />
+                      <div className="body">
+                        <h3>{classInfo.name}</h3>
+                      </div>
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p>This user has no classes.</p>
+              )}
             </div>
 
             <h2>Sessions</h2>
             <div className={styles.classes}>
-              {user.sessions.map((session, i) => (
-                <div key={i} className="card x">
-                  <Link to={`/dashboard/sessions/${session._id}`}>
-                    <div className="body">
-                      <h3>{format(session.startTime, "EEEE d MMMM, yyyy")}</h3>
-                      <p>{format(session.startTime, "h:mm aa")}</p>
-                    </div>
-                  </Link>
-                </div>
-              ))}
+              {user.sessions.length ? (
+                user.sessions.map((session, i) => (
+                  <div key={i} className="card x">
+                    <Link to={`/dashboard/sessions/${session._id}`}>
+                      <div className="body">
+                        <h3>
+                          {format(session.startTime, "EEEE d MMMM, yyyy")}
+                        </h3>
+                        <p>{format(session.startTime, "h:mm aa")}</p>
+                      </div>
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <p>This user has no sessions.</p>
+              )}
             </div>
           </>
         )}
