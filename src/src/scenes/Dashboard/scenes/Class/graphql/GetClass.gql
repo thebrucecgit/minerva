@@ -1,8 +1,8 @@
-query GetClass($id: ID!, $sessionLimit: Int) {
+query GetClass($id: ID!, $sessionLimit: Int, $oldSessions: Boolean!) {
   getClass(id: $id) {
     _id
     name
-    sessions(limit: $sessionLimit) {
+    sessions(limit: $sessionLimit, old: $oldSessions) {
       _id
       startTime
     }

@@ -52,23 +52,23 @@ const Sessions = () => {
   return (
     <div className={styles.Sessions}>
       <h1>Sessions</h1>
-      {
-        <form>
-          <div className="checkbox">
-            <input
-              type="checkbox"
-              name="isOld"
-              id="isOld"
-              checked={isOld}
-              onChange={(e) => setIsOld(e.target.checked)}
-            />
-            <label htmlFor="isOld">View old sessions</label>
-          </div>
-        </form>
-      }
+
+      <form>
+        <div className="checkbox">
+          <input
+            type="checkbox"
+            name="isOld"
+            id="isOld"
+            checked={isOld}
+            onChange={(e) => setIsOld(e.target.checked)}
+          />
+          <label htmlFor="isOld">View old sessions</label>
+        </div>
+      </form>
+
       <div className={styles.sessions_grid}>
         {sessions
-          .sort((a, b) => new Date(b.time) - new Date(a.time))
+          // .sort((a, b) => new Date(b.time) - new Date(a.time))
           .map((session) => (
             <div key={session._id}>
               <div

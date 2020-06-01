@@ -75,6 +75,7 @@ const Class = ({ currentUser }) => {
     preferences: "",
   });
 
+  const [oldSessions, setOldSessions] = useState(false);
   const [editEnabled, setEditEnabled] = useState(false);
   const [rootClick, menuBind] = useMenu(false);
   const sessionBind = useInstantiateSession();
@@ -82,7 +83,7 @@ const Class = ({ currentUser }) => {
   const { loading, error, data, refetch: fetchAllSessions } = useQuery(
     GET_CLASS,
     {
-      variables: { id, sessionLimit: SESSIONS_LIMIT },
+      variables: { id, sessionLimit: SESSIONS_LIMIT, oldSessions },
     }
   );
 
@@ -356,6 +357,17 @@ const Class = ({ currentUser }) => {
           <h2>Sessions</h2>
           <Edit type="sessions" />
         </div>
+        <form>
+          <div className="checkbox">
+            <input
+              type="checkbox"
+              id="isOld"
+              checked={oldSessions}
+              onChange={(e) => setOldSessions(e.target.checked)}
+            />
+            <label htmlFor="isOld">View old sessions</label>
+          </div>
+        </form>
         {classInfo.sessions.length ? (
           <>
             {classInfo.sessions.map((session) => (
