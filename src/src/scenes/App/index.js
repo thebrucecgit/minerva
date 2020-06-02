@@ -20,7 +20,7 @@ function App() {
               children={(authService) => (
                 <div>
                   <Routes authService={authService} />
-                  <ToastContainer />
+                  <ToastContainer position="bottom-right" />
                 </div>
               )}
             />

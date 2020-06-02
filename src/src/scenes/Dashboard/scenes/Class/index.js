@@ -188,7 +188,7 @@ const Class = ({ currentUser }) => {
       toast.update(toastId.class, {
         render: "Successfully updated class",
         type: toast.TYPE.SUCCESS,
-        autoClose: 2000,
+        autoClose: 5000,
       });
     } catch (e) {
       console.error(e);
