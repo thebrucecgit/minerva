@@ -44,7 +44,7 @@ const AdditionalInfo = ({
             <select
               name="yearGroup"
               id="yearGroup"
-              value={info.yearGroup}
+              value={info.yearGroup ?? ""}
               onChange={onChange}
               noValidate
             >
@@ -63,7 +63,7 @@ const AdditionalInfo = ({
             <select
               name="school"
               id="school"
-              value={info.school}
+              value={info.school ?? ""}
               onChange={onChange}
               noValidate
             >

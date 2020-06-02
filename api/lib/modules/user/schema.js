@@ -6,6 +6,18 @@ export default gql`
     TUTOR
   }
 
+  type Pfp {
+    type: String!
+    url: String!
+    cloudinaryPublicId: String
+  }
+
+  input PfpIn {
+    type: String!
+    url: String!
+    cloudinaryPublicId: String
+  }
+
   "A User (can be a tutor, a tutee or a parent)"
   type User {
     _id: ID!
@@ -13,7 +25,7 @@ export default gql`
     registrationStatus: String!
     name: String!
     email: String!
-    pfp: String
+    pfp: Pfp
     yearGroup: Int!
     school: String!
     academics: [String!]!
@@ -47,7 +59,7 @@ export default gql`
       name: String!
       email: String!
       password: String
-      pfp: String
+      pfp: PfpIn
       yearGroup: Int!
       school: String!
       academics: [String!]!

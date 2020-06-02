@@ -3,7 +3,7 @@ mutation Register(
   $name: String!
   $email: String!
   $password: String
-  $pfp: String
+  $pfp: PfpIn
   $yearGroup: Int!
   $school: String!
   $academics: [String!]!
@@ -32,7 +32,11 @@ mutation Register(
       _id
       name
       userType
-      pfp
+      pfp {
+        type
+        url
+        cloudinaryPublicId
+      }
       email
       registrationStatus
     }

@@ -1,5 +1,6 @@
 import React from "react";
 import { ToastContainer } from "react-toastify";
+import { CloudinaryContext } from "cloudinary-react";
 
 import Routes from "../../routes";
 import AuthHelpers from "../../services/AuthHelpers";
@@ -18,10 +19,14 @@ function App() {
             <Authentication
               authHelpers={authHelpers}
               children={(authService) => (
-                <div>
-                  <Routes authService={authService} />
-                  <ToastContainer position="bottom-right" />
-                </div>
+                <CloudinaryContext
+                  cloudName={process.env.REACT_APP_CLOUDINARY_CLOUDNAME}
+                >
+                  <div>
+                    <Routes authService={authService} />
+                    <ToastContainer position="bottom-right" />
+                  </div>
+                </CloudinaryContext>
               )}
             />
           </Apollo>

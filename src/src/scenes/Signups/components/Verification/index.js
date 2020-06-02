@@ -33,7 +33,7 @@ const Verification = ({
               <select
                 name="price"
                 id="price"
-                value={info.price}
+                value={info.price ?? ""}
                 onChange={onChange}
                 noValidate
               >
@@ -59,7 +59,7 @@ const Verification = ({
               id="biography"
               rows="5"
               placeholder="eg. Philosophy is the essence of my life. Everyday, I wake up to the sweet sounds of Plato."
-              value={info.biography}
+              value={info.biography ?? ""}
               onChange={onChange}
               noValidate
             ></textarea>
@@ -74,7 +74,7 @@ const Verification = ({
               type="text"
               name="grades"
               id="grades"
-              value={info.grades}
+              value={info.grades ?? ""}
               onChange={onChange}
               noValidate
             />

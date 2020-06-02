@@ -32,8 +32,19 @@ const userSchema = new Schema(
     emailConfirmId: String,
     // Profile picture
     pfp: {
-      type: String,
-      trim: true,
+      type: {
+        type: String,
+        enum: ["URL", "CLOUDINARY"],
+        default: "URL",
+      },
+      url: {
+        type: String,
+        trim: true,
+      },
+      cloudinaryPublicId: {
+        type: String,
+        trim: true,
+      },
     },
     dateJoined: {
       type: Date,

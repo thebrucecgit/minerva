@@ -25,3 +25,9 @@ input AttendanceIn {
   attended: Boolean
   reason: String
 }
+
+input PfpIn {
+  type: String!
+  url: String!
+  cloudinaryPublicId: String
+}

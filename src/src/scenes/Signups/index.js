@@ -69,11 +69,9 @@ function Signups({ authService }) {
   }, [info]);
 
   // On input change
-  const onChange = (e) => {
-    e.persist();
-    const value =
-      e.target.type === "checkbox" ? e.target.checked : e.target.value;
-    setInfo((st) => ({ ...st, [e.target.name]: value }));
+  const onChange = ({ target }) => {
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    setInfo((st) => ({ ...st, [target.name]: value }));
   };
 
   const validate = (section) => {
@@ -174,11 +172,16 @@ function Signups({ authService }) {
       uploadWidgetSettings,
       (err, result) => {
         if (err) console.error(err);
-        if (result && result.event === "success") {
-          const { path, original_filename } = result.info;
+        if (result?.event === "success") {
+          console.log(result.info);
+          const { public_id } = result.info;
           setInfo((st) => ({
             ...st,
-            pfp: { file: path, name: original_filename },
+            pfp: {
+              type: "CLOUDINARY",
+              cloudinaryPublicId: public_id,
+              url: `https://res.cloudinary.com/${process.env.REACT_APP_CLOUDINARY_CLOUDNAME}/image/upload/c_crop,g_custom/w_500/${public_id}`,
+            },
           }));
         }
       }
@@ -209,8 +212,8 @@ function Signups({ authService }) {
             name: user.name,
             email: user.email,
             pfp: {
-              file: user.pfp,
-              name: "Google Account Picture",
+              type: "URL",
+              url: user.pfp,
             },
           }));
 
@@ -254,7 +257,6 @@ function Signups({ authService }) {
       const { user } = await authService.register({
         ...info,
         userType,
-        pfp: info?.pfp?.file,
         yearGroup: parseInt(info.yearGroup),
         token,
       });
@@ -264,6 +266,7 @@ function Signups({ authService }) {
       if (user.registrationStatus === "COMPLETE") history.replace("/dashboard");
       else history.replace("/confirm");
     } catch (e) {
+      console.error(e);
       setErrors((st) => ({
         ...st,
         confirmation: e.message,

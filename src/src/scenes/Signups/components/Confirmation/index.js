@@ -34,7 +34,7 @@ const Confirmation = ({
                 type="checkbox"
                 name="agreement"
                 id="agreement"
-                checked={info.agreement}
+                checked={info.agreement ?? false}
                 onChange={onChange}
                 noValidate
               />

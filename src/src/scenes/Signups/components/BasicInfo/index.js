@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import { Image, Transformation } from "cloudinary-react";
 
 import StatusSymbol from "../StatusSymbol";
 
@@ -35,7 +36,7 @@ const BasicInfo = ({
               id="name"
               name="name"
               autoComplete="name"
-              value={info.name}
+              value={info.name ?? ""}
               onChange={onChange}
               noValidate
             />
@@ -48,7 +49,7 @@ const BasicInfo = ({
               id="email"
               name="email"
               autoComplete="email"
-              value={info.email}
+              value={info.email ?? ""}
               onChange={onChange}
               disabled={strategy === "google"}
               noValidate
@@ -65,7 +66,7 @@ const BasicInfo = ({
                 id="password"
                 name="password"
                 autoComplete="new-password"
-                value={info.password}
+                value={info.password ?? ""}
                 onChange={onChange}
                 noValidate
               />
@@ -73,19 +74,18 @@ const BasicInfo = ({
           )}
           <div className={styles.field}>
             <label htmlFor="pfp">Picture:</label>
-            {info.pfp?.file && (
-              <>
-                <img
-                  src={
-                    strategy === "local"
-                      ? `https://res.cloudinary.com/brucec/image/upload/c_crop,g_custom/w_200/${info.pfp.file}`
-                      : info.pfp.file
-                  }
-                  alt="user uploaded pfp"
-                />
-                <p>{info.pfp.name}</p>
-              </>
-            )}
+            {info.pfp &&
+              (info.pfp.cloudinaryPublicId ? (
+                <Image
+                  publicId={info.pfp.cloudinaryPublicId}
+                  alt="user uploaded profile pic"
+                >
+                  <Transformation width="200" crop="scale" />
+                </Image>
+              ) : (
+                <img src={info.pfp.url} alt="google account profile pic" />
+              ))}
+
             <button className="btn" onClick={uploadImage}>
               {info.pfp ? "Change" : "Upload"}
             </button>
