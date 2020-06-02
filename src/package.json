@@ -19,6 +19,7 @@
     "apollo-link-http": "^1.5.17",
     "apollo-link-state": "^0.4.2",
     "classnames": "^2.2.6",
+    "cloudinary-react": "^1.5.0",
     "date-fns": "^2.13.0",
     "graphql": "^14.6.0",
     "graphql.macro": "^1.4.2",
