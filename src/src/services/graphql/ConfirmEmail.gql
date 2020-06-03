@@ -6,7 +6,11 @@ mutation ConfirmUserEmail($emailConfirmId: String!) {
       _id
       name
       userType
-      pfp
+      pfp {
+        type
+        url
+        cloudinaryPublicId
+      }
       email
       registrationStatus
     }

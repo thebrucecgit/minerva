@@ -6,7 +6,11 @@ query Login($email: String, $password: String, $tokenId: String) {
       _id
       name
       userType
-      pfp
+      pfp {
+        type
+        url
+        cloudinaryPublicId
+      }
       email
       registrationStatus
     }
