@@ -4,7 +4,11 @@ query($id: ID!) {
     name
     userType
     email
-    pfp
+    pfp {
+      url
+      type
+      cloudinaryPublicId
+    }
     yearGroup
     biography
     academics

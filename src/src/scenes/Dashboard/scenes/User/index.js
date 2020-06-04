@@ -1,4 +1,5 @@
 import React from "react";
+import ProfilePicture from "../../components/ProfilePicture";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../../../../components/Loader";
 import { useQuery } from "@apollo/react-hooks";
@@ -44,7 +45,7 @@ const User = ({ currentUser }) => {
             className={styles.userType}
           >{`${user.userType.toLowerCase()}, Year ${user.yearGroup}`}</p>
         </div>
-        <img src={user.pfp} alt="" />
+        <ProfilePicture pfp={user.pfp} alt={user.name} width="400" />
       </div>
 
       <div className={classNames("container", styles.userInfo)}>

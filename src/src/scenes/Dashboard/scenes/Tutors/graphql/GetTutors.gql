@@ -1,0 +1,11 @@
+query GET_TUTORS {
+  getTutors {
+    _id
+    name
+    pfp {
+      url
+      type
+      cloudinaryPublicId
+    }
+  }
+}

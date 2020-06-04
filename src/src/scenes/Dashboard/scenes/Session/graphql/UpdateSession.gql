@@ -28,7 +28,11 @@ mutation UpdateSession(
     tutors {
       _id
       name
-      pfp
+      pfp {
+        url
+        type
+        cloudinaryPublicId
+      }
     }
     attendance {
       tutee

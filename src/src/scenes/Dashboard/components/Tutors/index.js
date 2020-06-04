@@ -1,4 +1,5 @@
 import React from "react";
+import ProfilePicture from "../ProfilePicture";
 import { Link } from "react-router-dom";
 import classNames from "classnames";
 import useUserChange from "../../hooks/useUserChange";
@@ -25,7 +26,9 @@ const SortableItem = SortableElement(({ tutor, editEnabled, deleteTutor }) => (
       if (editEnabled) e.preventDefault();
     }}
   >
-    {tutor.pfp && !editEnabled && <img src={tutor.pfp} alt={tutor.name} />}
+    {tutor.pfp && !editEnabled && (
+      <ProfilePicture pfp={tutor.pfp} alt={tutor.name} width="400" />
+    )}
     <h3 className="body">
       {tutor.name}
       {editEnabled && (

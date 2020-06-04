@@ -1,20 +1,13 @@
 import React from "react";
+import ProfilePicture from "../../components/ProfilePicture";
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../../../components/Loader";
-import { gql } from "graphql.macro";
+import { loader } from "graphql.macro";
 import { Link } from "react-router-dom";
 
 import styles from "./styles.module.scss";
 
-const GET_TUTORS = gql`
-  query {
-    getTutors {
-      _id
-      name
-      pfp
-    }
-  }
-`;
+const GET_TUTORS = loader("./graphql/GetTutors.gql");
 
 const Tutors = () => {
   const { data, error, loading } = useQuery(GET_TUTORS);
@@ -32,7 +25,7 @@ const Tutors = () => {
           tutors.map((tutor) => (
             <div className="card" key={tutor._id}>
               <Link to={`/dashboard/tutors/${tutor._id}`}>
-                <img src={tutor.pfp} alt="" />
+                <ProfilePicture pfp={tutor.pfp} alt={tutor.name} />
                 <div className="body">
                   <h3>{tutor.name}</h3>
                 </div>

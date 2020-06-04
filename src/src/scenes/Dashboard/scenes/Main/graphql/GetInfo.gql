@@ -15,6 +15,10 @@ query GetInfo {
   getTutors(limit: 3) {
     _id
     name
-    pfp
+    pfp {
+      url
+      type
+      cloudinaryPublicId
+    }
   }
 }

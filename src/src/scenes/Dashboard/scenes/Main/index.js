@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { format } from "date-fns";
+import ProfilePicture from "../../components/ProfilePicture";
 import Loader from "../../../../components/Loader";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -81,7 +82,7 @@ const Main = () => {
               key={tutor._id}
               to={`/dashboard/tutors/${tutor._id}`}
             >
-              <img src={tutor.pfp} alt={tutor.name} />
+              <ProfilePicture pfp={tutor.pfp} alt={tutor.name} />
               <div className="body">
                 <h3>{tutor.name}</h3>
               </div>

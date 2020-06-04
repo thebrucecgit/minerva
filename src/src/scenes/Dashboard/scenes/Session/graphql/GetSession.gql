@@ -6,7 +6,11 @@ query GetSession($id: ID!) {
     }
     tutors {
       _id
-      pfp
+      pfp {
+        url
+        type
+        cloudinaryPublicId
+      }
       name
     }
     tutees {
