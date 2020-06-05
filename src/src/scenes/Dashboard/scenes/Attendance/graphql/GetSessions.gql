@@ -1,0 +1,15 @@
+query getClass($id: ID!) {
+  getClass(id: $id) {
+    sessions(limit: 100) {
+      tutees {
+        _id
+        name
+      }
+      attendance {
+        tutee
+        attended
+        reason
+      }
+    }
+  }
+}
