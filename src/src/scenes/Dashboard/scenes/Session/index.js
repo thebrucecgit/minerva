@@ -353,6 +353,7 @@ const Session = ({ currentUser }) => {
       <div className={styles.column}>
         <Tutors
           Edit={Edit}
+          showEdit={!sessionInfo.settings.syncTutorsWithClass}
           tutorsDisabled={disabled.tutors}
           tutors={sessionInfo.tutors}
           update={update.tutors}

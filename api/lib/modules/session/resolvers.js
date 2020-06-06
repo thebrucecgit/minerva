@@ -1,7 +1,7 @@
 import Session from "./models/session.model";
 import Class from "../class/models/class.model";
 import User from "../user/models/user.model";
-import { addMinutes } from "date-fns";
+import { addMinutes, isBefore } from "date-fns";
 
 import { validateInstantiation } from "../../helpers";
 
@@ -134,6 +134,16 @@ export default {
         !session.tutors.toObject().includes(user._id)
       ) {
         throw Error("You are not part of this session", 401);
+      }
+
+      if (edits.settings?.syncTutorsWithClass) {
+        await session
+          .populate({
+            path: "class",
+            select: "tutors",
+          })
+          .execPopulate();
+        edits.tutors = session.class.tutors;
       }
 
       return await Session.findByIdAndUpdate(args.id, edits, {

@@ -63,7 +63,14 @@ const SortableList = SortableContainer(
   )
 );
 
-const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate }) => {
+const Tutors = ({
+  Edit,
+  showEdit = true,
+  tutorsDisabled,
+  tutors,
+  update,
+  setUpdate,
+}) => {
   const onSortEnd = ({ oldIndex, newIndex }) => {
     setUpdate((st) => {
       const reordered = [...st.tutors];
@@ -83,7 +90,7 @@ const Tutors = ({ Edit, tutorsDisabled, tutors, update, setUpdate }) => {
     <>
       <div className={styles.flex}>
         <h2>Tutors</h2>
-        <Edit type="tutors" />
+        {showEdit && <Edit type="tutors" />}
       </div>
       <SortableList
         tutors={tutorsDisabled ? tutors : update}

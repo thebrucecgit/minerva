@@ -26,10 +26,11 @@ const Settings = ({ onSubmit, onChange, update }) => {
             onChange={onChange}
           />
           <label htmlFor="syncTutorsWithClass">
-            Tutors of this session to be synchronised with the parent class
+            Synchronise tutors with class
             <div className="small">
-              If checked, changes of tutors in this session will be reflected in
-              the parent class and vice versa
+              If checked, changes of tutors in the parent class will be
+              reflected in this session. Otherwise, tutors in this session may
+              be edited to something different to the class.
             </div>
           </label>
         </div>
@@ -42,10 +43,11 @@ const Settings = ({ onSubmit, onChange, update }) => {
             onChange={onChange}
           />
           <label htmlFor="syncTuteesWithClass">
-            Tutees of this session to be synchronised with the parent class
+            Synchronise tutees with class
             <div className="small">
-              If checked, changes of tutees in this session will be reflected in
-              the parent class and vice versa
+              If checked, changes of tutees in the parent class will be
+              reflected in this session. Otherwise, tutees in this session may
+              be edited to something different to the class.
             </div>
           </label>
         </div>
