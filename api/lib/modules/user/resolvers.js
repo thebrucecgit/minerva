@@ -40,11 +40,11 @@ export default {
     async getUser(_, { id }, { user }) {
       // Not the user himself or a tutor
       if (user.userType !== "TUTOR" && user._id !== id)
-        throw Error("Not authorized", 401);
+        throw new Error("Not authorized", 401);
       return await User.findById(id);
     },
     async getUsers(_, { value, userType }, { user }) {
-      if (user.userType !== "TUTOR") throw Error("Not authorized", 401);
+      if (user.userType !== "TUTOR") throw new Error("Not authorized", 401);
       const regex = new RegExp(escapeRegExp(value), "gi");
 
       // Fuzzy search
@@ -112,13 +112,13 @@ export default {
   User: {
     async classes(user, _, { user: reqUser }) {
       if (reqUser.userType !== "TUTOR")
-        throw ApolloError("User unauthorized for this field", 401);
+        throw new ApolloError("User unauthorized for this field", 401);
       await user.populate("classes").execPopulate();
       return user.classes;
     },
     async sessions(user, _, { user: reqUser }) {
       if (reqUser.userType !== "TUTOR")
-        throw ApolloError("User unauthorized for this field", 401);
+        throw new ApolloError("User unauthorized for this field", 401);
       await user.populate("sessions").execPopulate();
       return user.sessions;
     },
@@ -241,7 +241,7 @@ export default {
       { user }
     ) {
       const update = user ?? (await User.findOne({ email, passwordResetCode }));
-      if (!update) throw Error("Failed to change password");
+      if (!update) throw new Error("Failed to change password");
       update.passwordResetCode = undefined;
       update.password = await bcrypt.hash(newPassword, 12);
       await update.save();
