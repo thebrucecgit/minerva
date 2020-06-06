@@ -16,14 +16,35 @@ export default {
     async getSessions(
       _,
       { time = new Date(), old = false, limit = 10 },
-      { user }
+      { user },
+      { fieldNodes }
     ) {
+      const req = fieldNodes.find((node) => node.name?.value === "getSessions");
+      const selections = req.selectionSet.selections.map(
+        (selection) => selection.name.value
+      );
+      let projection = {};
+
+      // Add Apollo selections to Mongoose projections
+      selections.forEach((path) => {
+        projection[path] = 1;
+      });
+
+      if (user.userType === "TUTEE") {
+        if (selections.includes("attendance"))
+          projection.attendance = {
+            $elemMatch: { tutee: user._id, attended: true },
+          };
+        else delete projection.attendance;
+      }
+
       await user
         .populate({
           path: "sessions",
           match: {
             endTime: { [old ? "$lte" : "$gt"]: time },
           },
+          select: projection,
           limit,
           options: {
             sort: { startTime: old ? -1 : 1 },

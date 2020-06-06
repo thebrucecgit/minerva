@@ -6,5 +6,9 @@ query GetSessions($old: Boolean!) {
     location {
       address
     }
+    attendance {
+      tutee
+      attended
+    }
   }
 }

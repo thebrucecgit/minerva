@@ -7,10 +7,15 @@ import { format, isAfter } from "date-fns";
 import classNames from "classnames";
 
 import styles from "./styles.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTimesCircle,
+  faCheckCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSIONS = loader("./graphql/GetSessions.gql");
 
-const Sessions = () => {
+const Sessions = ({ currentUser }) => {
   const [isOld, setIsOld] = useState(false);
 
   // Solely for re-rendering purposes
@@ -80,7 +85,21 @@ const Sessions = () => {
               >
                 <div className="header">
                   <Link to={`/dashboard/sessions/${session._id}`}>
-                    <h2>{format(session.startTime, "EEEE d MMMM, yyyy")}</h2>
+                    <h2>
+                      {format(session.startTime, "EEEE d MMMM, yyyy")}
+                      {isOld && currentUser.user.userType === "TUTEE" && (
+                        <FontAwesomeIcon
+                          className={classNames(styles.attended, {
+                            [styles.true]: session.attendance.length,
+                          })}
+                          icon={
+                            session.attendance.length
+                              ? faCheckCircle
+                              : faTimesCircle
+                          }
+                        />
+                      )}
+                    </h2>
                   </Link>
                 </div>
                 <div className="body">

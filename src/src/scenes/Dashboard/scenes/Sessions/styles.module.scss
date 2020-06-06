@@ -7,3 +7,11 @@
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 3rem;
 }
+
+.attended {
+  margin: 0 10px;
+  color: red;
+  &.true {
+    color: green;
+  }
+}
