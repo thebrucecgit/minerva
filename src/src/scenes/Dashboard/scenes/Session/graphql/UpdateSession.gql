@@ -6,6 +6,7 @@ mutation UpdateSession(
   $location: LocationIn
   $tutors: [ID!]
   $attendance: [AttendanceIn!]
+  $settings: SessionSettingsIn
 ) {
   updateSession(
     id: $id
@@ -15,6 +16,7 @@ mutation UpdateSession(
     attendance: $attendance
     startTime: $startTime
     length: $length
+    settings: $settings
   ) {
     _id
     notes
@@ -38,6 +40,11 @@ mutation UpdateSession(
       tutee
       attended
       reason
+    }
+    settings {
+      studentEditNotes
+      syncTutorsWithClass
+      syncTuteesWithClass
     }
     startTime
     endTime

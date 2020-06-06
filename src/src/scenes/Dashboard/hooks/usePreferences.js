@@ -1,12 +1,12 @@
-const usePreferences = ({ saveInfo, setUpdate }) => {
+const usePreferences = ({ saveInfo, setUpdate, name }) => {
   const onChange = (e) => {
     e.persist();
 
     const { target } = e;
     setUpdate((st) => {
       const newState = { ...st };
-      if (!st.preferences) newState.preferences = {};
-      newState.preferences[target.name] =
+      if (!st[name]) newState[name] = {};
+      newState[name][target.name] =
         target.type === "checkbox" ? target.checked : target.value;
 
       return newState;
@@ -15,7 +15,7 @@ const usePreferences = ({ saveInfo, setUpdate }) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    saveInfo("preferences", { resetUpdate: false });
+    saveInfo(name, { resetUpdate: false });
   };
 
   return { onChange, onSubmit };

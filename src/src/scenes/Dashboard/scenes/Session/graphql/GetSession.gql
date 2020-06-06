@@ -29,6 +29,11 @@ query GetSession($id: ID!) {
       attended
       reason
     }
+    settings {
+      studentEditNotes
+      syncTutorsWithClass
+      syncTuteesWithClass
+    }
     price
     startTime
     endTime

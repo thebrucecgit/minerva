@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 import Loader from "../../../../components/Loader";
 
 import Attendance from "./components/Attendance";
+import Settings from "./components/Settings";
 import EditButton from "../../components/EditButton";
 import Menu from "../../components/Menu";
 import Tutors from "../../components/Tutors";
@@ -21,6 +22,7 @@ import reactQuillModules from "../reactQuillModules";
 import useMenu from "../../hooks/useMenu";
 import useEdits from "../../hooks/useEdits";
 import useModal from "../../hooks/useModal";
+import usePreferences from "../../hooks/usePreferences";
 
 import styles from "../../class.module.scss";
 import "react-quill/dist/quill.snow.css";
@@ -173,6 +175,12 @@ const Session = ({ currentUser }) => {
       }));
     }
   }, [data]);
+
+  const settingsBind = usePreferences({
+    setUpdate,
+    saveInfo,
+    name: "settings",
+  });
 
   const [startEdit, cancelEdit] = useEdits({
     info: sessionInfo,
@@ -357,9 +365,7 @@ const Session = ({ currentUser }) => {
         )}
       </div>
       <Modal {...settingsBinds}>
-        <div className={styles.padding}>
-          <h2>Settings</h2>
-        </div>
+        <Settings {...settingsBind} update={update.settings} />
       </Modal>
 
       <Modal {...attendancesBinds}>

@@ -3,7 +3,6 @@ import React from "react";
 import styles from "../../../class.module.scss";
 
 const Preferences = ({ onSubmit, onChange, update }) => {
-  console.log(update);
   return (
     <div className={styles.padding}>
       <h2>Preferences</h2>

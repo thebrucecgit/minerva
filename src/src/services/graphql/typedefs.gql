@@ -31,3 +31,9 @@ input PfpIn {
   url: String!
   cloudinaryPublicId: String
 }
+
+input SessionSettingsIn {
+  studentEditNotes: Boolean!
+  syncTutorsWithClass: Boolean!
+  syncTuteesWithClass: Boolean!
+}

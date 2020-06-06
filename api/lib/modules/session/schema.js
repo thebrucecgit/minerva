@@ -23,6 +23,14 @@ export default gql`
   "Settings for this session (inherits from class initially)"
   type SessionSettings {
     studentEditNotes: Boolean!
+    syncTutorsWithClass: Boolean!
+    syncTuteesWithClass: Boolean!
+  }
+
+  input SessionSettingsIn {
+    studentEditNotes: Boolean!
+    syncTutorsWithClass: Boolean!
+    syncTuteesWithClass: Boolean!
   }
 
   input AttendanceIn {
@@ -75,6 +83,7 @@ export default gql`
       startTime: Date
       length: Int
       notes: String
+      settings: SessionSettingsIn
     ): Session!
     "Deletes Session and removes session from relations"
     deleteSession(id: ID!): Boolean

@@ -25,7 +25,7 @@ import useMenu from "../../hooks/useMenu";
 import useEdits from "../../hooks/useEdits";
 import useModal from "../../hooks/useModal";
 import useInstantiateSession from "./hooks/useInstantiateSession";
-import usePreferences from "./hooks/usePreferences";
+import usePreferences from "../../hooks/usePreferences";
 
 import selections from "../../../../config/whitelist.json";
 
@@ -261,6 +261,7 @@ const Class = ({ currentUser }) => {
   const preferencesBind = usePreferences({
     setUpdate,
     saveInfo,
+    name: "preferences",
   });
 
   const onTagsChange = (e, name) => {
