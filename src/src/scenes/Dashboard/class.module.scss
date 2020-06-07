@@ -59,6 +59,17 @@
   .tags {
     width: 100%;
   }
+
+  .videoLink {
+    display: inline-block;
+    margin: 1rem 0;
+    padding: 1rem $text-padding;
+    border-radius: 5px;
+    background-color: rgb(242, 242, 242);
+    &:hover {
+      background-color: rgb(238, 238, 238);
+    }
+  }
 }
 
 .padding {

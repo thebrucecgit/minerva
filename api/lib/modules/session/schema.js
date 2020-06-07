@@ -25,12 +25,14 @@ export default gql`
     studentEditNotes: Boolean!
     syncTutorsWithClass: Boolean!
     syncTuteesWithClass: Boolean!
+    online: Boolean!
   }
 
   input SessionSettingsIn {
-    studentEditNotes: Boolean!
-    syncTutorsWithClass: Boolean!
-    syncTuteesWithClass: Boolean!
+    studentEditNotes: Boolean
+    syncTutorsWithClass: Boolean
+    syncTuteesWithClass: Boolean
+    online: Boolean
   }
 
   input AttendanceIn {

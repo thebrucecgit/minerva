@@ -57,7 +57,12 @@ const classSchema = Schema({
     type: Number,
     default: 10,
   },
+  videoLink: String,
   preferences: {
+    online: {
+      type: Boolean,
+      default: false,
+    },
     publicClass: {
       type: Boolean,
       default: false,

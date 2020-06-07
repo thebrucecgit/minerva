@@ -3,6 +3,7 @@ query GetSession($id: ID!) {
     class {
       _id
       name
+      videoLink
     }
     tutors {
       _id
@@ -30,6 +31,7 @@ query GetSession($id: ID!) {
       reason
     }
     settings {
+      online
       studentEditNotes
       syncTutorsWithClass
       syncTuteesWithClass

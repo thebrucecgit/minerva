@@ -15,6 +15,7 @@ input CoordIn {
 }
 
 input ClassPreferenceIn {
+  online: Boolean
   publicClass: Boolean
   studentInstantiation: Boolean
   studentAgreeSessions: Boolean
@@ -33,7 +34,8 @@ input PfpIn {
 }
 
 input SessionSettingsIn {
-  studentEditNotes: Boolean!
-  syncTutorsWithClass: Boolean!
-  syncTuteesWithClass: Boolean!
+  online: Boolean
+  studentEditNotes: Boolean
+  syncTutorsWithClass: Boolean
+  syncTuteesWithClass: Boolean
 }

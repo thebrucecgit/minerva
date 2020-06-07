@@ -33,6 +33,7 @@ import {
   faUserCog,
   faUnlock,
   faTrashAlt,
+  faPhoneVolume,
 } from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSION = loader("./graphql/GetSession.gql");
@@ -317,14 +318,27 @@ const Session = ({ currentUser }) => {
             )}
           </div>
         </div>
-        <Edit type="location" />
 
-        <Map
-          location={sessionInfo.location}
-          disabled={disabled.location}
-          update={update.location}
-          setUpdate={setUpdate}
-        />
+        {sessionInfo.settings.online ? (
+          <a
+            className={classNames(styles.padding, styles.videoLink)}
+            href={sessionInfo.class.videoLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Join Video Call <FontAwesomeIcon icon={faPhoneVolume} />
+          </a>
+        ) : (
+          <>
+            <Edit type="location" />
+            <Map
+              location={sessionInfo.location}
+              disabled={disabled.location}
+              update={update.location}
+              setUpdate={setUpdate}
+            />
+          </>
+        )}
 
         <h2 className={styles.padding}>What we did</h2>
         <ReactQuill

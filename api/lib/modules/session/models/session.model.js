@@ -45,6 +45,10 @@ const sessionSchema = Schema({
     },
   },
   settings: {
+    online: {
+      type: Boolean,
+      default: false,
+    },
     studentEditNotes: {
       type: Boolean,
       default: false,

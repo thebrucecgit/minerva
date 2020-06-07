@@ -45,5 +45,12 @@ mutation UpdateClass(
       _id
       name
     }
+    preferences {
+      online
+      publicClass
+      studentInstantiation
+      studentAgreeSessions
+    }
+    videoLink
   }
 }

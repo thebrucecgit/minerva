@@ -27,11 +27,13 @@ query GetClass($id: ID!, $sessionLimit: Int, $oldSessions: Boolean!) {
         lng
       }
     }
+    videoLink
     pricePerTutee
     tags
     date
     image
     preferences {
+      online
       publicClass
       studentInstantiation
       studentAgreeSessions

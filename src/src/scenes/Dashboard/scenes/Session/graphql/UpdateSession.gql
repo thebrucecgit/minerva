@@ -42,6 +42,7 @@ mutation UpdateSession(
       reason
     }
     settings {
+      online
       studentEditNotes
       syncTutorsWithClass
       syncTuteesWithClass

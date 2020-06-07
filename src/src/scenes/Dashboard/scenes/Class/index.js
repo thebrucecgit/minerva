@@ -38,6 +38,7 @@ import {
   faUserCog,
   faUnlock,
   faTrashAlt,
+  faPhoneVolume,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SESSIONS_LIMIT = 5;
@@ -368,13 +369,26 @@ const Class = ({ currentUser }) => {
         />
         <Edit type="description" />
 
-        <Map
-          location={classInfo.location}
-          disabled={disabled.location}
-          update={update.location}
-          setUpdate={setUpdate}
-        />
-        <Edit type="location" />
+        {classInfo.preferences.online ? (
+          <a
+            className={classNames(styles.padding, styles.videoLink)}
+            href={classInfo.videoLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Join Video Call <FontAwesomeIcon icon={faPhoneVolume} />
+          </a>
+        ) : (
+          <>
+            <Map
+              location={classInfo.location}
+              disabled={disabled.location}
+              update={update.location}
+              setUpdate={setUpdate}
+            />
+            <Edit type="location" />
+          </>
+        )}
       </div>
 
       <div className={styles.column}>

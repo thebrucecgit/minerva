@@ -10,6 +10,22 @@ const Settings = ({ onSubmit, onChange, update }) => {
         <div className="field checkbox">
           <input
             type="checkbox"
+            name="online"
+            id="online"
+            checked={update.online}
+            onChange={onChange}
+          />
+          <label htmlFor="online">
+            Online class
+            <div className="small">
+              If checked, this class occurs online. Otherwise, this class occurs
+              in-person at the set location.
+            </div>
+          </label>
+        </div>
+        <div className="field checkbox">
+          <input
+            type="checkbox"
             name="studentEditNotes"
             id="studentEditNotes"
             checked={update.studentEditNotes}

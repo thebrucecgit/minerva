@@ -2,6 +2,8 @@ import Class from "./models/class.model";
 import User from "../user/models/user.model";
 import Session from "../session/models/session.model";
 
+import axios from "axios";
+
 export default {
   Query: {
     async getClass(_, { id }, { user }) {
@@ -66,18 +68,47 @@ export default {
     async updateClass(_, args, { user }) {
       if (user.userType !== "TUTOR") throw new Error("Not authorized", 401);
 
-      const oldClassInfo = await Class.findById(args.id);
+      const oldClassInfo = await Class.findById(args.id).lean();
       if (!oldClassInfo) throw new Error("Class not found", 404);
-      const reqs = [
-        Class.findByIdAndUpdate(args.id, args, {
-          new: true,
-        }),
-      ];
 
-      const { tutors, tutees } = oldClassInfo;
+      const edits = { ...args };
+
+      const { tutors, tutees, videoLink, name } = oldClassInfo;
 
       const userUpdates = [];
       const sessionUpdates = [];
+
+      if (args.preferences?.hasOwnProperty("online")) {
+        sessionUpdates.push({
+          updateMany: {
+            filter: {
+              _id: { $in: oldClassInfo.sessions },
+              endTime: { $gt: new Date() },
+            },
+            update: {
+              "settings.online": args.preferences.online,
+            },
+          },
+        });
+
+        if (args.preferences.online && !videoLink) {
+          const { data } = await axios({
+            method: "post",
+            url: "https://api.join.skype.com/v1/meetnow/createjoinlinkguest",
+            data: {
+              title: name,
+            },
+          });
+
+          edits.videoLink = data.joinLink;
+        }
+      }
+
+      const reqs = [
+        Class.findByIdAndUpdate(args.id, edits, {
+          new: true,
+        }),
+      ];
 
       if (args.tutors?.length) {
         // Tutors that have been deleted

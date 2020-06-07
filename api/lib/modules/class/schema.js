@@ -6,12 +6,14 @@ export default gql`
     publicClass: Boolean!
     studentInstantiation: Boolean!
     studentAgreeSessions: Boolean!
+    online: Boolean!
   }
 
   input ClassPreferenceIn {
     publicClass: Boolean
     studentInstantiation: Boolean
     studentAgreeSessions: Boolean
+    online: Boolean
   }
 
   "A class, from which sessions can be constructed from"
@@ -28,6 +30,7 @@ export default gql`
     date: String
     image: String
     preferences: ClassPreference!
+    videoLink: String
   }
 
   extend type Query {
