@@ -54,11 +54,18 @@ export default {
       });
     },
     async getTutors(_, { limit }, { user }) {
-      const populated = await user.populate("classes").execPopulate();
+      const populated = await user
+        .populate({
+          path: "classes",
+          options: {
+            lean: true,
+          },
+        })
+        .execPopulate();
 
-      const tutorsArray = populated.classes
-        .toObject()
-        .map((classInfo) => classInfo.tutors.toObject());
+      const tutorsArray = populated.classes.map(
+        (classInfo) => classInfo.tutors
+      );
 
       const tutors = [...new Set([].concat(...tutorsArray))];
 
@@ -73,7 +80,7 @@ export default {
         let user;
         if (tokenId) {
           const info = await verifyGoogleToken(tokenId);
-          const oldUser = await User.findOne({ googleId: info.sub });
+          const oldUser = await User.findOne({ googleId: info.sub }).lean();
 
           const newUser = {
             email: info.email,
@@ -152,8 +159,9 @@ export default {
           throw new UserInputError("An user already exists with this email");
 
         // Delete temporary google user
-        const oldUser = await User.findOneAndDelete({ email: args.email });
-        oldUser.toObject();
+        const oldUser = await User.findOneAndDelete({
+          email: args.email,
+        }).lean();
 
         delete newUser.password;
 
