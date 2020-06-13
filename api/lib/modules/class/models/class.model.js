@@ -63,6 +63,10 @@ const classSchema = Schema({
       type: Boolean,
       default: false,
     },
+    enableChat: {
+      type: Boolean,
+      default: true,
+    },
     publicClass: {
       type: Boolean,
       default: false,
@@ -75,6 +79,10 @@ const classSchema = Schema({
       type: Boolean,
       default: false,
     },
+  },
+  chat: {
+    type: String,
+    ref: "Chat",
   },
 });
 

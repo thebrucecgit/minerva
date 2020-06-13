@@ -76,44 +76,39 @@ export default {
       );
     },
     async login(_, { email, password, tokenId }) {
-      try {
-        let user;
-        if (tokenId) {
-          const info = await verifyGoogleToken(tokenId);
-          const oldUser = await User.findOne({ googleId: info.sub }).lean();
+      let user;
+      if (tokenId) {
+        const info = await verifyGoogleToken(tokenId);
+        const oldUser = await User.findOne({ googleId: info.sub }).lean();
 
-          const newUser = {
-            email: info.email,
-            pfp: info.picture,
-            googleId: info.sub,
-            name: info.name,
-            registrationStatus:
-              oldUser?.registrationStatus ?? "GOOGLE_SIGNED_IN",
-            lastAuthenticated: Date.now(),
-          };
+        const newUser = {
+          email: info.email,
+          pfp: info.picture,
+          googleId: info.sub,
+          name: info.name,
+          registrationStatus: oldUser?.registrationStatus ?? "GOOGLE_SIGNED_IN",
+          lastAuthenticated: Date.now(),
+        };
 
-          user = await User.findOneAndUpdate({ googleId: info.sub }, newUser, {
-            new: true,
-            upsert: true,
-            setDefaultsOnInsert: true,
-          });
-        } else {
-          user = await User.findOneAndUpdate(
-            { email },
-            { lastAuthenticated: Date.now() },
-            { new: true }
-          );
+        user = await User.findOneAndUpdate({ googleId: info.sub }, newUser, {
+          new: true,
+          upsert: true,
+          setDefaultsOnInsert: true,
+        });
+      } else {
+        user = await User.findOneAndUpdate(
+          { email },
+          { lastAuthenticated: Date.now() },
+          { new: true }
+        );
 
-          if (!user) throw new UserInputError("User not found");
+        if (!user) throw new UserInputError("User not found");
 
-          const pass = await bcrypt.compare(password, user.password);
-          if (!pass)
-            throw new UserInputError("The email or password is incorrect");
-        }
-        return createUserObject(user);
-      } catch (e) {
-        console.error(e);
+        const pass = await bcrypt.compare(password, user.password);
+        if (!pass)
+          throw new UserInputError("The email or password is incorrect");
       }
+      return createUserObject(user);
     },
   },
   User: {
@@ -128,6 +123,10 @@ export default {
         throw new ApolloError("User unauthorized for this field", 401);
       await user.populate("sessions").execPopulate();
       return user.sessions;
+    },
+    async chats(user, _, { user: reqUser }) {
+      await user.populate("chats").execPopulate();
+      return user.chats;
     },
   },
   Mutation: {

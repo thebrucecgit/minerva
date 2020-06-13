@@ -53,7 +53,7 @@ const Apollo = ({ authHelpers, children }) => {
         return forward(operation);
       }),
       new HttpLink({
-        uri: process.env.REACT_APP_BACKEND_URI,
+        uri: `${process.env.REACT_APP_BACKEND_URI}/graphql`,
       }),
     ]),
     cache: new InMemoryCache(),

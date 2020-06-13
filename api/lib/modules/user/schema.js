@@ -35,6 +35,7 @@ export default gql`
     price: Int
     classes: [Class!]
     sessions: [Session!]
+    chats: [Chat]
   }
 
   "The object that is returned when a user is authenticated"

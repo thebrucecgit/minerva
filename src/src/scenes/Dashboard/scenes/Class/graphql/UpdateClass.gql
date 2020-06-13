@@ -50,7 +50,11 @@ mutation UpdateClass(
       publicClass
       studentInstantiation
       studentAgreeSessions
+      enableChat
     }
     videoLink
+    chat {
+      channel
+    }
   }
 }

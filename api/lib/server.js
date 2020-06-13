@@ -4,15 +4,15 @@ import {} from "dotenv/config";
 import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import cors from "cors";
-import jwt from "jsonwebtoken";
 import "./config/database";
 
-import User from "./modules/user/models/user.model";
+import chatRoutes from "./modules/chat/routes";
 
+import authenticate from "./authenticate";
 import schemas from "./schemas";
 import resolvers from "./resolvers";
 
-const { DOMAIN, JWT_SECRET } = process.env;
+const { DOMAIN } = process.env;
 
 const server = new ApolloServer({
   typeDefs: schemas,
@@ -21,14 +21,15 @@ const server = new ApolloServer({
     const authHeader = req.header("authorization");
     if (!authHeader) return;
     const token = authHeader.split(" ")[1];
-    const { id } = jwt.verify(token, JWT_SECRET);
-    const user = await User.findById(id);
+    const user = await authenticate(token);
     return { user };
   },
 });
 
 const app = express();
 app.use(cors());
+app.use("/chat", chatRoutes);
+
 server.applyMiddleware({ app });
 
 app.listen({ port: 5000 }, () => {

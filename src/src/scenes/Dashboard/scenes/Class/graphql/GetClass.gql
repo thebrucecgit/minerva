@@ -37,6 +37,10 @@ query GetClass($id: ID!, $sessionLimit: Int, $oldSessions: Boolean!) {
       publicClass
       studentInstantiation
       studentAgreeSessions
+      enableChat
+    }
+    chat {
+      channel
     }
   }
 }

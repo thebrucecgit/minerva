@@ -7,6 +7,7 @@ export default gql`
     studentInstantiation: Boolean!
     studentAgreeSessions: Boolean!
     online: Boolean!
+    enableChat: Boolean!
   }
 
   input ClassPreferenceIn {
@@ -14,6 +15,7 @@ export default gql`
     studentInstantiation: Boolean
     studentAgreeSessions: Boolean
     online: Boolean
+    enableChat: Boolean
   }
 
   "A class, from which sessions can be constructed from"
@@ -31,6 +33,7 @@ export default gql`
     image: String
     preferences: ClassPreference!
     videoLink: String
+    chat: Chat
   }
 
   extend type Query {

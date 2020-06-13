@@ -1,0 +1,17 @@
+query GetChat($channel: ID!) {
+  getChat(channel: $channel) {
+    class {
+      _id
+    }
+    users {
+      _id
+      name
+    }
+    events {
+      type
+      time
+      author
+      text
+    }
+  }
+}

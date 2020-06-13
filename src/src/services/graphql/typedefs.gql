@@ -19,6 +19,7 @@ input ClassPreferenceIn {
   publicClass: Boolean
   studentInstantiation: Boolean
   studentAgreeSessions: Boolean
+  enableChat: Boolean
 }
 
 input AttendanceIn {
@@ -38,4 +39,10 @@ input SessionSettingsIn {
   studentEditNotes: Boolean
   syncTutorsWithClass: Boolean
   syncTuteesWithClass: Boolean
+}
+
+input ChatEventIn {
+  type: String!
+  time: Date!
+  text: String
 }

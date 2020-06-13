@@ -46,6 +46,12 @@ const userSchema = new Schema(
         trim: true,
       },
     },
+    chats: [
+      {
+        type: String,
+        ref: "Chat",
+      },
+    ],
     dateJoined: {
       type: Date,
       default: Date.now(),

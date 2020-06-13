@@ -2,6 +2,7 @@ import { GraphQLScalarType, Kind } from "graphql";
 import userResolvers from "./modules/user/resolvers";
 import sessionResolvers from "./modules/session/resolvers";
 import classResolvers from "./modules/class/resolvers";
+import chatResolvers from "./modules/chat/resolvers";
 
 const rootResolvers = {
   Date: new GraphQLScalarType({
@@ -15,4 +16,10 @@ const rootResolvers = {
   }),
 };
 
-export default [rootResolvers, userResolvers, sessionResolvers, classResolvers];
+export default [
+  rootResolvers,
+  userResolvers,
+  sessionResolvers,
+  classResolvers,
+  chatResolvers,
+];

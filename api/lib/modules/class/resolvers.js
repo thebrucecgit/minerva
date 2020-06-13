@@ -1,8 +1,10 @@
 import Class from "./models/class.model";
 import User from "../user/models/user.model";
 import Session from "../session/models/session.model";
+import Chat from "../chat/model";
 
 import axios from "axios";
+import Chat from "../chat/model";
 
 export default {
   Query: {
@@ -46,6 +48,9 @@ export default {
       await classDoc.populate("tutors").execPopulate();
       return classDoc.tutors;
     },
+    async chat({ chat }) {
+      return await Chat.findOne({ channel: chat });
+    },
   },
   Mutation: {
     async createClass(_, { name }, { user }) {
@@ -78,6 +83,7 @@ export default {
       const userUpdates = [];
       const sessionUpdates = [];
 
+      // Video call updates
       if (args.preferences?.hasOwnProperty("online")) {
         sessionUpdates.push({
           updateMany: {
@@ -104,12 +110,28 @@ export default {
         }
       }
 
+      // Chat enabling updates
+      if (args?.preferences.hasOwnProperty("enableChat")) {
+        if (args.preferences.enableChat) {
+          if (!oldClassInfo.chat) {
+            const { channel } = await Chat.create({
+              bindToClass: true,
+              class: oldClassInfo._id,
+            });
+            edits.chat = channel;
+          }
+        } else {
+          // TODO: what to do when chat is disabled
+        }
+      }
+
       const reqs = [
         Class.findByIdAndUpdate(args.id, edits, {
           new: true,
         }),
       ];
 
+      // Syncing with tutors updates
       if (args.tutors?.length) {
         // Tutors that have been deleted
         const deletedTutors = tutors.filter((id) => !args.tutors.includes(id));
@@ -145,6 +167,7 @@ export default {
         });
       }
 
+      // Sync with tutees updates
       if (args.tutees?.length) {
         const deletedTutees = tutees.filter((id) => !args.tutees.includes(id));
         const newTutees = args.tutees.filter((id) => !tutees.includes(id));

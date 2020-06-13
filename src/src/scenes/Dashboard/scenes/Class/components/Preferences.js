@@ -41,6 +41,16 @@ const Preferences = ({ onSubmit, onChange, update }) => {
         <div className="field checkbox">
           <input
             type="checkbox"
+            name="enableChat"
+            id="enableChat"
+            checked={update.enableChat}
+            onChange={onChange}
+          />
+          <label htmlFor="enableChat">Enable chat</label>
+        </div>
+        <div className="field checkbox">
+          <input
+            type="checkbox"
             name="studentInstantiation"
             id="studentInstantiation"
             checked={update.studentInstantiation}

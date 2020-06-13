@@ -39,6 +39,7 @@ import {
   faUnlock,
   faTrashAlt,
   faPhoneVolume,
+  faCommentAlt,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SESSIONS_LIMIT = 5;
@@ -313,6 +314,14 @@ const Class = ({ currentUser }) => {
             )}
           </div>
           <div className={styles.edit}>
+            {classInfo.preferences.enableChat && (
+              <Link to={`/dashboard/chats/${classInfo.chat.channel}`}>
+                <button className="btn">
+                  Chat <FontAwesomeIcon icon={faCommentAlt} />
+                </button>
+              </Link>
+            )}
+
             {currentUser.user.userType === "TUTOR" && (
               <>
                 <Edit type="tags" />
