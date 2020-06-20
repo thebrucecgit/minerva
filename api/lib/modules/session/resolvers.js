@@ -1,6 +1,6 @@
-import Session from "./models/session.model";
-import Class from "../class/models/class.model";
-import User from "../user/models/user.model";
+import Session from "./model";
+import Class from "../class/model";
+import User from "../user/model";
 import { addMinutes, isBefore } from "date-fns";
 
 import { validateInstantiation } from "../../helpers";

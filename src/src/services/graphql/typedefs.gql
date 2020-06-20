@@ -40,9 +40,3 @@ input SessionSettingsIn {
   syncTutorsWithClass: Boolean
   syncTuteesWithClass: Boolean
 }
-
-input ChatEventIn {
-  type: String!
-  time: Date!
-  text: String
-}

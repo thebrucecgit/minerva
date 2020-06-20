@@ -4,9 +4,9 @@ const db = "mongodb://127.0.0.1:27017/academe?gssapiServiceName=mongodb";
 
 seeder.connect(db, () => {
   seeder.loadModels([
-    "./dist/modules/user/models/user.model",
-    "./dist/modules/class/models/class.model",
-    "./dist/modules/session/models/session.model",
+    "./dist/modules/user/model",
+    "./dist/modules/class/model",
+    "./dist/modules/session/model",
   ]);
   seeder.clearModels(["User", "Session", "Class"], () => {
     seeder.populateModels(data, () => {

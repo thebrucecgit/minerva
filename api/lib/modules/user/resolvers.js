@@ -1,16 +1,17 @@
 import jwt from "jsonwebtoken";
 import axios from "axios";
 import sgMail from "../../config/email";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 import { OAuth2Client } from "google-auth-library";
 import bcrypt from "bcrypt";
+import Chat from "../chat/model";
 
 import {
   AuthenticationError,
   UserInputError,
   ApolloError,
 } from "apollo-server";
-import User from "./models/user.model";
+import User from "./model";
 
 const { FRONTEND_DOMAIN, JWT_SECRET, CAPTCHA_SECRET_KEY } = process.env;
 
@@ -113,20 +114,22 @@ export default {
   },
   User: {
     async classes(user, _, { user: reqUser }) {
-      if (reqUser.userType !== "TUTOR")
+      if (reqUser.userType !== "TUTOR" && reqUser._id !== user._id)
         throw new ApolloError("User unauthorized for this field", 401);
       await user.populate("classes").execPopulate();
       return user.classes;
     },
     async sessions(user, _, { user: reqUser }) {
-      if (reqUser.userType !== "TUTOR")
+      if (reqUser.userType !== "TUTOR" && reqUser._id !== user._id)
         throw new ApolloError("User unauthorized for this field", 401);
       await user.populate("sessions").execPopulate();
       return user.sessions;
     },
     async chats(user, _, { user: reqUser }) {
-      await user.populate("chats").execPopulate();
-      return user.chats;
+      if (reqUser.userType !== "TUTOR" && reqUser._id !== user._id)
+        throw new ApolloError("User unauthorized for this field", 401);
+      const chats = await user.getChats();
+      return await Chat.find({ _id: { $in: chats } });
     },
   },
   Mutation: {
@@ -176,7 +179,7 @@ export default {
         // Hash password
         newUser.password = await bcrypt.hash(args.password, 12);
         newUser.registrationStatus = "EMAIL_NOT_CONFIRMED";
-        newUser.emailConfirmId = shortid.generate();
+        newUser.emailConfirmId = nanoid(11);
         user = await User.create(newUser);
 
         const confirmLink = new URL("/auth/confirm", FRONTEND_DOMAIN);

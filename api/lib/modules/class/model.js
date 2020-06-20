@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
-import shortid from "shortid";
-import Session from "../../session/models/session.model";
-import User from "../../user/models/user.model";
+import { nanoid } from "nanoid";
+import Session from "../session/model";
+import User from "../user/model";
 
 const classSchema = Schema({
   _id: {
     type: String,
-    default: shortid.generate,
+    default: () => nanoid(11),
   },
   name: {
     type: String,
@@ -84,6 +84,10 @@ const classSchema = Schema({
     type: String,
     ref: "Chat",
   },
+});
+
+classSchema.virtual("users").get(function () {
+  return [...(this.tutees ?? []), ...(this.tutors ?? [])];
 });
 
 classSchema.pre("remove", async function () {

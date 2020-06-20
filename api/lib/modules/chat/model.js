@@ -1,16 +1,12 @@
 import { Schema, model } from "mongoose";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 const chatSchema = Schema({
-  channel: {
+  _id: {
     type: String,
-    default: () => `private-${shortid.generate()}`,
+    default: () => nanoid(11),
+    alias: "channel",
   },
-  /* 
-  Chat can either be
-  1) Binded to a class and all the users are synced with the class, or
-  2) Totally separate and have its own designated set of users
-  */
   bindToClass: {
     type: Boolean,
     default: false,
@@ -25,11 +21,16 @@ const chatSchema = Schema({
       ref: "User",
     },
   ],
-  events: [
+  messages: [
     {
+      _id: {
+        type: String,
+        default: () => nanoid(11),
+      },
       type: {
         type: String,
-        enum: ["MESSAGE"],
+        enum: ["TEXT"],
+        required: true,
       },
       time: {
         type: Date,
@@ -46,6 +47,18 @@ const chatSchema = Schema({
     },
   ],
 });
+
+chatSchema.methods.getUsers = async function () {
+  if (this.bindToClass) {
+    const req = await this.populate({
+      path: "class",
+      select: "tutors tutees users",
+    }).execPopulate();
+    return req.class.users;
+  } else {
+    return this.users;
+  }
+};
 
 const Chat = model("Chat", chatSchema);
 

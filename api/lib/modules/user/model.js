@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
-import shortid from "shortid";
+import { nanoid } from "nanoid";
 
 const userSchema = new Schema(
   {
     // "userType" is discriminator key
     _id: {
       type: String,
-      default: shortid.generate,
+      default: () => nanoid(11),
     },
     name: {
       type: String,
@@ -46,10 +46,21 @@ const userSchema = new Schema(
         trim: true,
       },
     },
-    chats: [
+    personalChats: [
       {
         type: String,
         ref: "Chat",
+      },
+    ],
+    inbox: [
+      {
+        type: {
+          type: String,
+          required: true,
+        },
+        text: String,
+        time: Date,
+        channel: String,
       },
     ],
     dateJoined: {
@@ -65,6 +76,16 @@ const userSchema = new Schema(
     discriminatorKey: "userType",
   }
 );
+
+userSchema.methods.getChats = async function () {
+  const { classes } = await this.populate({
+    path: "classes",
+    select: "chat",
+    match: { "preferences.enableChat": true },
+  }).execPopulate();
+  const classesChats = classes.map((classInfo) => classInfo.chat);
+  return [...this.personalChats, ...classesChats];
+};
 
 const User = model("User", userSchema);
 

@@ -21,6 +21,9 @@ const Appbar = () => {
         <Link to="/dashboard/tutors">
           <h3>Tutors</h3>
         </Link>
+        <Link to="/dashboard/chats">
+          <h3>Chats</h3>
+        </Link>
       </div>
     </div>
   );

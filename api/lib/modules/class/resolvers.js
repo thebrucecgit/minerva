@@ -1,6 +1,6 @@
-import Class from "./models/class.model";
-import User from "../user/models/user.model";
-import Session from "../session/models/session.model";
+import Class from "./model";
+import User from "../user/model";
+import Session from "../session/model";
 import Chat from "../chat/model";
 
 import axios from "axios";
@@ -48,8 +48,9 @@ export default {
       await classDoc.populate("tutors").execPopulate();
       return classDoc.tutors;
     },
-    async chat({ chat }) {
-      return await Chat.findOne({ channel: chat });
+    async chat(classDoc) {
+      await classDoc.populate("chat").execPopulate();
+      return classDoc.chat;
     },
   },
   Mutation: {
@@ -111,9 +112,10 @@ export default {
       }
 
       // Chat enabling updates
-      if (args?.preferences.hasOwnProperty("enableChat")) {
+      if (args.preferences?.hasOwnProperty("enableChat")) {
         if (args.preferences.enableChat) {
           if (!oldClassInfo.chat) {
+            console.log("add");
             const { channel } = await Chat.create({
               bindToClass: true,
               class: oldClassInfo._id,
@@ -121,7 +123,10 @@ export default {
             edits.chat = channel;
           }
         } else {
-          // TODO: what to do when chat is disabled
+          console.log("delete");
+          // Remove chat
+          await Chat.deleteOne({ class: oldClassInfo._id });
+          edits.chat = undefined;
         }
       }
 
@@ -132,7 +137,7 @@ export default {
       ];
 
       // Syncing with tutors updates
-      if (args.tutors?.length) {
+      if (args.tutors) {
         // Tutors that have been deleted
         const deletedTutors = tutors.filter((id) => !args.tutors.includes(id));
         // Tutors that have been newly added
@@ -153,6 +158,7 @@ export default {
         });
 
         // Sync tutors with upcoming sessions
+        // TODO: figure out a better way
         sessionUpdates.push({
           updateMany: {
             filter: {
@@ -168,7 +174,7 @@ export default {
       }
 
       // Sync with tutees updates
-      if (args.tutees?.length) {
+      if (args.tutees) {
         const deletedTutees = tutees.filter((id) => !args.tutees.includes(id));
         const newTutees = args.tutees.filter((id) => !tutees.includes(id));
 

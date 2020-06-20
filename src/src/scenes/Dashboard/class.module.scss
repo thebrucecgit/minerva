@@ -21,7 +21,6 @@
   }
 
   .edit {
-    width: 100%;
     display: flex;
     justify-content: flex-end;
     margin: 10px $text-padding 10px auto;
@@ -55,10 +54,6 @@
   .flex {
     display: flex;
     align-items: center;
-  }
-
-  .tags {
-    width: 100%;
   }
 
   .videoLink {

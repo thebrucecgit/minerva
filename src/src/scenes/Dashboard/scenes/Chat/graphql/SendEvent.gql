@@ -1,3 +1,0 @@
-mutation SendEvent($channel: ID!, $event: ChatEventIn!) {
-  sendEvent(channel: $channel, event: $event)
-}

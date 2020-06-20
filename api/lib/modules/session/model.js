@@ -1,12 +1,12 @@
 import { Schema, model } from "mongoose";
-import shortid from "shortid";
-import Class from "../../class/models/class.model";
-import User from "../../user/models/user.model";
+import { nanoid } from "nanoid";
+import Class from "../class/model";
+import User from "../user/model";
 
 const sessionSchema = Schema({
   _id: {
     type: String,
-    default: shortid.generate,
+    default: () => nanoid(11),
   },
   class: {
     type: String,

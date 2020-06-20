@@ -14,8 +14,9 @@
     "graphql": "^14.6.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.15",
-    "pusher": "^3.0.1",
-    "shortid": "^2.2.15"
+    "nanoid": "^3.1.10",
+    "ws": "^7.3.0",
+    "yup": "^0.29.1"
   },
   "scripts": {
     "clean": "rm -rf dist",
@@ -27,8 +28,8 @@
     "seed": "node dist/seed"
   },
   "devDependencies": {
-    "@swc/cli": "^0.1.24",
-    "@swc/core": "^1.1.42",
-    "mongoose-seed": "^0.6.0"
+    "mongoose-seed": "^0.6.0",
+    "@swc/cli": "^0.1.26",
+    "@swc/core": "^1.2.5"
   }
 }

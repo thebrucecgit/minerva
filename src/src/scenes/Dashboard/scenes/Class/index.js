@@ -295,7 +295,7 @@ const Class = ({ currentUser }) => {
         </div>
 
         <div className={styles.flex}>
-          <div className={classNames(styles.padding, styles.tags)}>
+          <div className={styles.padding}>
             {disabled.tags ? (
               <Tags tags={classInfo.tags} />
             ) : (
@@ -314,7 +314,7 @@ const Class = ({ currentUser }) => {
             )}
           </div>
           <div className={styles.edit}>
-            {classInfo.preferences.enableChat && (
+            {classInfo.preferences.enableChat && classInfo.chat && (
               <Link to={`/dashboard/chats/${classInfo.chat.channel}`}>
                 <button className="btn">
                   Chat <FontAwesomeIcon icon={faCommentAlt} />

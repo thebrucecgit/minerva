@@ -1,0 +1,21 @@
+query GetChat($id: ID!) {
+  getUser(id: $id) {
+    chats {
+      channel
+      bindToClass
+      class {
+        name
+      }
+      users {
+        _id
+        name
+      }
+      messages(limit: 1) {
+        type
+        time
+        author
+        text
+      }
+    }
+  }
+}
