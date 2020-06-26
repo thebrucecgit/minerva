@@ -27,7 +27,12 @@ const userSchema = new Schema(
     passwordResetCode: Number,
     registrationStatus: {
       type: String,
-      enum: ["GOOGLE_SIGNED_IN", "EMAIL_NOT_CONFIRMED", "COMPLETE"],
+      enum: [
+        "GOOGLE_SIGNED_IN",
+        "EMAIL_NOT_CONFIRMED",
+        "PENDING_REVIEW",
+        "COMPLETE",
+      ],
     },
     emailConfirmId: String,
     // Profile picture
@@ -85,6 +90,12 @@ userSchema.methods.getChats = async function () {
   }).execPopulate();
   const classesChats = classes.map((classInfo) => classInfo.chat);
   return [...this.personalChats, ...classesChats];
+};
+
+userSchema.methods.changeUserType = async function (userType) {
+  const edit = { ...this, userType };
+  await this.remove();
+  return await model("User").create(edit);
 };
 
 const User = model("User", userSchema);
