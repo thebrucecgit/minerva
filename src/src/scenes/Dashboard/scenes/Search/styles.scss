@@ -1,0 +1,46 @@
+.ais-SearchBox-form {
+  margin: 10px 0;
+  display: flex;
+  width: 100%;
+  .ais-SearchBox-input {
+    display: inline;
+    max-width: 100%;
+  }
+  button {
+    display: inline;
+    margin: 5px 0 5px 10px;
+    background-color: var(--main-gold-color) !important;
+  }
+}
+
+ul.ais-InfiniteHits-list {
+  list-style-type: none;
+  padding-inline-start: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1.5rem;
+  h3 {
+    font-size: 1.5rem;
+  }
+  .details {
+    margin: 10px 0;
+    font-family: "Montserrat", sans-serif;
+  }
+  .bio {
+    margin: 10px 0;
+  }
+}
+
+.ais-Stats {
+  margin: 10px 0;
+}
+
+.ais-Highlight-highlighted {
+  text-emphasis: none;
+  color: #fff;
+  background-color: rgba(255, 255, 35, 0.3);
+}
+
+.ais-loadMore {
+  margin: 1rem auto;
+}

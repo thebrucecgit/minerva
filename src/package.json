@@ -24,6 +24,7 @@
     "date-fns": "^2.14.0",
     "graphql": "^14.6.0",
     "graphql.macro": "^1.4.2",
+    "instantsearch.css": "^7.4.2",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-datepicker": "^2.16.0",

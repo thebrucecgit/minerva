@@ -6,7 +6,7 @@ const { ALGOLIA_APPID, ALGOLIA_ADMIN_API } = process.env;
 const client = algoliasearch(ALGOLIA_APPID, ALGOLIA_ADMIN_API);
 export const index = client.initIndex("dev_TUTORS");
 
-export const FIELDS = "name yearGroup school biography academics extras";
+export const FIELDS = "name yearGroup school biography academics extras pfp";
 
 export function docToRecord(doc) {
   const tutor = { ...doc };
