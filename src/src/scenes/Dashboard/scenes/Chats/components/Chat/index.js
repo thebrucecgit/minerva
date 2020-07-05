@@ -110,37 +110,49 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
         <div className={messageStyles.MessageContent} ref={messageElem}>
           {/* div needed for default scroll to bottom */}
           <div>
-            {dayMessages.map((day) => (
-              <div key={day[0]} className={messageStyles.MessageGroup}>
-                <h4 className={messageStyles.date}>
-                  {format(parseISO(day[0]), "d MMMM, yyyy")}
-                </h4>
-                {day[1].map((message, ind) => (
-                  <div
-                    key={message._id ?? ind}
-                    className={classNames(
-                      { [messageStyles.me]: message.me },
-                      messageStyles.Message
-                    )}
-                  >
-                    {message.header && (
-                      <p className={messageStyles.header}>
-                        <span className={messageStyles.author}>
-                          {
-                            chatInfo.users.find((u) => u._id === message.author)
-                              .name
-                          }
-                        </span>
-                        <span className={messageStyles.time}>
-                          {format(message.time, "h:mm aa")}
-                        </span>
-                      </p>
-                    )}
-                    <p className={messageStyles.text}>{message.text}</p>
-                  </div>
-                ))}
+            {dayMessages.length ? (
+              dayMessages.map((day) => (
+                <div key={day[0]} className={messageStyles.MessageGroup}>
+                  <h4 className={messageStyles.date}>
+                    {format(parseISO(day[0]), "d MMMM, yyyy")}
+                  </h4>
+                  {day[1].map((message, ind) => (
+                    <div
+                      key={message._id ?? ind}
+                      className={classNames(
+                        { [messageStyles.me]: message.me },
+                        messageStyles.Message
+                      )}
+                    >
+                      {message.header && (
+                        <p className={messageStyles.header}>
+                          <span className={messageStyles.author}>
+                            {
+                              chatInfo.users.find(
+                                (u) => u._id === message.author
+                              ).name
+                            }
+                          </span>
+                          <span className={messageStyles.time}>
+                            {format(message.time, "h:mm aa")}
+                          </span>
+                        </p>
+                      )}
+                      <p className={messageStyles.text}>{message.text}</p>
+                    </div>
+                  ))}
+                </div>
+              ))
+            ) : (
+              <div
+                className={classNames(
+                  messageStyles.MessageGroup,
+                  messageStyles.NoMessages
+                )}
+              >
+                There are no messages in this chat yet.
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
