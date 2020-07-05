@@ -64,7 +64,7 @@ const User = ({ currentUser }) => {
           )}
         </div>
 
-        <h2>Bio</h2>
+        <h2>Biography</h2>
         <p>{user.biography}</p>
 
         {fullAccess && (
@@ -73,7 +73,7 @@ const User = ({ currentUser }) => {
             <div className={styles.classes}>
               {user.classes.length ? (
                 user.classes.map((classInfo, i) => (
-                  <div key={i} className="card x">
+                  <div key={i} className="card">
                     <Link to={`/dashboard/classes/${classInfo._id}`}>
                       <img src={classInfo.image} alt="" />
                       <div className="body">
@@ -88,10 +88,10 @@ const User = ({ currentUser }) => {
             </div>
 
             <h2>Sessions</h2>
-            <div className={styles.classes}>
+            <div className={styles.sessions}>
               {user.sessions.length ? (
                 user.sessions.map((session, i) => (
-                  <div key={i} className="card x">
+                  <div key={i} className="card">
                     <Link to={`/dashboard/sessions/${session._id}`}>
                       <div className="body">
                         <h3>
