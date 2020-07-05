@@ -56,10 +56,9 @@ function init(server) {
             ws.lastCalled = new Date();
 
             event.author = ws.user;
-
             // Save to DB
             const chat = await Chat.findOneAndUpdate(
-              { channel: event.channel },
+              { _id: event.channel },
               { $push: { messages: event } }
             );
             const users = await chat.getUsers();
