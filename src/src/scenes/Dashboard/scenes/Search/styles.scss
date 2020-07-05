@@ -44,3 +44,20 @@ ul.ais-InfiniteHits-list {
 .ais-loadMore {
   margin: 1rem auto;
 }
+
+.ais-SearchPage {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  .ais-Refinements {
+    padding: 0 1rem;
+  }
+}
+
+.ais-Menu {
+  .selection {
+    cursor: pointer;
+  }
+  .selected {
+    font-weight: bold;
+  }
+}
