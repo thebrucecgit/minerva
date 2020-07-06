@@ -8,7 +8,7 @@ import "./config/database";
 import websocket from "./websocket";
 import apolloServer from "./apollo";
 
-const { DOMAIN } = process.env;
+const { DOMAIN, PORT } = process.env;
 
 const app = express();
 app.use(cors());
@@ -19,6 +19,6 @@ const server = http.createServer(app);
 
 websocket.init(server);
 
-server.listen(5000, () => {
+server.listen(PORT ?? 5000, () => {
   console.log(`🚀  Server ready at ${DOMAIN}${apolloServer.graphqlPath}`);
 });
