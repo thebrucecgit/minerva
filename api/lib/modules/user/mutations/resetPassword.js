@@ -17,7 +17,7 @@ export default async function resetPassword(_, { email }) {
       email: "admin@academe.co.nz",
       name: "Admin",
     },
-    templateId: "d-f51e94498ab547fd849abc9a7f1f3386",
+    templateId: "d-02ecc5c486f14da1957ce5e6422cfb9a",
     dynamic_template_data: {
       name: user.name,
       resetCode: passwordResetCode,

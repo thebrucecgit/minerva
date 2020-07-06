@@ -1,5 +1,6 @@
 import User from "../model";
 import bcrypt from "bcrypt";
+import { UserInputError } from "apollo-server";
 
 import { verifyGoogleToken, createUserObject } from "../helpers";
 

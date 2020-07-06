@@ -70,7 +70,7 @@ export default async function register(_, args) {
         email: "admin@academe.co.nz",
         name: "Admin",
       },
-      templateId: "d-a83cebeb53ac40f490e8dab85ee2b80f",
+      templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
       dynamic_template_data: {
         name: user.name,
         confirmLink: confirmLink.href,
