@@ -47,6 +47,12 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
     }
+    .retry {
+      cursor: pointer;
+      &:hover {
+        color: darkred;
+      }
+    }
   }
   .date {
     font-weight: normal;

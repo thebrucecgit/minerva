@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { toast } from "react-toastify";
+import { nanoid } from "nanoid";
 import Loader from "../../../../components/Loader";
 import { Switch, Route, NavLink } from "react-router-dom";
 
@@ -27,23 +28,28 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
     }
   }, [data]);
 
-  const sendMessage = (channel, text) => {
+  const sendMessage = (channel, text, id) => {
+    const evt = {
+      type: "MESSAGE",
+      time: new Date(),
+      text,
+      channel,
+      // server doesn't actually use these following values
+      author: currentUser.user._id,
+      _id: id ?? nanoid(11),
+    };
     try {
-      const evt = {
-        type: "MESSAGE",
-        time: new Date(),
-        text,
-        channel,
-      };
       ws.trigger(evt);
+    } catch (e) {
+      evt.failed = true;
+      toast.error("Message failed to send.");
+    } finally {
       setChats((chats) => {
         const newChats = [...chats];
         newChats.find((chat) => chat.channel === channel).messages.push(evt);
         return newChats;
       });
       return evt;
-    } catch (e) {
-      toast.error(e.message);
     }
   };
 

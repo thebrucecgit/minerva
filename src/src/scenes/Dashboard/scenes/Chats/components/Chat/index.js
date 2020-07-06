@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { format, startOfDay, parseISO, differenceInMinutes } from "date-fns";
+import { toast } from "react-toastify";
 import classNames from "classnames";
 import Menu from "../../../../components/Menu";
 import useMenu from "../../../../hooks/useMenu";
@@ -10,7 +11,8 @@ import useMenu from "../../../../hooks/useMenu";
 import messageStyles from "./message.module.scss";
 import styles from "../../styles.module.scss";
 
-import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUsers, faRedo } from "@fortawesome/free-solid-svg-icons";
 
 const GET_CHAT = loader("./graphql/GetChat.gql");
 
@@ -32,7 +34,28 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
         setMessages((msgs) => [...msgs, msg]);
       };
 
+      const onMessageResolve = ({ _id }) => {
+        setMessages((st) => {
+          const newState = [...st];
+          newState.find((m) => m._id === _id).loading = false;
+          return newState;
+        });
+      };
+
+      const onMessageReject = ({ _id }) => {
+        setMessages((st) => {
+          const newState = [...st];
+          const msg = newState.find((m) => m._id === _id);
+          msg.loading = false;
+          msg.failed = true;
+          return newState;
+        });
+        toast.error("Message failed to send.");
+      };
+
       ws.bind("MESSAGE", onMessage);
+      ws.bind("MESSAGE_RESOLVE", onMessageResolve);
+      ws.bind("MESSAGE_REJECT", onMessageReject);
 
       return () => {
         ws.unbind("MESSAGE", onMessage);
@@ -55,12 +78,25 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const evt = sendMessage(channel, message);
+    evt.loading = true;
     setMessage("");
-    console.log(messages);
-    evt.author = currentUser.user._id;
-    console.log(evt);
     setMessages((st) => [...st, evt]);
     messageElem.current.scrollTop = messageElem.current.scrollHeight;
+  };
+
+  const handleRetryMessage = (id) => {
+    const { failed, time } = sendMessage(
+      channel,
+      messages.find((msg) => msg._id === id).text,
+      id
+    );
+    setMessages((st) => {
+      const state = [...st];
+      const msg = state.find((msg) => msg._id === id);
+      msg.failed = failed;
+      msg.time = time;
+      return state;
+    });
   };
 
   if (error) return <p className="error">{error.message}</p>;
@@ -116,9 +152,9 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
                   <h4 className={messageStyles.date}>
                     {format(parseISO(day[0]), "d MMMM, yyyy")}
                   </h4>
-                  {day[1].map((message, ind) => (
+                  {day[1].map((message) => (
                     <div
-                      key={message._id ?? ind}
+                      key={message._id}
                       className={classNames(
                         { [messageStyles.me]: message.me },
                         messageStyles.Message
@@ -139,6 +175,15 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
                         </p>
                       )}
                       <p className={messageStyles.text}>{message.text}</p>
+                      {message.failed && (
+                        <p
+                          className={classNames("error", messageStyles.retry)}
+                          onClick={() => handleRetryMessage(message._id)}
+                        >
+                          <FontAwesomeIcon icon={faRedo} /> Message failed to
+                          send
+                        </p>
+                      )}
                     </div>
                   ))}
                 </div>

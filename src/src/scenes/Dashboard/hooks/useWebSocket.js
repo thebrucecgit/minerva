@@ -90,7 +90,8 @@ const useWebSocket = ({ jwt }) => {
   }, [connect]);
 
   const trigger = (event) => {
-    ws.send(JSON.stringify(event));
+    if (ws.readyState === ws.OPEN) ws.send(JSON.stringify(event));
+    else throw new Error("Connection unavailable");
   };
 
   const match = useRouteMatch("/dashboard/chats");

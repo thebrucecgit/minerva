@@ -29,23 +29,28 @@ function init(server) {
   });
 
   wss.on("connection", (ws) => {
+    const send = (message) => {
+      ws.send(JSON.stringify(message));
+    };
+
     (async () => {
       // Send user events in inbox and clear inbox
       const { inbox } = await User.findByIdAndUpdate(ws.user, { inbox: [] });
-      ws.send(
-        JSON.stringify({
-          type: "INBOX",
-          events: inbox,
-        })
-      );
+      send({
+        type: "INBOX",
+        events: inbox,
+      });
     })();
 
     ws.on("message", async (data) => {
+      let reqId;
       try {
         const event = await eventSchema.validate(data);
 
         switch (event.type) {
           case "MESSAGE": {
+            reqId = event._id;
+
             // Rate limiting
             if (
               ws.lastCalled &&
@@ -55,6 +60,7 @@ function init(server) {
             }
             ws.lastCalled = new Date();
 
+            delete event._id;
             event.author = ws.user;
             // Save to DB
             const chat = await Chat.findOneAndUpdate(
@@ -89,11 +95,21 @@ function init(server) {
               { _id: { $in: users } },
               { $push: { inbox: event } }
             );
+
+            send({
+              type: "MESSAGE_RESOLVE",
+              _id: reqId,
+            });
             break;
           }
         }
       } catch (e) {
         console.error(e);
+        send({
+          type: "MESSAGE_REJECT",
+          _id: reqId,
+          message: e.message,
+        });
       }
     });
   });
