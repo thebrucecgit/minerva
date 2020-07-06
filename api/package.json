@@ -23,14 +23,13 @@
     "clean": "rm -rf dist",
     "build-swc": "npx swc lib -d dist",
     "build": "npm run clean && npm run build-swc",
-    "watch": "nodemon --watch ./lib --exec npm start",
-    "start": "npm run build && npm run serve",
-    "serve": "node ./dist/server.js",
+    "watch": "nodemon --watch ./lib --exec npm build && npm start",
+    "start": "node ./dist/server.js",
     "seed": "node dist/seed"
   },
   "devDependencies": {
-    "mongoose-seed": "^0.6.0",
     "@swc/cli": "^0.1.26",
-    "@swc/core": "^1.2.5"
+    "@swc/core": "^1.2.7",
+    "mongoose-seed": "^0.6.0"
   }
 }
