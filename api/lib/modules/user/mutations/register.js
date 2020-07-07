@@ -61,7 +61,10 @@ export default async function register(_, args) {
 
     // Send email confirmation
     const msg = {
-      to: user.email,
+      to: {
+        email: user.email,
+        name: user.name,
+      },
       from: {
         email: "confirmation@academe.co.nz",
         name: "Academe Email Confirmation",
