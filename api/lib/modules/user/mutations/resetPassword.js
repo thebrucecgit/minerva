@@ -8,7 +8,10 @@ export default async function resetPassword(_, { email }) {
   if (!user) throw new Error("User not found");
 
   const msg = {
-    to: user.email,
+    to: {
+      email: user.email,
+      name: user.name,
+    },
     from: {
       email: "passwordreset@academe.co.nz",
       name: "Academe Password Reset",

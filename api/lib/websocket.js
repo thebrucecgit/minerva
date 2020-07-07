@@ -121,7 +121,7 @@ function init(server) {
 
       const { _id } = await authenticate(token);
 
-      wss.handleUpgrade(req, socket, head, async (ws) => {
+      wss.handleUpgrade(req, socket, head, (ws) => {
         ws.user = _id;
         wss.emit("connection", ws);
       });
