@@ -8,6 +8,7 @@ const Menu = connectMenu(({ items, refine, attribute }) => {
       <h3>{attribute.toUpperCase()}</h3>
       {items.map((item) => (
         <div
+          key={item.value}
           className={classNames("selection", { selected: item.isRefined })}
           onClick={() => refine(item.value)}
         >

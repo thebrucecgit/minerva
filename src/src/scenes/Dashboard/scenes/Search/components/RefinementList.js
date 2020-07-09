@@ -6,7 +6,7 @@ const RefinementList = connectRefinementList(({ items, refine, attribute }) => {
     <form>
       <h3>{attribute.toUpperCase()}</h3>
       {items.map((item) => (
-        <div className="field checkbox">
+        <div className="field checkbox" key={item.label}>
           <input
             type="checkbox"
             name={item.label}
