@@ -6,7 +6,7 @@ import { parseJSON } from "date-fns";
 const { REACT_APP_WEBSOCKET_URI } = process.env;
 
 let ws;
-let timeoutInterval;
+let timeoutInterval = 500;
 const eventListeners = {};
 let errorToast = null;
 
@@ -30,59 +30,67 @@ const useWebSocket = ({ jwt }) => {
   const connect = useCallback(() => {
     let connectTimer;
 
-    const auth = new URLSearchParams({ token: jwt });
-    ws = new WebSocket(`${REACT_APP_WEBSOCKET_URI}?${auth.toString()}`);
+    try {
+      const auth = new URLSearchParams({ token: jwt });
+      ws = new WebSocket(`${REACT_APP_WEBSOCKET_URI}?${auth.toString()}`);
 
-    ws.onopen = () => {
-      console.log("WebSocket connected");
-      if (errorToast) {
-        toast.dismiss(errorToast);
-        errorToast = null;
-      }
-      timeoutInterval = 500; // reset
-    };
+      ws.onopen = () => {
+        console.log("WebSocket connected");
+        if (errorToast) {
+          toast.dismiss(errorToast);
+          errorToast = null;
+        }
+        timeoutInterval = 500; // reset
+      };
 
-    ws.onmessage = ({ data }) => {
-      const event = JSON.parse(data);
-      if (event.time) event.time = parseJSON(event.time);
-      if (Array.isArray(eventListeners[event.type])) {
-        eventListeners[event.type].forEach((bind) => bind(event));
-      }
-    };
+      ws.onmessage = ({ data }) => {
+        const event = JSON.parse(data);
+        if (event.time) event.time = parseJSON(event.time);
+        if (Array.isArray(eventListeners[event.type])) {
+          eventListeners[event.type].forEach((bind) => bind(event));
+        }
+      };
 
-    ws.onclose = (e) => {
-      if (!errorToast)
-        errorToast = toast.error("Disconnected from server. Reconnecting...", {
-          autoClose: false,
-        });
-      if (e.code !== 1000) {
-        console.log(
-          `WebSocket disconnected. Reconnect will be attempted in ${
-            timeoutInterval / 1000
-          } second(s).`
-        );
+      ws.onclose = (e) => {
+        if (!errorToast)
+          errorToast = toast.error(
+            "Disconnected from server. Reconnecting...",
+            {
+              autoClose: false,
+            }
+          );
+        if (e.code !== 1000) {
+          console.log(
+            `WebSocket disconnected. Reconnect will be attempted in ${
+              timeoutInterval / 1000
+            } second(s).`
+          );
 
-        connectTimer = setTimeout(() => {
-          if (!ws || ws.readyState === WebSocket.CLOSED) connect();
-        }, timeoutInterval);
+          connectTimer = setTimeout(() => {
+            if (!ws || ws.readyState === WebSocket.CLOSED) connect();
+          }, timeoutInterval);
 
-        timeoutInterval = Math.min(5 * 60 * 1000, timeoutInterval * 2);
-      } else {
-        console.log(
-          `WebSocket disconnected for ${e.reason} with code ${e.code}.`
-        );
-      }
-    };
+          timeoutInterval = Math.min(5 * 60 * 1000, timeoutInterval * 2);
+        } else {
+          console.log(
+            `WebSocket disconnected for ${e.reason} with code ${e.code}.`
+          );
+        }
+      };
 
-    ws.onerror = (e) => {
-      console.error("Socket encountered error:", e.message);
-      ws.close(4000, "Closing because of error");
-    };
+      ws.onerror = (e) => {
+        console.error("Socket encountered an error");
+        ws.close(4000, "Closing because of error");
+      };
 
-    return () => {
-      ws.close(1000, "Component unload");
-      clearTimeout(connectTimer);
-    };
+      return () => {
+        ws.close(1000, "Component unload");
+        clearTimeout(connectTimer);
+      };
+    } catch (e) {
+      console.error(e);
+      toast.error(e.message);
+    }
   }, [jwt]);
 
   useEffect(() => {
