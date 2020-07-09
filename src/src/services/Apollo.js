@@ -57,6 +57,11 @@ const Apollo = ({ authHelpers, children }) => {
       }),
     ]),
     cache: new InMemoryCache(),
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: "cache-and-network",
+      },
+    },
   });
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
