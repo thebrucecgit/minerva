@@ -29,7 +29,7 @@ const Login = ({ login, currentUser }) => {
 
   const onGoogleFailed = (err) => {
     console.error(err);
-    setError(err);
+    setError(err.message);
   };
 
   const onSubmit = async (e) => {
