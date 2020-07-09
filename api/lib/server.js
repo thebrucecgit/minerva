@@ -13,6 +13,8 @@ const { DOMAIN, PORT } = process.env;
 const app = express();
 app.use(cors());
 
+app.get("/", (req, res) => res.send("You have reached Academe servers."));
+
 apolloServer.applyMiddleware({ app });
 
 const server = http.createServer(app);
