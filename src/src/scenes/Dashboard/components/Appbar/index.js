@@ -1,28 +1,56 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styles from "./styles.module.scss";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 const Appbar = () => {
   return (
     <div className={styles.Sidebar}>
       <div>
-        <Link to="/dashboard">
-          <h3>Dashboard</h3>
-        </Link>
-        <Link to="/dashboard/search">
-          <h3>Search</h3>
-        </Link>
-        <Link to="/dashboard/sessions">
-          <h3>Sessions</h3>
-        </Link>
-        <Link to="/dashboard/classes">
-          <h3>Classes</h3>
-        </Link>
-        <Link to="/dashboard/tutors">
-          <h3>Tutors</h3>
-        </Link>
-        <Link to="/dashboard/chats">
-          <h3>Chats</h3>
+        {[
+          {
+            name: "Dashboard",
+            link: "/dashboard",
+          },
+          {
+            name: "Search",
+            link: "/dashboard/search",
+          },
+          {
+            name: "Sessions",
+            link: "/dashboard/sessions",
+          },
+          {
+            name: "Classes",
+            link: "/dashboard/classes",
+          },
+          {
+            name: "Tutors",
+            link: "/dashboard/tutors",
+          },
+          {
+            name: "Chats",
+            link: "/dashboard/chats",
+          },
+        ].map((section) => (
+          <NavLink
+            to={section.link}
+            key={section.name}
+            activeClassName={styles.active}
+            className={styles.section}
+            exact
+          >
+            <h3>{section.name}</h3>
+          </NavLink>
+        ))}
+      </div>
+      <div className={styles.home}>
+        <Link to="/">
+          <p>
+            Academe <FontAwesomeIcon icon={faHome} />
+          </p>
         </Link>
       </div>
     </div>
