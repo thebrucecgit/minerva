@@ -115,7 +115,6 @@ export default {
       if (args.preferences?.hasOwnProperty("enableChat")) {
         if (args.preferences.enableChat) {
           if (!oldClassInfo.chat) {
-            console.log("add");
             const { channel } = await Chat.create({
               bindToClass: true,
               class: oldClassInfo._id,
@@ -123,7 +122,6 @@ export default {
             edits.chat = channel;
           }
         } else {
-          console.log("delete");
           // Remove chat
           await Chat.deleteOne({ class: oldClassInfo._id });
           edits.chat = undefined;
