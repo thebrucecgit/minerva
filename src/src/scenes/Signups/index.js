@@ -26,12 +26,17 @@ function Signups({ authService }) {
 
   const userType = history.location.pathname === "/signup" ? "TUTEE" : "TUTOR";
 
-  const savedSignup = localStorage.getItem("signup");
-
-  const [info, setInfo] = useState(
+  const [info, setInfo] = useState(() => {
     // If there is saved info, use saved
-    (savedSignup && JSON.parse(savedSignup)) || {}
-  );
+    try {
+      const saved = localStorage.getItem("signup");
+      if (saved) return JSON.parse(saved);
+      else return {};
+    } catch (e) {
+      console.error(e);
+      return {};
+    }
+  });
 
   const [errors, setErrors] = useState({});
 
