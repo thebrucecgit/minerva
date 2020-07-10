@@ -7,8 +7,6 @@ import App from "./scenes/App";
 
 import * as serviceWorker from "./serviceWorker";
 
-// import "./fonts.scss";
-
 ReactDOM.render(
   <React.StrictMode>
     <Router>
