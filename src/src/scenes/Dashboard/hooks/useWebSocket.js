@@ -53,13 +53,18 @@ const useWebSocket = ({ jwt }) => {
 
       ws.onclose = (e) => {
         if (e.code !== 1000) {
+          // Component unload close
+          console.log("WebSocket disconnected on component unload.");
+        } else {
           if (!errorToast)
             errorToast = toast.error(
               "Disconnected from server. Reconnecting...",
               { autoClose: false }
             );
           console.log(
-            `WebSocket disconnected. Reconnect will be attempted in ${
+            `WebSocket disconnected because of ${e.reason} with code ${
+              e.code
+            }. Reconnect will be attempted in ${
               timeoutInterval / 1000
             } second(s).`
           );
@@ -69,10 +74,6 @@ const useWebSocket = ({ jwt }) => {
           }, timeoutInterval);
 
           timeoutInterval = Math.min(5 * 60 * 1000, timeoutInterval * 2);
-        } else {
-          console.log(
-            `WebSocket disconnected for ${e.reason} with code ${e.code}.`
-          );
         }
       };
 
