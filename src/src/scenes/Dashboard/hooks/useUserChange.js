@@ -16,6 +16,7 @@ const useUserChange = ({ setUpdate, userType }) => {
 
   const { refetch: fetch } = useQuery(AUTOCOMPLETE, {
     skip: true,
+    fetchPolicy: "no-cache",
   });
 
   const onAutocompleteChange = async (e) => {
