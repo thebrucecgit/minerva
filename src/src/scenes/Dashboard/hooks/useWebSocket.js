@@ -52,7 +52,7 @@ const useWebSocket = ({ jwt }) => {
       };
 
       ws.onclose = (e) => {
-        if (e.code !== 1000) {
+        if (e.code === 1000) {
           // Component unload close
           console.log("WebSocket disconnected on component unload.");
         } else {
