@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@apollo/react-hooks";
 import { loader } from "graphql.macro";
 import Loader from "../../../../components/Loader";
+import Error from "../../../../components/Error";
 import { Link } from "react-router-dom";
 import { format, isAfter } from "date-fns";
 import classNames from "classnames";
@@ -49,7 +50,7 @@ const Sessions = ({ currentUser }) => {
     }
   }, [data, isOld, refetch]);
 
-  if (error) return <p className="error">{error.message}</p>;
+  if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
   const sessions = data.getSessions;

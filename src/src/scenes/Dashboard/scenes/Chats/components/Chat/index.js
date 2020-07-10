@@ -5,6 +5,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { format, startOfDay, parseISO, differenceInMinutes } from "date-fns";
 import { toast } from "react-toastify";
 import classNames from "classnames";
+import Error from "../../../../../../components/Error";
 import Menu from "../../../../components/Menu";
 import useMenu from "../../../../hooks/useMenu";
 
@@ -99,7 +100,7 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
     });
   };
 
-  if (error) return <p className="error">{error.message}</p>;
+  if (error) return <Error error={error} />;
   if (loading) return <p>Loading</p>;
 
   const chatInfo = data.getChat;

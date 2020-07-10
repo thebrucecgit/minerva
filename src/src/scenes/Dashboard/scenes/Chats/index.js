@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { toast } from "react-toastify";
 import { nanoid } from "nanoid";
 import Loader from "../../../../components/Loader";
+import Error from "../../../../components/Error";
 import { Switch, Route, NavLink } from "react-router-dom";
 
 import Chat from "./components/Chat";
@@ -53,7 +54,7 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
     }
   };
 
-  if (error) return <p>{error.message}</p>;
+  if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
   return (

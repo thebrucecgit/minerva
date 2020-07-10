@@ -2,6 +2,7 @@ import React from "react";
 import ProfilePicture from "../../components/ProfilePicture";
 import { useQuery } from "@apollo/react-hooks";
 import Loader from "../../../../components/Loader";
+import Error from "../../../../components/Error";
 import { loader } from "graphql.macro";
 import { Link } from "react-router-dom";
 
@@ -12,7 +13,7 @@ const GET_TUTORS = loader("./graphql/GetTutors.gql");
 const Tutors = () => {
   const { data, error, loading } = useQuery(GET_TUTORS);
 
-  if (error) return <p className="error">{error.message}</p>;
+  if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
   const tutors = data.getTutors;

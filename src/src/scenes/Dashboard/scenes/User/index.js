@@ -2,6 +2,7 @@ import React from "react";
 import ProfilePicture from "../../components/ProfilePicture";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../../../../components/Loader";
+import Error from "../../../../components/Error";
 import { useQuery } from "@apollo/react-hooks";
 import { loader } from "graphql.macro";
 import { format } from "date-fns";
@@ -27,7 +28,7 @@ const User = ({ currentUser }) => {
 
   const { data, error, loading } = useQuery(GET_USER, { variables: { id } });
 
-  if (error) return <p className="error">{error.message}</p>;
+  if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
   const user = data.getUser;

@@ -5,6 +5,7 @@ import ClassSection from "./components/ClassSection";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 import Loader from "../../../../components/Loader";
+import Error from "../../../../components/Error";
 
 import Modal from "../../../../components/Modal";
 import useModal from "../../hooks/useModal";
@@ -55,7 +56,7 @@ const Classes = ({ currentUser }) => {
     }
   };
 
-  if (error) return <p className="error">{error.message}</p>;
+  if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
   const classes = data.getClasses;

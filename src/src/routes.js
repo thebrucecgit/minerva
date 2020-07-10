@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from "react";
 import { Switch, Route } from "react-router-dom";
 
 import Loader from "./components/Loader";
+import { loader } from "./styles/Loader.module.scss";
 
 const Home = lazy(() => import("./scenes/Home"));
 const Pages = lazy(() => import("./scenes/Pages"));
@@ -11,7 +12,13 @@ const Dashboard = lazy(() => import("./scenes/Dashboard"));
 
 function Routes({ authService }) {
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense
+      fallback={
+        <div className={loader}>
+          <Loader />
+        </div>
+      }
+    >
       <Switch>
         <Route exact path="/">
           <Home authService={authService} />

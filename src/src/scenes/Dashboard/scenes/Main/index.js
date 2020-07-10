@@ -6,6 +6,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { format } from "date-fns";
 import ProfilePicture from "../../components/ProfilePicture";
 import Loader from "../../../../components/Loader";
+import Error from "../../../../components/Error";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -17,7 +18,7 @@ const GET_INFO = loader("./graphql/GetInfo.gql");
 const Main = () => {
   const { data, loading, error } = useQuery(GET_INFO);
 
-  if (error) return <p className="error">{error.message}</p>;
+  if (error) return <Error error={error} />;
   if (loading && !data) return <Loader />;
 
   return (
