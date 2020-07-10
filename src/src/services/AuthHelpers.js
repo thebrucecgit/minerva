@@ -8,15 +8,20 @@ const AuthHelpers = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(() => {
     const userInfoJSON = localStorage.getItem("Auth");
     if (!userInfoJSON) return null;
-    const currentUser = JSON.parse(userInfoJSON);
-    if (Date.now() > currentUser.exp * 1000) {
-      toast("You were signed out as your login has expired.", {
-        autoClose: false,
-      });
-      localStorage.removeItem("Auth");
-      history.replace("/");
-      return null;
-    } else return currentUser;
+    try {
+      const currentUser = JSON.parse(userInfoJSON);
+      if (Date.now() > currentUser.exp * 1000) {
+        toast("You were signed out as your login has expired.", {
+          autoClose: false,
+        });
+        localStorage.removeItem("Auth");
+        history.replace("/");
+        return null;
+      } else return currentUser;
+    } catch (e) {
+      console.error(e);
+      return {};
+    }
   });
 
   function logout() {
@@ -26,6 +31,9 @@ const AuthHelpers = ({ children }) => {
   }
 
   function storeUserInfo(userInfo) {
+    if (typeof userInfo !== "object")
+      throw new Error("Invalid user info object");
+
     localStorage.setItem("Auth", JSON.stringify(userInfo));
 
     if (!userInfo) return;
