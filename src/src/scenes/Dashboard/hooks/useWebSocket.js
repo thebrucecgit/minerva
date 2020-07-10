@@ -52,14 +52,12 @@ const useWebSocket = ({ jwt }) => {
       };
 
       ws.onclose = (e) => {
-        if (!errorToast)
-          errorToast = toast.error(
-            "Disconnected from server. Reconnecting...",
-            {
-              autoClose: false,
-            }
-          );
         if (e.code !== 1000) {
+          if (!errorToast)
+            errorToast = toast.error(
+              "Disconnected from server. Reconnecting...",
+              { autoClose: false }
+            );
           console.log(
             `WebSocket disconnected. Reconnect will be attempted in ${
               timeoutInterval / 1000
