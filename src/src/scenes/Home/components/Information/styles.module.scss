@@ -1,6 +1,12 @@
 @import "../../../../styles/sizes";
 
 .Information {
+  background-image: url(../../../../media/memphis-colorful.png);
+  padding: 2rem 0;
+  > .container {
+    background: white;
+    padding: 2rem 4rem;
+  }
   h2 {
     text-shadow: 3px 3px var(--main-gold-color);
     text-align: center;

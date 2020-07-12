@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import styles from "./styles.module.scss";
 
 import deskStudying from "./images/desk-studying.jpg";
@@ -6,7 +7,7 @@ import deskStudying from "./images/desk-studying.jpg";
 function Information() {
   return (
     <section className={styles.Information}>
-      <div className="container">
+      <div className={classNames("container", styles.container)}>
         <h2>Tutoring Redefined</h2>
         <div className={styles.row}>
           <div>

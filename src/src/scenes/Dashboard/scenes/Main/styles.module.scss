@@ -1,6 +1,7 @@
 @import "../../variables";
 
 .upper {
+  background-image: url(../../../../media/memphis-colorful.png);
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-gap: 2.5rem;

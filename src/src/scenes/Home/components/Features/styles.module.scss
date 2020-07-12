@@ -1,7 +1,8 @@
 @import "../../../../styles/sizes";
 
 .Features {
-  margin: 8% 5%;
+  background-image: url(./chevron.png);
+  padding: 5%;
   text-align: center;
   h2 {
     text-shadow: 3px 3px var(--main-gold-color);
@@ -17,7 +18,7 @@
     }
     > div {
       padding: 25px 10px;
-      box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.1);
       background-color: rgb(255, 247, 198);
       border-radius: 10px;
     }
