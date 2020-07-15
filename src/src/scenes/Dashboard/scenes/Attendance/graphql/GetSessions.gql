@@ -1,6 +1,10 @@
-query getClass($id: ID!) {
+query getClass($id: ID!, $time: Date!) {
   getClass(id: $id) {
-    sessions(limit: 100) {
+    _id
+    name
+    sessions(limit: 100, time: $time) {
+      _id
+      startTime
       tutees {
         _id
         name

@@ -9,6 +9,7 @@ import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import Loader from "../../../../components/Loader";
+import Error from "../../../../components/Error";
 
 import Attendance from "./components/Attendance";
 import Settings from "./components/Settings";
@@ -252,7 +253,7 @@ const Session = ({ currentUser }) => {
     saveInfo,
   });
 
-  if (error) toast(error.message, { type: toast.TYPE.ERROR });
+  if (error) return <Error error={error} />;
   if (loading || !sessionInfo.startTime) return <Loader />;
 
   return (

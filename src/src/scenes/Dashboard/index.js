@@ -14,6 +14,7 @@ import Session from "./scenes/Session";
 import Classes from "./scenes/Classes";
 import Class from "./scenes/Class";
 import Chats from "./scenes/Chats";
+import Attendance from "./scenes/Attendance";
 
 import "./quill.scss";
 import styles from "./styles.module.scss";
@@ -56,6 +57,9 @@ const Dashboard = ({ location, match, authService }) => {
           </Route>
           <Route exact path={`${path}/classes/:id`}>
             <Class {...pageBinds} />
+          </Route>
+          <Route exact path={`${path}/classes/:id/attendance`}>
+            <Attendance {...pageBinds} />
           </Route>
           <Route
             path={`${path}/chats`}

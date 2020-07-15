@@ -461,6 +461,13 @@ const Class = ({ currentUser }) => {
         <button className="btn" onClick={() => openTutees(false)}>
           View Tutees
         </button>
+        {currentUser.user.userType === "TUTOR" && (
+          <Link to={`/dashboard/classes/${id}/attendance`}>
+            <button className={classNames("btn", styles.attendanceBtn)}>
+              View Attendance
+            </button>
+          </Link>
+        )}
       </div>
 
       <Modal {...preferencesBinds}>
