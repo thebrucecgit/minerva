@@ -31,12 +31,15 @@ a {
 
 p {
   font-family: $text-font;
-  a,
-  a:visited {
+}
+
+p a,
+.link {
+  &:visited {
     color: rgb(0, 110, 255);
     transition: color 300ms;
   }
-  a:hover {
+  &:hover {
     // border-bottom: 1px solid rgb(0, 73, 168);
     color: rgb(0, 73, 168);
     text-decoration: underline;
