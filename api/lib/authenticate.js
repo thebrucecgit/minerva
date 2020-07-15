@@ -9,6 +9,6 @@ export default async function (token) {
     const { id } = jwt.verify(token, JWT_SECRET);
     return await User.findById(id);
   } catch (e) {
-    throw new AuthenticationError("Must be authenticated");
+    return null;
   }
 }

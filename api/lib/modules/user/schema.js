@@ -33,8 +33,8 @@ export default gql`
     biography: String!
     grades: String
     price: Int
-    classes: [Class!]
-    sessions: [Session!]
+    classes(limit: Int): [Class!]
+    sessions(limit: Int, old: Boolean, time: Date): [Session!]
     chats: [Chat]
   }
 
@@ -47,7 +47,7 @@ export default gql`
   }
 
   extend type Query {
-    getUser(id: ID!): User!
+    getUser(id: ID): User!
     getUsers(value: String!, userType: UserType!): [User!]
     getTutors(limit: Int): [User!]
     login(email: String, password: String, tokenId: String): UserReq!

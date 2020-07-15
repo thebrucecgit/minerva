@@ -1,16 +1,18 @@
 query GetInfo {
-  getSessions(limit: 2) {
-    _id
-    startTime
-    location {
-      address
+  getUser {
+    sessions(limit: 2) {
+      _id
+      startTime
+      location {
+        address
+      }
     }
-  }
-  getClasses(limit: 1) {
-    _id
-    name
-    image
-    description
+    classes(limit: 1) {
+      _id
+      name
+      image
+      description
+    }
   }
   getTutors(limit: 3) {
     _id

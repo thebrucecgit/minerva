@@ -27,8 +27,8 @@ const Main = () => {
         <div className={styles.wrapper}>
           <h1>Sessions</h1>
           <div className={styles.group}>
-            {data.getSessions.length ? (
-              data.getSessions.map((session) => (
+            {data.getUser.sessions.length ? (
+              data.getUser.sessions.map((session) => (
                 <Link
                   to={`/dashboard/sessions/${session._id}`}
                   key={session._id}
@@ -52,8 +52,8 @@ const Main = () => {
         <div className={styles.wrapper}>
           <h1>Class</h1>
           <div className={styles.group}>
-            {data.getClasses.length ? (
-              data.getClasses.map((classInfo) => (
+            {data.getUser.classes.length ? (
+              data.getUser.classes.map((classInfo) => (
                 <Link
                   to={`/dashboard/classes/${classInfo._id}`}
                   key={classInfo._id}

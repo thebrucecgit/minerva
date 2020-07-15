@@ -59,7 +59,7 @@ const Classes = ({ currentUser }) => {
   if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
-  const classes = data.getClasses;
+  const { classes } = data.getUser;
 
   return (
     <div className={styles.Classes}>

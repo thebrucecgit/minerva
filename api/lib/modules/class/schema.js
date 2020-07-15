@@ -38,7 +38,6 @@ export default gql`
 
   extend type Query {
     getClass(id: ID!): Class!
-    getClasses(limit: Int): [Class!]!
   }
 
   extend type Mutation {

@@ -88,6 +88,10 @@ sessionSchema.pre("remove", async function () {
   ]);
 });
 
+sessionSchema.virtual("users").get(function () {
+  return [...(this.tutees ?? []), ...(this.tutors ?? [])];
+});
+
 const Session = model("Session", sessionSchema);
 
 export default Session;

@@ -3,56 +3,17 @@ import Class from "../class/model";
 import User from "../user/model";
 import { addMinutes, isBefore } from "date-fns";
 
-import { validateInstantiation } from "../../helpers";
+import {
+  assertGroupAuthorization,
+  assertSessionInstantiation,
+} from "../../helpers/permissions";
 
 export default {
   Query: {
     async getSession(_, { id }, { user }) {
-      // Not a tutor nor a part of this session
-      if (user.userType !== "TUTOR" && !user.sessions.toObject().includes(id))
-        throw Error("Not authorized", 401);
-      return await Session.findById(id);
-    },
-    async getSessions(
-      _,
-      { time = new Date(), old = false, limit = 10 },
-      { user },
-      { fieldNodes }
-    ) {
-      const req = fieldNodes.find((node) => node.name?.value === "getSessions");
-      const selections = req.selectionSet.selections.map(
-        (selection) => selection.name.value
-      );
-      let projection = {};
-
-      // Add Apollo selections to Mongoose projections
-      selections.forEach((path) => {
-        projection[path] = 1;
-      });
-
-      if (user.userType === "TUTEE") {
-        if (selections.includes("attendance"))
-          projection.attendance = {
-            $elemMatch: { tutee: user._id, attended: true },
-          };
-        else delete projection.attendance;
-      }
-
-      await user
-        .populate({
-          path: "sessions",
-          match: {
-            endTime: { [old ? "$lte" : "$gt"]: time },
-          },
-          select: projection,
-          limit,
-          options: {
-            sort: { startTime: old ? -1 : 1 },
-          },
-        })
-        .execPopulate();
-
-      return user.sessions;
+      const session = await Session.findById(id);
+      assertGroupAuthorization(user, session.users);
+      return session;
     },
   },
   Session: {
@@ -68,13 +29,19 @@ export default {
       await session.populate("tutees").execPopulate();
       return session.tutees;
     },
+    attendance(session, _, { user }) {
+      if (user.userType === "TUTEE") {
+        return session.attendance.filter((att) => att.tutee === user._id);
+      } else {
+        return session.attendance;
+      }
+    },
   },
   Mutation: {
     async instantiateSession(_, { classId, startTime, length }, { user }) {
       const classDoc = await Class.findById(classId);
 
-      if (!validateInstantiation(user, classDoc))
-        throw Error("Not authorized to instantiate session", 401);
+      assertSessionInstantiation(user, classDoc);
 
       const session = await Session.create({
         tutors: classDoc.tutors,
@@ -121,19 +88,18 @@ export default {
         edits.endTime = addMinutes(args.startTime, args.length);
       const session = await Session.findById(args.id);
 
+      assertGroupAuthorization(user, session.users);
+
       if (user.userType === "TUTEE") {
-        if (!session.tutees.includes(user._id))
-          throw Error("You are not part of this session", 401);
-        if (session.settings.studentEditNotes) edits = { notes: args.notes };
-        else
-          throw Error("Tutees are not permitted to edit in this session", 401);
-      } else if (user.userType !== "TUTOR") {
-        throw Error("Not authorized", 401);
-      } else if (
-        user.userType === "TUTOR" &&
-        !session.tutors.toObject().includes(user._id)
-      ) {
-        throw Error("You are not part of this session", 401);
+        if (session.settings.studentEditNotes) {
+          // Only edit the notes
+          edits = { notes: args.notes };
+        } else {
+          throw new ApolloError(
+            "Tutees are not permitted to edit in this session",
+            401
+          );
+        }
       }
 
       if (edits.settings?.syncTutorsWithClass) {
@@ -152,10 +118,13 @@ export default {
     },
     async deleteSession(_, { id }, { user }) {
       const session = await Session.findById(id);
-      if (!session) throw new Error("Session not found", 404);
+      if (!session) throw new ApolloError("Session not found", 404);
 
-      if (!(user.userType === "TUTOR" && session.tutors.includes(user._id)))
-        throw Error("Not authorized to delete session", 401);
+      if (
+        user.userType === "TUTEE" ||
+        !assertGroupAuthorization(user, session.users)
+      )
+        throw new ApolloError("Not authorized to delete session", 401);
 
       await session.remove();
     },

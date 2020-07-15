@@ -1,13 +1,14 @@
 import Chat from "./model";
 import User from "../user/model";
 
+import { assertGroupAuthorization } from "../../helpers/permissions";
+
 export default {
   Query: {
     async getChat(_, { channel }, { user }) {
-      const chats = await user.getChats();
-      if (!chats.includes(channel)) throw new Error("Authorization error");
-
-      return await Chat.findById(channel);
+      const chat = await Chat.findById(channel);
+      assertGroupAuthorization(user, await chat.getUsers());
+      return chat;
     },
   },
   Chat: {

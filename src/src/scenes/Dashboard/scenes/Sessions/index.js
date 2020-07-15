@@ -29,7 +29,7 @@ const Sessions = ({ currentUser }) => {
   useEffect(() => {
     if (data && !isOld) {
       const timeoutIds = [];
-      data.getSessions.forEach((session) => {
+      data.getUser.sessions.forEach((session) => {
         // When a session finishes, refetch
         const refetchId = setTimeout(() => {
           refetch();
@@ -53,7 +53,7 @@ const Sessions = ({ currentUser }) => {
   if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
-  const sessions = data.getSessions;
+  const { sessions } = data.getUser;
 
   return (
     <div className={styles.Sessions}>

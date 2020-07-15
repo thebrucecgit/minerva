@@ -1,7 +1,9 @@
 query GetClasses {
-  getClasses {
-    _id
-    name
-    image
+  getUser {
+    classes {
+      _id
+      name
+      image
+    }
   }
 }

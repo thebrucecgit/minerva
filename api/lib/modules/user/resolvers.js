@@ -10,18 +10,24 @@ import confirmUserEmail from "./mutations/confirmUserEmail";
 import updatePassword from "./mutations/updatePassword";
 
 import { escapeRegExp } from "./helpers";
+import {
+  assertAuthenticated,
+  assertUser,
+  assertUserOrTutor,
+  assertTutor,
+} from "../../helpers/permissions";
 
 export default {
   Query: {
     login,
     async getUser(_, { id }, { user }) {
+      if (!id) id = user._id;
       // Not the user himself or a tutor
-      if (user.userType !== "TUTOR" && user._id !== id)
-        throw new Error("Not authorized", 401);
+      assertUserOrTutor(user, { _id: id });
       return await User.findById(id);
     },
     async getUsers(_, { value, userType }, { user }) {
-      if (user.userType !== "TUTOR") throw new Error("Not authorized", 401);
+      assertTutor(user);
       const regex = new RegExp(escapeRegExp(value), "gi");
 
       // Fuzzy search
@@ -31,6 +37,8 @@ export default {
       });
     },
     async getTutors(_, { limit }, { user }) {
+      // TODO: Authorization
+      assertAuthenticated(user);
       const populated = await user
         .populate({
           path: "classes",
@@ -54,21 +62,39 @@ export default {
     },
   },
   User: {
-    async classes(user, _, { user: reqUser }) {
-      if (reqUser.userType !== "TUTOR" && reqUser._id !== user._id)
-        throw new ApolloError("User unauthorized for this field", 401);
-      await user.populate("classes").execPopulate();
+    async classes(user, { limit }, { user: reqUser }) {
+      assertUser(reqUser, user);
+      await user
+        .populate({
+          path: "classes",
+          limit,
+        })
+        .execPopulate();
       return user.classes;
     },
-    async sessions(user, _, { user: reqUser }) {
-      if (reqUser.userType !== "TUTOR" && reqUser._id !== user._id)
-        throw new ApolloError("User unauthorized for this field", 401);
-      await user.populate("sessions").execPopulate();
+    async sessions(
+      user,
+      { time = new Date(), old = false, limit = 10 },
+      { user: reqUser }
+    ) {
+      assertUser(reqUser, user);
+      await user
+        .populate({
+          path: "sessions",
+          match: {
+            endTime: { [old ? "$lte" : "$gt"]: time },
+          },
+          limit,
+          options: {
+            sort: { startTime: old ? -1 : 1 },
+          },
+        })
+        .execPopulate();
+
       return user.sessions;
     },
     async chats(user, _, { user: reqUser }) {
-      if (reqUser.userType !== "TUTOR" && reqUser._id !== user._id)
-        throw new ApolloError("User unauthorized for this field", 401);
+      assertUser(reqUser, user);
       const chats = await user.getChats();
       return await Chat.find({ _id: { $in: chats } });
     },

@@ -6,21 +6,19 @@ import Chat from "../chat/model";
 import axios from "axios";
 import Chat from "../chat/model";
 
+import {
+  assertGroupAuthorization,
+  assertTutor,
+} from "../../helpers/permissions";
+
 export default {
   Query: {
     async getClass(_, { id }, { user }) {
-      if (user.userType !== "TUTOR" && !user.classes.toObject().includes(id))
-        throw new Error("Not authorized", 401);
-      return await Class.findById(id);
-    },
-    async getClasses(_, { limit }, { user }) {
-      await user
-        .populate({
-          path: "classes",
-          limit,
-        })
-        .execPopulate();
-      return user.classes;
+      const classData = await Class.findById(id);
+
+      assertGroupAuthorization(user, classData.users);
+
+      return classData;
     },
   },
   Class: {
@@ -55,7 +53,7 @@ export default {
   },
   Mutation: {
     async createClass(_, { name }, { user }) {
-      if (user.userType !== "TUTOR") throw new Error("Not authorized", 401);
+      assertTutor(user);
 
       const newClass = await Class.create({
         name,
@@ -72,10 +70,12 @@ export default {
       return newClass;
     },
     async updateClass(_, args, { user }) {
-      if (user.userType !== "TUTOR") throw new Error("Not authorized", 401);
+      assertTutor(user);
 
-      const oldClassInfo = await Class.findById(args.id).lean();
+      const oldClassInfo = await Class.findById(args.id);
       if (!oldClassInfo) throw new Error("Class not found", 404);
+
+      assertGroupAuthorization(user, oldClassInfo.users);
 
       const edits = { ...args };
 
@@ -212,11 +212,10 @@ export default {
       return classInfo;
     },
     async deleteClass(_, { id }, { user }) {
+      assertTutor(user);
       const classInfo = await Class.findById(id);
       if (!classInfo) throw new Error("Class not found", 404);
-
-      if (!(user.userType === "TUTOR" && classInfo.tutors.includes(user._id)))
-        throw new Error("Not authorized to delete class", 401);
+      assertGroupAuthorization(user, classInfo.users);
 
       await classInfo.remove();
     },
