@@ -58,7 +58,7 @@ function Authentication({ authHelpers, children }) {
       ? { email: emailOrTokenId, password }
       : { tokenId: emailOrTokenId };
     const { data, error } = await loginReq(variables);
-    console.log(variables, data);
+
     if (error) throw error;
 
     const userInfo = data.login;
