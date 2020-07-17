@@ -1,5 +1,5 @@
-import React, { Suspense, lazy } from "react";
-import { Switch, Route } from "react-router-dom";
+import React, { Suspense, lazy, useEffect } from "react";
+import { Switch, Route, useLocation } from "react-router-dom";
 
 import Loader from "./components/Loader";
 import { loader } from "./styles/Loader.module.scss";
@@ -10,6 +10,16 @@ const Signups = lazy(() => import("./scenes/Signups"));
 const Auth = lazy(() => import("./scenes/Auth"));
 const Dashboard = lazy(() => import("./scenes/Dashboard"));
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
+
 function Routes({ authService }) {
   return (
     <Suspense
@@ -19,6 +29,7 @@ function Routes({ authService }) {
         </div>
       }
     >
+      <ScrollToTop />
       <Switch>
         <Route exact path="/">
           <Home authService={authService} />
