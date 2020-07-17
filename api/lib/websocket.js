@@ -21,6 +21,10 @@ const eventSchema = yup.object().shape({
   }),
 });
 
+function heartbeat() {
+  this.isAlive = true;
+}
+
 function init(server) {
   const wss = new WebSocket.Server({
     noServer: true,
@@ -29,6 +33,10 @@ function init(server) {
   });
 
   wss.on("connection", (ws) => {
+    ws.isAlive = true;
+
+    ws.on("pong", heartbeat);
+
     const send = (message) => {
       ws.send(JSON.stringify(message));
     };
@@ -112,6 +120,19 @@ function init(server) {
         });
       }
     });
+  });
+
+  const interval = setInterval(() => {
+    wss.clients.forEach((ws) => {
+      if (ws.isAlive === false) return ws.terminate();
+
+      ws.isAlive = false;
+      ws.ping(() => {});
+    });
+  }, 30000);
+
+  wss.on("close", function close() {
+    clearInterval(interval);
   });
 
   server.on("upgrade", async (req, socket, head) => {
