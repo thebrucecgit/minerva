@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import User from "./modules/user/model";
-import { AuthenticationError } from "apollo-server";
 
 const { JWT_SECRET } = process.env;
 
