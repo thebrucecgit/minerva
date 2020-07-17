@@ -89,7 +89,13 @@ const Main = () => {
               </div>
             </Link>
           ))}
-          <div className={styles.tutor}>
+          <div
+            className={classNames(
+              "card x square",
+              styles.tutor,
+              styles.addTutor
+            )}
+          >
             <Link to="/dashboard/search">
               <h3>Search Tutors</h3>
               <FontAwesomeIcon icon={faPlus} />
