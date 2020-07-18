@@ -39,7 +39,7 @@ const Classes = ({ currentUser }) => {
     try {
       newClassToastId = toast("Creating new class...", { autoClose: false });
       const { data } = await createClassReq({ variables: inputs });
-      console.log(data);
+
       history.replace(`/dashboard/classes/${data.createClass._id}`);
       toast.update(newClassToastId, {
         render: "Successfully created class",
