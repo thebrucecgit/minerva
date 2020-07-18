@@ -96,7 +96,7 @@ const User = ({ currentUser }) => {
                     <Link to={`/dashboard/sessions/${session._id}`}>
                       <div className="body">
                         <h3>
-                          {format(session.startTime, "EEEE d MMMM, yyyy")}
+                          {format(session.startTime, "EEEE, d MMMM yyyy")}
                         </h3>
                         <p>{format(session.startTime, "h:mm aa")}</p>
                       </div>

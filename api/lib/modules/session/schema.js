@@ -65,6 +65,8 @@ export default gql`
     length: Int
     notes: String
     settings: SessionSettings
+    confirmed: Boolean!
+    confirmedUser: [User!]
   }
 
   extend type Query {

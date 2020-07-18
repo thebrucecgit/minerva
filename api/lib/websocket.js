@@ -9,7 +9,26 @@ import User from "./modules/user/model";
 const { DOMAIN } = process.env;
 
 const eventSchema = yup.object().shape({
-  type: yup.string().required().oneOf(["MESSAGE", "INBOX"]),
+  type: yup
+    .string()
+    .required()
+    .oneOf([
+      "INBOX",
+      "NEW_SESSION_REQUEST",
+      "NEW_SESSION",
+      "CHANGE_SESSION_REQUEST",
+      "CHANGE_SESSION",
+      "CANCEL_SESSION",
+    ]),
+  time: yup.date().required(),
+  events: yup.array().when("type", {
+    is: "INBOX",
+    then: yup.array().required(),
+  }),
+});
+
+const receivedEventSchema = yup.object().shape({
+  type: yup.string().required().oneOf(["MESSAGE"]),
   channel: yup.string().when("type", {
     is: "MESSAGE",
     then: yup.string().required(),
@@ -21,12 +40,44 @@ const eventSchema = yup.object().shape({
   }),
 });
 
+let wss;
+
 function heartbeat() {
   this.isAlive = true;
 }
 
-function init(server) {
-  const wss = new WebSocket.Server({
+function send(ws, event) {
+  ws.send(JSON.stringify(event));
+}
+
+export async function broadcast(data, endUsers, sender) {
+  const event = await eventSchema.validate(data);
+  // Send to users who are in channel and connected
+  const users = [...endUsers];
+
+  for (const client of wss.clients) {
+    if (
+      client.user !== sender && // Not original sender
+      users.includes(client.user) && // In the user list
+      client.readyState === WebSocket.OPEN // Socket is open
+    ) {
+      // Send event
+      send(client, event);
+
+      // Remove from `users`
+      users.splice(users.indexOf(client.user), 1);
+    }
+  }
+
+  // Remove sender
+  if (sender) users.splice(users.indexOf(sender), 1);
+
+  // Save to users' inboxes for those in list but not connected
+  await User.updateMany({ _id: { $in: users } }, { $push: { inbox: event } });
+}
+
+export function init(server) {
+  wss = new WebSocket.Server({
     noServer: true,
     path: "/ws",
     maxPayload: 200000, // 200 kB
@@ -37,23 +88,20 @@ function init(server) {
 
     ws.on("pong", heartbeat);
 
-    const send = (message) => {
-      ws.send(JSON.stringify(message));
-    };
-
     (async () => {
       // Send user events in inbox and clear inbox
       const { inbox } = await User.findByIdAndUpdate(ws.user, { inbox: [] });
-      send({
+      send(ws, {
         type: "INBOX",
         events: inbox,
+        time: new Date(),
       });
     })();
 
-    ws.on("message", async (data) => {
+    async function onMessage(data) {
       let reqId;
       try {
-        const event = await eventSchema.validate(data);
+        const event = await receivedEventSchema.validate(data);
 
         switch (event.type) {
           case "MESSAGE": {
@@ -77,34 +125,9 @@ function init(server) {
             );
             const users = await chat.getUsers();
 
-            // Send to users who are in channel and connected
-            const userClients = [];
-            for (const client of wss.clients) {
-              if (
-                client !== ws &&
-                users.includes(client.user) &&
-                client.readyState === WebSocket.OPEN
-              )
-                userClients.push(client);
-            }
+            await broadcast(event, users, ws.user);
 
-            userClients.forEach((client) => {
-              client.send(JSON.stringify(event));
-              // Remove from `users`
-              const userIndex = users.indexOf(client.user);
-              if (userIndex !== -1) users.splice(userIndex, 1);
-            });
-
-            // Remove sender
-            users.splice(users.indexOf(ws.user), 1);
-
-            // Save to users' inboxes for those in channel but not connected
-            await User.updateMany(
-              { _id: { $in: users } },
-              { $push: { inbox: event } }
-            );
-
-            send({
+            send(ws, {
               type: "MESSAGE_RESOLVE",
               _id: reqId,
             });
@@ -113,13 +136,15 @@ function init(server) {
         }
       } catch (e) {
         console.error(e);
-        send({
+        send(ws, {
           type: "MESSAGE_REJECT",
           _id: reqId,
           message: e.message,
         });
       }
-    });
+    }
+
+    ws.on("message", onMessage);
   });
 
   const interval = setInterval(() => {
@@ -153,5 +178,3 @@ function init(server) {
     }
   });
 }
-
-export default { init };

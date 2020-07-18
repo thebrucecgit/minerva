@@ -433,7 +433,7 @@ const Class = ({ currentUser }) => {
                 className="card y"
               >
                 <h3 className="body">
-                  {format(session.startTime, "d MMMM, yyyy")}
+                  {format(session.startTime, "d MMMM yyyy")}
                 </h3>
               </Link>
             ))}

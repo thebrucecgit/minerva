@@ -22,7 +22,7 @@ const InstantiateSession = ({
         timeFormat="h:mm aa"
         timeIntervals={15}
         timeCaption="Time"
-        dateFormat="d MMMM, yyyy h:mm aa"
+        dateFormat="d MMMM yyyy h:mm aa"
       />
       <select name="length" value={length} onChange={setLength}>
         <option value="30">30 Minutes</option>

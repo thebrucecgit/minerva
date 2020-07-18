@@ -261,7 +261,7 @@ const Session = ({ currentUser }) => {
       <div>
         <div className={styles.flex}>
           {disabled.startTime ? (
-            <h1>{format(sessionInfo.startTime, "EEEE d MMMM, yyyy")}</h1>
+            <h1>{format(sessionInfo.startTime, "EEEE, d MMMM yyyy")}</h1>
           ) : (
             <>
               <DatePicker
@@ -271,7 +271,7 @@ const Session = ({ currentUser }) => {
                 timeFormat="h:mm aa"
                 timeIntervals={15}
                 timeCaption="Time"
-                dateFormat="d MMMM, yyyy h:mm aa"
+                dateFormat="d MMMM yyyy h:mm aa"
               />
               <select
                 name="length"

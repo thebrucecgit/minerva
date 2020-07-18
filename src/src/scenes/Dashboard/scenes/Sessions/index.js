@@ -87,7 +87,7 @@ const Sessions = ({ currentUser }) => {
                 <div className="header">
                   <Link to={`/dashboard/sessions/${session._id}`}>
                     <h2>
-                      {format(session.startTime, "EEEE d MMMM, yyyy")}
+                      {format(session.startTime, "EEEE, d MMMM yyyy")}
                       {isOld && currentUser.user.userType === "TUTEE" && (
                         <FontAwesomeIcon
                           className={classNames(styles.attended, {

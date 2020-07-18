@@ -151,7 +151,7 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
               dayMessages.map((day) => (
                 <div key={day[0]} className={messageStyles.MessageGroup}>
                   <h4 className={messageStyles.date}>
-                    {format(parseISO(day[0]), "d MMMM, yyyy")}
+                    {format(parseISO(day[0]), "d MMMM yyyy")}
                   </h4>
                   {day[1].map((message) => (
                     <div

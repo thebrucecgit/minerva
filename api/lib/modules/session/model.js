@@ -67,6 +67,12 @@ const sessionSchema = Schema({
   endTime: Date,
   length: Number, // in minutes
   notes: String,
+  confirmedUsers: [
+    {
+      type: String,
+      ref: "User",
+    },
+  ],
 });
 
 sessionSchema.pre("remove", async function () {
@@ -90,6 +96,10 @@ sessionSchema.pre("remove", async function () {
 
 sessionSchema.virtual("users").get(function () {
   return [...(this.tutees ?? []), ...(this.tutors ?? [])];
+});
+
+sessionSchema.virtual("confirmed").get(function () {
+  return this.confirmedUsers.length === this.tutors.length + this.tutees.length;
 });
 
 const Session = model("Session", sessionSchema);

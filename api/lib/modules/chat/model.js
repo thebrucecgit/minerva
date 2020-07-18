@@ -29,7 +29,14 @@ const chatSchema = Schema({
       },
       type: {
         type: String,
-        enum: ["TEXT"],
+        enum: [
+          "MESSAGE",
+          "NEW_SESSION_REQUEST",
+          "NEW_SESSION",
+          "CHANGE_SESSION_REQUEST",
+          "CHANGE_SESSION",
+          "CANCEL_SESSION",
+        ],
         required: true,
       },
       time: {
@@ -44,6 +51,8 @@ const chatSchema = Schema({
         type: String,
         ref: "User",
       },
+      sessionId: String,
+      sessionTime: Date,
     },
   ],
 });

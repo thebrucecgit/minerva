@@ -1,12 +1,17 @@
 import Session from "./model";
 import Class from "../class/model";
 import User from "../user/model";
-import { addMinutes, isBefore } from "date-fns";
+import { addMinutes } from "date-fns";
+import { format } from "date-fns-tz";
+import * as websocket from "../../websocket";
+import sgMail from "../../config/email";
 
 import {
   assertGroupAuthorization,
   assertSessionInstantiation,
 } from "../../helpers/permissions";
+
+const { FRONTEND_DOMAIN } = process.env;
 
 export default {
   Query: {
@@ -51,6 +56,9 @@ export default {
         startTime,
         endTime: addMinutes(startTime, length),
         length,
+        confirmedUsers: classDoc.preferences.studentAgreeSessions
+          ? [user._id]
+          : [],
       });
 
       // Save session to class
@@ -77,8 +85,61 @@ export default {
         },
       ]);
 
-      // TODO: Email notify all tutors and tutees
-      // const users = await User.find({ _id: { $in: userIds } }, "email");
+      const event = {
+        type: classDoc.preferences.studentAgreeSessions
+          ? "NEW_SESSION_REQUEST"
+          : "NEW_SESSION",
+        className: classDoc.name,
+        sessionId: session._id,
+        sessionTime: format(session.startTime, ""),
+      };
+
+      // Insert event into chat
+      if (classDoc.preferences.enableChat) {
+        await Chat.findByIdAndUpdate(classDoc.chat, {
+          $push: { messages: event },
+        });
+      }
+
+      // Notify all users except initiator
+      await websocket.broadcast(event, session.users, user._id);
+
+      // Email all users
+      const users = await User.find(
+        { _id: { $in: classDoc.users } },
+        "name email"
+      );
+
+      await sgMail.send({
+        dynamicTemplateData: {
+          request: classDoc.preferences.studentAgreeSessions,
+          className: classDoc.name,
+          sessionTime: format(session.startTime, "h:mm aa, EEEE d MMMM yyyy", {
+            timeZone: "Pacific/Auckalnd",
+          }),
+          sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
+        },
+        from: "no-reply@academe.co.nz",
+        reply_to: {
+          email: "admin@academe.co.nz",
+          name: "Admin",
+        },
+        templateId: "d-f02579026cf84c5194f7135d838e87ad",
+        subject: `New ${
+          classDoc.preferences.studentAgreeSessions
+            ? "Session Request"
+            : "Session"
+        } for "${classDoc.name}"`,
+        personalizations: users.map((user) => ({
+          to: {
+            email: user.email,
+            name: user.name,
+          },
+          dynamicTemplateData: {
+            name: user.name,
+          },
+        })),
+      });
 
       return session;
     },

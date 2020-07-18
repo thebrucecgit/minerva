@@ -7,6 +7,8 @@ export default gql`
     time: Date!
     author: ID!
     text: String
+    sessionId: String
+    sessionTime: Date
   }
 
   type Chat {

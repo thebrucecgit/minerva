@@ -45,7 +45,7 @@ const Attendance = () => {
               <th key={session.startTime} className={styles.rotate}>
                 <div>
                   <Link to={`/dashboard/sessions/${session._id}`}>
-                    {format(session.startTime, "d MMMM, yyyy")}
+                    {format(session.startTime, "d MMMM yyyy")}
                   </Link>
                 </div>
               </th>

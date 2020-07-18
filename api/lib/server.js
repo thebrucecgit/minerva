@@ -5,7 +5,7 @@ import http from "http";
 
 import "./config/database";
 
-import websocket from "./websocket";
+import * as websocket from "./websocket";
 import apolloServer from "./apollo";
 
 const { DOMAIN, PORT } = process.env;
