@@ -67,10 +67,22 @@ const sessionSchema = Schema({
   endTime: Date,
   length: Number, // in minutes
   notes: String,
-  confirmedUsers: [
+  cancelled: {
+    type: Boolean,
+    default: false,
+  },
+  userResponses: [
     {
-      type: String,
-      ref: "User",
+      user: {
+        type: String,
+        ref: "User",
+        required: true,
+      },
+      response: {
+        type: String,
+        required: true,
+        enum: ["CONFIRM", "REJECT"],
+      },
     },
   ],
 });
@@ -98,8 +110,13 @@ sessionSchema.virtual("users").get(function () {
   return [...(this.tutees ?? []), ...(this.tutors ?? [])];
 });
 
-sessionSchema.virtual("confirmed").get(function () {
-  return this.confirmedUsers.length === this.tutors.length + this.tutees.length;
+sessionSchema.virtual("status").get(function () {
+  if (this.cancelled) return "CANCEL";
+  return this.userResponses
+    .toObject()
+    .every((value) => value.response === "CONFIRM")
+    ? "CONFIRM"
+    : "REJECT";
 });
 
 const Session = model("Session", sessionSchema);

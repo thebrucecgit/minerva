@@ -9,6 +9,7 @@ import sgMail from "../../config/email";
 import {
   assertGroupAuthorization,
   assertSessionInstantiation,
+  assertTutor,
 } from "../../helpers/permissions";
 
 const { FRONTEND_DOMAIN } = process.env;
@@ -56,8 +57,8 @@ export default {
         startTime,
         endTime: addMinutes(startTime, length),
         length,
-        confirmedUsers: classDoc.preferences.studentAgreeSessions
-          ? [user._id]
+        userResponses: classDoc.preferences.studentAgreeSessions
+          ? [{ user: user._id, response: "CONFIRM" }]
           : [],
       });
 
@@ -91,7 +92,7 @@ export default {
           : "NEW_SESSION",
         className: classDoc.name,
         sessionId: session._id,
-        sessionTime: format(session.startTime, ""),
+        sessionTime: session.startTime,
       };
 
       // Insert event into chat
@@ -113,9 +114,10 @@ export default {
       await sgMail.send({
         dynamicTemplateData: {
           request: classDoc.preferences.studentAgreeSessions,
+          user: user.name,
           className: classDoc.name,
           sessionTime: format(session.startTime, "h:mm aa, EEEE d MMMM yyyy", {
-            timeZone: "Pacific/Auckalnd",
+            timeZone: "Pacific/Auckland",
           }),
           sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
         },
@@ -181,13 +183,104 @@ export default {
       const session = await Session.findById(id);
       if (!session) throw new ApolloError("Session not found", 404);
 
+      assertGroupAuthorization(user, session.users);
+      assertTutor(user);
+
+      await session.remove();
+    },
+    async cancelSession(_, { id }, { user }) {
+      const session = await Session.findById(id).populate("class");
+      if (!session) throw new ApolloError("Session not found", 404);
+
+      assertGroupAuthorization(user, session.users);
+
       if (
-        user.userType === "TUTEE" ||
-        !assertGroupAuthorization(user, session.users)
+        user.userType === "TUTEE" &&
+        !session.class.preferences.studentAgreeSessions
       )
         throw new ApolloError("Not authorized to delete session", 401);
 
-      await session.remove();
+      await Session.findByIdAndUpdate(id, { cancelled: true });
+
+      const event = {
+        type: "CANCEL_SESSION",
+        className: session.class.name,
+        sessionId: session._id,
+        sessionTime: session.startTime,
+      };
+
+      // Insert event into chat
+      if (session.class.preferences.enableChat) {
+        await Chat.findByIdAndUpdate(session.class.chat, {
+          $push: { messages: event },
+        });
+      }
+
+      // Notify all users except initiator
+      await websocket.broadcast(event, session.users, user._id);
+
+      // Email all users
+      const users = await User.find(
+        { _id: { $in: session.users } },
+        "name email"
+      );
+
+      const sessionTime = format(
+        session.startTime,
+        "h:mm aa, EEEE d MMMM yyyy",
+        {
+          timeZone: "Pacific/Auckland",
+        }
+      );
+
+      await sgMail.send({
+        dynamicTemplateData: {
+          user: user._id,
+          className: session.class.name,
+          sessionTime,
+          sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
+        },
+        from: "no-reply@academe.co.nz",
+        reply_to: {
+          email: "admin@academe.co.nz",
+          name: "Admin",
+        },
+        templateId: "d-66761a69d047412289cbb4dffeb82b38",
+        subject: `Cancelled Session on ${sessionTime} for "${session.class.name}"`,
+        personalizations: users.map((user) => ({
+          to: {
+            email: user.email,
+            name: user.name,
+          },
+          dynamicTemplateData: {
+            name: user.name,
+          },
+        })),
+      });
+
+      return session;
+    },
+    async acceptSession(_, { id }, { user }) {
+      const session = await Session.findById(id);
+      assertGroupAuthorization(user, session.users);
+      return await Session.findByIdAndUpdate(
+        id,
+        {
+          $push: { userResponses: { user: user._id, response: "CONFIRM" } },
+        },
+        { new: true }
+      );
+    },
+    async rejectSession(_, { id }, { user }) {
+      const session = await Session.findById(id);
+      assertGroupAuthorization(user, session.users);
+      return await Session.findByIdAndUpdate(
+        id,
+        {
+          $push: { userResponses: { user: user._id, response: "REJECT" } },
+        },
+        { new: true }
+      );
     },
   },
 };

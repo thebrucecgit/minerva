@@ -53,7 +53,7 @@ export function assertSessionInstantiation(user, doc) {
 
   // User must be a tutee with permissions
   if (user.userType === "TUTEE" && !doc.preferences.studentInstantiation)
-    throw new Error("Not authorized to instantiate session", 401);
+    throw new ApolloError("Not authorized to instantiate session", 401);
 
   return true;
 }
