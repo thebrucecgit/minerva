@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import Class from "./model";
 import User from "../user/model";
 import Session from "../session/model";
@@ -55,11 +56,23 @@ export default {
     async createClass(_, { name }, { user }) {
       assertTutor(user);
 
-      const newClass = await Class.create({
-        name,
-        tutors: [user._id],
+      const classID = nanoid(11);
+
+      // Creates chat by default
+      const { channel } = await Chat.create({
+        bindToClass: true,
+        class: classID,
       });
 
+      // Create class and link to chat
+      const newClass = await Class.create({
+        _id: classID,
+        name,
+        tutors: [user._id],
+        chat: channel,
+      });
+
+      // Add class to user's class
       await User.findOneAndUpdate(
         { _id: user._id, userType: user.userType },
         {
