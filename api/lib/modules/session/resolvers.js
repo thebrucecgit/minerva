@@ -188,7 +188,7 @@ export default {
 
       await session.remove();
     },
-    async cancelSession(_, { id }, { user }) {
+    async cancelSession(_, { id, reason }, { user }) {
       const session = await Session.findById(id).populate("class");
       if (!session) throw new ApolloError("Session not found", 404);
 
@@ -200,7 +200,13 @@ export default {
       )
         throw new ApolloError("Not authorized to delete session", 401);
 
-      await Session.findByIdAndUpdate(id, { cancelled: true });
+      await Session.findByIdAndUpdate(id, {
+        cancellation: {
+          cancelled: true,
+          reason: reason,
+          date: new Date(),
+        },
+      });
 
       const event = {
         type: "CANCEL_SESSION",

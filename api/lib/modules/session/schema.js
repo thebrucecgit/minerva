@@ -33,6 +33,12 @@ export default gql`
     online: Boolean!
   }
 
+  type SessionCancellation {
+    cancelled: Boolean!
+    reason: String
+    date: Date
+  }
+
   input SessionSettingsIn {
     studentEditNotes: Boolean
     syncTutorsWithClass: Boolean
@@ -70,6 +76,7 @@ export default gql`
     length: Int
     notes: String
     settings: SessionSettings
+    cancellation: SessionCancellation!
     status: String!
     userResponses: [SessionUserResponse!]
   }
@@ -95,7 +102,7 @@ export default gql`
     ): Session!
     "Deletes Session and removes session from relations"
     deleteSession(id: ID!): Boolean
-    cancelSession(id: ID!): Session
+    cancelSession(id: ID!, reason: String!): Session
     acceptSession(id: ID!): Session
     rejectSession(id: ID!): Session
   }

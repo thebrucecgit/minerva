@@ -67,10 +67,6 @@ const sessionSchema = Schema({
   endTime: Date,
   length: Number, // in minutes
   notes: String,
-  cancelled: {
-    type: Boolean,
-    default: false,
-  },
   userResponses: [
     {
       user: {
@@ -85,6 +81,14 @@ const sessionSchema = Schema({
       },
     },
   ],
+  cancellation: {
+    cancelled: {
+      type: Boolean,
+      default: false,
+    },
+    reason: String,
+    date: Date,
+  },
 });
 
 sessionSchema.pre("remove", async function () {
@@ -111,7 +115,7 @@ sessionSchema.virtual("users").get(function () {
 });
 
 sessionSchema.virtual("status").get(function () {
-  if (this.cancelled) return "CANCEL";
+  if (this.cancellation.cancelled) return "CANCEL";
   return this.userResponses
     .toObject()
     .every((value) => value.response === "CONFIRM")
