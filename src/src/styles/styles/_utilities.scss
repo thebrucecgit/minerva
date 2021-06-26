@@ -113,3 +113,17 @@ form {
     }
   }
 }
+
+.alert {
+  padding: 1rem 1.5rem;
+  border-width: 1px;
+  border-style: solid;
+  &.danger {
+    border-color: rgb(241, 137, 137);
+    background-color: rgb(247, 195, 195);
+  }
+  &.warning {
+    border-color: #ffeeba;
+    background-color: #fff3cd;
+  }
+}
