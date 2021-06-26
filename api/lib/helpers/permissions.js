@@ -49,7 +49,7 @@ export async function assertGroupAuthorization(user, users) {
 }
 
 export function assertSessionInstantiation(user, doc) {
-  assertGroupAuthorization(user, doc);
+  assertGroupAuthorization(user, doc.users);
 
   // User must be a tutee with permissions
   if (user.userType === "TUTEE" && !doc.preferences.studentInstantiation)
