@@ -1,6 +1,7 @@
 import Session from "./model";
 import Class from "../class/model";
 import User from "../user/model";
+import Chat from "../chat/model";
 import { addMinutes } from "date-fns";
 import { format } from "date-fns-tz";
 import * as websocket from "../../websocket";
@@ -47,7 +48,7 @@ export default {
     async instantiateSession(_, { classId, startTime, length }, { user }) {
       const classDoc = await Class.findById(classId);
 
-      assertSessionInstantiation(user, classDoc);
+      assertSessionInstantiation(user, classDoc.toObject({ virtuals: true }));
 
       const session = await Session.create({
         tutors: classDoc.tutors,
@@ -93,6 +94,7 @@ export default {
         className: classDoc.name,
         sessionId: session._id,
         sessionTime: session.startTime,
+        time: new Date(),
       };
 
       // Insert event into chat
@@ -202,6 +204,7 @@ export default {
 
       await Session.findByIdAndUpdate(id, {
         cancellation: {
+          user: user._id,
           cancelled: true,
           reason: reason,
           date: new Date(),
@@ -213,6 +216,7 @@ export default {
         className: session.class.name,
         sessionId: session._id,
         sessionTime: session.startTime,
+        time: new Date(),
       };
 
       // Insert event into chat
@@ -266,7 +270,7 @@ export default {
 
       return session;
     },
-    async acceptSession(_, { id }, { user }) {
+    async confirmSession(_, { id }, { user }) {
       const session = await Session.findById(id);
       assertGroupAuthorization(user, session.users);
       return await Session.findByIdAndUpdate(

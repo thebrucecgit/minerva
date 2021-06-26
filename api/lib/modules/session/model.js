@@ -82,6 +82,10 @@ const sessionSchema = Schema({
     },
   ],
   cancellation: {
+    user: {
+      type: String,
+      ref: "User",
+    },
     cancelled: {
       type: Boolean,
       default: false,
@@ -116,11 +120,26 @@ sessionSchema.virtual("users").get(function () {
 
 sessionSchema.virtual("status").get(function () {
   if (this.cancellation.cancelled) return "CANCEL";
-  return this.userResponses
-    .toObject()
-    .every((value) => value.response === "CONFIRM")
-    ? "CONFIRM"
-    : "REJECT";
+  const userResponses = this.userResponses.toObject();
+  const tutors = this.tutors.toObject();
+  const tutees = this.tutees.toObject();
+
+  // If anyone responded with "REJECT", reject overall
+  if (userResponses.some((value) => value.response === "REJECT"))
+    return "REJECT";
+
+  // If no response from any tutor
+  if (!userResponses.some((value) => tutors.includes(value.user)))
+    return "UNCONFIRM";
+
+  // If not every tutee has responded
+  if (
+    userResponses.filter((u) => tutees.includes(u.user)).length < tutees.length
+  )
+    return "UNCONFIRM";
+
+  // If at least one tutor has confirmed and all tutees have confirmed:
+  return "CONFIRM";
 });
 
 const Session = model("Session", sessionSchema);

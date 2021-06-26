@@ -5,7 +5,7 @@ export default gql`
     _id: ID!
     type: String!
     time: Date!
-    author: ID!
+    author: ID
     text: String
     sessionId: String
     sessionTime: Date

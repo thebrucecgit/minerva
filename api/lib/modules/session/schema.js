@@ -3,7 +3,7 @@ import { gql } from "apollo-server";
 export default gql`
   type SessionUserResponse {
     user: ID!
-    response: String! # Enum "ACCEPT" or "REJECT"
+    response: String! # Enum "CONFIRM" or "REJECT"
   }
 
   "Recording attendance of a class"
@@ -34,6 +34,7 @@ export default gql`
   }
 
   type SessionCancellation {
+    user: ID
     cancelled: Boolean!
     reason: String
     date: Date
@@ -103,7 +104,7 @@ export default gql`
     "Deletes Session and removes session from relations"
     deleteSession(id: ID!): Boolean
     cancelSession(id: ID!, reason: String!): Session
-    acceptSession(id: ID!): Session
+    confirmSession(id: ID!): Session
     rejectSession(id: ID!): Session
   }
 `;
