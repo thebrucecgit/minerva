@@ -74,14 +74,15 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
                   : chat.users.map((u) => u.name).join(", ")}
               </h4>
               {/* display last message */}
-              {chat.messages.length > 0 && (
-                <p>{`${
-                  chat.users.find(
-                    (u) =>
-                      u._id === chat.messages[chat.messages.length - 1].author
-                  ).name
-                }: ${chat.messages[chat.messages.length - 1].text}`}</p>
-              )}
+              {chat.messages.length > 0 &&
+                chat.messages[chat.messages.length - 1].type === "MESSAGE" && (
+                  <p>{`${
+                    chat.users.find(
+                      (u) =>
+                        u._id === chat.messages[chat.messages.length - 1].author
+                    ).name
+                  }: ${chat.messages[chat.messages.length - 1].text}`}</p>
+                )}
             </button>
           </NavLink>
         ))}

@@ -13,6 +13,8 @@ query GetChat($channel: ID!) {
       _id
       type
       time
+      sessionId
+      sessionTime
       author
       text
     }

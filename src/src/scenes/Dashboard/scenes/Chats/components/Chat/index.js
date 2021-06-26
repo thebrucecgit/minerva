@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/react-hooks";
 import { format, startOfDay, parseISO, differenceInMinutes } from "date-fns";
@@ -154,36 +154,55 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
                     {format(parseISO(day[0]), "d MMMM yyyy")}
                   </h4>
                   {day[1].map((message) => (
-                    <div
-                      key={message._id}
-                      className={classNames(
-                        { [messageStyles.me]: message.me },
-                        messageStyles.Message
-                      )}
-                    >
-                      {message.header && (
-                        <p className={messageStyles.header}>
-                          <span className={messageStyles.author}>
-                            {
-                              chatInfo.users.find(
-                                (u) => u._id === message.author
-                              ).name
-                            }
-                          </span>
-                          <span className={messageStyles.time}>
-                            {format(message.time, "h:mm aa")}
-                          </span>
-                        </p>
-                      )}
-                      <p className={messageStyles.text}>{message.text}</p>
-                      {message.failed && (
-                        <p
-                          className={classNames("error", messageStyles.retry)}
-                          onClick={() => handleRetryMessage(message._id)}
+                    <div key={message._id}>
+                      {message.type === "MESSAGE" && (
+                        <div
+                          className={classNames(
+                            { [messageStyles.me]: message.me },
+                            messageStyles.Message
+                          )}
                         >
-                          <FontAwesomeIcon icon={faRedo} /> Message failed to
-                          send
-                        </p>
+                          {message.header && (
+                            <p className={messageStyles.header}>
+                              <span className={messageStyles.author}>
+                                {
+                                  chatInfo.users.find(
+                                    (u) => u._id === message.author
+                                  ).name
+                                }
+                              </span>
+                              <span className={messageStyles.time}>
+                                {format(message.time, "h:mm aa")}
+                              </span>
+                            </p>
+                          )}
+                          <p className={messageStyles.text}>{message.text}</p>
+                          {message.failed && (
+                            <p
+                              className={classNames(
+                                "error",
+                                messageStyles.retry
+                              )}
+                              onClick={() => handleRetryMessage(message._id)}
+                            >
+                              <FontAwesomeIcon icon={faRedo} /> Message failed
+                              to send
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      {message.type === "NEW_SESSION" && (
+                        <div className={messageStyles.NewSession}>
+                          <Link to={`/dashboard/sessions/${message.sessionId}`}>
+                            <h4>New Session created</h4>
+                            <p>
+                              {format(
+                                message.sessionTime,
+                                "d MMMM yyyy h:mm aa"
+                              )}
+                            </p>
+                          </Link>
+                        </div>
                       )}
                     </div>
                   ))}
