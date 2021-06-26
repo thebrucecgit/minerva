@@ -1,0 +1,9 @@
+mutation RejectSession($id: ID!) {
+  rejectSession(id: $id) {
+    status
+    userResponses {
+      user
+      response
+    }
+  }
+}

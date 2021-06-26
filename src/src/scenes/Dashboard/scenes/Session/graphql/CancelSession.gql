@@ -1,0 +1,15 @@
+mutation CancelSession($id: ID!, $reason: String!) {
+  cancelSession(id: $id, reason: $reason) {
+    cancellation {
+      user
+      cancelled
+      reason
+      date
+    }
+    status
+    userResponses {
+      user
+      response
+    }
+  }
+}

@@ -35,11 +35,17 @@ import {
   faUnlock,
   faTrashAlt,
   faPhoneVolume,
+  faCheck,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSION = loader("./graphql/GetSession.gql");
 const UPDATE_SESSION = loader("./graphql/UpdateSession.gql");
 const DELETE_SESSION = loader("./graphql/DeleteSession.gql");
+
+const CONFIRM_SESSION = loader("./graphql/ConfirmSession.gql");
+const REJECT_SESSION = loader("./graphql/RejectSession.gql");
+const CANCEL_SESSION = loader("./graphql/CancelSession.gql");
 
 const toastId = {};
 
@@ -73,8 +79,15 @@ const Session = ({ currentUser }) => {
     variables: { id },
   });
 
+  // To store the loading status of requests
+  const loadingRequests = {};
+
   const [updateSession] = useMutation(UPDATE_SESSION);
   const [deleteSessionReq] = useMutation(DELETE_SESSION);
+
+  const [confirmSessionReq] = useMutation(CONFIRM_SESSION);
+  const [rejectSessionReq] = useMutation(REJECT_SESSION);
+  const [cancelSessionReq] = useMutation(CANCEL_SESSION);
 
   const saveInfo = async (name, { resetUpdate = true } = {}) => {
     try {
@@ -213,6 +226,41 @@ const Session = ({ currentUser }) => {
     }
   };
 
+  const requestResponse = async (reject) => {
+    try {
+      toastId.requestResponse = toast(
+        `${reject ? "Rejecting" : "Confirming"} session...`
+      );
+      loadingRequests.requestResponse = true;
+
+      if (reject) {
+        const { data } = await rejectSessionReq({ variables: { id } });
+        setSessionInfo((st) => ({
+          ...st,
+          ...data.rejectSession,
+        }));
+      } else {
+        const { data } = await confirmSessionReq({ variables: { id } });
+        setSessionInfo((st) => ({
+          ...st,
+          ...data.confirmSession,
+        }));
+      }
+
+      toast.update(toastId.requestResponse, {
+        render: `Successfully ${reject ? "rejected" : "confirmed"} session`,
+        type: toast.TYPE.SUCCESS,
+        autoClose: 2000,
+      });
+    } catch (e) {
+      toast.update(toastId.requestResponse, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
+    }
+  };
+
   const toggleEdit = () => {
     setEditEnabled((st) => !st);
   };
@@ -256,6 +304,11 @@ const Session = ({ currentUser }) => {
   if (error) return <Error error={error} />;
   if (loading || !sessionInfo.startTime) return <Loader />;
 
+  const users = [...sessionInfo.tutees, ...sessionInfo.tutors];
+  const unconfirmedTutees = sessionInfo.tutees.filter(
+    (user) => !sessionInfo.userResponses.some((res) => res.user === user._id)
+  );
+
   return (
     <div className={styles.Class} onClick={rootClick}>
       <div>
@@ -288,11 +341,80 @@ const Session = ({ currentUser }) => {
           )}
           <Edit type={["startTime", "length"]} />
         </div>
+        {sessionInfo.status === "REJECT" && (
+          <div className="alert danger">
+            This session has been rejected by{" "}
+            {
+              users.find(
+                (user) =>
+                  sessionInfo.userResponses.find(
+                    (res) => res.response === "REJECT"
+                  ).user === user._id
+              ).name
+            }
+            .
+          </div>
+        )}
+        {sessionInfo.status === "CANCEL" && (
+          <div className="alert danger">
+            This session has been cancelled by{" "}
+            {
+              users.find((user) => user._id === sessionInfo.cancellation.user)
+                .user
+            }{" "}
+            because {sessionInfo.cancellation.reason}.
+          </div>
+        )}
+        {sessionInfo.status === "UNCONFIRM" && (
+          <>
+            <div className="alert warning">
+              {!sessionInfo.userResponses.some((res) =>
+                sessionInfo.tutors.some((u) => u._id === res.user)
+              ) && <>A tutor needs to confirm this session. </>}
+              {unconfirmedTutees.length > 0 && (
+                <>
+                  This session has not yet been confirmed by these tutees:{" "}
+                  <ul>
+                    {unconfirmedTutees.map((user) => (
+                      <li key={user._id}>
+                        {user.name}{" "}
+                        {user._id === currentUser.user._id && "(you)"}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+            {!sessionInfo.userResponses.some(
+              (res) => res.user === currentUser.user._id
+            ) && (
+              <div className={styles.requestResponse}>
+                <button
+                  className="btn"
+                  name="confirm"
+                  onClick={() => requestResponse(false)}
+                  disabled={loadingRequests.requestResponse}
+                >
+                  Confirm <FontAwesomeIcon icon={faCheck} />
+                </button>
+                <button
+                  className="btn danger"
+                  onClick={() => requestResponse(true)}
+                  disabled={loadingRequests.requestResponse}
+                >
+                  Reject <FontAwesomeIcon icon={faTimes} />
+                </button>
+              </div>
+            )}
+          </>
+        )}
+
         <p className={styles.padding}>
           <Link to={`/dashboard/classes/${sessionInfo.class._id}`}>
             {sessionInfo.class.name}
           </Link>
         </p>
+
         <div className={styles.flex}>
           <p className={styles.date}>
             {`${format(sessionInfo.startTime, "h:mm aa")} - ${format(
@@ -365,6 +487,7 @@ const Session = ({ currentUser }) => {
           }
         />
       </div>
+
       <div className={styles.column}>
         <Tutors
           Edit={Edit}
@@ -380,6 +503,7 @@ const Session = ({ currentUser }) => {
           </button>
         )}
       </div>
+
       <Modal {...settingsBinds}>
         <Settings {...settingsBind} update={update.settings} />
       </Modal>

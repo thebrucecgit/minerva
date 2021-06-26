@@ -40,6 +40,7 @@ import {
   faTrashAlt,
   faPhoneVolume,
   faCommentAlt,
+  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SESSIONS_LIMIT = 5;
@@ -432,8 +433,17 @@ const Class = ({ currentUser }) => {
                 key={session._id}
                 className="card y"
               >
-                <h3 className="body">
-                  {format(session.startTime, "d MMMM yyyy")}
+                <h3
+                  className="body"
+                  title={
+                    session.status === "UNCONFIRM" &&
+                    "This session is not confirmed yet."
+                  }
+                >
+                  {format(session.startTime, "d MMMM yyyy")}{" "}
+                  {session.status === "UNCONFIRM" && (
+                    <FontAwesomeIcon icon={faExclamationTriangle} />
+                  )}
                 </h3>
               </Link>
             ))}
@@ -453,8 +463,11 @@ const Class = ({ currentUser }) => {
 
         {(currentUser.user.userType === "TUTOR" ||
           (currentUser.user.userType === "TUTEE" &&
-            classInfo.preferences.studentInstantiation)) && (
-          <InstantiateSession {...sessionBind} />
+            classInfo.preferences.studentAgreeSessions)) && (
+          <InstantiateSession
+            {...sessionBind}
+            studentInstantiation={classInfo.preferences.studentAgreeSessions}
+          />
         )}
 
         <h2>Tutees</h2>

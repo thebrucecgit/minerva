@@ -51,29 +51,17 @@ const Preferences = ({ onSubmit, onChange, update }) => {
         <div className="field checkbox">
           <input
             type="checkbox"
-            name="studentInstantiation"
-            id="studentInstantiation"
-            checked={update.studentInstantiation}
-            onChange={onChange}
-          />
-          <label htmlFor="studentInstantiation">
-            Students can instantiate sessions
-          </label>
-        </div>
-        <div className="field checkbox">
-          <input
-            type="checkbox"
             name="studentAgreeSessions"
             id="studentAgreeSessions"
             checked={update.studentAgreeSessions}
             onChange={onChange}
           />
           <label htmlFor="studentAgreeSessions">
-            Require students to accept to session times
+            Session requests
             <div className="small">
-              If checked, students will be prompted to "accept" or "decline"
-              everytime a new session is created (recommended for larger
-              classes)
+              Students will also be allowed to request for a session and
+              students / tutors will be prompted to "accept" or "decline"
+              everytime a new session is requested.
             </div>
           </label>
         </div>

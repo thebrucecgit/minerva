@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTimesCircle,
   faCheckCircle,
+  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSIONS = loader("./graphql/GetSessions.gql");
@@ -31,10 +32,13 @@ const Sessions = ({ currentUser }) => {
       const timeoutIds = [];
       data.getUser.sessions.forEach((session) => {
         // When a session finishes, refetch
-        const refetchId = setTimeout(() => {
-          refetch();
-        }, new Date(session.endTime) - new Date());
-        timeoutIds.push(refetchId);
+        const timeTillEnd = new Date(session.endTime) - new Date();
+        if (timeTillEnd < 2 ** 31) {
+          const refetchId = setTimeout(() => {
+            refetch();
+          }, timeTillEnd);
+          timeoutIds.push(refetchId);
+        }
 
         // When a session starts, re-render
         if (isAfter(session.startTime, new Date())) {
@@ -85,9 +89,22 @@ const Sessions = ({ currentUser }) => {
                 })}
               >
                 <div className="header">
-                  <Link to={`/dashboard/sessions/${session._id}`}>
+                  <Link
+                    to={`/dashboard/sessions/${session._id}`}
+                    title={
+                      session.status === "UNCONFIRM"
+                        ? "This session is not confirmed yet."
+                        : ""
+                    }
+                  >
                     <h2>
-                      {format(session.startTime, "EEEE, d MMMM yyyy")}
+                      {format(session.startTime, "EEEE, d MMMM yyyy")}{" "}
+                      {session.status === "UNCONFIRM" && (
+                        <FontAwesomeIcon
+                          icon={faExclamationTriangle}
+                          className={styles.unconfirmed}
+                        />
+                      )}
                       {isOld && currentUser.user.userType === "TUTEE" && (
                         <FontAwesomeIcon
                           className={classNames(styles.attended, {

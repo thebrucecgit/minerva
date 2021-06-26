@@ -5,6 +5,7 @@ query GetClass($id: ID!, $sessionLimit: Int, $oldSessions: Boolean!) {
     sessions(limit: $sessionLimit, old: $oldSessions) {
       _id
       startTime
+      status
     }
     tutees {
       _id

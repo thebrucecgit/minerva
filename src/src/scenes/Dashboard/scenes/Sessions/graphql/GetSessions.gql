@@ -4,6 +4,7 @@ query GetSessions($old: Boolean!) {
       _id
       startTime
       endTime
+      status
       location {
         address
       }

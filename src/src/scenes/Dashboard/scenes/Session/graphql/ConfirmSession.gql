@@ -1,0 +1,9 @@
+mutation ConfirmSession($id: ID!) {
+  confirmSession(id: $id) {
+    status
+    userResponses {
+      user
+      response
+    }
+  }
+}
