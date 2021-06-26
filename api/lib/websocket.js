@@ -13,6 +13,7 @@ const eventSchema = yup.object().shape({
     .string()
     .required()
     .oneOf([
+      "MESSAGE",
       "INBOX",
       "NEW_SESSION_REQUEST",
       "NEW_SESSION",
@@ -119,11 +120,16 @@ export function init(server) {
             delete event._id;
             event.author = ws.user;
             // Save to DB
-            const chat = await Chat.findOneAndUpdate(
+            const chat = await Chat.findById(event.channel);
+
+            const users = await chat.getUsers();
+
+            if (!users.includes(ws.user)) throw new Error("Not authorised");
+
+            await Chat.updateOne(
               { _id: event.channel },
               { $push: { messages: event } }
             );
-            const users = await chat.getUsers();
 
             await broadcast(event, users, ws.user);
 
