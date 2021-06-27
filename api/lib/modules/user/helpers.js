@@ -20,6 +20,6 @@ export function createUserObject(user) {
       expiresIn: "1d",
     }),
     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day
-    user,
+    user: user.toObject(),
   };
 }

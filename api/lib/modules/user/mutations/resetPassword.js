@@ -1,6 +1,8 @@
 import User from "../model";
 import sgMail from "../../../config/email";
 
+const { NODE_ENV } = process.env;
+
 export default async function resetPassword(_, { email }) {
   // Create random 6 digit verification code
   const passwordResetCode = Math.floor(100000 + Math.random() * 900000);
@@ -27,5 +29,5 @@ export default async function resetPassword(_, { email }) {
     },
   };
 
-  await sgMail.send(msg);
+  if (NODE_ENV != "test") await sgMail.send(msg);
 }
