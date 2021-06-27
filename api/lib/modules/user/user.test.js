@@ -107,7 +107,7 @@ describe("Registering a new tutee via email", () => {
     } catch (e) {
       err = e;
     }
-    expect(err.message).toBe("The email or password is incorrect");
+    expect(err.message).toMatch(/password is incorrect/);
   });
 
   test("Updating user password while already logged in", async () => {
