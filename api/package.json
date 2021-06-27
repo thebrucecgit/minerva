@@ -27,11 +27,15 @@
     "serve": "npm run build && npm start",
     "watch": "nodemon --watch ./lib --exec npm run serve",
     "start": "node ./dist/server.js",
-    "seed": "node dist/seed"
+    "seed": "node dist/seed",
+    "test": "jest"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.26",
     "@swc/core": "^1.2.7",
+    "@swc/jest": "^0.1.2",
+    "jest": "^27.0.5",
+    "mongodb-memory-server": "^6.9.6",
     "mongoose-seed": "^0.6.0"
   }
 }
