@@ -1,5 +1,5 @@
 import Chat from "./model";
-import { broadcast } from "../websocket";
+import { broadcast } from "../../websocket";
 
 export default async function onMessage(event, ws) {
   reqId = event._id;
