@@ -1,6 +1,6 @@
 import React from "react";
 import algoliasearch from "algoliasearch/lite";
-import { InstantSearch, Stats, Configure } from "react-instantsearch-dom";
+import { InstantSearch, Stats, Configure, PoweredBy } from "react-instantsearch-dom";
 
 import SearchBox from "./components/SearchBox";
 import InfiniteHits from "./components/InfiniteHits";
@@ -36,6 +36,7 @@ const Search = () => {
           <div>
             <Configure hitsPerPage={3} />
             <SearchBox autoFocus />
+            <PoweredBy />
             <Stats />
             <InfiniteHits />
           </div>
