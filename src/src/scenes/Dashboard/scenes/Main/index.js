@@ -35,7 +35,7 @@ const Main = () => {
                   className="card square y"
                 >
                   <div className="body">
-                    <h2>{format(session.startTime, "d MMMM yyyy")}</h2>
+                    <h2>{format(session.startTime, "EEEE, d MMMM yyyy")}</h2>
                     <h3>{format(session.startTime, "h:mm aa")}</h3>
                     <p>{session.location.address}</p>
                   </div>
