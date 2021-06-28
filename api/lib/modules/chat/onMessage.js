@@ -1,10 +1,12 @@
 import Chat from "./model";
-import { broadcast } from "../../websocket";
+import User from "../user/model";
+import { broadcast, send } from "../../websocket";
+import { nanoid } from "nanoid";
 
 export default async function onMessage(event, ws) {
-  reqId = event._id;
+  let reqId = event._id;
 
-  delete event._id;
+  event._id = nanoid(11);
   event.author = ws.user;
   // Save to DB
   const chat = await Chat.findById(event.channel);
@@ -12,6 +14,9 @@ export default async function onMessage(event, ws) {
   const users = await chat.getUsers();
 
   if (!users.includes(ws.user)) throw new Error("Not authorised");
+
+  const { name } = await User.findById(ws.user, "name");
+  event.authorName = name;
 
   await Chat.updateOne({ _id: event.channel }, { $push: { messages: event } });
 

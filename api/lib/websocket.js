@@ -9,6 +9,7 @@ import onMessage from "./modules/chat/onMessage";
 const { DOMAIN } = process.env;
 
 const eventSchema = yup.object().shape({
+  _id: yup.string().required(),
   type: yup
     .string()
     .required()
@@ -47,7 +48,7 @@ function heartbeat() {
   this.isAlive = true;
 }
 
-function send(ws, event) {
+export function send(ws, event) {
   ws.send(JSON.stringify(event));
 }
 
@@ -56,7 +57,7 @@ export async function broadcast(data, endUsers, sender) {
   // Send to users who are in channel and connected
   const users = [...endUsers];
 
-  if (Array.isArray(wss?.clients)) {
+  if (typeof wss?.clients !== 'undefined') {
     for (const client of wss.clients) {
       if (
         client.user !== sender && // Not original sender
@@ -105,6 +106,7 @@ export function init(server) {
       let reqId;
       try {
         const event = await receivedEventSchema.validate(data);
+        reqId = event._id;
 
         // Rate limiting
         if (

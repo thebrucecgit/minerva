@@ -104,8 +104,7 @@ const useWebSocket = ({ jwt }) => {
   const match = useRouteMatch("/dashboard/chats");
 
   useEffect(() => {
-    bind("INBOX", ({ events }) => {
-      // TODO: Fix
+    function inboxHandler({ events }) {
       if (events.length > 3) {
         toast(`You have ${events.length} new messages.`);
       } else {
@@ -115,10 +114,16 @@ const useWebSocket = ({ jwt }) => {
           }
         });
       }
-    });
-    bind("MESSAGE", (msg) => {
-      if (!match) toast(msg.text);
-    });
+    }
+    function messageHandler(msg) {
+      if (!match) toast(`${msg.authorName}: ${msg.text}`);
+    }
+    bind("INBOX", inboxHandler);
+    bind("MESSAGE", messageHandler);
+    return () => {
+      unbind("INBOX", inboxHandler);
+      unbind("MESSAGE", messageHandler)
+    };
   }, [match]);
 
   return { bind, unbind, trigger };

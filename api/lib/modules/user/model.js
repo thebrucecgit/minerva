@@ -59,6 +59,10 @@ const userSchema = new Schema(
     ],
     inbox: [
       {
+        _id: {
+          type: String,
+          default: () => nanoid(11),
+        },
         type: {
           type: String,
           required: true,
