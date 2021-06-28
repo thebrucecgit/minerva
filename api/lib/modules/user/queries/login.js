@@ -9,22 +9,35 @@ export default async function login(_, { email, password, tokenId }) {
   if (tokenId) {
     // Google Strategy
     const info = await verifyGoogleToken(tokenId);
-    const oldUser = await User.findOne({ googleId: info.sub }).lean();
+    const oldUser = await User.findOne({
+      $or: [{ googleId: info.sub }, { email: info.email }],
+    }).lean();
 
     const newUser = {
       email: info.email,
-      pfp: info.picture,
       googleId: info.sub,
       name: info.name,
       registrationStatus: oldUser?.registrationStatus ?? "GOOGLE_SIGNED_IN",
       lastAuthenticated: Date.now(),
     };
 
-    user = await User.findOneAndUpdate({ googleId: info.sub }, newUser, {
-      new: true,
-      upsert: true,
-      setDefaultsOnInsert: true,
-    });
+    if (typeof oldUser.pfp.url === "undefined")
+      newUser.pfp = {
+        type: "URL",
+        url: info.picture,
+      };
+
+    console.log(info.picture);
+
+    user = await User.findOneAndUpdate(
+      { $or: [{ googleId: info.sub }, { email: info.email }] },
+      newUser,
+      {
+        new: true,
+        upsert: true,
+        setDefaultsOnInsert: true,
+      }
+    );
   } else {
     // Local Strategy
     user = await User.findOneAndUpdate(
