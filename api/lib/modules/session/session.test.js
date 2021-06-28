@@ -10,7 +10,7 @@ import sgMail from "@sendgrid/mail";
 
 jest.mock("@sendgrid/mail");
 
-let mongod, tutor, tutee, classDoc, chat;
+let mongod, tutor, tutee, classDoc, chat, session;
 
 beforeAll(async () => {
   mongod = new MongoMemoryServer();
@@ -88,109 +88,126 @@ afterAll(async () => {
   await mongod.stop();
 });
 
-test("Unauthorized instantiate session", async () => {
-  classDoc.preferences.studentInstantiation = false;
-  await classDoc.save();
-  let err;
-  try {
-    const newDate = new Date(Date.now() + 60 * 60 * 1000); // in one hour
+describe("Creation and deletion", () => {
+  test("Unauthorized instantiate session", async () => {
+    classDoc.preferences.studentInstantiation = false;
+    await classDoc.save();
+    let err;
+    try {
+      const newDate = new Date(Date.now() + 60 * 60 * 1000); // in one hour
+      await resolvers.Mutation.instantiateSession(
+        null,
+        {
+          classId: classDoc._id,
+          startTime: newDate,
+          length: 60,
+        },
+        { user: tutee }
+      );
+    } catch (e) {
+      err = e;
+    }
+    expect(err.message).toMatch(/unauthorized/);
+  });
+
+  test("Authorized instantiate session", async () => {
+    sgMail.send.mockResolvedValue();
+
+    classDoc.preferences.studentInstantiation = true;
+    classDoc.preferences.studentAgreeSession = false;
+    await classDoc.save();
+    const startTime = new Date(1687917600000); // Wed Jun 28 2023 14:00:00 GMT+1200
     await resolvers.Mutation.instantiateSession(
       null,
       {
         classId: classDoc._id,
-        startTime: newDate,
+        startTime,
         length: 60,
       },
       { user: tutee }
     );
-  } catch (e) {
-    err = e;
-  }
-  expect(err.message).toMatch(/unauthorized/);
-});
 
-test("Authorized instantiate session", async () => {
-  sgMail.send.mockResolvedValue();
+    expect(sgMail.send.mock.calls[0][0]).toMatchObject({
+      dynamicTemplateData: {
+        request: false,
+        user: "John Smith",
+        className: "Sunday Afternoon Maths",
+        sessionTime: "2:00 PM, Wednesday 28 June 2023",
+        // sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
+      },
+      from: "no-reply@academe.co.nz",
+      reply_to: {
+        email: "admin@academe.co.nz",
+        name: "Admin",
+      },
+      templateId: "d-f02579026cf84c5194f7135d838e87ad",
+      subject: `New Session for "Sunday Afternoon Maths"`,
+      personalizations: expect.arrayContaining([
+        {
+          to: {
+            email: "john@example.com",
+            name: "John Smith",
+          },
+          dynamicTemplateData: {
+            name: "John Smith",
+          },
+        },
+        {
+          to: {
+            email: "ben@example.com",
+            name: "Ben Smith",
+          },
+          dynamicTemplateData: {
+            name: "Ben Smith",
+          },
+        },
+      ]),
+    });
 
-  classDoc.preferences.studentInstantiation = true;
-  classDoc.preferences.studentAgreeSession = false;
-  await classDoc.save();
-  const startTime = new Date(1687917600000); // Wed Jun 28 2023 14:00:00 GMT+1200
-  await resolvers.Mutation.instantiateSession(
-    null,
-    {
-      classId: classDoc._id,
+    session = await Session.findOne({ class: classDoc._id, startTime });
+    expect(session.toObject()).toMatchObject({
+      class: classDoc._id,
+      tutors: ["1"],
+      tutees: ["2"],
+      location: {
+        address:
+          "Upper Riccarton, Upper Riccarton, Christchurch 8041, New Zealand",
+        coords: { lat: -43.5319765, lng: 172.57373 },
+      },
       startTime,
+      endTime: new Date(1687921200000),
       length: 60,
-    },
-    { user: tutee }
-  );
+    });
 
-  expect(sgMail.send.mock.calls[0][0]).toMatchObject({
-    dynamicTemplateData: {
-      request: false,
-      user: "John Smith",
-      className: "Sunday Afternoon Maths",
-      sessionTime: "2:00 PM, Wednesday 28 June 2023",
-      // sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
-    },
-    from: "no-reply@academe.co.nz",
-    reply_to: {
-      email: "admin@academe.co.nz",
-      name: "Admin",
-    },
-    templateId: "d-f02579026cf84c5194f7135d838e87ad",
-    subject: `New Session for "Sunday Afternoon Maths"`,
-    personalizations: expect.arrayContaining([
-      {
-        to: {
-          email: "john@example.com",
-          name: "John Smith",
-        },
-        dynamicTemplateData: {
-          name: "John Smith",
-        },
-      },
-      {
-        to: {
-          email: "ben@example.com",
-          name: "Ben Smith",
-        },
-        dynamicTemplateData: {
-          name: "Ben Smith",
-        },
-      },
-    ]),
+    tutee = await User.findById(tutee._id);
+    tutor = await User.findById(tutor._id);
+    expect(tutee.sessions).toContain(session._id);
+    expect(tutor.sessions).toContain(session._id);
+    chat = await Chat.findById(classDoc.chat);
+    expect(chat.messages[0].type).toBe("NEW_SESSION");
+    expect(tutor.inbox[0].type).toBe("NEW_SESSION");
   });
 
-  const session = await Session.findOne({ class: classDoc._id, startTime });
-  expect(session.toObject()).toMatchObject({
-    class: classDoc._id,
-    tutors: ["1"],
-    tutees: ["2"],
-    location: {
-      address:
-        "Upper Riccarton, Upper Riccarton, Christchurch 8041, New Zealand",
-      coords: { lat: -43.5319765, lng: 172.57373 },
-    },
-    startTime,
-    endTime: new Date(1687921200000),
-    length: 60,
+  test("Delete session", async () => {
+    await resolvers.Mutation.deleteSession(
+      null,
+      { id: session._id },
+      { user: tutor }
+    );
+    classDoc = await Class.findById(classDoc._id);
+    const res = await Session.findById(session._id);
+    expect(res).toBeNull();
+    expect(classDoc.sessions.toObject()).not.toContain(session._id);
+    tutor = await User.findById(tutor._id);
+    tutee = await User.findById(tutee._id);
+    expect(tutor.sessions.toObject()).not.toContain(session._id);
+    expect(tutee.sessions.toObject()).not.toContain(session._id);
   });
-
-  tutee = await User.findById(tutee._id);
-  tutor = await User.findById(tutor._id);
-  expect(tutee.sessions).toContain(session._id);
-  expect(tutor.sessions).toContain(session._id);
-  chat = await Chat.findById(classDoc.chat);
-  expect(chat.messages[0].type).toBe("NEW_SESSION");
-  expect(tutor.inbox[0].type).toBe("NEW_SESSION");
 });
 
 describe("Session user mutations", () => {
-  let sessionDoc;
   beforeEach(async () => {
-    sessionDoc = await Session.create({
+    session = await Session.create({
       _id: "1",
       location: {
         coords: { lat: -43.5319765, lng: 172.57373 },
@@ -208,42 +225,42 @@ describe("Session user mutations", () => {
   });
 
   afterEach(async () => {
-    await Session.findByIdAndRemove(sessionDoc._id);
+    await Session.findByIdAndRemove(session._id);
   });
 
   test("Session confirmation by everyone", async () => {
     classDoc.preferences.studentAgreeSessions = true;
     await classDoc.save();
-    expect(sessionDoc.status).toBe("UNCONFIRM");
+    expect(session.status).toBe("UNCONFIRM");
     await resolvers.Mutation.confirmSession(
       null,
-      { id: sessionDoc._id },
+      { id: session._id },
       { user: tutor }
     );
-    sessionDoc = await Session.findById(sessionDoc._id);
-    expect(sessionDoc.status).toBe("CONFIRM");
+    session = await Session.findById(session._id);
+    expect(session.status).toBe("CONFIRM");
   });
 
   test("Session rejected by someone", async () => {
-    expect(sessionDoc.status).toBe("UNCONFIRM");
+    expect(session.status).toBe("UNCONFIRM");
     await resolvers.Mutation.rejectSession(
       null,
-      { id: sessionDoc._id },
+      { id: session._id },
       { user: tutor }
     );
-    sessionDoc = await Session.findById(sessionDoc._id);
-    expect(sessionDoc.status).toBe("REJECT");
+    session = await Session.findById(session._id);
+    expect(session.status).toBe("REJECT");
   });
 
   test("Update session", async () => {
     const updates = {
-      id: sessionDoc._id,
+      id: session._id,
       attendance: [{ tutee: "2", attended: true }],
       notes: "LOL notes",
     };
     await resolvers.Mutation.updateSession(null, updates, { user: tutor });
     delete updates.id;
-    sessionDoc = await Session.findById(sessionDoc._id);
-    expect(sessionDoc.toObject()).toMatchObject(updates);
+    session = await Session.findById(session._id);
+    expect(session.toObject()).toMatchObject(updates);
   });
 });
