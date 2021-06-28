@@ -28,7 +28,7 @@
     "watch": "nodemon --watch ./lib --exec npm run serve",
     "start": "node ./dist/server.js",
     "seed": "node dist/seed",
-    "test": "jest"
+    "test": "jest ./lib"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.46",
