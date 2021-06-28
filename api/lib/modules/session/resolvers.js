@@ -101,14 +101,15 @@ export default {
         })} for ${classDoc.name}`,
         time: new Date(),
       };
-
+      
+      let chat;
       // Insert event into chat
       if (classDoc.preferences.enableChat) {
-        await Chat.findByIdAndUpdate(classDoc.chat, {
+        chat = await Chat.findByIdAndUpdate(classDoc.chat, {
           $push: { messages: event },
-        });
+        }, { new: true });
       }
-
+      event._id = chat.messages[chat.messages.length-1]._id;
       // Notify all users except initiator
       await websocket.broadcast(event, session.users, user._id);
 
