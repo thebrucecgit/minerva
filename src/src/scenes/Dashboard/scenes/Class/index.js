@@ -349,7 +349,7 @@ const Class = ({ currentUser }) => {
         </div>
 
         <div className="card">
-          <img src={classInfo.image} alt="cover image" className={styles.cover} />
+          <img src={classInfo.image} alt="class cover" className={styles.cover} />
         </div>
 
         <div className={styles.flex}>
