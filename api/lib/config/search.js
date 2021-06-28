@@ -1,10 +1,10 @@
 import algoliasearch from "algoliasearch";
 import User from "../modules/user/model";
 
-const { ALGOLIA_APPID, ALGOLIA_ADMIN_API } = process.env;
+const { ALGOLIA_APPID, ALGOLIA_ADMIN_API, ALGOLIA_INDEX } = process.env;
 
 const client = algoliasearch(ALGOLIA_APPID, ALGOLIA_ADMIN_API);
-export const index = client.initIndex("dev_TUTORS");
+export const index = client.initIndex(ALGOLIA_INDEX);
 
 export const FIELDS = "name yearGroup school biography academics extras pfp";
 

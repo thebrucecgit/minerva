@@ -8,7 +8,11 @@ import { connect } from "./config/database";
 import * as websocket from "./websocket";
 import apolloServer from "./apollo";
 
-const { DOMAIN, PORT } = process.env;
+import { indexAll } from "./config/search";
+
+const { DOMAIN, PORT, NODE_ENV } = process.env;
+
+if (NODE_ENV === "production") indexAll();
 
 connect();
 
