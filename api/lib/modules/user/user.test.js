@@ -7,6 +7,10 @@ import confirmUserEmail from "./mutations/confirmUserEmail";
 import updatePassword from "./mutations/updatePassword";
 import resetPassword from "./mutations/resetPassword";
 import login from "./queries/login";
+import sgMail from "@sendgrid/mail";
+
+jest.mock("@sendgrid/mail");
+sgMail.send.mockResolvedValue();
 
 let mongod;
 
@@ -71,6 +75,26 @@ describe("Registering a new tutee via email", () => {
   test("Register new tutee user", async () => {
     const jwtObj = await register(null, info);
 
+    expect(sgMail.send.mock.calls[0][0]).toMatchObject({
+      to: {
+        email: "john@example.com",
+        name: "John Smith",
+      },
+      from: {
+        email: "confirmation@academe.co.nz",
+        name: "Academe Email Confirmation",
+      },
+      reply_to: {
+        email: "admin@academe.co.nz",
+        name: "Admin",
+      },
+      templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
+      dynamic_template_data: {
+        name: "John Smith",
+        confirmLink: /\/auth\/confirm/,
+      },
+    });
+
     const docs = await User.find({ email: "john@example.com" });
     expect(docs).toHaveLength(1);
     expect(docs[0].password).not.toBe(info.password);
@@ -125,6 +149,27 @@ describe("Registering a new tutee via email", () => {
 
   test("Resetting passwords", async () => {
     await resetPassword(null, { email: "john@example.com" });
+
+    expect(sgMail.send.mock.calls[1][0]).toMatchObject({
+      to: {
+        email: "john@example.com",
+        name: "John Smith",
+      },
+      from: {
+        email: "passwordreset@academe.co.nz",
+        name: "Academe Password Reset",
+      },
+      reply_to: {
+        email: "admin@academe.co.nz",
+        name: "Admin",
+      },
+      templateId: "d-02ecc5c486f14da1957ce5e6422cfb9a",
+      dynamic_template_data: {
+        name: "John Smith",
+        resetCode: expect.any(Number),
+      },
+    });
+
     const { passwordResetCode, password: oldPassword } = await User.findOne({
       email: "john@example.com",
     });
@@ -181,6 +226,25 @@ describe("Registering a new tutor via email", () => {
 
   test("Register new tutor user", async () => {
     const jwtObj = await register(null, info);
+    expect(sgMail.send.mock.calls[2][0]).toMatchObject({
+      to: {
+        email: "ben@example.com",
+        name: "Ben Smith",
+      },
+      from: {
+        email: "confirmation@academe.co.nz",
+        name: "Academe Email Confirmation",
+      },
+      reply_to: {
+        email: "admin@academe.co.nz",
+        name: "Admin",
+      },
+      templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
+      dynamic_template_data: {
+        name: "Ben Smith",
+        confirmLink: /\/auth\/confirm/,
+      },
+    });
 
     const docs = await User.find({ email: "ben@example.com" });
     expect(docs).toHaveLength(1);

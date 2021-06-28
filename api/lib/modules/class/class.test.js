@@ -3,9 +3,13 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import * as db from "../../config/database";
 import Class from "./model";
 import User from "../user/model";
+import Session from "../session/model";
 import resolvers from "./resolvers";
+import axios from "axios";
 
 let mongod, tutor, tutee;
+
+jest.mock("axios");
 
 beforeAll(async () => {
   mongod = new MongoMemoryServer();
@@ -91,6 +95,23 @@ describe("Tutor operations", () => {
   });
 
   test("Updates class details", async () => {
+    let session = await Session.create({
+      _id: "1",
+      location: {
+        coords: { lat: -43.5319765, lng: 172.57373 },
+        address:
+          "Upper Riccarton, Upper Riccarton, Christchurch 8041, New Zealand",
+      },
+      tutors: ["1"],
+      tutees: [],
+      class: "1",
+      userResponses: [{ user: "2", response: "CONFIRM" }],
+      startTime: new Date("2023-10-15T05:00:00.000Z"),
+      endTime: new Date("2023-10-15T06:00:00.000Z"),
+      length: 60,
+    });
+    await Class.findByIdAndUpdate(classId, { $push: { sessions: "1" } });
+
     const updates = {
       id: classId,
       tutees: [tutee._id],
@@ -120,9 +141,16 @@ describe("Tutor operations", () => {
         name: "Ingenuine Afternoon Session",
       })
     );
+    session = await Session.findById(session._id);
+    expect(session.tutees.length).toBe(doc.tutees.length);
+    expect(session.tutees.toObject()).toContainEqual("2");
   });
 
   test("Change class to be online", async () => {
+    axios.mockResolvedValue({
+      data: { joinLink: "https://join.skype.com/WmG7eDM28MQF" },
+    });
+
     await resolvers.Mutation.updateClass(
       null,
       {
@@ -131,6 +159,14 @@ describe("Tutor operations", () => {
       },
       { user: tutor }
     );
+
+    expect(axios.mock.calls[0][0]).toMatchObject({
+      method: "post",
+      url: "https://api.join.skype.com/v1/meetnow/createjoinlinkguest",
+      data: {
+        title: "Ingenuine Afternoon Session",
+      },
+    });
 
     const doc = await Class.findById(classId);
     expect(doc.preferences.online).toBeTruthy();

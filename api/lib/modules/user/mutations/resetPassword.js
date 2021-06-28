@@ -29,5 +29,5 @@ export default async function resetPassword(_, { email }) {
     },
   };
 
-  if (NODE_ENV != "test") await sgMail.send(msg);
+  await sgMail.send(msg);
 }

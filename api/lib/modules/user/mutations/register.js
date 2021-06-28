@@ -61,30 +61,28 @@ export default async function register(_, args) {
     const confirmLink = new URL("/auth/confirm", FRONTEND_DOMAIN);
     confirmLink.searchParams.set("id", user.emailConfirmId);
 
-    if (NODE_ENV != "test") {
-      // Send email confirmation
-      const msg = {
-        to: {
-          email: user.email,
-          name: user.name,
-        },
-        from: {
-          email: "confirmation@academe.co.nz",
-          name: "Academe Email Confirmation",
-        },
-        reply_to: {
-          email: "admin@academe.co.nz",
-          name: "Admin",
-        },
-        templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
-        dynamic_template_data: {
-          name: user.name,
-          confirmLink: confirmLink.href,
-        },
-      };
+    // Send email confirmation
+    const msg = {
+      to: {
+        email: user.email,
+        name: user.name,
+      },
+      from: {
+        email: "confirmation@academe.co.nz",
+        name: "Academe Email Confirmation",
+      },
+      reply_to: {
+        email: "admin@academe.co.nz",
+        name: "Admin",
+      },
+      templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
+      dynamic_template_data: {
+        name: user.name,
+        confirmLink: confirmLink.href,
+      },
+    };
 
-      await sgMail.send(msg);
-    }
+    await sgMail.send(msg);
   }
 
   // Return jwt user object
