@@ -139,15 +139,17 @@ export default {
             ? "Session Request"
             : "Session"
         } for "${classDoc.name}"`,
-        personalizations: users.map((user) => ({
-          to: {
-            email: user.email,
-            name: user.name,
-          },
-          dynamicTemplateData: {
-            name: user.name,
-          },
-        })),
+        personalizations: users
+          .filter((u) => u._id != user._id)
+          .map((user) => ({
+            to: {
+              email: user.email,
+              name: user.name,
+            },
+            dynamicTemplateData: {
+              name: user.name,
+            },
+          })),
       });
 
       return session;

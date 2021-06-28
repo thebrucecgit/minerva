@@ -143,16 +143,7 @@ describe("Creation and deletion", () => {
       },
       templateId: "d-f02579026cf84c5194f7135d838e87ad",
       subject: `New Session for "Sunday Afternoon Maths"`,
-      personalizations: expect.arrayContaining([
-        {
-          to: {
-            email: "john@example.com",
-            name: "John Smith",
-          },
-          dynamicTemplateData: {
-            name: "John Smith",
-          },
-        },
+      personalizations: [
         {
           to: {
             email: "ben@example.com",
@@ -162,7 +153,7 @@ describe("Creation and deletion", () => {
             name: "Ben Smith",
           },
         },
-      ]),
+      ],
     });
 
     session = await Session.findOne({ class: classDoc._id, startTime });
