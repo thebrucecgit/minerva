@@ -94,6 +94,11 @@ export default {
         className: classDoc.name,
         sessionId: session._id,
         sessionTime: session.startTime,
+        text: `New session ${
+          classDoc.preferences.studentAgreeSessions && "requested "
+        } on ${format(session.startTime, "h:mm aa, EEEE d MMMM yyyy", {
+          timeZone: "Pacific/Auckland",
+        })} for ${classDoc.name}`,
         time: new Date(),
       };
 

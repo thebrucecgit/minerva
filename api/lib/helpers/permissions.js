@@ -43,8 +43,8 @@ export function assertAdmin(user) {
 // Asserts that the user is someone in the class / session / chat or an admin
 export async function assertGroupAuthorization(user, users) {
   assertAuthenticated(user);
-  if (!users.includes(user._id) || user.userType === "ADMIN")
-    throw new ApolloError("Not authorized", 401);
+  if (!users.includes(user._id) && user.userType !== "ADMIN")
+    throw new ApolloError("User unauthorized", 401);
   return true;
 }
 
@@ -53,7 +53,7 @@ export function assertSessionInstantiation(user, doc) {
 
   // User must be a tutee with permissions
   if (user.userType === "TUTEE" && !doc.preferences.studentInstantiation)
-    throw new ApolloError("Not authorized to instantiate session", 401);
+    throw new ApolloError("User unauthorized to instantiate session", 401);
 
   return true;
 }

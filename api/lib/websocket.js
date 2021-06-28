@@ -56,17 +56,19 @@ export async function broadcast(data, endUsers, sender) {
   // Send to users who are in channel and connected
   const users = [...endUsers];
 
-  for (const client of wss.clients) {
-    if (
-      client.user !== sender && // Not original sender
-      users.includes(client.user) && // In the user list
-      client.readyState === WebSocket.OPEN // Socket is open
-    ) {
-      // Send event
-      send(client, event);
+  if (Array.isArray(wss?.clients)) {
+    for (const client of wss.clients) {
+      if (
+        client.user !== sender && // Not original sender
+        users.includes(client.user) && // In the user list
+        client.readyState === WebSocket.OPEN // Socket is open
+      ) {
+        // Send event
+        send(client, event);
 
-      // Remove from `users`
-      users.splice(users.indexOf(client.user), 1);
+        // Remove from `users`
+        users.splice(users.indexOf(client.user), 1);
+      }
     }
   }
 
