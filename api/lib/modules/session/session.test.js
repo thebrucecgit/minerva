@@ -2,6 +2,7 @@ import {} from "dotenv/config";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import * as db from "../../config/database";
 import resolvers from "./resolvers";
+import chatResolvers from "../chat/resolvers";
 import User from "../user/model";
 import Class from "../class/model";
 import Chat from "../chat/model";
@@ -262,5 +263,21 @@ describe("Session user mutations", () => {
     delete updates.id;
     session = await Session.findById(session._id);
     expect(session.toObject()).toMatchObject(updates);
+  });
+});
+
+describe("Chat tests", () => {
+  test("Fetch chats as tutee", async () => {
+    const info = await chatResolvers.Query.getChat(
+      null,
+      { channel: classDoc.chat },
+      { user: tutee }
+    );
+    expect(info.toObject()).toMatchObject({
+      _id: "1",
+      bindToClass: true,
+      class: { _id: "1" },
+      users: expect.arrayContaining(["1", "2"]),
+    });
   });
 });
