@@ -12,6 +12,16 @@ query GetSessions($old: Boolean!) {
         tutee
         attended
       }
+      tutors {
+        name
+      }
+      class {
+        _id
+        name
+        preferences {
+          online
+        }
+      }
     }
   }
 }

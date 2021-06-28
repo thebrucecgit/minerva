@@ -41,6 +41,7 @@ import {
   faPhoneVolume,
   faCommentAlt,
   faExclamationTriangle,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SESSIONS_LIMIT = 5;
@@ -436,13 +437,17 @@ const Class = ({ currentUser }) => {
                 <h3
                   className="body"
                   title={
-                    session.status === "UNCONFIRM" &&
-                    "This session is not confirmed yet."
+                    session.status === "UNCONFIRM" ?
+                    "This session is not confirmed yet." : "" + 
+                    session.status === "REJECT" ? "This session has been rejected." : ""
                   }
                 >
                   {format(session.startTime, "d MMMM yyyy")}{" "}
                   {session.status === "UNCONFIRM" && (
                     <FontAwesomeIcon icon={faExclamationTriangle} />
+                  )}
+                  {session.status === "REJECT" && (
+                    <FontAwesomeIcon icon={faTimes} />
                   )}
                 </h3>
               </Link>

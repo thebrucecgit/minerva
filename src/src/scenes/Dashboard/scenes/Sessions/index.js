@@ -78,7 +78,7 @@ const Sessions = ({ currentUser }) => {
 
       <div className={styles.sessions_grid}>
         {sessions.length ? (
-          sessions.map((session) => (
+          sessions.filter(session => session.status !== "REJECT").map((session) => (
             <div key={session._id}>
               <div
                 className={classNames("card", {
@@ -119,9 +119,10 @@ const Sessions = ({ currentUser }) => {
                       )}
                     </h2>
                   </Link>
+                  <div className={styles.description}>Run by {session.tutors.map(t => t.name).join(", ")} as part of <Link to={`/dashboard/classes/${session.class._id}`}><strong>{session.class.name}</strong></Link></div>
                 </div>
                 <div className="body">
-                  <p>{session.location.address}</p>
+                  <p>{session.class.preferences.online ? "Online" : session.location.address}</p>
                 </div>
               </div>
             </div>
