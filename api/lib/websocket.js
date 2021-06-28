@@ -3,8 +3,8 @@ import * as yup from "yup";
 import authenticate from "./authenticate";
 import { differenceInMilliseconds } from "date-fns";
 
-import Chat from "./modules/chat/model";
 import User from "./modules/user/model";
+import onMessage from "./modules/chat/onMessage";
 
 const { DOMAIN } = process.env;
 
@@ -101,44 +101,23 @@ export function init(server) {
       });
     })();
 
-    async function onMessage(data) {
+    async function onEvent(data) {
       let reqId;
       try {
         const event = await receivedEventSchema.validate(data);
 
+        // Rate limiting
+        if (
+          ws.lastCalled &&
+          differenceInMilliseconds(ws.called, new Date()) <= 100
+        ) {
+          throw new Error("Client is sending too many events at once");
+        }
+        ws.lastCalled = new Date();
+
         switch (event.type) {
           case "MESSAGE": {
-            reqId = event._id;
-
-            // Rate limiting
-            if (
-              ws.lastCalled &&
-              differenceInMilliseconds(ws.called, new Date()) <= 100
-            ) {
-              throw new Error("Client is sending too many events at once");
-            }
-            ws.lastCalled = new Date();
-
-            delete event._id;
-            event.author = ws.user;
-            // Save to DB
-            const chat = await Chat.findById(event.channel);
-
-            const users = await chat.getUsers();
-
-            if (!users.includes(ws.user)) throw new Error("Not authorised");
-
-            await Chat.updateOne(
-              { _id: event.channel },
-              { $push: { messages: event } }
-            );
-
-            await broadcast(event, users, ws.user);
-
-            send(ws, {
-              type: "MESSAGE_RESOLVE",
-              _id: reqId,
-            });
+            await onMessage(event, ws);
             break;
           }
         }
@@ -152,7 +131,7 @@ export function init(server) {
       }
     }
 
-    ws.on("message", onMessage);
+    ws.on("message", onEvent);
   });
 
   const interval = setInterval(() => {
