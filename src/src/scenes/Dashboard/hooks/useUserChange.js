@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
 
 const AUTOCOMPLETE = loader("../graphql/Autocomplete.gql");

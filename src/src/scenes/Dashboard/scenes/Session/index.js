@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { loader } from "graphql.macro";
 import classNames from "classnames";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import { format } from "date-fns";
 import ReactQuill from "react-quill";
 import { useHistory } from "react-router-dom";

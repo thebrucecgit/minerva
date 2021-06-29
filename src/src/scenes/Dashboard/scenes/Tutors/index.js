@@ -1,6 +1,6 @@
 import React from "react";
 import ProfilePicture from "../../components/ProfilePicture";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";
 import { loader } from "graphql.macro";

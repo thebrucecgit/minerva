@@ -1,6 +1,6 @@
 import React from "react";
 import classNames from "classnames";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
 import { useParams, Link } from "react-router-dom";
 import { format } from "date-fns";

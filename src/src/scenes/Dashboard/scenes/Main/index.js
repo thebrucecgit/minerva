@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { loader } from "graphql.macro";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { format } from "date-fns";
 import ProfilePicture from "../../components/ProfilePicture";
 import Loader from "../../../../components/Loader";

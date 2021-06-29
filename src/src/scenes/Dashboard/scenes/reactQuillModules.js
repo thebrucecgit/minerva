@@ -1,4 +1,4 @@
-export default {
+const reactQuillModules = {
   toolbar: [
     [{ header: [1, 2, false] }],
     ["bold", "italic", "underline", "strike", "blockquote", "formula"],
@@ -7,3 +7,5 @@ export default {
     ["clean"],
   ],
 };
+
+export default reactQuillModules;

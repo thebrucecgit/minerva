@@ -15,6 +15,7 @@ import regex from "./regex";
 
 import styles from "./styles.module.scss";
 import "./tagify.scss";
+import "@yaireo/tagify/dist/tagify.css";
 
 import { ReactComponent as TutorImg } from "./media/undraw_teaching.svg";
 import { ReactComponent as TuteeImg } from "./media/undraw_mathematics.svg";
@@ -79,7 +80,7 @@ function Signups({ authService }) {
     setInfo((st) => ({ ...st, [target.name]: value }));
   };
 
-  const validate = (section) => {
+  const validate = useCallback((section) => {
     const newErrors = {};
 
     switch (section) {
@@ -124,10 +125,10 @@ function Signups({ authService }) {
 
     setErrors(newErrors);
     return Object.values(newErrors).length === 0;
-  };
+  }, [info, strategy, userType]);
 
   // Moves onto next strategy
-  const onNext = (section) => {
+  const onNext = useCallback((section) => {
     const validated = validate(section);
 
     const sectionsArr = Object.keys(sections);
@@ -143,32 +144,16 @@ function Signups({ authService }) {
       const newSection = sectionsArr[sectionInd + 1];
       setSectionClosed({ ...sections, [newSection]: false });
     }
-  };
-
-  // const onDatalistChange = (e, name) => {
-  //   setInfo((st) => ({
-  //     ...st,
-  //     [name]: e.detail.value,
-  //   }));
-  // };
-
-  // const onDatalistBlur = (e, name) => {
-  //   console.log(e);
-  //   if (!selections[name].includes(info[name])) {
-  //     setInfo((st) => ({
-  //       ...st,
-  //       [name]: "",
-  //     }));
-  //   }
-  // };
+    // eslint-disable-next-line
+  }, [validate]); 
 
   // Saves info on tags changing
-  const onTagsChange = (e, name) => {
+  const onTagsChange = useCallback((e, name) => {
     setInfo((st) => ({
       ...st,
       [name]: e.detail.tagify.value.map((tag) => tag.value),
     }));
-  };
+  }, []);
 
   // For cloudinary upload widget
   const uploadCallback = useCallback(() => {
@@ -198,38 +183,37 @@ function Signups({ authService }) {
 
   const onGoogleSignedIn = (userInfo) => {
     const userData = authService.currentUser || userInfo;
+    if (!userData) return;
 
-    if (userData) {
-      const { user } = userData;
-      switch (user.registrationStatus) {
-        case "COMPLETE": {
-          history.replace("/dashboard");
-          break;
-        }
-        case "EMAIL_NOT_CONFIRMED": {
-          history.replace("/confirm");
-          break;
-        }
-        default:
-        case "GOOGLE_SIGNED_IN": {
-          setInfo((st) => ({
-            ...st,
-            name: user.name,
-            email: user.email,
-            pfp: {
-              type: "URL",
-              url: user.pfp,
-            },
-          }));
+    const { user } = userData;
+    switch (user.registrationStatus) {
+      case "COMPLETE": {
+        history.replace("/dashboard");
+        break;
+      }
+      case "EMAIL_NOT_CONFIRMED": {
+        history.replace("/confirm");
+        break;
+      }
+      default:
+      case "GOOGLE_SIGNED_IN": {
+        setInfo((st) => ({
+          ...st,
+          name: user.name,
+          email: user.email,
+          pfp: {
+            type: "URL",
+            url: user.pfp,
+          },
+        }));
 
-          onNext("Sign In");
-          setStrategy("google");
-        }
+        onNext("Sign In");
+        setStrategy("google");
       }
     }
   };
 
-  useEffect(onGoogleSignedIn, []);
+  useEffect(onGoogleSignedIn, [authService.currentUser, history, onNext]);
 
   // Authentication with Google strategy
   const onGoogleSignIn = async ({ tokenId }) => {

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import classNames from "classnames";
 import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import { loader } from "graphql.macro";
 import { format } from "date-fns";
 import { useHistory } from "react-router-dom";
@@ -29,6 +29,7 @@ import usePreferences from "../../hooks/usePreferences";
 
 import selections from "../../../../config/whitelist.json";
 
+import "@yaireo/tagify/dist/tagify.css";
 import "react-quill/dist/quill.snow.css";
 import styles from "../../class.module.scss";
 
@@ -268,12 +269,12 @@ const Class = ({ currentUser }) => {
     name: "preferences",
   });
 
-  const onTagsChange = (e, name) => {
+  const onTagsChange = useCallback((e, name) => {
     setUpdate((st) => ({
       ...st,
       [name]: e.detail.tagify.value.map((tag) => tag.value),
     }));
-  };
+  }, []);
 
   if (error) return error.message;
   if (loading || !classInfo.name) return <Loader />;
@@ -305,12 +306,9 @@ const Class = ({ currentUser }) => {
                 settings={{
                   placeholder: "eg. English, Mathematics",
                   whitelist,
-                  callbacks: {
-                    add: (e) => onTagsChange(e, "tags"),
-                    remove: (e) => onTagsChange(e, "tags"),
-                  },
                 }}
-                value={update.tags}
+                onChange={(e) => onTagsChange(e, "tags")}
+                defaultValue={update.tags}
                 name="extras"
               />
             )}

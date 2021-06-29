@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";

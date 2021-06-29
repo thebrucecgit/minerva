@@ -3,7 +3,7 @@ import ProfilePicture from "../../components/ProfilePicture";
 import { Link, useParams } from "react-router-dom";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
 import { format } from "date-fns";
 import classNames from "classnames";

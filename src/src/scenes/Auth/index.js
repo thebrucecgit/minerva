@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { useApolloClient } from "@apollo/client";
 
 import Navbar from "../../components/Navbar";
 
@@ -18,9 +19,14 @@ function Auth({ match, location, authService }) {
     updatePassword,
   } = authService;
 
+  const client = useApolloClient();
+
   useEffect(() => {
-    if (location.pathname === `${path}/logout`) logout();
-  }, [path, logout, location.pathname]);
+    if (location.pathname === `${path}/logout`) {
+      logout();
+      client.resetStore();
+    }
+  }, [path, logout, location.pathname, client]);
 
   if (location.pathname === `${path}/logout`) return null;
 

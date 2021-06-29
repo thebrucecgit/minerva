@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { loader } from "graphql.macro";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
 import { nanoid } from "nanoid";
 import Loader from "../../../../components/Loader";

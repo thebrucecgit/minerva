@@ -1,4 +1,4 @@
-export default {
+const uploadWidgetSettings = {
   cloudName: "brucec",
   uploadPreset: "academe",
   cropping: true,
@@ -15,3 +15,5 @@ export default {
     },
   },
 };
+
+export default uploadWidgetSettings;

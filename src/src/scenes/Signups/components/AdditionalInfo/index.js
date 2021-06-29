@@ -110,12 +110,9 @@ const AdditionalInfo = ({
                 enforceWhitelist: true,
                 placeholder: "eg. English",
                 whitelist: selections.academic,
-                callbacks: {
-                  add: (e) => onTagsChange(e, "academics"),
-                  remove: (e) => onTagsChange(e, "academics"),
-                },
               }}
-              value={info.academics}
+              onChange={(e) => onTagsChange(e, "academics")}
+              defaultValue={info.academics}
               name="academic"
             />
           </div>
@@ -132,12 +129,9 @@ const AdditionalInfo = ({
                 ...baseTagifySettings,
                 placeholder: "eg. Programming",
                 whitelist: selections.extra,
-                callbacks: {
-                  add: (e) => onTagsChange(e, "extras"),
-                  remove: (e) => onTagsChange(e, "extras"),
-                },
               }}
-              value={info.extras}
+              onChange={(e) => onTagsChange(e, "extras")}
+              defaultValue={info.extras}
               name="extras"
             />
           </div>

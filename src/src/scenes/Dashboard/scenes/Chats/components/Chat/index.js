@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { loader } from "graphql.macro";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery } from "@apollo/client";
 import { format, startOfDay, parseISO, differenceInMinutes } from "date-fns";
 import { toast } from "react-toastify";
 import classNames from "classnames";

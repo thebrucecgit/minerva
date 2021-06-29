@@ -1,5 +1,5 @@
 import { loader } from "graphql.macro";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 
 const LOGIN = loader("./graphql/Login.gql");
 const REGISTER = loader("./graphql/Register.gql");

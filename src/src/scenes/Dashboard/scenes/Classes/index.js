@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { loader } from "graphql.macro";
-import { useQuery, useMutation } from "@apollo/react-hooks";
+import { useQuery, useMutation } from "@apollo/client";
 import ClassSection from "./components/ClassSection";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
