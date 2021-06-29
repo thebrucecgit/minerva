@@ -95,12 +95,12 @@ describe("Creation and deletion", () => {
     await classDoc.save();
     let err;
     try {
-      const newDate = new Date(Date.now() + 60 * 60 * 1000); // in one hour
+      const startTime = new Date(1687917600000); // Wed Jun 28 2023 14:00:00 GMT+1200
       await resolvers.Mutation.instantiateSession(
         null,
         {
           classId: classDoc._id,
-          startTime: newDate,
+          startTime,
           length: 60,
         },
         { user: tutee }
