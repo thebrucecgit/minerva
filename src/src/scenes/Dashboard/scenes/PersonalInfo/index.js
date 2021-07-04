@@ -83,8 +83,8 @@ function PersonalInfo({ currentUser }) {
   };
 
   const handleChangeUpdate = (e) => {
-    setUpdate(true);
     setUpdates(user);
+    setUpdate(true);
   };
 
   const onChange = (e) => {
@@ -240,12 +240,11 @@ function PersonalInfo({ currentUser }) {
         {update ? (
           <TagsSelect
             settings={{
-              enforceWhitelist: true,
               placeholder: "eg. Coding",
-              whitelist: selections.extras,
+              whitelist: selections.extra,
             }}
             onChange={(e) => onTagsChange(e, "extras")}
-            defaultValue={updates.extra}
+            defaultValue={updates.extras}
             name="extras"
           />
         ) : (
