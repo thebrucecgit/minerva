@@ -16,7 +16,9 @@ export default async function updateUser(_, updates, { user }) {
 
   // Update algolia index
   if (updated.userType === "TUTOR") {
-    await index.saveObject(docToRecord(updated.toObject()));
+    await index.saveObject(docToRecord(updated.toObject()), {
+      createIfNotExists: true,
+    });
   }
 
   return updated;
