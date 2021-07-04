@@ -74,25 +74,6 @@ const AdditionalInfo = ({
                 </option>
               ))}
             </select>
-            {/* There needs to be someway to enforce whitelist with what's below */}
-            {/* <Tags
-                    settings={{
-                      ...baseTagifySettings,
-                      mode: "select",
-                      enforceWhitelist: true,
-                      keepInvalidTags: false,
-                      placeholder: "eg. Christ's College",
-                      whitelist: selections.school,
-                      callbacks: {
-                        input: (e) => onDatalistChange(e, "school"),
-                        blur: (e) => onDatalistBlur(e, "school"),
-                      },
-                    }}
-                    value={[info.school]}
-                    name="school"
-                    
-                    noValidate
-                  /> */}
           </div>
 
           <div className={styles.field}>
