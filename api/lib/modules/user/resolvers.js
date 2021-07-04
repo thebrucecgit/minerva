@@ -8,6 +8,7 @@ import register from "./mutations/register";
 import resetPassword from "./mutations/resetPassword";
 import confirmUserEmail from "./mutations/confirmUserEmail";
 import updatePassword from "./mutations/updatePassword";
+import updateUser from "./mutations/updateUser";
 
 import { escapeRegExp } from "./helpers";
 import {
@@ -104,5 +105,6 @@ export default {
     confirmUserEmail,
     resetPassword,
     updatePassword,
+    updateUser,
   },
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/client";
@@ -78,6 +78,7 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (message.length === 0) return;
     const evt = sendMessage(channel, message);
     evt.loading = true;
     setMessage("");
@@ -100,32 +101,31 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
     });
   };
 
+  const dayMessages = useMemo(() => {
+    if (!messages.length) return [];
+    const msgGroup = new Map();
+    for (const message of messages) {
+      const day = startOfDay(message.time).toISOString();
+      if (msgGroup.has(day)) msgGroup.get(day).push(message);
+      else msgGroup.set(day, [message]);
+    }
+    const result = [];
+    for (const m of msgGroup) {
+      const group = m[1].map((g, i) => ({
+        ...g,
+        header: !(m[1][i - 1]?.author === m[1][i].author &&
+          (!m[1][i - 1] || differenceInMinutes(m[1][i].time, m[1][i - 1].time) < 10)),
+        me: m[1][i].author === currentUser.user._id,
+      }));
+      result.push([m[0], group]);
+    }
+    return result;
+  }, [messages, currentUser]);
+
   if (error) return <Error error={error} />;
   if (loading) return <p>Loading</p>;
 
   const chatInfo = data.getChat;
-
-  const msgGroup = new Map();
-  for (const message of messages) {
-    const day = startOfDay(message.time).toISOString();
-    if (msgGroup.has(day)) msgGroup.get(day).push(message);
-    else msgGroup.set(day, [message]);
-  }
-  const dayMessages = [];
-  for (const group of msgGroup) {
-    for (let i = 0; i < group[1].length; i++) {
-      if (
-        group[1][i - 1]?.author === group[1][i].author &&
-        (!group[1][i - 1] ||
-          differenceInMinutes(group[1][i].time, group[1][i - 1].time) < 10)
-      )
-        group[1][i].header = false;
-      else group[1][i].header = true;
-      if (group[1][i].author === currentUser.user._id) group[1][i].me = true;
-      else group[1][i].me = false;
-    }
-    dayMessages.push(group);
-  }
 
   return (
     <div className={styles.Chat} onClick={rootClick}>

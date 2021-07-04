@@ -1,0 +1,31 @@
+mutation updateUser(
+  $id: ID!
+  $name: String
+  $pfp: PfpIn
+  $yearGroup: Int
+  $biography: String
+  $academics: [String!]
+  $extras: [String!]
+) {
+  updateUser(
+    id: $id
+    name: $name
+    pfp: $pfp
+    yearGroup: $yearGroup
+    biography: $biography
+    academics: $academics
+    extras: $extras
+  ) {
+    name
+    email
+    pfp {
+      type
+      url
+      cloudinaryPublicId
+    }
+    yearGroup
+    biography
+    academics
+    extras
+  }
+}

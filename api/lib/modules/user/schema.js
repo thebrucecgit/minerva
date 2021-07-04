@@ -70,6 +70,16 @@ export default gql`
       price: Int
       token: String!
     ): UserReq!
+    updateUser(
+      id: ID!
+      name: String
+      pfp: PfpIn
+      yearGroup: Int
+      school: String
+      academics: [String!]
+      extras: [String!]
+      biography: String
+    ): User!
     confirmUserEmail(emailConfirmId: String!): UserReq!
     resetPassword(email: String!): Boolean
     updatePassword(

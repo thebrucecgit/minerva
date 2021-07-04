@@ -92,12 +92,14 @@ const Class = ({ currentUser }) => {
   const [rootClick, menuBind] = useMenu(false);
   const sessionBind = useInstantiateSession();
 
-  const { loading, error, data, refetch: fetchAllSessions } = useQuery(
-    GET_CLASS,
-    {
-      variables: { id, sessionLimit: SESSIONS_LIMIT, oldSessions },
-    }
-  );
+  const {
+    loading,
+    error,
+    data,
+    refetch: fetchAllSessions,
+  } = useQuery(GET_CLASS, {
+    variables: { id, sessionLimit: SESSIONS_LIMIT, oldSessions },
+  });
 
   const [updateClass] = useMutation(UPDATE_CLASS);
 
@@ -193,7 +195,7 @@ const Class = ({ currentUser }) => {
       toast.update(toastId.class, {
         render: "Successfully updated class",
         type: toast.TYPE.SUCCESS,
-        autoClose: 5000,
+        autoClose: 3000,
       });
     } catch (e) {
       console.error(e);
@@ -347,7 +349,11 @@ const Class = ({ currentUser }) => {
         </div>
 
         <div className="card">
-          <img src={classInfo.image} alt="class cover" className={styles.cover} />
+          <img
+            src={classInfo.image}
+            alt="class cover"
+            className={styles.cover}
+          />
         </div>
 
         <div className={styles.flex}>
@@ -435,9 +441,11 @@ const Class = ({ currentUser }) => {
                 <h3
                   className="body"
                   title={
-                    session.status === "UNCONFIRM" ?
-                    "This session is not confirmed yet." : "" + 
-                    session.status === "REJECT" ? "This session has been rejected." : ""
+                    session.status === "UNCONFIRM"
+                      ? "This session is not confirmed yet."
+                      : "" + session.status === "REJECT"
+                      ? "This session has been rejected."
+                      : ""
                   }
                 >
                   {format(session.startTime, "d MMMM yyyy")}{" "}

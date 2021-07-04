@@ -46,9 +46,10 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
       toast.error("Message failed to send.");
     } finally {
       setChats((chats) => {
-        const newChats = [...chats];
-        newChats.find((chat) => chat.channel === channel).messages.push(evt);
-        return newChats;
+        return chats.map(chat => {
+          if (chat.channel === channel) return { ...chat, messages: [...chat.messages, evt] };
+          return chat;
+        });
       });
       return evt;
     }
@@ -81,7 +82,7 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
                       (u) =>
                         u._id === chat.messages[chat.messages.length - 1].author
                     ).name
-                  }: ${chat.messages[chat.messages.length - 1].text}`}</p>
+                  }: ${chat.messages[chat.messages.length - 1].text.slice(0, 100)}`}</p>
                 )}
             </button>
           </NavLink>

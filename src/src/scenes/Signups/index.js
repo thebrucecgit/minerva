@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback, createRef } from "react";
 import { Link, useHistory } from "react-router-dom";
+import useCloudinary from "../../hooks/useCloudinary";
 
 import ReCAPTCHA from "react-google-recaptcha";
-import useScript from "../../hooks/useScript";
 
 import SignIn from "./components/SignIn";
 import BasicInfo from "./components/BasicInfo";
@@ -10,7 +10,6 @@ import AdditionalInfo from "./components/AdditionalInfo";
 import Verification from "./components/Verification";
 import Confirmation from "./components/Confirmation";
 
-import uploadWidgetSettings from "./uploadWidgetSettings";
 import regex from "./regex";
 
 import styles from "./styles.module.scss";
@@ -63,8 +62,6 @@ function Signups({ authService }) {
     ...sections,
     "Sign In": false,
   });
-
-  const [uploadFile, setUploadFile] = useState();
 
   // Save form to localstorage
   useEffect(() => {
@@ -155,31 +152,17 @@ function Signups({ authService }) {
     }));
   }, []);
 
-  // For cloudinary upload widget
-  const uploadCallback = useCallback(() => {
-    // Upload pfp from Google
-    const widget = window.cloudinary.createUploadWidget(
-      uploadWidgetSettings,
-      (err, result) => {
-        if (err) console.error(err);
-        if (result?.event === "success") {
-          console.log(result.info);
-          const { public_id } = result.info;
-          setInfo((st) => ({
-            ...st,
-            pfp: {
-              type: "CLOUDINARY",
-              cloudinaryPublicId: public_id,
-              url: `https://res.cloudinary.com/${process.env.REACT_APP_CLOUDINARY_CLOUDNAME}/image/upload/c_crop,g_custom/w_500/${public_id}`,
-            },
-          }));
-        }
-      }
-    );
-    setUploadFile(widget);
-  }, []);
-
-  useScript("https://widget.cloudinary.com/v2.0/global/all.js", uploadCallback);
+  const uploadImage = useCloudinary((result) => {
+    const { public_id } = result.info;
+    setInfo((st) => ({
+      ...st,
+      pfp: {
+        type: "CLOUDINARY",
+        cloudinaryPublicId: public_id,
+        url: `https://res.cloudinary.com/${process.env.REACT_APP_CLOUDINARY_CLOUDNAME}/image/upload/c_crop,g_custom/w_500/${public_id}`,
+      },
+    }));
+  });
 
   const onGoogleSignedIn = (userInfo) => {
     const userData = authService.currentUser || userInfo;
@@ -286,7 +269,7 @@ function Signups({ authService }) {
             strategy={strategy}
             info={info}
             errors={errors}
-            uploadImage={uploadFile && uploadFile.open}
+            uploadImage={uploadImage}
             onChange={onChange}
             onNext={() => onNext("Basic Info")}
           />

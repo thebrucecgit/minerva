@@ -29,6 +29,20 @@ function authHandler(token = "") {
   });
 }
 
+const cleanTypeName = new ApolloLink((operation, forward) => {
+  if (operation.variables) {
+    const omitTypename = (key, value) =>
+      key === "__typename" ? undefined : value;
+    operation.variables = JSON.parse(
+      JSON.stringify(operation.variables),
+      omitTypename
+    );
+  }
+  return forward(operation).map((data) => {
+    return data;
+  });
+});
+
 const Apollo = ({ authHelpers, children }) => {
   const token = authHelpers.currentUser?.jwt;
 
@@ -36,6 +50,7 @@ const Apollo = ({ authHelpers, children }) => {
     link: ApolloLink.from([
       errorHandler,
       authHandler(token),
+      cleanTypeName,
       new HttpLink({
         uri: process.env.REACT_APP_API_URI,
       }),
