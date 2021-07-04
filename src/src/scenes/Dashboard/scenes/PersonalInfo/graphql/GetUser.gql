@@ -13,5 +13,6 @@ query GetUser {
     biography
     academics
     extras
+    school
   }
 }

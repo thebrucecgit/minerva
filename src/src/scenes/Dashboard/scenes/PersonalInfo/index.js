@@ -183,6 +183,28 @@ function PersonalInfo({ currentUser }) {
       </div>
 
       <div>
+        <label htmlFor="school">School: </label>
+        {update ? (
+          <select
+            name="school"
+            id="school"
+            value={updates.school ?? ""}
+            onChange={onChange}
+            noValidate
+          >
+            <option value="">--SELECT--</option>
+            {selections.school.map((school, ind) => (
+              <option value={school} key={ind}>
+                {school}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <p>{user.school}</p>
+        )}
+      </div>
+
+      <div>
         <label htmlFor="biography">Biography: </label>
         {update ? (
           <textarea

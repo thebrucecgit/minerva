@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import User from "../model";
 import { nanoid } from "nanoid";
 import sgMail from "../../../config/email";
+import userSchema from "../yupSchema";
 
 import { UserInputError } from "apollo-server";
 import { createUserObject } from "../helpers";
@@ -10,8 +11,6 @@ import { createUserObject } from "../helpers";
 const { FRONTEND_DOMAIN, CAPTCHA_SECRET_KEY, NODE_ENV } = process.env;
 
 export default async function register(_, args) {
-  // Verify information
-
   if (NODE_ENV != "test") {
     // Verify Captcha
     const captchaVerification = await axios({
@@ -32,15 +31,16 @@ export default async function register(_, args) {
   const edits = { ...args };
   delete edits.password;
 
+  // Verify information
+  userSchema.validateSync(edits);
+
   if (existingUser) {
     if (!existingUser.googleId)
       throw new UserInputError("An user already exists with this email");
 
-    const changedUser = await existingUser.changeUserType(args.userType);
-
     // Google stategy
-    user = await User.findOneAndUpdate(
-      { id: changedUser._id, userType: args.userType },
+    user = await User.findByIdAndUpdate(
+      existingUser._id,
       {
         ...edits,
         confirmed: true,

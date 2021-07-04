@@ -4,6 +4,7 @@ mutation updateUser(
   $pfp: PfpIn
   $yearGroup: Int
   $biography: String
+  $school: String
   $academics: [String!]
   $extras: [String!]
 ) {
@@ -15,9 +16,11 @@ mutation updateUser(
     biography: $biography
     academics: $academics
     extras: $extras
+    school: $school
   ) {
     name
     email
+    school
     pfp {
       type
       url
