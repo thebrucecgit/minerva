@@ -36,7 +36,7 @@ describe("Registering a new tutee via email", () => {
   const info = {
     userType: "TUTEE",
     name: "John Smith",
-    email: "   JOHN@example.com   ",
+    email: "JOHN@example.com",
     password: "John123John",
     pfp: {
       type: "CLOUDINARY",
@@ -192,7 +192,7 @@ describe("Registering a new tutor via email", () => {
   const info = {
     userType: "TUTOR",
     name: "Ben Smith   ",
-    email: "   BEN@example.com   ",
+    email: "BEN@example.com",
     password: "Ben123Ben",
     pfp: {
       type: "URL",
