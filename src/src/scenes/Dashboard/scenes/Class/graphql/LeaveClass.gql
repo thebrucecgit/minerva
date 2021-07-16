@@ -1,0 +1,3 @@
+mutation LeaveClass($id: ID!) {
+  leaveClass(id: $id)
+}

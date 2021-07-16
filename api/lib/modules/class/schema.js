@@ -57,5 +57,6 @@ export default gql`
       preferences: ClassPreferenceIn
     ): Class!
     deleteClass(id: ID!): Boolean
+    leaveClass(id: ID!): Boolean
   }
 `;

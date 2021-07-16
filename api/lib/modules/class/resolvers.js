@@ -232,5 +232,22 @@ export default {
 
       await classInfo.remove();
     },
+    async leaveClass(_, { id }, { user }) {
+      const classData = await Class.findById(id);
+      assertGroupAuthorization(user, classData.users);
+
+      if (user.userType === "TUTOR" && classData.tutors.length === 1)
+        throw new Error(
+          "Cannot leave class without any tutors. Delete class instead?"
+        );
+
+      const userType = user.userType === "TUTOR" ? "tutors" : "tutees";
+      await Class.findByIdAndUpdate(id, { $pull: { [userType]: user._id } });
+
+      const updated = await User.findByIdAndUpdate(user._id, {
+        $pull: { classes: id },
+        $pullAll: { sessions: classData.sessions },
+      });
+    },
   },
 };

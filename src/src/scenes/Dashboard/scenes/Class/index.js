@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import classNames from "classnames";
-import { toast } from "react-toastify";
 import { Link, useParams } from "react-router-dom";
-import { useQuery, useMutation } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
 import { format } from "date-fns";
-import { useHistory } from "react-router-dom";
 import TagsEdit from "@yaireo/tagify/dist/react.tagify";
 import ReactQuill from "react-quill";
 import Loader from "../../../../components/Loader";
@@ -26,6 +24,10 @@ import useEdits from "../../hooks/useEdits";
 import useModal from "../../hooks/useModal";
 import useInstantiateSession from "./hooks/useInstantiateSession";
 import usePreferences from "../../hooks/usePreferences";
+import useSeeAllSessions from "./hooks/useSeeAllSessions";
+import useDeleteClass from "./hooks/useDeleteClass";
+import useLeaveClass from "./hooks/useLeaveClass";
+import useSaveInfo from "./hooks/useSaveInfo";
 
 import selections from "../../../../config/whitelist.json";
 
@@ -43,20 +45,14 @@ import {
   faCommentAlt,
   faExclamationTriangle,
   faTimes,
+  faDoorOpen,
 } from "@fortawesome/free-solid-svg-icons";
 
 const SESSIONS_LIMIT = 5;
-
 const GET_CLASS = loader("./graphql/GetClass.gql");
-const UPDATE_CLASS = loader("./graphql/UpdateClass.gql");
-const DELETE_CLASS = loader("./graphql/DeleteClass.gql");
-
-const toastId = {};
-
 const whitelist = [...selections.academic, ...selections.extra];
 
 const Class = ({ currentUser }) => {
-  const history = useHistory();
   const { id } = useParams();
 
   const [classInfo, setClassInfo] = useState({
@@ -101,36 +97,7 @@ const Class = ({ currentUser }) => {
     variables: { id, sessionLimit: SESSIONS_LIMIT, oldSessions },
   });
 
-  const [updateClass] = useMutation(UPDATE_CLASS);
-
-  const [deleteClassReq] = useMutation(DELETE_CLASS);
-
   const [loadedAllSessions, setLoadedAllSessions] = useState(false);
-
-  const seeAllSessions = async () => {
-    try {
-      toastId.sessions = toast("Fetching all sessions...", {
-        autoClose: false,
-      });
-
-      const { data } = await fetchAllSessions({ sessionLimit: null });
-
-      setClassInfo((st) => ({
-        ...st,
-        sessions: data.getClass.sessions,
-      }));
-      setLoadedAllSessions(true);
-
-      toast.dismiss(toastId.sessions);
-    } catch (e) {
-      console.error(e);
-      toast.update(toastId.sessions, {
-        render: e.message,
-        type: toast.TYPE.ERROR,
-        autoClose: 5000,
-      });
-    }
-  };
 
   useEffect(() => {
     if (data) {
@@ -143,68 +110,14 @@ const Class = ({ currentUser }) => {
     }
   }, [data]);
 
+  // Callbacks
+
   const onInfoChange = (e) => {
     e.persist();
     setUpdate((st) => ({
       ...st,
       [e.target.name]: e.target.value,
     }));
-  };
-
-  const saveInfo = async (name, { resetUpdate = true } = {}) => {
-    try {
-      toastId.class = toast("Updating class...", { autoClose: false });
-
-      setDisabled((st) => ({
-        ...st,
-        [name]: true,
-      }));
-
-      const variables = {
-        id,
-        [name]: update[name],
-      };
-
-      if (name === "description")
-        variables.description = JSON.stringify(update.description);
-      else if (name === "tutors")
-        variables.tutors = update.tutors.map((tutor) => tutor._id);
-      else if (name === "tutees")
-        variables.tutees = update.tutees.map((tutee) => tutee._id);
-
-      setClassInfo((st) => ({
-        ...st,
-        [name]: update[name],
-      }));
-
-      if (resetUpdate)
-        setUpdate((st) => ({
-          ...st,
-          [name]: "",
-        }));
-
-      const { data } = await updateClass({ variables });
-
-      data.updateClass.description = JSON.parse(data.updateClass.description);
-
-      setClassInfo((st) => ({
-        ...st,
-        ...data.updateClass,
-      }));
-
-      toast.update(toastId.class, {
-        render: "Successfully updated class",
-        type: toast.TYPE.SUCCESS,
-        autoClose: 3000,
-      });
-    } catch (e) {
-      console.error(e);
-      toast.update(toastId.class, {
-        render: e.message,
-        type: toast.TYPE.ERROR,
-        autoClose: 5000,
-      });
-    }
   };
 
   const [startEdit, cancelEdit] = useEdits({
@@ -225,25 +138,22 @@ const Class = ({ currentUser }) => {
   );
   const [openTutees, tuteesBinds] = useModal(false, "tutees", modalHooks);
   const [openDeletion, deletionBinds] = useModal(false);
+  const [openLeave, leaveBinds] = useModal(false);
 
-  const deleteClass = async () => {
-    try {
-      toastId.deletion = toast("Deleting class...", { autoClose: false });
-      await deleteClassReq({ variables: { id } });
-      toast.update(toastId.deletion, {
-        render: "Class successfully deleted",
-        type: toast.TYPE.SUCCESS,
-        autoClose: 2000,
-      });
-      history.replace("/dashboard");
-    } catch (e) {
-      toast.update(toastId.deletion, {
-        render: e.message,
-        type: toast.TYPE.ERROR,
-        autoClose: 5000,
-      });
-    }
-  };
+  const saveInfo = useSaveInfo(
+    id,
+    setClassInfo,
+    setDisabled,
+    update,
+    setUpdate
+  );
+  const seeAllSessions = useSeeAllSessions(
+    fetchAllSessions,
+    setClassInfo,
+    setLoadedAllSessions
+  );
+  const deleteClass = useDeleteClass(id);
+  const leaveClass = useLeaveClass(id);
 
   const onDescriptionChange = (content, delta, source, editor) => {
     if (!disabled.description)
@@ -257,14 +167,6 @@ const Class = ({ currentUser }) => {
     setEditEnabled((st) => !st);
   };
 
-  const Edit = EditButton({
-    disabled,
-    startEdit,
-    saveInfo,
-    cancelEdit,
-    editEnabled,
-  });
-
   const preferencesBind = usePreferences({
     setUpdate,
     saveInfo,
@@ -277,6 +179,14 @@ const Class = ({ currentUser }) => {
       [name]: e.detail.tagify.value.map((tag) => tag.value),
     }));
   }, []);
+
+  const Edit = EditButton({
+    disabled,
+    startEdit,
+    saveInfo,
+    cancelEdit,
+    editEnabled,
+  });
 
   if (error) return error.message;
   if (loading || !classInfo.name) return <Loader />;
@@ -324,27 +234,30 @@ const Class = ({ currentUser }) => {
               </Link>
             )}
 
-            {currentUser.user.userType === "TUTOR" && (
+            <Edit type="tags" />
+            <Menu {...menuBind}>
               <>
-                <Edit type="tags" />
-                <Menu {...menuBind}>
-                  <>
-                    <div onClick={toggleEdit}>
-                      <FontAwesomeIcon
-                        icon={editEnabled ? faUnlock : faPenAlt}
-                      />{" "}
-                      {editEnabled ? "Lock Edits" : "Edit Page"}
-                    </div>
-                    <div onClick={openPreferences}>
-                      <FontAwesomeIcon icon={faUserCog} /> Preferences
-                    </div>
-                    <div onClick={openDeletion} className="danger">
-                      <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
-                    </div>
-                  </>
-                </Menu>
+                {currentUser.user.userType === "TUTOR" && (
+                  <div onClick={toggleEdit}>
+                    <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
+                    {editEnabled ? "Lock Edits" : "Edit Page"}
+                  </div>
+                )}
+                {currentUser.user.userType === "TUTOR" && (
+                  <div onClick={openPreferences}>
+                    <FontAwesomeIcon icon={faUserCog} /> Preferences
+                  </div>
+                )}
+                <div onClick={openLeave}>
+                  <FontAwesomeIcon icon={faDoorOpen} /> Leave Class
+                </div>
+                {currentUser.user.userType === "TUTOR" && (
+                  <div onClick={openDeletion} className="danger">
+                    <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
+                  </div>
+                )}
               </>
-            )}
+            </Menu>
           </div>
         </div>
 
@@ -518,6 +431,19 @@ const Class = ({ currentUser }) => {
           </p>
           <button className="btn danger" onClick={deleteClass}>
             Delete Class
+          </button>
+        </div>
+      </Modal>
+
+      <Modal {...leaveBinds}>
+        <div className={styles.padding}>
+          <h2>Leave Class</h2>
+          <p>
+            Are you certain that you want to leave this class? You will have to
+            ask the tutors to regain access.
+          </p>
+          <button className="btn danger" onClick={leaveClass}>
+            Leave Class
           </button>
         </div>
       </Modal>
