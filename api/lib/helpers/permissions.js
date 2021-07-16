@@ -16,10 +16,10 @@ export function assertUser(reqUser, targetUser) {
   return true;
 }
 
-// Asserts that user him/herself or a tutor or an admin
+// Asserts that user is him/herself or a tutor or an admin
 export function assertUserOrTutor(reqUser, targetUser) {
   assertAuthenticated(reqUser);
-  if (reqUser._id !== targetUser._id && reqUser.userType === "TUTEE")
+  if (reqUser._id !== targetUser._id && targetUser.userType === "TUTEE")
     throw new ApolloError("User unauthorized for this field", 401);
   return true;
 }
