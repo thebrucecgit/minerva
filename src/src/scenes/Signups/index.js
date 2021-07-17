@@ -77,72 +77,78 @@ function Signups({ authService }) {
     setInfo((st) => ({ ...st, [target.name]: value }));
   };
 
-  const validate = useCallback((section) => {
-    const newErrors = {};
+  const validate = useCallback(
+    (section) => {
+      const newErrors = {};
 
-    switch (section) {
-      case "Basic Info": {
-        if (!info.name || info.name.length <= 2)
-          newErrors.name = "Name is too short";
-        if (!info.email || !regex.email.test(info.email))
-          newErrors.email = "Email is invalid";
-        if (
-          strategy === "local" &&
-          (!info.password || !regex.password.test(info.password))
-        )
-          newErrors.password =
-            "Password needs to be minimum of eight characters with at least one letter and one number";
-        break;
+      switch (section) {
+        case "Basic Info": {
+          if (!info.name || info.name.length <= 2)
+            newErrors.name = "Name is too short";
+          if (!info.email || !regex.email.test(info.email))
+            newErrors.email = "Email is invalid";
+          if (
+            strategy === "local" &&
+            (!info.password || !regex.password.test(info.password))
+          )
+            newErrors.password =
+              "Password needs to be minimum of eight characters with at least one letter and one number";
+          break;
+        }
+        case "Additional Info": {
+          if (!info.yearGroup)
+            newErrors.yearGroup = "Please select your year group";
+          if (!info.school) newErrors.school = "Please select your school";
+          if (!info.academics || info.academics.length === 0)
+            newErrors.academics = "Please enter at least one subject";
+          break;
+        }
+        case "Verification": {
+          if (userType === "TUTOR" && !info.price)
+            newErrors.price = "Please select a price";
+          if (!info.biography)
+            newErrors.biography = "Please write about yourself";
+          if (!info.grades || !regex.url.test(info.grades))
+            newErrors.grades = "Please enter a valid link";
+          break;
+        }
+        case "Confirmation": {
+          if (!info.agreement)
+            newErrors.agreement = "You must agree to the terms";
+          break;
+        }
+        default:
+          break;
       }
-      case "Additional Info": {
-        if (!info.yearGroup)
-          newErrors.yearGroup = "Please select your year group";
-        if (!info.school) newErrors.school = "Please select your school";
-        if (!info.academics || info.academics.length === 0)
-          newErrors.academics = "Please enter at least one subject";
-        break;
-      }
-      case "Verification": {
-        if (userType === "TUTOR" && !info.price)
-          newErrors.price = "Please select a price";
-        if (!info.biography)
-          newErrors.biography = "Please write about yourself";
-        if (!info.grades || !regex.url.test(info.grades))
-          newErrors.grades = "Please enter a valid link";
-        break;
-      }
-      case "Confirmation": {
-        if (!info.agreement)
-          newErrors.agreement = "You must agree to the terms";
-        break;
-      }
-      default:
-        break;
-    }
 
-    setErrors(newErrors);
-    return Object.values(newErrors).length === 0;
-  }, [info, strategy, userType]);
+      setErrors(newErrors);
+      return Object.values(newErrors).length === 0;
+    },
+    [info, strategy, userType]
+  );
 
   // Moves onto next strategy
-  const onNext = useCallback((section) => {
-    const validated = validate(section);
+  const onNext = useCallback(
+    (section) => {
+      const validated = validate(section);
 
-    const sectionsArr = Object.keys(sections);
-    const sectionInd = sectionsArr.indexOf(section);
+      const sectionsArr = Object.keys(sections);
+      const sectionInd = sectionsArr.indexOf(section);
 
-    setSectionStatus((st) => {
-      const newState = [...st];
-      newState[sectionInd] = validated;
-      return newState;
-    });
+      setSectionStatus((st) => {
+        const newState = [...st];
+        newState[sectionInd] = validated;
+        return newState;
+      });
 
-    if (validated) {
-      const newSection = sectionsArr[sectionInd + 1];
-      setSectionClosed({ ...sections, [newSection]: false });
-    }
+      if (validated) {
+        const newSection = sectionsArr[sectionInd + 1];
+        setSectionClosed({ ...sections, [newSection]: false });
+      }
+    },
     // eslint-disable-next-line
-  }, [validate]); 
+    [validate]
+  );
 
   // Saves info on tags changing
   const onTagsChange = useCallback((e, name) => {
@@ -152,7 +158,7 @@ function Signups({ authService }) {
     }));
   }, []);
 
-  const uploadImage = useCloudinary((result) => {
+  const cloudinaryCallback = useCallback((result) => {
     const { public_id } = result.info;
     setInfo((st) => ({
       ...st,
@@ -162,7 +168,8 @@ function Signups({ authService }) {
         url: `https://res.cloudinary.com/${process.env.REACT_APP_CLOUDINARY_CLOUDNAME}/image/upload/c_crop,g_custom/w_500/${public_id}`,
       },
     }));
-  });
+  }, []);
+  const uploadImage = useCloudinary(cloudinaryCallback);
 
   const onGoogleSignedIn = (userInfo) => {
     const userData = authService.currentUser || userInfo;
