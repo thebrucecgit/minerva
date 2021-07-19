@@ -12,8 +12,10 @@ import { indexAll } from "./config/search";
 
 const { DOMAIN, PORT, NODE_ENV } = process.env;
 
+// Index all tutors on start
 if (NODE_ENV === "production") indexAll();
 
+// Connect to DB
 connect();
 
 const app = express();
