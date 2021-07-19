@@ -26,9 +26,10 @@
     "build": "npm run clean && npm run build-swc",
     "serve": "npm run build && npm start",
     "watch": "nodemon --watch ./lib --exec npm run serve",
-    "start": "node ./dist/server.js",
-    "seed": "node dist/seed",
-    "test": "jest ./lib"
+    "start": "node ./dist/server",
+    "seed": "node ./dist/seed",
+    "test": "jest ./lib",
+    "e2e": "NODE_ENV=test npm run serve"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.46",
