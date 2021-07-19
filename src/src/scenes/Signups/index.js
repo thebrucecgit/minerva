@@ -249,7 +249,7 @@ function Signups({ authService }) {
       localStorage.removeItem("signup");
 
       if (user.registrationStatus === "COMPLETE") history.replace("/dashboard");
-      else history.replace("/confirm");
+      else history.replace("/signup/confirm");
     } catch (e) {
       console.error(e);
       setErrors((st) => ({

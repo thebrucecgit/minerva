@@ -7,6 +7,7 @@ import { loader } from "./styles/Loader.module.scss";
 const Home = lazy(() => import("./scenes/Home"));
 const Pages = lazy(() => import("./scenes/Pages"));
 const Signups = lazy(() => import("./scenes/Signups"));
+const Confirm = lazy(() => import("./scenes/Confirm"));
 const Auth = lazy(() => import("./scenes/Auth"));
 const Dashboard = lazy(() => import("./scenes/Dashboard"));
 
@@ -44,10 +45,15 @@ function Routes({ authService }) {
 
         <Route
           path="/signup"
+          exact
           render={({ match }) => (
             <Signups match={match} authService={authService} />
           )}
         />
+
+        <Route exact path="/signup/confirm">
+          <Confirm authService={authService} />
+        </Route>
 
         <Route
           path="/dashboard"

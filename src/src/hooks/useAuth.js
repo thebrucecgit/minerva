@@ -11,7 +11,7 @@ const useAuth = (registrationStatus, exclude = []) => {
         break;
       }
       case "EMAIL_NOT_CONFIRMED": {
-        if (!exclude.includes("confirm")) history.replace("/confirm");
+        if (!exclude.includes("confirm")) history.replace("/signup/confirm");
         break;
       }
       case "GOOGLE_SIGNED_IN": {
