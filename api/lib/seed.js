@@ -1,24 +1,15 @@
-import seeder from "mongoose-seed";
+import {} from "dotenv/config";
+import { connect, disconnect } from "./config/database";
+import User from "./modules/user/model";
+import Class from "./modules/class/model";
+import Session from "./modules/session/model";
 
-const db = "mongodb://127.0.0.1:27017/academe?gssapiServiceName=mongodb";
+(async () => {
+  const db = await connect();
+  await db.dropDatabase();
 
-seeder.connect(db, () => {
-  seeder.loadModels([
-    "./dist/modules/user/model",
-    "./dist/modules/class/model",
-    "./dist/modules/session/model",
-  ]);
-  seeder.clearModels(["User", "Session", "Class"], () => {
-    seeder.populateModels(data, () => {
-      seeder.disconnect();
-    });
-  });
-});
-
-const data = [
-  {
-    model: "Class",
-    documents: [
+  await Promise.all([
+    Class.insertMany([
       {
         _id: "QUc0jHFaM",
         name: "Saturday Afternoon",
@@ -31,11 +22,8 @@ const data = [
         location: "Upper Riccarton Library",
         pricePerTutee: 5,
       },
-    ],
-  },
-  {
-    model: "User",
-    documents: [
+    ]),
+    User.insertMany([
       {
         _id: "7fCzBZf3_Q",
         academics: ["Classics"],
@@ -76,6 +64,8 @@ const data = [
         emailConfirmId: "kT6CtaF-I",
         __v: 0,
       },
-    ],
-  },
-];
+    ]),
+  ]);
+
+  await disconnect();
+})();
