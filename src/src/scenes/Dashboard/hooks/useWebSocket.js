@@ -85,6 +85,7 @@ const useWebSocket = ({ jwt }) => {
       return () => {
         ws.close(1000, "Component unload");
         clearTimeout(connectTimer);
+        if (!errorToast) toast.dismiss(errorToast);
       };
     } catch (e) {
       console.error(e);
@@ -122,7 +123,7 @@ const useWebSocket = ({ jwt }) => {
     bind("MESSAGE", messageHandler);
     return () => {
       unbind("INBOX", inboxHandler);
-      unbind("MESSAGE", messageHandler)
+      unbind("MESSAGE", messageHandler);
     };
   }, [match]);
 
