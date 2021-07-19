@@ -76,7 +76,7 @@ const AdditionalInfo = ({
             </select>
           </div>
 
-          <div className={styles.field}>
+          <div className={styles.field} data-test="academic">
             <label>
               Add academic subjects you want{" "}
               {userType === "TUTOR" ? "to tutor" : "tutoring"} in (you can
@@ -98,7 +98,7 @@ const AdditionalInfo = ({
             />
           </div>
 
-          <div className={styles.field}>
+          <div className={styles.field} data-test="extras">
             <label>
               Add any extra-curriculars activities you want{" "}
               {userType === "TUTOR" ? "to tutor" : "tutoring"} in (you can
@@ -116,7 +116,11 @@ const AdditionalInfo = ({
               name="extras"
             />
           </div>
-          <button className="btn" onClick={onNext}>
+          <button
+            className="btn"
+            onClick={onNext}
+            data-test="additional-info-next"
+          >
             Next
           </button>
         </div>

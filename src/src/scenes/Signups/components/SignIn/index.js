@@ -35,7 +35,7 @@ const SignIn = ({
           />{" "}
           or{" "}
           <button className="btn" onClick={onNext}>
-            Sign in with Email
+            Sign in with email
           </button>
         </div>
       </div>

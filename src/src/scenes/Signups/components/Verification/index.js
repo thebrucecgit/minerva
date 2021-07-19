@@ -79,7 +79,11 @@ const Verification = ({
               noValidate
             />
           </div>
-          <button className="btn" onClick={onNext}>
+          <button
+            className="btn"
+            onClick={onNext}
+            data-test="verification-next"
+          >
             Next
           </button>
         </div>

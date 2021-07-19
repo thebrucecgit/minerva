@@ -90,7 +90,7 @@ const BasicInfo = ({
               {info.pfp ? "Change" : "Upload"}
             </button>
           </div>
-          <button className="btn" onClick={onNext}>
+          <button className="btn" onClick={onNext} data-test="basic-info-next">
             Next
           </button>
         </div>

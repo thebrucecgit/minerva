@@ -1,0 +1,11 @@
+{
+  "name": "academe",
+  "version": "0.0.1",
+  "scripts": {
+    "e2e": "cypress open --config watchForFileChanges=false"
+  },
+  "devDependencies": {
+    "cypress": "^7.7.0",
+    "mongodb-memory-server": "^7.2.1"
+  }
+}

@@ -19,6 +19,12 @@ import "@yaireo/tagify/dist/tagify.css";
 import { ReactComponent as TutorImg } from "./media/undraw_teaching.svg";
 import { ReactComponent as TuteeImg } from "./media/undraw_mathematics.svg";
 
+const {
+  NODE_ENV,
+  REACT_APP_TEST_CAPTCHA_SITE_KEY,
+  REACT_APP_CAPTCHA_SITE_KEY,
+} = process.env;
+
 const recaptchaRef = createRef();
 
 function Signups({ authService }) {
@@ -323,7 +329,11 @@ function Signups({ authService }) {
       </div>
       <ReCAPTCHA
         ref={recaptchaRef}
-        sitekey={process.env.REACT_APP_CAPTCHA_SITE_KEY}
+        sitekey={
+          NODE_ENV === "development"
+            ? REACT_APP_TEST_CAPTCHA_SITE_KEY
+            : REACT_APP_CAPTCHA_SITE_KEY
+        }
         size="invisible"
         onChange={onCaptchaComplete}
       />
