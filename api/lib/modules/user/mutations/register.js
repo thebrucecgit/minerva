@@ -11,7 +11,7 @@ import { createUserObject } from "../helpers";
 const { FRONTEND_DOMAIN, CAPTCHA_SECRET_KEY, NODE_ENV } = process.env;
 
 export default async function register(_, args) {
-  if (NODE_ENV != "test") {
+  if (NODE_ENV === "production") {
     // Verify Captcha
     const captchaVerification = await axios({
       method: "post",
