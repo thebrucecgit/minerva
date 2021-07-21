@@ -36,7 +36,6 @@
     "@swc/core": "^1.2.62",
     "@swc/jest": "^0.1.2",
     "jest": "^27.0.5",
-    "mongodb-memory-server": "^6.9.6",
-    "mongoose-seed": "^0.6.0"
+    "mongodb-memory-server": "^6.9.6"
   }
 }
