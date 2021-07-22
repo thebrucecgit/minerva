@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import { Link } from "react-router-dom";
 
 import StatusSymbol from "../StatusSymbol";
 
@@ -39,7 +40,10 @@ const Confirmation = ({
                 noValidate
               />
               <label htmlFor="agreement">
-                I agree to the the Terms of Services and the Privacy Policy
+                I agree to the the Terms of Services and the{" "}
+                <Link to="/privacy-policy" target="_BLANK">
+                  Privacy Policy
+                </Link>
               </label>
             </div>
           </div>
