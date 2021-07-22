@@ -10,7 +10,6 @@ const Verification = ({
   sectionClosed,
   errors,
   info,
-  userType,
   onChange,
   onNext,
 }) => {
@@ -26,27 +25,6 @@ const Verification = ({
         })}
       >
         <div className={styles.content}>
-          {userType === "TUTOR" && (
-            <div className={styles.field}>
-              <label htmlFor="price">Select your price per hour? </label>
-              {errors.price && <p className={styles.invalid}>{errors.price}</p>}
-              <select
-                name="price"
-                id="price"
-                value={info.price ?? ""}
-                onChange={onChange}
-                noValidate
-              >
-                <option value="">--SELECT--</option>
-                <option value="0">FREE</option>
-                <option value="15">$15</option>
-                <option value="20">$20</option>
-                <option value="25">$25</option>
-                <option value="30">$30</option>
-              </select>
-            </div>
-          )}
-
           <div className={styles.field}>
             <label htmlFor="biography">
               Please write a little bit about yourself

@@ -110,8 +110,6 @@ function Signups({ authService }) {
           break;
         }
         case "Verification": {
-          if (userType === "TUTOR" && !info.price)
-            newErrors.price = "Please select a price";
           if (!info.biography)
             newErrors.biography = "Please write about yourself";
           if (!info.grades || !regex.url.test(info.grades))
@@ -302,7 +300,6 @@ function Signups({ authService }) {
             info={info}
             errors={errors}
             onChange={onChange}
-            userType={userType}
             onNext={() => onNext("Verification")}
           />
           <Confirmation
