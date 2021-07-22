@@ -5,8 +5,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 
 import App from "./scenes/App";
 
-import * as serviceWorker from "./serviceWorker";
-
 ReactDOM.render(
   // <React.StrictMode>
   //   <Router>
@@ -18,5 +16,3 @@ ReactDOM.render(
   </Router>,
   document.getElementById("root")
 );
-
-serviceWorker.register();
