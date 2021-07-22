@@ -128,7 +128,7 @@ function Signups({ authService }) {
       setErrors(newErrors);
       return Object.values(newErrors).length === 0;
     },
-    [info, strategy, userType]
+    [info, strategy]
   );
 
   // Moves onto next strategy
