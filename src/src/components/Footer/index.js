@@ -7,7 +7,7 @@ function Footer() {
   return (
     <div className={styles.Footer}>
       <div>
-        <p>Copyright © 2019 Academe. All Rights Reserved.</p>
+        <p>Copyright © 2019-2021 Academe. All Rights Reserved.</p>
         <p>
           Website Developed by{" "}
           <a
