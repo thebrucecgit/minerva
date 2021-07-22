@@ -22,7 +22,7 @@ const Tutors = () => {
           style, nor your material content.
         </p>
         <Link to="/signup/tutors">
-          <button className="btn">Sign Up Now!</button>
+          <button className="btn">Sign Up As A Tutor Now!</button>
         </Link>
       </div>
     </div>
