@@ -44,7 +44,11 @@ function Landing() {
         <p>Scroll down to learn more</p>
         <FontAwesomeIcon icon={faChevronDown} size="2x" />
       </a>
-      <img className={styles.bookFlipping} src={bookshelves} />
+      <img
+        className={styles.bookFlipping}
+        src={bookshelves}
+        alt="bookshelves"
+      />
     </section>
   );
 }
