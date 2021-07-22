@@ -7,7 +7,7 @@ import {
   faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 
-import bookshelves from "./media/bookshelves.mp4";
+import bookshelves from "./media/bookshelves.jpg";
 
 import styles from "./styles.module.scss";
 
@@ -44,14 +44,7 @@ function Landing() {
         <p>Scroll down to learn more</p>
         <FontAwesomeIcon icon={faChevronDown} size="2x" />
       </a>
-      <video
-        muted
-        autoPlay
-        loop
-        className={styles.bookFlipping}
-        type="video/mp4"
-        src={bookshelves}
-      />
+      <img className={styles.bookFlipping} src={bookshelves} />
     </section>
   );
 }
