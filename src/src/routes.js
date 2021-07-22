@@ -43,17 +43,16 @@ function Routes({ authService }) {
           )}
         />
 
+        <Route exact path="/signup/confirm">
+          <Confirm authService={authService} />
+        </Route>
+
         <Route
           path="/signup"
-          exact
           render={({ match }) => (
             <Signups match={match} authService={authService} />
           )}
         />
-
-        <Route exact path="/signup/confirm">
-          <Confirm authService={authService} />
-        </Route>
 
         <Route
           path="/dashboard"
