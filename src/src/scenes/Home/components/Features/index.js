@@ -22,11 +22,8 @@ function Features() {
         </div>
         <div>
           <FontAwesomeIcon icon={faMoneyCheckAlt} size="8x" />
-          <h4>Affordable</h4>
-          <p>
-            Our prices are fair and our intentions are not to seek financial
-            profit.
-          </p>
+          <h4>No Cost</h4>
+          <p>Mentorship and tutoring should be accessible to all.</p>
         </div>
         <div>
           <FontAwesomeIcon icon={faThumbsUp} size="8x" />
