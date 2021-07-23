@@ -326,6 +326,7 @@ const Class = ({ currentUser }) => {
           tutors={classInfo.tutors}
           update={update.tutors}
           setUpdate={setUpdate}
+          user={currentUser.user}
         />
 
         <div className={styles.flex}>

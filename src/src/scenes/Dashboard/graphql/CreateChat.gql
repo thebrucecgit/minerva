@@ -1,0 +1,5 @@
+mutation CreateChat($targets: [ID!]!) {
+  createChat(targets: $targets) {
+    channel
+  }
+}

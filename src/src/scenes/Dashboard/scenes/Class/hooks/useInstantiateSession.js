@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import { useParams, useHistory } from "react-router-dom";
 import { loader } from "graphql.macro";
+import { toast } from "react-toastify";
 
 const INSTANTIATE_SESSION = loader("../graphql/InstantiateSession.gql");
 
@@ -16,19 +17,25 @@ const useInstantiateSession = () => {
   const [instantiateSession] = useMutation(INSTANTIATE_SESSION);
 
   const { id } = useParams();
-
   const newSession = async () => {
+    let toastId;
     try {
-      const { data, error } = await instantiateSession({
+      toastId = toast("Instantiating session...", { autoClose: false });
+      const { data } = await instantiateSession({
         variables: {
           classId: id,
           startTime: time,
           length: parseInt(length),
         },
       });
-      if (error) setInstantiationError(error.message);
-      else history.push(`/dashboard/sessions/${data.instantiateSession._id}`);
+      toast.update(toastId, {
+        render: "Successfully instantiated session",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 3000,
+      });
+      history.push(`/dashboard/sessions/${data.instantiateSession._id}`);
     } catch (e) {
+      toast.dismiss(toastId);
       setInstantiationError(e.message);
     }
   };

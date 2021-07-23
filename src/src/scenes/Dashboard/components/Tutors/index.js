@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 import useUserChange from "../../hooks/useUserChange";
 import Autocomplete from "../../components/Autocomplete";
+import useDM from "../../hooks/useDM";
 
 import {
   SortableContainer,
@@ -12,43 +13,64 @@ import {
 } from "react-sortable-hoc";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faTrashAlt,
+  faComments,
+} from "@fortawesome/free-solid-svg-icons";
 import styles from "../../class.module.scss";
 
 const DragHandle = SortableHandle(() => (
   <FontAwesomeIcon icon={faBars} size="lg" className={styles.draghandle} />
 ));
-const SortableItem = SortableElement(({ tutor, editEnabled, deleteTutor }) => (
-  <Link
-    to={`/dashboard/tutors/${tutor._id}`}
-    className={classNames("card", "y", styles.section)}
-    onClick={(e) => {
-      if (editEnabled) e.preventDefault();
-    }}
-  >
-    {tutor.pfp && !editEnabled && (
-      <ProfilePicture pfp={tutor.pfp} alt={tutor.name} width="400" />
-    )}
-    <h3 className="body">
-      {tutor.name}
-      {editEnabled && (
-        <div className={styles.editUser}>
-          <button
-            className="btn danger small"
-            onClick={deleteTutor}
-            data-id={tutor._id}
-          >
-            <FontAwesomeIcon icon={faTrashAlt} />
-          </button>
-          <DragHandle />
-        </div>
+const SortableItem = SortableElement(
+  ({ tutor, editEnabled, deleteTutor, callDM, user }) => (
+    <Link
+      to={`/dashboard/tutors/${tutor._id}`}
+      className={classNames("card", "y", styles.section)}
+      onClick={(e) => {
+        if (editEnabled) e.preventDefault();
+      }}
+    >
+      {tutor.pfp && !editEnabled && (
+        <ProfilePicture pfp={tutor.pfp} alt={tutor.name} width="400" />
       )}
-    </h3>
-  </Link>
-));
+      <h3 className="body">
+        {tutor.name}
+        <div className={styles.userButtons}>
+          {editEnabled ? (
+            <>
+              <button
+                className="btn danger small"
+                onClick={deleteTutor}
+                data-id={tutor._id}
+              >
+                <FontAwesomeIcon icon={faTrashAlt} />
+              </button>
+              <DragHandle />
+            </>
+          ) : (
+            tutor._id !== user._id && (
+              <button
+                className="btn small"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  callDM(tutor._id);
+                }}
+              >
+                <FontAwesomeIcon icon={faComments} />
+              </button>
+            )
+          )}
+        </div>
+      </h3>
+    </Link>
+  )
+);
 
 const SortableList = SortableContainer(
-  ({ tutors, editEnabled, deleteTutor }) => (
+  ({ tutors, editEnabled, deleteTutor, callDM, user }) => (
     <div className={styles.column}>
       {tutors.map((tutor, index) => (
         <SortableItem
@@ -57,6 +79,8 @@ const SortableList = SortableContainer(
           tutor={tutor}
           editEnabled={editEnabled}
           deleteTutor={deleteTutor}
+          callDM={callDM}
+          user={user}
         />
       ))}
     </div>
@@ -70,6 +94,7 @@ const Tutors = ({
   tutors,
   update,
   setUpdate,
+  user,
 }) => {
   const onSortEnd = ({ oldIndex, newIndex }) => {
     setUpdate((st) => {
@@ -86,6 +111,8 @@ const Tutors = ({
     userType: "tutors",
   });
 
+  const callDM = useDM();
+
   return (
     <>
       <div className={styles.flex}>
@@ -98,6 +125,8 @@ const Tutors = ({
         useDragHandle
         deleteTutor={deleteTutor}
         editEnabled={!tutorsDisabled}
+        callDM={callDM}
+        user={user}
       />
       {!tutorsDisabled && (
         <div className="card">

@@ -116,9 +116,9 @@ const Session = ({ currentUser }) => {
             break;
           }
           case "attendance": {
-            variables.attendance = Object.entries(
-              update.attendance
-            ).map(([tutee, info]) => ({ ...info, tutee }));
+            variables.attendance = Object.entries(update.attendance).map(
+              ([tutee, info]) => ({ ...info, tutee })
+            );
             break;
           }
           case "length": {
@@ -496,6 +496,7 @@ const Session = ({ currentUser }) => {
           tutors={sessionInfo.tutors}
           update={update.tutors}
           setUpdate={setUpdate}
+          user={currentUser.user}
         />
         {currentUser.user.userType === "TUTOR" && (
           <button className="btn" onClick={openAttendances}>
