@@ -15,6 +15,11 @@ export default gql`
 
   type TutorStatus {
     status: String
+    grades: String
+  }
+
+  type AdminStatus {
+    status: Boolean
   }
 
   "A User (can be a tutor, a tutee or a parent)"
@@ -33,6 +38,7 @@ export default gql`
     biography: String!
     grades: String
     tutor: TutorStatus
+    admin: AdminStatus
   }
 
   "The object that is returned when a user is authenticated"
@@ -47,6 +53,7 @@ export default gql`
     getUser(id: ID): User!
     getUsers(value: String!): [User!]
     getTutorsOfUser(userID: ID!, limit: Int): [User!]
+    getPendingTutors: [User!]!
     login(email: String, password: String, tokenId: String): UserReq!
     resetPassword(email: String!): Boolean
   }

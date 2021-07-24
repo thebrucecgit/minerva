@@ -2,7 +2,7 @@ import User from "../model";
 import { FIELDS, addDocToRecord } from "../../../config/search";
 
 export default async function reviewUser(_, { id, approval, message }) {
-  const user = await User.select(FIELDS).findOneAndUpdate(
+  const user = await User.findOneAndUpdate(
     { _id: id },
     {
       tutor: {
@@ -10,7 +10,7 @@ export default async function reviewUser(_, { id, approval, message }) {
         message,
       },
     },
-    { new: true, lean: true }
+    { new: true, lean: true, projection: FIELDS }
   );
 
   if (approval) await addDocToRecord(user);

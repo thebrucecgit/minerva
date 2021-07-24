@@ -36,12 +36,12 @@ export function assertTutor(user) {
 }
 
 // Asserts that the user is an admin
-// export function assertAdmin(user) {
-//   assertAuthenticated(user);
-//   if (user.userType !== "ADMIN")
-//     throw new ApolloError("User unauthorized for this field", 401);
-//   return true;
-// }
+export function assertAdmin(user) {
+  assertAuthenticated(user);
+  if (!user.admin.status)
+    throw new ApolloError("User unauthorized for this field", 401);
+  return true;
+}
 
 // Asserts that the user is someone in the class / session / chat or an admin
 export async function assertGroupAuthorization(user, users) {

@@ -3,9 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import styles from "./styles.module.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHome,
+  faUser,
+  faUserShield,
+} from "@fortawesome/free-solid-svg-icons";
 
-const Appbar = () => {
+const Appbar = ({ currentUser }) => {
   return (
     <div className={styles.Sidebar}>
       <div>
@@ -47,6 +51,13 @@ const Appbar = () => {
         ))}
       </div>
       <div className={styles.home}>
+        {currentUser.user.admin?.status && (
+          <Link to="/admin">
+            <p>
+              Admin Panel <FontAwesomeIcon icon={faUserShield} />
+            </p>
+          </Link>
+        )}
         <Link to="/dashboard/me">
           <p>
             User Profile <FontAwesomeIcon icon={faUser} />

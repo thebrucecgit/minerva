@@ -15,6 +15,9 @@ query Login($email: String, $password: String, $tokenId: String) {
       tutor {
         status
       }
+      admin {
+        status
+      }
     }
   }
 }

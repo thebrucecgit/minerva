@@ -1,0 +1,21 @@
+query GetPendingTutors {
+  getPendingTutors {
+    _id
+    name
+    email
+    pfp {
+      url
+    }
+    tutor {
+      status
+      grades
+    }
+    yearGroup
+    school
+    academicsLearning
+    extrasLearning
+    academicsTutoring
+    extrasTutoring
+    grades
+  }
+}

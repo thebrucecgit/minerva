@@ -50,6 +50,9 @@ const userSchema = new Schema({
       enum: ["NONE", "PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"],
       default: "NONE",
     },
+    grades: {
+      type: String,
+    },
     message: {
       type: String,
     },

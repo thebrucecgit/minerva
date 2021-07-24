@@ -2,7 +2,7 @@ import React from "react";
 import { Highlight } from "react-instantsearch-dom";
 import { Link } from "react-router-dom";
 import ProfilePicture from "../../../components/ProfilePicture";
-import Tags from "../../../components/Tags";
+import Tags from "../../../../../components/Tags";
 import DMButton from "../../../components/DMButton";
 
 const Hit = ({ hit, currentUser }) => {

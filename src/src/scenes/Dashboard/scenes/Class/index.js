@@ -11,7 +11,7 @@ import Modal from "../../../../components/Modal";
 
 import reactQuillModules from "../reactQuillModules";
 import Map from "../../components/Map";
-import Tags from "../../components/Tags";
+import Tags from "../../../../components/Tags";
 import Tutors from "../../components/Tutors";
 import EditButton from "../../components/EditButton";
 import Menu from "../../components/Menu";

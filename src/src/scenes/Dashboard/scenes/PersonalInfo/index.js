@@ -6,7 +6,7 @@ import Error from "../../../../components/Error";
 import Loader from "../../../../components/Loader";
 import selections from "../../../../config/whitelist.json";
 import TagsSelect from "@yaireo/tagify/dist/react.tagify";
-import Tags from "../../components/Tags";
+import Tags from "../../../../components/Tags";
 import { Image, Transformation } from "cloudinary-react";
 import classNames from "classnames";
 

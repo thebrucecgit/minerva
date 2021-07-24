@@ -9,12 +9,14 @@ import resetPassword from "./mutations/resetPassword";
 import confirmUserEmail from "./mutations/confirmUserEmail";
 import updatePassword from "./mutations/updatePassword";
 import updateUser from "./mutations/updateUser";
+import reviewUser from "./mutations/reviewUser";
 
 import { escapeRegExp } from "./helpers";
 import {
   assertUser,
   assertUserOrTutor,
   assertTutor,
+  assertAdmin,
 } from "../../helpers/permissions";
 
 export default {
@@ -47,6 +49,11 @@ export default {
 
       return await User.find({ _id: { $in: tutors } }, null, { limit });
     },
+    async getPendingTutors(_, {}, { user }) {
+      assertAdmin(user);
+
+      return await User.find({ "tutor.status": "PENDING_REVIEW" });
+    },
   },
   Mutation: {
     register,
@@ -54,5 +61,6 @@ export default {
     resetPassword,
     updatePassword,
     updateUser,
+    reviewUser,
   },
 };

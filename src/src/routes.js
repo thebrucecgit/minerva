@@ -10,6 +10,7 @@ const Signups = lazy(() => import("./scenes/Signups"));
 const Confirm = lazy(() => import("./scenes/Confirm"));
 const Auth = lazy(() => import("./scenes/Auth"));
 const Dashboard = lazy(() => import("./scenes/Dashboard"));
+const Admin = lazy(() => import("./scenes/Admin"));
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -58,6 +59,17 @@ function Routes({ authService }) {
           path="/dashboard"
           render={({ match, location }) => (
             <Dashboard
+              match={match}
+              location={location}
+              authService={authService}
+            />
+          )}
+        />
+
+        <Route
+          path="/admin"
+          render={({ match, location }) => (
+            <Admin
               match={match}
               location={location}
               authService={authService}

@@ -11,7 +11,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap, faRunning } from "@fortawesome/free-solid-svg-icons";
 
-import Tags from "../../components/Tags";
+import Tags from "../../../../components/Tags";
 
 import styles from "./styles.module.scss";
 

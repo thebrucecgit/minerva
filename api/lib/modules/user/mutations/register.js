@@ -31,9 +31,11 @@ export default async function register(_, args) {
   const edits = { ...args };
   delete edits.password;
   delete edits.applyTutor;
+  delete edits.grades;
 
   if (args.applyTutor) {
     edits["tutor.status"] = "PENDING_REVIEW";
+    edits["tutor.grades"] = args.grades;
   }
 
   // Verify information

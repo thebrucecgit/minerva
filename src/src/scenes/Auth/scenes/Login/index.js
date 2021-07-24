@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
 import { GoogleLogin } from "react-google-login";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./styles.module.scss";
 
@@ -12,6 +14,7 @@ const Login = ({ login, currentUser }) => {
 
   const [error, setError] = useState("");
   const [fields, setFields] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const onFieldChange = (e) => {
     e.persist();
@@ -35,10 +38,13 @@ const Login = ({ login, currentUser }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const { email, password } = fields;
       await login(email, password);
+      setLoading(false);
       history.replace("/dashboard");
     } catch (e) {
+      setLoading(false);
       setError(e.message);
     }
   };
@@ -72,7 +78,9 @@ const Login = ({ login, currentUser }) => {
               onChange={onFieldChange}
             />
           </div>
-          <button className="btn">Sign In</button>
+          <button className="btn">
+            Sign In {loading && <FontAwesomeIcon icon={faCircleNotch} spin />}
+          </button>
         </form>
       </div>
       <p> Or </p>

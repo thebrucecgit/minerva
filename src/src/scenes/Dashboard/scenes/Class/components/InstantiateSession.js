@@ -4,6 +4,8 @@ import classNames from "classnames";
 
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "../../../class.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const InstantiateSession = ({
   time,
@@ -13,6 +15,7 @@ const InstantiateSession = ({
   newSession,
   instantiationError,
   studentAgreeSessions,
+  loading,
 }) => {
   return (
     <>
@@ -37,7 +40,8 @@ const InstantiateSession = ({
         className={classNames("btn", styles.session)}
         onClick={newSession}
       >
-        {studentAgreeSessions ? "Request Session" : "New Session"}
+        {studentAgreeSessions ? "Request Session" : "New Session"}{" "}
+        {loading && <FontAwesomeIcon icon={faCircleNotch} spin />}
       </button>
     </>
   );

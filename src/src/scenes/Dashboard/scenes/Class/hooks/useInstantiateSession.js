@@ -13,6 +13,7 @@ const useInstantiateSession = () => {
 
   const [time, setTime] = useState(new Date());
   const [length, setLength] = useState("60");
+  const [loading, setLoading] = useState(false);
 
   const [instantiateSession] = useMutation(INSTANTIATE_SESSION);
 
@@ -20,6 +21,7 @@ const useInstantiateSession = () => {
   const newSession = async () => {
     let toastId;
     try {
+      setLoading(true);
       toastId = toast("Instantiating session...", { autoClose: false });
       const { data } = await instantiateSession({
         variables: {
@@ -33,14 +35,24 @@ const useInstantiateSession = () => {
         type: toast.TYPE.SUCCESS,
         autoClose: 3000,
       });
+      setLoading(false);
       history.push(`/dashboard/sessions/${data.instantiateSession._id}`);
     } catch (e) {
+      setLoading(false);
       toast.dismiss(toastId);
       setInstantiationError(e.message);
     }
   };
 
-  return { time, setTime, length, setLength, newSession, instantiationError };
+  return {
+    time,
+    setTime,
+    length,
+    setLength,
+    newSession,
+    instantiationError,
+    loading,
+  };
 };
 
 export default useInstantiateSession;

@@ -45,6 +45,9 @@ mutation Register(
       tutor {
         status
       }
+      admin {
+        status
+      }
     }
   }
 }

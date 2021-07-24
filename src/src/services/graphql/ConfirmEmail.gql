@@ -15,6 +15,9 @@ mutation ConfirmUserEmail($emailConfirmId: String!) {
       tutor {
         status
       }
+      admin {
+        status
+      }
     }
   }
 }

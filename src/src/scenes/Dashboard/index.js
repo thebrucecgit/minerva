@@ -32,7 +32,7 @@ const Dashboard = ({ location, match, authService }) => {
 
   return (
     <div className={styles.Dashboard}>
-      <Appbar />
+      <Appbar {...pageBinds} />
       <div className={styles.content}>
         <Switch>
           <Route exact path={path}>
