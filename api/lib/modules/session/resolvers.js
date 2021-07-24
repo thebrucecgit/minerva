@@ -105,6 +105,7 @@ export default {
           timeZone: "Pacific/Auckland",
         })} for ${classDoc.name}`,
         time: new Date(),
+        author: user._id,
       };
 
       // Insert event into chat
@@ -244,6 +245,7 @@ export default {
           "h:mm aa, EEEE d MMMM yyyy"
         )} is cancelled.`,
         time: new Date(),
+        author: user._id,
       };
 
       // Insert event into chat
