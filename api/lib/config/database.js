@@ -9,7 +9,7 @@ export async function connect(uri) {
     useCreateIndex: true,
     useUnifiedTopology: true,
   });
-  if (process.env.NODE_ENV !== "test") console.log("Database is connected");
+  if (process.env.NODE_ENV !== "test") console.log("💾  Database is connected");
   return mongoose.connection.db;
 }
 
