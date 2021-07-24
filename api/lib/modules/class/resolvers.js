@@ -5,7 +5,6 @@ import User from "../user/model";
 import Chat from "../chat/model";
 
 import axios from "axios";
-import Chat from "../chat/model";
 
 import {
   assertGroupAuthorization,
