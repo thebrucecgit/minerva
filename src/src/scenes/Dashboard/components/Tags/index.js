@@ -4,9 +4,7 @@ import tagColors from "./tags.json";
 
 import styles from "./styles.module.scss";
 
-const defaults = Object.keys(tagColors);
-
-const Tags = ({ tags = defaults }) => {
+const Tags = ({ tags = [] }) => {
   return (
     <div className={styles.Tags}>
       {tags.map((tag, i) => (
