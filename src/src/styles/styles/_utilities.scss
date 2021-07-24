@@ -108,6 +108,10 @@ form {
     background: #000;
     color: #fff;
     padding: 1rem 1.5rem;
+    &.h {
+      display: flex;
+      justify-content: space-between;
+    }
     h3 {
       margin: 0;
       font-size: 1.5rem;

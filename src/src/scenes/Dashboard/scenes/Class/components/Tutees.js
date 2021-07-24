@@ -2,6 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import useUserChange from "../../../hooks/useUserChange";
 import Autocomplete from "../../../components/Autocomplete";
+import DMButton from "../../../components/DMButton";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
@@ -23,7 +24,7 @@ const Tutees = ({ update, setUpdate, classInfo, disabled, Edit, isTutor }) => {
       {tutees.length ? (
         tutees.map((tutee) => (
           <div className={classNames("card y", styles.section)} key={tutee._id}>
-            <div className="body">
+            <div className="body h">
               <h3>
                 {tutee.name}
                 {!disabled && (
@@ -36,6 +37,7 @@ const Tutees = ({ update, setUpdate, classInfo, disabled, Edit, isTutor }) => {
                   </button>
                 )}
               </h3>
+              <DMButton id={tutee._id} />
             </div>
           </div>
         ))
