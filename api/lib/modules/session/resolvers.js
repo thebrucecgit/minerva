@@ -207,7 +207,7 @@ export default {
       await session.remove();
     },
     async cancelSession(_, { id, reason }, { user }) {
-      const session = await Session.findById(id).populate("class");
+      let session = await Session.findById(id).populate("class");
       if (!session) throw new ApolloError("Session not found", 404);
 
       assertGroupAuthorization(user, session.users);
@@ -216,22 +216,33 @@ export default {
         !session.class.preferences.studentAgreeSessions &&
         !session.tutors.includes(user._id)
       )
-        throw new ApolloError("Not authorized to delete session", 401);
+        throw new ApolloError("Not authorized to cancel session", 401);
 
-      await Session.findByIdAndUpdate(id, {
-        cancellation: {
-          user: user._id,
-          cancelled: true,
-          reason: reason,
-          date: new Date(),
+      if (session.cancellation.cancelled)
+        throw new ApolloError("Session is already cancelled");
+
+      session = await Session.findByIdAndUpdate(
+        id,
+        {
+          cancellation: {
+            user: user._id,
+            cancelled: true,
+            reason: reason,
+            date: new Date(),
+          },
         },
-      });
+        { new: true, populate: "class" }
+      );
 
       const event = {
         type: "CANCEL_SESSION",
         className: session.class.name,
         sessionId: session._id,
         sessionTime: session.startTime,
+        text: `Session on ${format(
+          session.startTime,
+          "h:mm aa, EEEE d MMMM yyyy"
+        )} is cancelled.`,
         time: new Date(),
       };
 
@@ -240,10 +251,9 @@ export default {
         await Chat.findByIdAndUpdate(session.class.chat, {
           $push: { messages: event },
         });
+        // Notify all users except initiator
+        await websocket.broadcast(event, session.users, user._id);
       }
-
-      // Notify all users except initiator
-      await websocket.broadcast(event, session.users, user._id);
 
       // Email all users
       const users = await User.find(
@@ -261,7 +271,7 @@ export default {
 
       await sgMail.send({
         dynamicTemplateData: {
-          user: user._id,
+          user: user.name,
           className: session.class.name,
           sessionTime,
           sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,

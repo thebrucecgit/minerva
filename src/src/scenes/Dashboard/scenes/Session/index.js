@@ -226,6 +226,34 @@ const Session = ({ currentUser }) => {
     }
   };
 
+  const cancelSession = async (e) => {
+    e.preventDefault();
+    try {
+      toastId.cancellation = toast("Cancelling session...", {
+        autoClose: false,
+      });
+      const { data } = await cancelSessionReq({
+        variables: { id, reason: cancellationReason },
+      });
+      setSessionInfo((info) => ({
+        ...info,
+        ...data.cancelSession,
+      }));
+      cancellationBinds.onClose();
+      toast.update(toastId.cancellation, {
+        render: "Session successfully cancelled",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 2000,
+      });
+    } catch (e) {
+      toast.update(toastId.cancellation, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
+    }
+  };
+
   const requestResponse = async (reject) => {
     try {
       toastId.requestResponse = toast(
@@ -277,6 +305,12 @@ const Session = ({ currentUser }) => {
     modalHooks
   );
   const [openDeletion, deletionBinds] = useModal(false);
+  const [openCancellation, cancellationBinds] = useModal(false);
+  const [cancellationReason, setCancellationReason] = useState("");
+
+  const onReasonChange = (e) => {
+    setCancellationReason(e.target.value);
+  };
 
   const onTimeChange = (startTime) => {
     setUpdate((st) => ({
@@ -360,12 +394,15 @@ const Session = ({ currentUser }) => {
         )}
         {sessionInfo.status === "CANCEL" && (
           <div className="alert danger">
-            This session has been cancelled by{" "}
-            {
-              users.find((user) => user._id === sessionInfo.cancellation.user)
-                .user
-            }{" "}
-            because {sessionInfo.cancellation.reason}.
+            <p>
+              This session has been cancelled by{" "}
+              {
+                users.find((user) => user._id === sessionInfo.cancellation.user)
+                  .name
+              }
+              .
+            </p>
+            <p>{sessionInfo.cancellation.reason}</p>
           </div>
         )}
         {sessionInfo.status === "UNCONFIRM" && (
@@ -436,6 +473,11 @@ const Session = ({ currentUser }) => {
                   <div onClick={openSettings}>
                     <FontAwesomeIcon icon={faUserCog} /> Settings
                   </div>
+                  {sessionInfo.status !== "CANCEL" && (
+                    <div onClick={openCancellation}>
+                      <FontAwesomeIcon icon={faTimes} /> Cancel Session
+                    </div>
+                  )}
                   <div onClick={openDeletion}>
                     <FontAwesomeIcon icon={faTrashAlt} /> Delete Session
                   </div>
@@ -510,6 +552,25 @@ const Session = ({ currentUser }) => {
           tutees={sessionInfo.tutees}
           saveInfo={saveInfo}
         />
+      </Modal>
+
+      <Modal {...cancellationBinds}>
+        <div className={styles.padding}>
+          <h2>Cancel Session</h2>
+          <form onSubmit={cancelSession}>
+            <p>
+              Are you certain that you want to cancel this session? Please give
+              a reason:
+            </p>
+            <textarea
+              name="reason"
+              required
+              onChange={onReasonChange}
+              placeholder="eg. Jimmy is feeling unwell"
+            />
+            <button className="btn danger">Cancel Session</button>
+          </form>
+        </div>
       </Modal>
 
       <Modal {...deletionBinds}>
