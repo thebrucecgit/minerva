@@ -218,7 +218,7 @@ function PersonalInfo({ currentUser }) {
       </div>
 
       <div>
-        <label htmlFor="academics">Academic subjects: </label>
+        <label htmlFor="academicsLearning">Academic subjects to learn: </label>
         {update ? (
           <TagsSelect
             settings={{
@@ -226,29 +226,63 @@ function PersonalInfo({ currentUser }) {
               placeholder: "eg. English",
               whitelist: selections.academic,
             }}
-            onChange={(e) => onTagsChange(e, "academics")}
-            defaultValue={updates.academics}
-            name="academic"
+            onChange={(e) => onTagsChange(e, "academicsLearning")}
+            defaultValue={updates.academicsLearning}
+            name="academicsLearning"
           />
         ) : (
-          <Tags tags={user.academics} />
+          <Tags tags={user.academicsLearning} />
         )}
       </div>
 
       <div>
-        <label htmlFor="extras">Extra-curriculars: </label>
+        <label htmlFor="extrasLearning">Extra-curriculars to learn: </label>
         {update ? (
           <TagsSelect
             settings={{
               placeholder: "eg. Coding",
               whitelist: selections.extra,
             }}
-            onChange={(e) => onTagsChange(e, "extras")}
-            defaultValue={updates.extras}
-            name="extras"
+            onChange={(e) => onTagsChange(e, "extrasLearning")}
+            defaultValue={updates.extrasLearning}
+            name="extrasLearning"
           />
         ) : (
-          <Tags tags={user.extras} />
+          <Tags tags={user.extrasLearning} />
+        )}
+      </div>
+
+      <div>
+        <label htmlFor="academicsTutoring">Academic subjects to tutor: </label>
+        {update ? (
+          <TagsSelect
+            settings={{
+              placeholder: "eg. English",
+              whitelist: selections.academic,
+            }}
+            onChange={(e) => onTagsChange(e, "academicsTutoring")}
+            defaultValue={updates.academicsTutoring}
+            name="academicsTutoring"
+          />
+        ) : (
+          <Tags tags={user.academicsTutoring} />
+        )}
+      </div>
+
+      <div>
+        <label htmlFor="extrasLearning">Extra-curriculars to tutor: </label>
+        {update ? (
+          <TagsSelect
+            settings={{
+              placeholder: "eg. Coding",
+              whitelist: selections.extra,
+            }}
+            onChange={(e) => onTagsChange(e, "extrasTutoring")}
+            defaultValue={updates.extrasTutoring}
+            name="extrasTutoring"
+          />
+        ) : (
+          <Tags tags={user.extrasTutoring} />
         )}
       </div>
 

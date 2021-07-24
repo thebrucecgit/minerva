@@ -1,15 +1,19 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComments } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/client";
 import { loader } from "graphql.macro";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
-const CREATE_CHAT = loader("../graphql/CreateChat.gql");
+const CREATE_CHAT = loader("../../graphql/CreateChat.gql");
 
-function useDM() {
+function DMButton({ id, expanded = false }) {
   const [createChatReq] = useMutation(CREATE_CHAT);
   const history = useHistory();
 
-  async function onClick(id) {
+  const onClick = async (e) => {
+    e.stopPropagation();
+    e.preventDefault();
     let toastId;
     try {
       toastId = toast("Joining chat...", { autoClose: false });
@@ -23,9 +27,13 @@ function useDM() {
         autoClose: 5000,
       });
     }
-  }
+  };
 
-  return onClick;
+  return (
+    <button className="btn small" onClick={onClick}>
+      <FontAwesomeIcon icon={faComments} /> {expanded && "Message"}
+    </button>
+  );
 }
 
-export default useDM;
+export default DMButton;

@@ -2,7 +2,6 @@ import { Schema, model } from "mongoose";
 import { nanoid } from "nanoid";
 
 const userSchema = new Schema({
-  // "userType" is discriminator key
   _id: {
     type: String,
     default: () => nanoid(11),
@@ -26,12 +25,7 @@ const userSchema = new Schema({
   passwordResetCode: Number,
   registrationStatus: {
     type: String,
-    enum: [
-      "GOOGLE_SIGNED_IN",
-      "EMAIL_NOT_CONFIRMED",
-      "PENDING_REVIEW",
-      "COMPLETE",
-    ],
+    enum: ["GOOGLE_SIGNED_IN", "EMAIL_NOT_CONFIRMED", "COMPLETE"],
   },
   emailConfirmId: String,
   // Profile picture
@@ -48,6 +42,29 @@ const userSchema = new Schema({
     cloudinaryPublicId: {
       type: String,
       trim: true,
+    },
+  },
+  tutor: {
+    status: {
+      type: String,
+      enum: ["NONE", "PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"],
+      default: "NONE",
+    },
+    message: {
+      type: String,
+    },
+  },
+  admin: {
+    status: {
+      type: Boolean,
+      default: false,
+    },
+    superAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    region: {
+      type: String,
     },
   },
   personalChats: [
@@ -79,22 +96,28 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now(),
   },
-  userType: {
-    type: String,
-    required: true,
-  },
   yearGroup: {
     type: Number,
   },
   school: {
     type: String,
   },
-  academics: [
+  academicsLearning: [
     {
       type: String,
     },
   ],
-  extras: [
+  extrasLearning: [
+    {
+      type: String,
+    },
+  ],
+  academicsTutoring: [
+    {
+      type: String,
+    },
+  ],
+  extrasTutoring: [
     {
       type: String,
     },

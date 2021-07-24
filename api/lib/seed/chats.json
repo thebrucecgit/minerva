@@ -1,0 +1,41 @@
+[{
+  "_id": "-UgJ2anivkw",
+  "bindToClass": true,
+  "users": [
+    "7fCzBZf3_Q",
+    "XYZwKtjz5Y"
+  ],
+  "class": "QUc0jHFaM",
+  "messages": [
+    {
+      "_id": "x5-qU2Fx-6c",
+      "time": {
+        "$date": "2021-07-23T05:13:40.567Z"
+      },
+      "type": "CREATION",
+      "text": "Chat Created"
+    },
+    {
+      "type": "MESSAGE",
+      "text": "S",
+      "time": {
+        "$date": "2021-07-23T05:22:09.841Z"
+      },
+      "author": "7fCzBZf3_Q",
+      "_id": "0aZFTApK-6e"
+    },
+    {
+      "type": "NEW_SESSION_REQUEST",
+      "sessionId": "GhuZnzqdNGa",
+      "sessionTime": {
+        "$date": "2021-07-26T02:00:00Z"
+      },
+      "text": "New session requested  on 2:00 PM, Monday 26 July 2021 for Saturday Afternoon",
+      "time": {
+        "$date": "2021-07-24T00:47:03.058Z"
+      },
+      "_id": "SQwWePDm-wt"
+    }
+  ],
+  "__v": 0
+}]

@@ -4,8 +4,7 @@ import userSchema from "../yupSchema";
 import index, { docToRecord } from "../../../config/search";
 
 export default async function updateUser(_, updates, { user }) {
-  if (updates.id !== user._id && user.userType !== "ADMIN")
-    throw new ApolloError("Unauthorized", 401);
+  if (updates.id !== user._id) throw new ApolloError("Unauthorized", 401);
 
   // Verify information
   userSchema.validateSync(updates);
@@ -15,8 +14,8 @@ export default async function updateUser(_, updates, { user }) {
   });
 
   // Update algolia index
-  if (updated.userType === "TUTOR") {
-    await index.saveObject(docToRecord(updated.toObject()), {
+  if (updated.tutor.status === "COMPLETE") {
+    await index.partialUpdateObject(docToRecord(updated.toObject()), {
       createIfNotExists: true,
     });
   }

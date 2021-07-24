@@ -20,7 +20,9 @@ let newClassToastId = null;
 const Classes = ({ currentUser }) => {
   const history = useHistory();
 
-  const { data, error, loading } = useQuery(GET_CLASSES);
+  const { data, error, loading } = useQuery(GET_CLASSES, {
+    variables: { userID: currentUser.user._id },
+  });
   const [createClassReq] = useMutation(CREATE_CLASS);
 
   const [inputs, setInputs] = useState({});
@@ -59,11 +61,18 @@ const Classes = ({ currentUser }) => {
   if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
-  const { classes } = data.getUser;
+  const classes = data.getClassesOfUser;
 
   return (
     <div className={styles.Classes}>
       <h1>Classes</h1>
+
+      {currentUser.user.tutor.status === "COMPLETE" && (
+        <button className="btn" onClick={openNewClass}>
+          New Class
+        </button>
+      )}
+
       <div className={styles.classes_grid}>
         {classes.length ? (
           classes.map((classInfo, ind) => (
@@ -73,12 +82,6 @@ const Classes = ({ currentUser }) => {
           <p>You are not part of any class.</p>
         )}
       </div>
-
-      {currentUser.user.userType === "TUTOR" && (
-        <button className="btn" onClick={openNewClass}>
-          New Class
-        </button>
-      )}
 
       <Modal {...newClassBinds}>
         <div className={general.padding}>

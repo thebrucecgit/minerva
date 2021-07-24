@@ -19,26 +19,28 @@ beforeAll(async () => {
 
   tutor = await User.create({
     _id: "1",
-    userType: "TUTOR",
     name: "Ben Smith",
     email: "ben@example.com",
     pfp: {
       type: "URL",
       url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
     },
+    tutor: {
+      status: "COMPLETE",
+    },
     yearGroup: 12,
     school: "Example4 High School",
-    academics: ["Geography", "Mathematics"],
-    extras: ["Piano"],
+    academicsLearning: [],
+    extrasLearning: [],
+    academicsTutoring: ["Geography", "Mathematics"],
+    extrasTutoring: ["Piano"],
     biography: "You never know.",
     classes: ["1"],
     sessions: ["1"],
-    // grades: "---",
   });
 
   tutee = await User.create({
     _id: "2",
-    userType: "TUTEE",
     name: "John Smith",
     email: "john@example.com",
     pfp: {
@@ -47,12 +49,13 @@ beforeAll(async () => {
     },
     yearGroup: 13,
     school: "Example High School",
-    academics: ["English", "Mathematics"],
-    extras: ["Coding"],
+    academicsLearning: ["English", "Mathematics"],
+    extrasLearning: ["Coding"],
+    academicsTutoring: [],
+    extrasTutoring: [],
     biography: "You always know.",
     classes: ["1"],
     sessions: ["1"],
-    // grades: "---",
   });
 
   classDoc = await Class.create({
@@ -171,13 +174,23 @@ describe("Creation and deletion", () => {
       length: 60,
     });
 
-    tutee = await User.findById(tutee._id);
-    tutor = await User.findById(tutor._id);
-    expect(tutee.sessions).toContain(session._id);
-    expect(tutor.sessions).toContain(session._id);
     chat = await Chat.findById(classDoc.chat);
-    expect(chat.messages[0].type).toBe("NEW_SESSION");
-    expect(tutor.inbox[0].type).toBe("NEW_SESSION");
+    expect(chat.messages[chat.messages.length - 1].type).toBe("NEW_SESSION");
+    tutor = await User.findById(tutor._id);
+    expect(tutor.inbox[tutor.inbox.length - 1].type).toBe("NEW_SESSION");
+  });
+
+  test("Retrieving sessions", async () => {
+    const res = await resolvers.Query.getSessionsOfUser(
+      null,
+      { userID: tutee._id },
+      { user: tutee }
+    );
+    expect(res).toContainEqual(
+      expect.objectContaining({
+        _id: session._id,
+      })
+    );
   });
 
   test("Delete session", async () => {

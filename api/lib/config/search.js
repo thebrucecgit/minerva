@@ -13,8 +13,8 @@ const indexSchema = yup.object().shape({
   yearGroup: yup.number().integer(),
   school: yup.string(),
   biography: yup.string(),
-  academics: yup.array().of(yup.string()),
-  extras: yup.array().of(yup.string()),
+  academicsTutoring: yup.array().of(yup.string()),
+  extrasTutoring: yup.array().of(yup.string()),
   pfp: yup.object().shape({
     type: yup.string(),
     url: yup.string(),
@@ -40,8 +40,7 @@ export async function addDocToRecord(doc) {
 
 export async function indexAll() {
   try {
-    const docs = await User.find({ userType: "TUTOR" }, FIELDS).lean();
-
+    const docs = await User.find({ "tutor.status": "COMPLETE" }, FIELDS).lean();
     const tutors = docs.map(docToRecord);
     await index.saveObjects(tutors);
     console.log("success in reindexing tutors");

@@ -8,14 +8,7 @@ import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "../../../class.module.scss";
 
-const Tutees = ({
-  update,
-  setUpdate,
-  classInfo,
-  disabled,
-  Edit,
-  currentUser,
-}) => {
+const Tutees = ({ update, setUpdate, classInfo, disabled, Edit, isTutor }) => {
   const [tuteeBinds, deleteTutee] = useUserChange({
     setUpdate,
     userType: "tutees",
@@ -51,7 +44,7 @@ const Tutees = ({
           <em>There are no registered tutees</em>
         </p>
       )}
-      {currentUser.user.userType === "TUTOR" && (
+      {isTutor && (
         <>
           <p className={styles.padding}>Awaiting user confirmation: </p>
           {/* todo */}

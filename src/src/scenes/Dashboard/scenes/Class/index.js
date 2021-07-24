@@ -191,6 +191,8 @@ const Class = ({ currentUser }) => {
   if (error) return error.message;
   if (loading || !classInfo.name) return <Loader />;
 
+  const isTutor = classInfo.tutors.some((c) => c._id === currentUser.user._id);
+
   return (
     <div className={styles.Class} onClick={rootClick}>
       <div className={styles.content}>
@@ -229,7 +231,7 @@ const Class = ({ currentUser }) => {
             {classInfo.preferences.enableChat && classInfo.chat && (
               <Link to={`/dashboard/chats/${classInfo.chat.channel}`}>
                 <button className="btn">
-                  Chat <FontAwesomeIcon icon={faCommentAlt} />
+                  Group Chat <FontAwesomeIcon icon={faCommentAlt} />
                 </button>
               </Link>
             )}
@@ -237,13 +239,13 @@ const Class = ({ currentUser }) => {
             <Edit type="tags" />
             <Menu {...menuBind}>
               <>
-                {currentUser.user.userType === "TUTOR" && (
+                {isTutor && (
                   <div onClick={toggleEdit}>
                     <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
                     {editEnabled ? "Lock Edits" : "Edit Page"}
                   </div>
                 )}
-                {currentUser.user.userType === "TUTOR" && (
+                {isTutor && (
                   <div onClick={openPreferences}>
                     <FontAwesomeIcon icon={faUserCog} /> Preferences
                   </div>
@@ -251,7 +253,7 @@ const Class = ({ currentUser }) => {
                 <div onClick={openLeave}>
                   <FontAwesomeIcon icon={faDoorOpen} /> Leave Class
                 </div>
-                {currentUser.user.userType === "TUTOR" && (
+                {isTutor && (
                   <div onClick={openDeletion} className="danger">
                     <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
                   </div>
@@ -386,12 +388,10 @@ const Class = ({ currentUser }) => {
           <p className={styles.padding}>No session has been created yet</p>
         )}
 
-        {(currentUser.user.userType === "TUTOR" ||
-          (currentUser.user.userType === "TUTEE" &&
-            classInfo.preferences.studentAgreeSessions)) && (
+        {(isTutor || classInfo.preferences.studentInstantiation) && (
           <InstantiateSession
             {...sessionBind}
-            studentInstantiation={classInfo.preferences.studentAgreeSessions}
+            studentAgreeSessions={classInfo.preferences.studentAgreeSessions}
           />
         )}
 
@@ -399,7 +399,7 @@ const Class = ({ currentUser }) => {
         <button className="btn" onClick={() => openTutees(false)}>
           View Tutees
         </button>
-        {currentUser.user.userType === "TUTOR" && (
+        {isTutor && (
           <Link to={`/dashboard/classes/${id}/attendance`}>
             <button className={classNames("btn", styles.attendanceBtn)}>
               View Attendance
@@ -419,7 +419,7 @@ const Class = ({ currentUser }) => {
           classInfo={classInfo.tutees}
           disabled={disabled.tutees}
           Edit={Edit}
-          currentUser={currentUser}
+          isTutor={isTutor}
         />
       </Modal>
 

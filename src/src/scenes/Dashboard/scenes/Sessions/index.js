@@ -24,13 +24,13 @@ const Sessions = ({ currentUser }) => {
   const [, setCounter] = useState(0);
 
   const { data, error, loading, refetch } = useQuery(GET_SESSIONS, {
-    variables: { old: isOld },
+    variables: { userID: currentUser.user._id, old: isOld },
   });
 
   useEffect(() => {
     if (data && !isOld) {
       const timeoutIds = [];
-      data.getUser.sessions.forEach((session) => {
+      data.getSessionsOfUser.forEach((session) => {
         // When a session finishes, refetch
         const timeTillEnd = new Date(session.endTime) - new Date();
         if (timeTillEnd < 2 ** 31) {
@@ -57,7 +57,7 @@ const Sessions = ({ currentUser }) => {
   if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
-  const { sessions } = data.getUser;
+  const sessions = data.getSessionsOfUser;
 
   return (
     <div className={styles.Sessions}>
@@ -78,55 +78,70 @@ const Sessions = ({ currentUser }) => {
 
       <div className={styles.sessions_grid}>
         {sessions.length ? (
-          sessions.filter(session => session.status !== "REJECT").map((session) => (
-            <div key={session._id}>
-              <div
-                className={classNames("card", {
-                  current:
-                    !isOld &&
-                    isAfter(new Date(), session.startTime) &&
-                    isAfter(session.endTime, new Date()),
-                })}
-              >
-                <div className="header">
-                  <Link
-                    to={`/dashboard/sessions/${session._id}`}
-                    title={
-                      session.status === "UNCONFIRM"
-                        ? "This session is not confirmed yet."
-                        : ""
-                    }
-                  >
-                    <h2>
-                      {format(session.startTime, "EEEE, d MMMM yyyy")}{" "}
-                      {session.status === "UNCONFIRM" && (
-                        <FontAwesomeIcon
-                          icon={faExclamationTriangle}
-                          className={styles.unconfirmed}
-                        />
-                      )}
-                      {isOld && currentUser.user.userType === "TUTEE" && (
-                        <FontAwesomeIcon
-                          className={classNames(styles.attended, {
-                            [styles.true]: session.attendance.length,
-                          })}
-                          icon={
-                            session.attendance.length
-                              ? faCheckCircle
-                              : faTimesCircle
-                          }
-                        />
-                      )}
-                    </h2>
-                  </Link>
-                  <div className={styles.description}>Run by {session.tutors.map(t => t.name).join(", ")} as part of <Link to={`/dashboard/classes/${session.class._id}`}><strong>{session.class.name}</strong></Link></div>
-                </div>
-                <div className="body">
-                  <p>{session.class.preferences.online ? "Online" : session.location.address}</p>
+          sessions
+            .filter((session) => session.status !== "REJECT")
+            .map((session) => (
+              <div key={session._id}>
+                <div
+                  className={classNames("card", {
+                    current:
+                      !isOld &&
+                      isAfter(new Date(), session.startTime) &&
+                      isAfter(session.endTime, new Date()),
+                  })}
+                >
+                  <div className="header">
+                    <Link
+                      to={`/dashboard/sessions/${session._id}`}
+                      title={
+                        session.status === "UNCONFIRM"
+                          ? "This session is not confirmed yet."
+                          : ""
+                      }
+                    >
+                      <h2>
+                        {format(session.startTime, "EEEE, d MMMM yyyy")}{" "}
+                        {session.status === "UNCONFIRM" && (
+                          <FontAwesomeIcon
+                            icon={faExclamationTriangle}
+                            className={styles.unconfirmed}
+                          />
+                        )}
+                        {isOld &&
+                          session.tutees.some(
+                            (s) => s._id === currentUser.user._id
+                          ) && (
+                            <FontAwesomeIcon
+                              className={classNames(styles.attended, {
+                                [styles.true]: session.attendance.length,
+                              })}
+                              icon={
+                                session.attendance.length
+                                  ? faCheckCircle
+                                  : faTimesCircle
+                              }
+                            />
+                          )}
+                      </h2>
+                    </Link>
+                    <div className={styles.description}>
+                      Run by {session.tutors.map((t) => t.name).join(", ")} as
+                      part of{" "}
+                      <Link to={`/dashboard/classes/${session.class._id}`}>
+                        <strong>{session.class.name}</strong>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="body">
+                    <p>
+                      {session.class.preferences.online
+                        ? "Online"
+                        : session.location.address}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))
         ) : (
           <p>You have no upcoming sessions.</p>
         )}

@@ -85,7 +85,7 @@ const useWebSocket = ({ jwt }) => {
       return () => {
         ws.close(1000, "Component unload");
         clearTimeout(connectTimer);
-        if (!errorToast) toast.dismiss(errorToast);
+        if (errorToast) toast.dismiss(errorToast);
       };
     } catch (e) {
       console.error(e);

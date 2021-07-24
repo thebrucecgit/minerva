@@ -12,7 +12,7 @@ const InstantiateSession = ({
   setLength,
   newSession,
   instantiationError,
-  studentInstantiation,
+  studentAgreeSessions,
 }) => {
   return (
     <>
@@ -37,7 +37,7 @@ const InstantiateSession = ({
         className={classNames("btn", styles.session)}
         onClick={newSession}
       >
-        {studentInstantiation ? "Request Session" : "New Session"}
+        {studentAgreeSessions ? "Request Session" : "New Session"}
       </button>
     </>
   );

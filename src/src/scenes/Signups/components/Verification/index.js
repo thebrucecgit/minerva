@@ -43,20 +43,6 @@ const Verification = ({
             ></textarea>
           </div>
 
-          <div className={styles.field}>
-            <label htmlFor="grades">
-              Please link to a copy of your latest school grades:{" "}
-            </label>
-            {errors.grades && <p className={styles.invalid}>{errors.grades}</p>}
-            <input
-              type="text"
-              name="grades"
-              id="grades"
-              value={info.grades ?? ""}
-              onChange={onChange}
-              noValidate
-            />
-          </div>
           <button
             className="btn"
             onClick={onNext}

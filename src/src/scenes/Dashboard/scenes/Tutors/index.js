@@ -10,18 +10,20 @@ import styles from "./styles.module.scss";
 const GET_TUTORS = loader("./graphql/GetTutors.gql");
 
 const Tutors = ({ currentUser }) => {
-  const { data, error, loading } = useQuery(GET_TUTORS);
+  const { data, error, loading } = useQuery(GET_TUTORS, {
+    variables: { userID: currentUser.user._id },
+  });
 
   if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
-  const tutors = data.getTutors;
+  const tutors = data.getTutorsOfUser;
 
   return (
     <div className="container">
       <h1>Tutors</h1>
       <div className={styles.tutors}>
-        {tutors.length ? (
+        {tutors.length > 0 ? (
           tutors.map((tutor) => (
             <Tutor tutor={tutor} key={tutor._id} user={currentUser.user} />
           ))

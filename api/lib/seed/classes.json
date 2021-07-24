@@ -1,0 +1,30 @@
+[{
+  "_id": "QUc0jHFaM",
+  "preferences": {
+    "publicClass": false,
+    "studentInstantiation": true,
+    "studentAgreeSessions": true,
+    "online": false,
+    "enableChat": true
+  },
+  "tags": [
+    "Mathematics",
+    "English"
+  ],
+  "date": "Saturdays, 3pm",
+  "image": "https://images.unsplash.com/photo-1543165796-5426273eaab3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80",
+  "sessions": [
+    "MyfAbcDe_o2",
+    "GhuZnzqdNGa"
+  ],
+  "tutees": [
+    "XYZwKtjz5Y"
+  ],
+  "tutors": [
+    "7fCzBZf3_Q"
+  ],
+  "pricePerTutee": 5,
+  "name": "Saturday Afternoon",
+  "__v": 0,
+  "chat": "-UgJ2anivkw"
+}]

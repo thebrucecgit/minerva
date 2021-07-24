@@ -84,6 +84,12 @@ export default gql`
 
   extend type Query {
     getSession(id: ID!): Session!
+    getSessionsOfUser(
+      userID: ID!
+      limit: Int
+      old: Boolean
+      time: Date
+    ): [Session!]!
   }
 
   extend type Mutation {

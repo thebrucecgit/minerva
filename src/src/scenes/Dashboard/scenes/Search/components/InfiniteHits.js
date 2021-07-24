@@ -3,12 +3,12 @@ import { connectInfiniteHits } from "react-instantsearch-dom";
 import Hit from "./Hit";
 
 const InfiniteHits = connectInfiniteHits(
-  ({ hits, hasPrevious, refinePrevious, hasMore, refineNext }) => (
+  ({ hits, hasPrevious, refinePrevious, hasMore, refineNext, currentUser }) => (
     <div>
       {hasPrevious && <button onClick={refinePrevious}>Show previous</button>}
       <ul className="ais-InfiniteHits-list">
         {hits.map((hit) => (
-          <Hit key={hit.objectID} hit={hit} />
+          <Hit key={hit.objectID} hit={hit} currentUser={currentUser} />
         ))}
       </ul>
       <button

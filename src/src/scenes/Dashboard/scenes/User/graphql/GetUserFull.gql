@@ -1,18 +1,22 @@
-query($id: ID!) {
+query ($id: ID!) {
   getUser(id: $id) {
     _id
     name
-    userType
     email
     pfp {
       url
       type
       cloudinaryPublicId
     }
+    tutor {
+      status
+    }
     yearGroup
     biography
-    academics
-    extras
+    academicsLearning
+    extrasLearning
+    academicsTutoring
+    extrasTutoring
     classes {
       _id
       name

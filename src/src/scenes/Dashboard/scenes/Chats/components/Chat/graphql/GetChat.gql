@@ -4,7 +4,6 @@ query GetChat($channel: ID!) {
     users {
       _id
       name
-      userType
     }
     class {
       name

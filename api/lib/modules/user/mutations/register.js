@@ -30,6 +30,11 @@ export default async function register(_, args) {
   const existingUser = await User.findOne({ email: args.email });
   const edits = { ...args };
   delete edits.password;
+  delete edits.applyTutor;
+
+  if (args.applyTutor) {
+    edits["tutor.status"] = "PENDING_REVIEW";
+  }
 
   // Verify information
   userSchema.validateSync(edits);
@@ -44,8 +49,7 @@ export default async function register(_, args) {
       {
         ...edits,
         confirmed: true,
-        registrationStatus:
-          args.userType === "TUTOR" ? "PENDING_REVIEW" : "COMPLETE",
+        registrationStatus: "COMPLETE",
       },
       { new: true }
     );

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import classNames from "classnames";
 import useUserChange from "../../hooks/useUserChange";
 import Autocomplete from "../../components/Autocomplete";
-import useDM from "../../hooks/useDM";
+import DMButton from "../DMButton";
 
 import {
   SortableContainer,
@@ -13,18 +13,14 @@ import {
 } from "react-sortable-hoc";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faTrashAlt,
-  faComments,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import styles from "../../class.module.scss";
 
 const DragHandle = SortableHandle(() => (
   <FontAwesomeIcon icon={faBars} size="lg" className={styles.draghandle} />
 ));
 const SortableItem = SortableElement(
-  ({ tutor, editEnabled, deleteTutor, callDM, user }) => (
+  ({ tutor, editEnabled, deleteTutor, user }) => (
     <Link
       to={`/dashboard/tutors/${tutor._id}`}
       className={classNames("card", "y", styles.section)}
@@ -35,8 +31,8 @@ const SortableItem = SortableElement(
       {tutor.pfp && !editEnabled && (
         <ProfilePicture pfp={tutor.pfp} alt={tutor.name} width="400" />
       )}
-      <h3 className="body">
-        {tutor.name}
+      <div className={classNames("body", styles.cardBody)}>
+        <h3>{tutor.name}</h3>
         <div className={styles.userButtons}>
           {editEnabled ? (
             <>
@@ -50,27 +46,16 @@ const SortableItem = SortableElement(
               <DragHandle />
             </>
           ) : (
-            tutor._id !== user._id && (
-              <button
-                className="btn small"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  e.preventDefault();
-                  callDM(tutor._id);
-                }}
-              >
-                <FontAwesomeIcon icon={faComments} />
-              </button>
-            )
+            tutor._id !== user._id && <DMButton id={tutor._id} />
           )}
         </div>
-      </h3>
+      </div>
     </Link>
   )
 );
 
 const SortableList = SortableContainer(
-  ({ tutors, editEnabled, deleteTutor, callDM, user }) => (
+  ({ tutors, editEnabled, deleteTutor, user }) => (
     <div className={styles.column}>
       {tutors.map((tutor, index) => (
         <SortableItem
@@ -79,7 +64,6 @@ const SortableList = SortableContainer(
           tutor={tutor}
           editEnabled={editEnabled}
           deleteTutor={deleteTutor}
-          callDM={callDM}
           user={user}
         />
       ))}
@@ -111,8 +95,6 @@ const Tutors = ({
     userType: "tutors",
   });
 
-  const callDM = useDM();
-
   return (
     <>
       <div className={styles.flex}>
@@ -125,7 +107,6 @@ const Tutors = ({
         useDragHandle
         deleteTutor={deleteTutor}
         editEnabled={!tutorsDisabled}
-        callDM={callDM}
         user={user}
       />
       {!tutorsDisabled && (

@@ -16,7 +16,6 @@ import styles from "./styles.module.scss";
 import "./tagify.scss";
 import "@yaireo/tagify/dist/tagify.css";
 
-import { ReactComponent as TutorImg } from "./media/undraw_teaching.svg";
 import { ReactComponent as TuteeImg } from "./media/undraw_mathematics.svg";
 
 const {
@@ -30,14 +29,13 @@ const recaptchaRef = createRef();
 function Signups({ authService }) {
   const history = useHistory();
 
-  const userType = history.location.pathname === "/signup" ? "TUTEE" : "TUTOR";
-
   const [info, setInfo] = useState(() => {
     // If there is saved info, use saved
     try {
       const saved = localStorage.getItem("signup");
-      if (saved) return JSON.parse(saved);
-      else return {};
+      const data = saved ? JSON.parse(saved) : {};
+      data.applyTutor = history.location.pathname === "/signup/tutors";
+      return data;
     } catch (e) {
       console.error(e);
       return {};
@@ -105,8 +103,6 @@ function Signups({ authService }) {
           if (!info.yearGroup)
             newErrors.yearGroup = "Please select your year group";
           if (!info.school) newErrors.school = "Please select your school";
-          if (!info.academics || info.academics.length === 0)
-            newErrors.academics = "Please enter at least one subject";
           break;
         }
         case "Verification": {
@@ -186,7 +182,7 @@ function Signups({ authService }) {
         break;
       }
       case "EMAIL_NOT_CONFIRMED": {
-        history.replace("/confirm");
+        history.replace("/signup/confirm");
         break;
       }
       default:
@@ -206,6 +202,8 @@ function Signups({ authService }) {
       }
     }
   };
+
+  const [submissionPending, setSubmissionPending] = useState(false);
 
   useEffect(onGoogleSignedIn, [authService.currentUser, history, onNext]);
 
@@ -231,7 +229,7 @@ function Signups({ authService }) {
   const onSubmit = (e) => {
     const validated = validate("Confirmation");
     if (!validated) return;
-
+    setSubmissionPending(true);
     recaptchaRef.current.execute();
   };
 
@@ -239,7 +237,6 @@ function Signups({ authService }) {
     try {
       const { user } = await authService.register({
         ...info,
-        userType,
         yearGroup: parseInt(info.yearGroup),
         token,
       });
@@ -250,6 +247,7 @@ function Signups({ authService }) {
       else history.replace("/signup/confirm");
     } catch (e) {
       console.error(e);
+      setSubmissionPending(false);
       setErrors((st) => ({
         ...st,
         confirmation: e.message,
@@ -290,7 +288,6 @@ function Signups({ authService }) {
             info={info}
             errors={errors}
             onChange={onChange}
-            userType={userType}
             onTagsChange={onTagsChange}
             onNext={() => onNext("Additional Info")}
           />
@@ -309,6 +306,7 @@ function Signups({ authService }) {
             errors={errors}
             onChange={onChange}
             onSubmit={onSubmit}
+            submissionPending={submissionPending}
           />
         </form>
         <p>
@@ -316,13 +314,9 @@ function Signups({ authService }) {
         </p>
       </div>
       <div className={styles.panel}>
-        <h2>
-          {userType === "TUTOR"
-            ? "We only have what we give. "
-            : "Today is another chance to get better"}
-        </h2>
+        <h2>Today is another chance to get better</h2>
         <p>Sign up now.</p>
-        {userType === "TUTOR" ? <TutorImg /> : <TuteeImg />}
+        <TuteeImg />
       </div>
       <ReCAPTCHA
         ref={recaptchaRef}

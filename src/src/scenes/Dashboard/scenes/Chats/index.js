@@ -14,18 +14,25 @@ import { ReactComponent as ChatPrompt } from "./media/undraw_team_chat.svg";
 
 const GET_CHATS = loader("./graphql/GetChats.gql");
 
+const chatSort = (a, b) => {
+  return (
+    b.messages[b.messages.length - 1].time -
+    a.messages[a.messages.length - 1].time
+  );
+};
+
 const Chats = ({ match: { path }, ws, currentUser }) => {
   const [chats, setChats] = useState([]);
 
   const { data, loading, error } = useQuery(GET_CHATS, {
     variables: {
-      id: currentUser.user._id,
+      userID: currentUser.user._id,
     },
   });
 
   useEffect(() => {
     if (data) {
-      setChats(data.getUser.chats);
+      setChats([...data.getChatsOfUser].sort(chatSort));
     }
   }, [data]);
 
@@ -46,10 +53,13 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
       toast.error("Message failed to send.");
     } finally {
       setChats((chats) => {
-        return chats.map(chat => {
-          if (chat.channel === channel) return { ...chat, messages: [...chat.messages, evt] };
-          return chat;
-        });
+        return chats
+          .map((chat) => {
+            if (chat.channel === channel)
+              return { ...chat, messages: [...chat.messages, evt] };
+            return chat;
+          })
+          .sort(chatSort);
       });
       return evt;
     }
@@ -82,7 +92,10 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
                       (u) =>
                         u._id === chat.messages[chat.messages.length - 1].author
                     ).name
-                  }: ${chat.messages[chat.messages.length - 1].text.slice(0, 100)}`}</p>
+                  }: ${chat.messages[chat.messages.length - 1].text.slice(
+                    0,
+                    100
+                  )}`}</p>
                 )}
             </button>
           </NavLink>

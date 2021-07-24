@@ -97,21 +97,6 @@ const sessionSchema = Schema({
 
 sessionSchema.pre("remove", async function () {
   await Class.updateOne({ _id: this.class }, { $pull: { sessions: this._id } });
-
-  await User.bulkWrite([
-    {
-      updateMany: {
-        filter: { _id: { $in: this.tutors }, userType: "TUTOR" },
-        update: { $pull: { sessions: this._id } },
-      },
-    },
-    {
-      updateMany: {
-        filter: { _id: { $in: this.tutees }, userType: "TUTEE" },
-        update: { $pull: { sessions: this._id } },
-      },
-    },
-  ]);
 });
 
 sessionSchema.virtual("users").get(function () {

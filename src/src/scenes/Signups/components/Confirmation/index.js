@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import StatusSymbol from "../StatusSymbol";
 
 import styles from "../../styles.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const Confirmation = ({
   sectionStatus,
@@ -13,6 +15,7 @@ const Confirmation = ({
   info,
   onChange,
   onSubmit,
+  submissionPending,
 }) => {
   return (
     <section>
@@ -30,7 +33,7 @@ const Confirmation = ({
             {errors.agreement && (
               <p className={styles.invalid}>{errors.agreement}</p>
             )}
-            <div className={styles.checkbox}>
+            <div className="checkbox">
               <input
                 type="checkbox"
                 name="agreement"
@@ -51,7 +54,8 @@ const Confirmation = ({
             <p className={styles.invalid}>{errors.confirmation}</p>
           )}
           <button className="btn" onClick={onSubmit}>
-            Submit
+            Submit{" "}
+            {submissionPending && <FontAwesomeIcon icon={faCircleNotch} spin />}
           </button>
         </div>
       </div>

@@ -59,9 +59,24 @@ const Preferences = ({ onSubmit, onChange, update }) => {
           <label htmlFor="studentAgreeSessions">
             Session requests
             <div className="small">
-              Students will also be allowed to request for a session and
-              students / tutors will be prompted to "accept" or "decline"
-              everytime a new session is requested.
+              Tutors and tutees will need to accept a new session request before
+              the session is confirmed.
+            </div>
+          </label>
+        </div>
+        <div className="field checkbox">
+          <input
+            type="checkbox"
+            name="studentInstantiation"
+            id="studentInstantiation"
+            checked={update.studentInstantiation}
+            onChange={onChange}
+          />
+          <label htmlFor="studentInstantiation">
+            Allow tutee to instantiate sessions
+            <div className="small">
+              Tutees will be allowed to set a time and create or request a new
+              session.
             </div>
           </label>
         </div>

@@ -8,8 +8,7 @@ export default async function confirmUserEmail(_, { emailConfirmId }) {
   const user = await User.findOneAndUpdate(
     { emailConfirmId },
     {
-      registrationStatus:
-        existingUser.userType === "TUTOR" ? "PENDING_REVIEW" : "COMPLETE",
+      registrationStatus: "COMPLETE",
     },
     { new: true }
   );

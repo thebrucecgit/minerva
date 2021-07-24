@@ -35,8 +35,9 @@
   }
 
   .chatList {
+    background-image: url(../../../../media/geometry.png);
     overflow-y: auto;
-    margin: 0 1rem;
+    padding: 0 1rem;
 
     h4 {
       font-size: 1.7rem;

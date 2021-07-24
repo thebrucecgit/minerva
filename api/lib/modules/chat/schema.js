@@ -21,5 +21,9 @@ export default gql`
 
   extend type Query {
     getChat(channel: ID!): Chat!
+    getChatsOfUser(userID: ID!): [Chat!]!
+  }
+  extend type Mutation {
+    createChat(targets: [ID!]!): Chat!
   }
 `;

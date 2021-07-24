@@ -5,8 +5,10 @@ mutation updateUser(
   $yearGroup: Int
   $biography: String
   $school: String
-  $academics: [String!]
-  $extras: [String!]
+  $academicsLearning: [String!]
+  $extrasLearning: [String!]
+  $academicsTutoring: [String!]
+  $extrasTutoring: [String!]
 ) {
   updateUser(
     id: $id
@@ -14,13 +16,15 @@ mutation updateUser(
     pfp: $pfp
     yearGroup: $yearGroup
     biography: $biography
-    academics: $academics
-    extras: $extras
+    academicsLearning: $academicsLearning
+    extrasLearning: $extrasLearning
+    academicsTutoring: $academicsTutoring
+    extrasTutoring: $extrasTutoring
     school: $school
   ) {
+    _id
     name
     email
-    school
     pfp {
       type
       url
@@ -28,7 +32,10 @@ mutation updateUser(
     }
     yearGroup
     biography
-    academics
-    extras
+    academicsLearning
+    extrasLearning
+    academicsTutoring
+    extrasTutoring
+    school
   }
 }

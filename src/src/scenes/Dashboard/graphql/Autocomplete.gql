@@ -1,5 +1,5 @@
-query($value: String!, $userType: UserType!) {
-  getUsers(value: $value, userType: $userType) {
+query ($value: String!) {
+  getUsers(value: $value) {
     _id
     name
     email

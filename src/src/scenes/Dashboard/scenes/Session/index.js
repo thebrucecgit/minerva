@@ -308,6 +308,9 @@ const Session = ({ currentUser }) => {
   const unconfirmedTutees = sessionInfo.tutees.filter(
     (user) => !sessionInfo.userResponses.some((res) => res.user === user._id)
   );
+  const isTutor = sessionInfo.tutors.some(
+    (t) => t._id === currentUser.user._id
+  );
 
   return (
     <div className={styles.Class} onClick={rootClick}>
@@ -423,7 +426,7 @@ const Session = ({ currentUser }) => {
             )}`}
           </p>
           <div className={styles.edit}>
-            {currentUser.user.userType === "TUTOR" && (
+            {isTutor && (
               <Menu {...menuBind}>
                 <>
                   <div onClick={toggleEdit}>
@@ -474,17 +477,7 @@ const Session = ({ currentUser }) => {
         />
         <Edit
           type="notes"
-          editEnabled={
-            (currentUser.user.userType === "TUTOR" &&
-              sessionInfo.tutors.some(
-                (tutor) => tutor._id === currentUser.user._id
-              )) ||
-            (currentUser.user.userType === "TUTEE" &&
-              sessionInfo.tutees.some(
-                (tutee) => tutee._id === currentUser.user._id
-              ) &&
-              sessionInfo.settings.studentEditNotes)
-          }
+          editEnabled={isTutor || sessionInfo.settings.studentEditNotes}
         />
       </div>
 
@@ -498,7 +491,7 @@ const Session = ({ currentUser }) => {
           setUpdate={setUpdate}
           user={currentUser.user}
         />
-        {currentUser.user.userType === "TUTOR" && (
+        {isTutor && (
           <button className="btn" onClick={openAttendances}>
             Attendance
           </button>

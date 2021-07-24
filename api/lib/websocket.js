@@ -54,10 +54,10 @@ export function send(ws, event) {
 
 export async function broadcast(data, endUsers, sender) {
   const event = await eventSchema.validate(data);
-  // Send to users who are in channel and connected
-  const users = [...endUsers];
+  // Send to users who are in channel and connected, excluding sender
+  const users = [...endUsers].filter((u) => u !== sender);
 
-  if (typeof wss?.clients !== 'undefined') {
+  if (typeof wss?.clients !== "undefined") {
     for (const client of wss.clients) {
       if (
         client.user !== sender && // Not original sender
@@ -72,9 +72,6 @@ export async function broadcast(data, endUsers, sender) {
       }
     }
   }
-
-  // Remove sender
-  if (sender) users.splice(users.indexOf(sender), 1);
 
   // Save to users' inboxes for those in list but not connected
   await User.updateMany({ _id: { $in: users } }, { $push: { inbox: event } });

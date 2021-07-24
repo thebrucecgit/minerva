@@ -2,7 +2,6 @@ query GetUser {
   getUser {
     _id
     name
-    userType
     email
     pfp {
       type
@@ -11,8 +10,10 @@ query GetUser {
     }
     yearGroup
     biography
-    academics
-    extras
+    academicsLearning
+    extrasLearning
+    academicsTutoring
+    extrasTutoring
     school
   }
 }

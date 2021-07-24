@@ -21,8 +21,8 @@ const GET_USER_LIMITED = loader("./graphql/GetUserLimited.gql");
 const User = ({ currentUser }) => {
   const { id } = useParams();
 
-  const fullAccess =
-    currentUser.user.userType === "TUTOR" || currentUser.user._id === id;
+  // const fullAccess = currentUser.user._id === id;
+  const fullAccess = false;
 
   const GET_USER = fullAccess ? GET_USER_FULL : GET_USER_LIMITED;
 
@@ -42,25 +42,37 @@ const User = ({ currentUser }) => {
               <div key={i}>{s}</div>
             ))}
           </h1>
-          <p
-            className={styles.userType}
-          >{`${user.userType.toLowerCase()}, Year ${user.yearGroup}`}</p>
+          <p className={styles.userType}>{`${
+            user.tutor.status === "COMPLETE" ? "Tutor, " : ""
+          }Year ${user.yearGroup}`}</p>
         </div>
         <ProfilePicture pfp={user.pfp} alt={user.name} width="400" />
       </div>
 
       <div className={classNames("container", styles.userInfo)}>
         <div>
-          {user.academics.length > 0 && (
+          {user.academicsLearning.length > 0 && (
             <div className={styles.tags}>
               <FontAwesomeIcon icon={faGraduationCap} size="2x" />
-              <Tags tags={user.academics} />
+              <Tags tags={user.academicsLearning} />
             </div>
           )}
-          {user.extras.length > 0 && (
+          {user.extrasLearning.length > 0 && (
             <div className={styles.tags}>
               <FontAwesomeIcon icon={faRunning} size="2x" />
-              <Tags tags={user.extras} />
+              <Tags tags={user.extrasLearning} />
+            </div>
+          )}
+          {user.academicsTutoring.length > 0 && (
+            <div className={styles.tags}>
+              <FontAwesomeIcon icon={faGraduationCap} size="2x" />
+              <Tags tags={user.academicsTutoring} />
+            </div>
+          )}
+          {user.extrasTutoring.length > 0 && (
+            <div className={styles.tags}>
+              <FontAwesomeIcon icon={faRunning} size="2x" />
+              <Tags tags={user.extrasTutoring} />
             </div>
           )}
         </div>

@@ -1,20 +1,18 @@
-query GetInfo {
-  getUser {
-    sessions(limit: 2) {
-      _id
-      startTime
-      location {
-        address
-      }
-    }
-    classes(limit: 1) {
-      _id
-      name
-      image
-      description
+query GetInfo($userID: ID!) {
+  getSessionsOfUser(userID: $userID, limit: 2) {
+    _id
+    startTime
+    location {
+      address
     }
   }
-  getTutors(limit: 3) {
+  getClassesOfUser(userID: $userID, limit: 1) {
+    _id
+    name
+    image
+    description
+  }
+  getTutorsOfUser(userID: $userID, limit: 4) {
     _id
     name
     pfp {

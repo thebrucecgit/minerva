@@ -5,7 +5,6 @@ mutation ConfirmUserEmail($emailConfirmId: String!) {
     user {
       _id
       name
-      userType
       pfp {
         type
         url
@@ -13,6 +12,9 @@ mutation ConfirmUserEmail($emailConfirmId: String!) {
       }
       email
       registrationStatus
+      tutor {
+        status
+      }
     }
   }
 }

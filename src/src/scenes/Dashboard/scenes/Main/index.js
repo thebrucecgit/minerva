@@ -15,8 +15,10 @@ import styles from "./styles.module.scss";
 
 const GET_INFO = loader("./graphql/GetInfo.gql");
 
-const Main = () => {
-  const { data, loading, error } = useQuery(GET_INFO);
+const Main = ({ currentUser }) => {
+  const { data, loading, error } = useQuery(GET_INFO, {
+    variables: { userID: currentUser.user._id },
+  });
 
   if (error) return <Error error={error} />;
   if (loading && !data) return <Loader />;
@@ -27,8 +29,8 @@ const Main = () => {
         <div className={styles.wrapper}>
           <h1>Sessions</h1>
           <div className={styles.group}>
-            {data.getUser.sessions.length ? (
-              data.getUser.sessions.map((session) => (
+            {data.getSessionsOfUser.length > 0 ? (
+              data.getSessionsOfUser.map((session) => (
                 <Link
                   to={`/dashboard/sessions/${session._id}`}
                   key={session._id}
@@ -52,8 +54,8 @@ const Main = () => {
         <div className={styles.wrapper}>
           <h1>Class</h1>
           <div className={styles.group}>
-            {data.getUser.classes.length ? (
-              data.getUser.classes.map((classInfo) => (
+            {data.getClassesOfUser.length > 0 ? (
+              data.getClassesOfUser.map((classInfo) => (
                 <Link
                   to={`/dashboard/classes/${classInfo._id}`}
                   key={classInfo._id}
@@ -77,7 +79,7 @@ const Main = () => {
       <div className={styles.lower}>
         <h1>Tutors</h1>
         <div className={styles.tutors}>
-          {data.getTutors.map((tutor) => (
+          {data.getTutorsOfUser.map((tutor) => (
             <Link
               className={classNames("card x square", styles.tutor)}
               key={tutor._id}

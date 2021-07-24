@@ -17,26 +17,28 @@ beforeAll(async () => {
 
   tutor = await User.create({
     _id: "1",
-    userType: "TUTOR",
     name: "Ben Smith",
     email: "ben@example.com",
     pfp: {
       type: "URL",
       url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
     },
+    tutor: {
+      status: "COMPLETE",
+    },
     yearGroup: 12,
     school: "Example4 High School",
-    academics: ["Geography", "Mathematics"],
-    extras: ["Piano"],
+    academicsLearning: [],
+    extrasLearning: [],
+    academicsTutoring: ["Geography", "Mathematics"],
+    extrasTutoring: ["Piano"],
     biography: "You never know.",
-    classes: [],
-    sessions: [],
-    // grades: "---",
+    classes: ["1"],
+    sessions: ["1"],
   });
 
   tutee = await User.create({
-    _id: 2,
-    userType: "TUTEE",
+    _id: "2",
     name: "John Smith",
     email: "john@example.com",
     pfp: {
@@ -45,12 +47,13 @@ beforeAll(async () => {
     },
     yearGroup: 13,
     school: "Example High School",
-    academics: ["English", "Mathematics"],
-    extras: ["Coding"],
+    academicsLearning: ["English", "Mathematics"],
+    extrasLearning: ["Coding"],
+    academicsTutoring: [],
+    extrasTutoring: [],
     biography: "You always know.",
-    classes: [],
-    sessions: [],
-    // grades: "---",
+    classes: ["1"],
+    sessions: ["1"],
   });
 });
 
@@ -72,13 +75,7 @@ describe("Tutor operations", () => {
     const res = await Class.find({ name: "Genuine Afternoon Session" });
     expect(res.length).toBeGreaterThan(0);
     classId = res[0]._id;
-    tutor = await User.findById(tutor._id).populate("classes");
-    expect(tutor.classes.toObject()).toContainEqual(
-      expect.objectContaining({
-        _id: classId,
-        name: "Genuine Afternoon Session",
-      })
-    );
+    expect(res[0].tutors).toContain(tutor._id);
   });
 
   test("Updates class name", async () => {
@@ -134,13 +131,6 @@ describe("Tutor operations", () => {
     delete updates.id;
     updates._id = classId;
     expect(doc.toObject()).toMatchObject(updates);
-    tutee = await User.findById(tutee._id).populate("classes");
-    expect(tutee.classes.toObject()).toContainEqual(
-      expect.objectContaining({
-        _id: classId,
-        name: "Ingenuine Afternoon Session",
-      })
-    );
     session = await Session.findById(session._id);
     expect(session.tutees.length).toBe(doc.tutees.length);
     expect(session.tutees.toObject()).toContainEqual("2");
@@ -181,18 +171,6 @@ describe("Tutor operations", () => {
     );
     const res = await Class.findById(classId);
     expect(res).toBeNull();
-    tutor = await User.findById(tutor._id).populate("classes");
-    tutee = await User.findById(tutee._id).populate("classes");
-    expect(tutor.classes).not.toContainEqual(
-      expect.objectContaining({
-        _id: classId,
-      })
-    );
-    expect(tutee.classes).not.toContainEqual(
-      expect.objectContaining({
-        _id: classId,
-      })
-    );
   });
 });
 

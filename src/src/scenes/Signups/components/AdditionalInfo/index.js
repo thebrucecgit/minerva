@@ -12,7 +12,6 @@ const AdditionalInfo = ({
   sectionClosed,
   errors,
   info,
-  userType,
   onTagsChange,
   onChange,
   onNext,
@@ -36,6 +35,7 @@ const AdditionalInfo = ({
         })}
       >
         <div className={styles.content}>
+          <p>Don't worry, you can't change all of this later.</p>
           <div className={styles.field}>
             <label htmlFor="yearGroup">Select your year group: </label>
             {errors.yearGroup && (
@@ -56,7 +56,6 @@ const AdditionalInfo = ({
               ))}
             </select>
           </div>
-
           <div className={styles.field}>
             <label htmlFor="school">Enter your school school's name: </label>
             {errors.school && <p className={styles.invalid}>{errors.school}</p>}
@@ -75,16 +74,15 @@ const AdditionalInfo = ({
               ))}
             </select>
           </div>
-
-          <div className={styles.field} data-test="academic">
-            <label>
-              Add academic subjects you want{" "}
-              {userType === "TUTOR" ? "to tutor" : "tutoring"} in (you can
-              change this later):{" "}
-            </label>
-            {errors.academics && (
+          <p>
+            Feel free to leave the following two blank if you only want to be a
+            tutor.
+          </p>
+          <div className={styles.field} data-test="academicsLearning">
+            <label>Add academic subjects you want support in:</label>
+            {/* {errors.academicsLearning && (
               <p className={styles.invalid}>{errors.academics}</p>
-            )}
+            )} */}
             <Tags
               settings={{
                 ...baseTagifySettings,
@@ -92,30 +90,105 @@ const AdditionalInfo = ({
                 placeholder: "eg. English",
                 whitelist: selections.academic,
               }}
-              onChange={(e) => onTagsChange(e, "academics")}
-              defaultValue={info.academics}
+              onChange={(e) => onTagsChange(e, "academicsLearning")}
+              defaultValue={info.academicsLearning}
               name="academic"
             />
           </div>
-
-          <div className={styles.field} data-test="extras">
-            <label>
-              Add any extra-curriculars activities you want{" "}
-              {userType === "TUTOR" ? "to tutor" : "tutoring"} in (you can
-              change this later):{" "}
-            </label>
-            {errors.extras && <p className={styles.invalid}>{errors.extra}</p>}
+          <div className={styles.field} data-test="extrasLearning">
+            <label>Add extra-curricular activities you want support in:</label>
+            {/* {errors.extrasLearning && <p className={styles.invalid}>{errors.extra}</p>} */}
             <Tags
               settings={{
                 ...baseTagifySettings,
                 placeholder: "eg. Programming",
                 whitelist: selections.extra,
               }}
-              onChange={(e) => onTagsChange(e, "extras")}
-              defaultValue={info.extras}
-              name="extras"
+              onChange={(e) => onTagsChange(e, "extrasLearning")}
+              defaultValue={info.extrasLearning}
+              name="extrasLearning"
             />
           </div>
+          <div className={styles.field}>
+            {/* {errors.agreement && (
+              <p className={styles.invalid}>{errors.agreement}</p>
+            )} */}
+            <div className="checkbox">
+              <input
+                type="checkbox"
+                name="applyTutor"
+                id="applyTutor"
+                checked={info.applyTutor ?? false}
+                onChange={onChange}
+                noValidate
+              />
+              <label htmlFor="applyTutor">I would like to tutor others</label>
+            </div>
+          </div>
+          {info.applyTutor && (
+            <>
+              <p>
+                Note that your application to be a tutor will be reviewed by an
+                Academe moderator.
+              </p>
+              <div className={styles.field} data-test="academicsTutoring">
+                <label>
+                  Add academic subjects that you want to tutor others in:{" "}
+                </label>
+                {/* {errors.academicsTutoring && (
+              <p className={styles.invalid}>{errors.academics}</p>
+            )} */}
+                <Tags
+                  settings={{
+                    ...baseTagifySettings,
+                    enforceWhitelist: true,
+                    placeholder: "eg. English",
+                    whitelist: selections.academic,
+                  }}
+                  onChange={(e) => onTagsChange(e, "academicsTutoring")}
+                  defaultValue={info.academicsTutoring}
+                  name="academic"
+                />
+              </div>
+              <div className={styles.field} data-test="extrasTutoring">
+                <label>
+                  Add extra-curricular activities that you want to tutor others
+                  in:
+                </label>
+                {/* {errors.extrasTutoring && <p className={styles.invalid}>{errors.extra}</p>} */}
+                <Tags
+                  settings={{
+                    ...baseTagifySettings,
+                    placeholder: "eg. Programming",
+                    whitelist: selections.extra,
+                  }}
+                  onChange={(e) => onTagsChange(e, "extrasTutoring")}
+                  defaultValue={info.extrasTutoring}
+                  name="extrasTutoring"
+                />
+              </div>
+
+              <div className={styles.field}>
+                <label htmlFor="grades">
+                  Please link to a copy of your latest school grades or other
+                  evidence of abilities relevant to the subjects you wish to
+                  tutor
+                </label>
+                {errors.grades && (
+                  <p className={styles.invalid}>{errors.grades}</p>
+                )}
+                <input
+                  type="text"
+                  name="grades"
+                  id="grades"
+                  value={info.grades ?? ""}
+                  onChange={onChange}
+                  noValidate
+                />
+              </div>
+            </>
+          )}
+
           <button
             className="btn"
             onClick={onNext}

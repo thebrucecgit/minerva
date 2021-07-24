@@ -113,8 +113,11 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
     for (const m of msgGroup) {
       const group = m[1].map((g, i) => ({
         ...g,
-        header: !(m[1][i - 1]?.author === m[1][i].author &&
-          (!m[1][i - 1] || differenceInMinutes(m[1][i].time, m[1][i - 1].time) < 10)),
+        header: !(
+          m[1][i - 1]?.author === m[1][i].author &&
+          (!m[1][i - 1] ||
+            differenceInMinutes(m[1][i].time, m[1][i - 1].time) < 10)
+        ),
         me: m[1][i].author === currentUser.user._id,
       }));
       result.push([m[0], group]);

@@ -1,6 +1,11 @@
 import React from "react";
 import algoliasearch from "algoliasearch/lite";
-import { InstantSearch, Stats, Configure, PoweredBy } from "react-instantsearch-dom";
+import {
+  InstantSearch,
+  Stats,
+  Configure,
+  PoweredBy,
+} from "react-instantsearch-dom";
 
 import SearchBox from "./components/SearchBox";
 import InfiniteHits from "./components/InfiniteHits";
@@ -20,7 +25,7 @@ const searchClient = algoliasearch(
   REACT_APP_ALGOLIA_API_KEY
 );
 
-const Search = () => {
+const Search = ({ currentUser }) => {
   return (
     <div className="container">
       <InstantSearch
@@ -30,15 +35,15 @@ const Search = () => {
         <div className="ais-SearchPage">
           <div className="ais-Refinements">
             <Menu attribute="school" />
-            <RefinementList attribute="academics" />
-            <RefinementList attribute="extras" />
+            <RefinementList attribute="academicsTutoring" />
+            <RefinementList attribute="extrasTutoring" />
           </div>
           <div>
             <Configure hitsPerPage={3} />
             <SearchBox autoFocus />
             <PoweredBy />
             <Stats />
-            <InfiniteHits />
+            <InfiniteHits currentUser={currentUser} />
           </div>
         </div>
       </InstantSearch>

@@ -1,9 +1,7 @@
-query GetClasses {
-  getUser {
-    classes {
-      _id
-      name
-      image
-    }
+query GetClasses($userID: ID!) {
+  getClassesOfUser(userID: $userID) {
+    _id
+    name
+    image
   }
 }

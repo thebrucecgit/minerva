@@ -92,21 +92,6 @@ classSchema.virtual("users").get(function () {
 
 classSchema.pre("remove", async function () {
   await Session.deleteMany({ _id: { $in: this.sessions } });
-
-  await User.bulkWrite([
-    {
-      updateMany: {
-        filter: { _id: { $in: this.tutors }, userType: "TUTOR" },
-        update: { $pull: { classes: this._id } },
-      },
-    },
-    {
-      updateMany: {
-        filter: { _id: { $in: this.tutees }, userType: "TUTEE" },
-        update: { $pull: { classes: this._id } },
-      },
-    },
-  ]);
 });
 
 const Class = model("Class", classSchema);

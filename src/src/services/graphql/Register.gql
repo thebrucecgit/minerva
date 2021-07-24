@@ -1,37 +1,40 @@
 mutation Register(
-  $userType: UserType!
   $name: String!
   $email: String!
   $password: String
   $pfp: PfpIn
   $yearGroup: Int!
   $school: String!
-  $academics: [String!]!
-  $extras: [String!]
+  $academicsLearning: [String!]
+  $extrasLearning: [String!]
+  $academicsTutoring: [String!]
+  $extrasTutoring: [String!]
   $biography: String!
   $grades: String!
   $token: String!
+  $applyTutor: Boolean!
 ) {
   register(
-    userType: $userType
     name: $name
     email: $email
     password: $password
     pfp: $pfp
     yearGroup: $yearGroup
     school: $school
-    academics: $academics
-    extras: $extras
+    academicsLearning: $academicsLearning
+    extrasLearning: $extrasLearning
+    academicsTutoring: $academicsTutoring
+    extrasTutoring: $extrasTutoring
     biography: $biography
     grades: $grades
     token: $token
+    applyTutor: $applyTutor
   ) {
     jwt
     exp
     user {
       _id
       name
-      userType
       pfp {
         type
         url
@@ -39,6 +42,9 @@ mutation Register(
       }
       email
       registrationStatus
+      tutor {
+        status
+      }
     }
   }
 }

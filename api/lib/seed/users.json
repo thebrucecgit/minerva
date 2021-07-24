@@ -1,0 +1,89 @@
+[{
+  "_id": "7fCzBZf3_Q",
+  "pfp": {
+    "type": "URL",
+    "url": "https://lh3.googleusercontent.com/ogw/ADea4I73uu-D-wKDCP0WqHqcJPR9SgEISCL8nKKKqds0",
+    "cloudinaryPublicId": null
+  },
+  "personalChats": [],
+  "dateJoined": {
+    "$date": "2021-07-17T09:05:27.944Z"
+  },
+  "lastAuthenticated": {
+    "$date": "2021-07-24T00:29:46Z"
+  },
+  "classes": [
+    "QUc0jHFaM"
+  ],
+  "sessions": [
+    "MyfAbcDe_o2"
+  ],
+  "name": "Bruce Chen",
+  "email": "brucecccccc@gmail.com",
+  "password": "$2b$12$p6Y05HEDwPEzCo70EPi6Me1laeucnw2Fw.8bd6KQcpi9WqWbdEswO",
+  "yearGroup": 10,
+  "school": "Christ's College",
+  "biography": "Hi there. ",
+  "registrationStatus": "COMPLETE",
+  "emailConfirmId": "mFVZQ6oPK",
+  "__v": 0,
+  "inbox": [
+    {
+      "type": "NEW_SESSION_REQUEST",
+      "text": "New session requested  on 2:00 PM, Monday 26 July 2021 for Saturday Afternoon",
+      "time": {
+        "$date": "2021-07-24T00:47:03.058Z"
+      },
+      "_id": "gN3u3W8qnf3"
+    }
+  ],
+  "tutor": {
+    "status": "COMPLETE"
+  },
+  "academicsLearning": [
+    "Classics"
+  ],
+  "extrasLearning": [
+    "Lighting/Sound"
+  ],
+  "academicsTutoring": [
+    "English"
+  ],
+  "extrasTutoring": []
+},{
+  "_id": "XYZwKtjz5Y",
+  "pfp": {
+    "type": "URL"
+  },
+  "personalChats": [],
+  "dateJoined": {
+    "$date": "2021-07-17T09:05:27.944Z"
+  },
+  "lastAuthenticated": {
+    "$date": "2021-07-24T00:46:53.309Z"
+  },
+  "academics": [
+    "English",
+    "Mathematics"
+  ],
+  "extras": [
+    "Programming"
+  ],
+  "classes": [
+    "QUc0jHFaM"
+  ],
+  "sessions": [
+    "MyfAbcDe_o2"
+  ],
+  "userType": "TUTEE",
+  "name": "Bruce CCCC",
+  "email": "brchen@student.christscollege.com",
+  "password": "$2b$12$0ExEDibabznlX2Tkd/Gq1OcuhF396WOzdn6CrXY3/XITYYa4XM60i",
+  "yearGroup": 8,
+  "school": "Christ's College",
+  "biography": "IJAsodijaosidj",
+  "registrationStatus": "COMPLETE",
+  "emailConfirmId": "kT6CtaF-I",
+  "__v": 0,
+  "inbox": []
+}]

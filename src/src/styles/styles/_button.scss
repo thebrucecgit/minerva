@@ -27,12 +27,16 @@
   }
   &.secondary {
     background: #fff;
-    border: 1px solid rgb(214, 214, 214);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-    position: static;
-    transition: all 300ms;
+    box-shadow: 1px 1px #eee, 2px 2px #eee, 3px 3px #eee;
     &:hover {
-      background: #eee;
+      box-shadow: 2px 2px #eee;
+      top: 1px;
+      left: 1px;
+    }
+    &:active {
+      box-shadow: none;
+      top: 3px;
+      left: 3px;
     }
   }
   &.danger {
@@ -52,6 +56,6 @@
     }
   }
   &.small {
-    padding: 10px 15px;
+    padding: 15px 20px;
   }
 }

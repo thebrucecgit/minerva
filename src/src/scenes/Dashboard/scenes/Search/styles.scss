@@ -19,18 +19,12 @@ ul.ais-InfiniteHits-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1.5rem;
-  h3 {
-    font-size: 1.5rem;
-  }
   .details {
     margin: 10px 0;
     font-family: "Montserrat", sans-serif;
   }
   .bio {
     margin: 10px 0;
-  }
-  .card img {
-    width: 100%;
   }
 }
 

@@ -4,10 +4,6 @@ import { loader } from "graphql.macro";
 
 const AUTOCOMPLETE = loader("../graphql/Autocomplete.gql");
 
-/**
- *
- * @param {string} params.userType "tutors" or "tutees"
- */
 const useUserChange = ({ setUpdate, userType }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,10 +23,7 @@ const useUserChange = ({ setUpdate, userType }) => {
 
     if (value.length > 1) {
       setLoading(true);
-      const { data } = await fetch({
-        value: e.target.value,
-        userType: userType === "tutors" ? "TUTOR" : "TUTEE",
-      });
+      const { data } = await fetch({ value: e.target.value });
 
       setSuggestions(data.getUsers);
       setLoading(false);

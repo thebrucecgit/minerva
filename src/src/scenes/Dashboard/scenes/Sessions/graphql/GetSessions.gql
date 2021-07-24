@@ -1,26 +1,27 @@
-query GetSessions($old: Boolean!) {
-  getUser {
-    sessions(limit: 10, old: $old) {
+query GetSessions($userID: ID!, $old: Boolean!) {
+  getSessionsOfUser(userID: $userID, limit: 10, old: $old) {
+    _id
+    startTime
+    endTime
+    status
+    location {
+      address
+    }
+    attendance {
+      tutee
+      attended
+    }
+    tutors {
+      name
+    }
+    tutees {
       _id
-      startTime
-      endTime
-      status
-      location {
-        address
-      }
-      attendance {
-        tutee
-        attended
-      }
-      tutors {
-        name
-      }
-      class {
-        _id
-        name
-        preferences {
-          online
-        }
+    }
+    class {
+      _id
+      name
+      preferences {
+        online
       }
     }
   }

@@ -6,11 +6,13 @@ import { addMinutes } from "date-fns";
 import { format } from "date-fns-tz";
 import * as websocket from "../../websocket";
 import sgMail from "../../config/email";
+import { ApolloError } from "apollo-server";
+import { nanoid } from "nanoid";
 
 import {
   assertGroupAuthorization,
-  assertSessionInstantiation,
   assertTutor,
+  assertUser,
 } from "../../helpers/permissions";
 
 const { FRONTEND_DOMAIN } = process.env;
@@ -21,6 +23,23 @@ export default {
       const session = await Session.findById(id);
       assertGroupAuthorization(user, session.users);
       return session;
+    },
+    async getSessionsOfUser(
+      _,
+      { userID, limit = 10, old = false, time = new Date() },
+      { user }
+    ) {
+      const targetUser = await User.findById(userID);
+      assertUser(user, targetUser);
+
+      return await Session.find(
+        {
+          $or: [{ tutees: userID }, { tutors: userID }],
+          endTime: { [old ? "$lte" : "$gt"]: time },
+        },
+        null,
+        { limit, sort: { startTime: old ? -1 : 1 } }
+      );
     },
   },
   Session: {
@@ -37,18 +56,20 @@ export default {
       return session.tutees;
     },
     attendance(session, _, { user }) {
-      if (user.userType === "TUTEE") {
-        return session.attendance.filter((att) => att.tutee === user._id);
-      } else {
-        return session.attendance;
-      }
+      if (session.tutors.includes(user._id)) return session.attendance;
+      else return session.attendance.filter((att) => att.tutee === user._id);
     },
   },
   Mutation: {
     async instantiateSession(_, { classId, startTime, length }, { user }) {
       const classDoc = await Class.findById(classId);
+      assertGroupAuthorization(user, classDoc.users);
 
-      assertSessionInstantiation(user, classDoc.toObject({ virtuals: true }));
+      if (
+        !classDoc.preferences.studentInstantiation &&
+        !classDoc.tutors.includes(user._id)
+      )
+        throw new ApolloError("User unauthorized to instantiate session", 401);
 
       const session = await Session.create({
         tutors: classDoc.tutors,
@@ -71,22 +92,6 @@ export default {
         }
       );
 
-      // Save session to users
-      await User.bulkWrite([
-        {
-          updateMany: {
-            filter: { _id: { $in: classDoc.tutors }, userType: "TUTOR" },
-            update: { $addToSet: { sessions: session._id } },
-          },
-        },
-        {
-          updateMany: {
-            filter: { _id: { $in: classDoc.tutees }, userType: "TUTEE" },
-            update: { $addToSet: { sessions: session._id } },
-          },
-        },
-      ]);
-
       const event = {
         type: classDoc.preferences.studentAgreeSessions
           ? "NEW_SESSION_REQUEST"
@@ -101,15 +106,18 @@ export default {
         })} for ${classDoc.name}`,
         time: new Date(),
       };
-      
-      let chat;
+
       // Insert event into chat
       if (classDoc.preferences.enableChat) {
-        chat = await Chat.findByIdAndUpdate(classDoc.chat, {
-          $push: { messages: event },
-        }, { new: true });
+        await Chat.findByIdAndUpdate(
+          classDoc.chat,
+          {
+            $push: { messages: event },
+          },
+          { new: true }
+        );
       }
-      event._id = chat.messages[chat.messages.length-1]._id;
+      event._id = nanoid(11);
       // Notify all users except initiator
       await websocket.broadcast(event, session.users, user._id);
 
@@ -163,7 +171,7 @@ export default {
 
       assertGroupAuthorization(user, session.users);
 
-      if (user.userType === "TUTEE") {
+      if (!session.tutors.includes(user._id)) {
         if (session.settings.studentEditNotes) {
           // Only edit the notes
           edits = { notes: args.notes };
@@ -205,8 +213,8 @@ export default {
       assertGroupAuthorization(user, session.users);
 
       if (
-        user.userType === "TUTEE" &&
-        !session.class.preferences.studentAgreeSessions
+        !session.class.preferences.studentAgreeSessions &&
+        !session.tutors.includes(user._id)
       )
         throw new ApolloError("Not authorized to delete session", 401);
 

@@ -1,0 +1,88 @@
+[{
+  "_id": "MyfAbcDe_o2",
+  "settings": {
+    "online": false,
+    "studentEditNotes": false,
+    "syncTutorsWithClass": true,
+    "syncTuteesWithClass": true
+  },
+  "cancellation": {
+    "cancelled": false
+  },
+  "tutors": [
+    "7fCzBZf3_Q"
+  ],
+  "tutees": [
+    "XYZwKtjz5Y"
+  ],
+  "class": "QUc0jHFaM",
+  "startTime": {
+    "$date": "2021-07-23T03:30:00Z"
+  },
+  "endTime": {
+    "$date": "2021-07-23T04:30:00Z"
+  },
+  "length": 60,
+  "userResponses": [
+    {
+      "_id": {
+        "$oid": "60f909984e19a584d7846c09"
+      },
+      "user": "7fCzBZf3_Q",
+      "response": "CONFIRM"
+    },
+    {
+      "_id": {
+        "$oid": "60fa3933fb82fb218c276f3d"
+      },
+      "user": "XYZwKtjz5Y",
+      "response": "CONFIRM"
+    }
+  ],
+  "attendance": [
+    {
+      "attended": true,
+      "_id": {
+        "$oid": "60fa663b95c4ad2b6a40831d"
+      },
+      "tutee": "XYZwKtjz5Y"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": "GhuZnzqdNGa",
+  "settings": {
+    "online": false,
+    "studentEditNotes": false,
+    "syncTutorsWithClass": true,
+    "syncTuteesWithClass": true
+  },
+  "cancellation": {
+    "cancelled": false
+  },
+  "tutors": [
+    "7fCzBZf3_Q"
+  ],
+  "tutees": [
+    "XYZwKtjz5Y"
+  ],
+  "class": "QUc0jHFaM",
+  "startTime": {
+    "$date": "2021-07-26T02:00:00Z"
+  },
+  "endTime": {
+    "$date": "2021-07-26T03:00:00Z"
+  },
+  "length": 60,
+  "userResponses": [
+    {
+      "_id": {
+        "$oid": "60fb63062dcf8944b0d16cad"
+      },
+      "user": "XYZwKtjz5Y",
+      "response": "CONFIRM"
+    }
+  ],
+  "attendance": [],
+  "__v": 0
+}]

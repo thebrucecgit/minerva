@@ -32,9 +32,8 @@ function testJwtObj(jwtObj, desired) {
   expect(jwtObj.exp).toBeGreaterThan(Date.now() / 1000 + 23 * 60 * 60);
 }
 
-describe("Registering a new tutee via email", () => {
+describe("Registering a new user via email", () => {
   const info = {
-    userType: "TUTEE",
     name: "John Smith",
     email: "JOHN@example.com",
     password: "John123John",
@@ -46,14 +45,16 @@ describe("Registering a new tutee via email", () => {
     },
     yearGroup: 12,
     school: "Example High School",
-    academics: ["English", "Mathematics"],
-    extras: ["Coding"],
+    academicsLearning: ["English", "Mathematics"],
+    extrasLearning: ["Coding"],
+    applyTutor: false,
+    academicsTutoring: [],
+    extrasTutoring: [],
     biography: "I'm an interested mammal",
     // grades: "---",
   };
 
   const result = {
-    userType: "TUTEE",
     name: "John Smith",
     email: "john@example.com",
     pfp: {
@@ -64,15 +65,17 @@ describe("Registering a new tutee via email", () => {
     },
     yearGroup: 12,
     school: "Example High School",
-    academics: ["English", "Mathematics"],
-    extras: ["Coding"],
+    academicsLearning: ["English", "Mathematics"],
+    extrasLearning: ["Coding"],
+    academicsTutoring: [],
+    extrasTutoring: [],
     biography: "I'm an interested mammal",
     classes: [],
     sessions: [],
     // grades: "---",
   };
 
-  test("Register new tutee user", async () => {
+  test("Register new user", async () => {
     const jwtObj = await register(null, info);
 
     expect(sgMail.send.mock.calls[0][0]).toMatchObject({
@@ -103,7 +106,7 @@ describe("Registering a new tutee via email", () => {
     expect(docs[0].toObject()).toMatchObject(result);
   });
 
-  test("Verify email of new tutee user", async () => {
+  test("Verify email of new user", async () => {
     const user = await User.findOne({ email: "john@example.com" });
     const jwtObj = await confirmUserEmail(null, {
       emailConfirmId: user.emailConfirmId,
@@ -185,82 +188,5 @@ describe("Registering a new tutee via email", () => {
     testJwtObj(jwtObj, result);
     const final = await User.findOne({ email: "john@example.com" });
     expect(oldPassword).not.toBe(final.password);
-  });
-});
-
-describe("Registering a new tutor via email", () => {
-  const info = {
-    userType: "TUTOR",
-    name: "Ben Smith   ",
-    email: "BEN@example.com",
-    password: "Ben123Ben",
-    pfp: {
-      type: "URL",
-      url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
-    },
-    yearGroup: 12,
-    school: "Example4 High School",
-    academics: ["Geography", "Mathematics"],
-    extras: ["Piano"],
-    biography: "You never know.",
-    // grades: "---",
-  };
-
-  const result = {
-    userType: "TUTOR",
-    name: "Ben Smith",
-    email: "ben@example.com",
-    pfp: {
-      type: "URL",
-      url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
-    },
-    yearGroup: 12,
-    school: "Example4 High School",
-    academics: ["Geography", "Mathematics"],
-    extras: ["Piano"],
-    biography: "You never know.",
-    classes: [],
-    sessions: [],
-    // grades: "---",
-  };
-
-  test("Register new tutor user", async () => {
-    const jwtObj = await register(null, info);
-    expect(sgMail.send.mock.calls[2][0]).toMatchObject({
-      to: {
-        email: "ben@example.com",
-        name: "Ben Smith",
-      },
-      from: {
-        email: "confirmation@academe.co.nz",
-        name: "Academe Email Confirmation",
-      },
-      reply_to: {
-        email: "admin@academe.co.nz",
-        name: "Admin",
-      },
-      templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
-      dynamic_template_data: {
-        name: "Ben Smith",
-        confirmLink: /\/auth\/confirm/,
-      },
-    });
-
-    const docs = await User.find({ email: "ben@example.com" });
-    expect(docs).toHaveLength(1);
-    expect(docs[0].password).not.toBe(info.password);
-
-    testJwtObj(jwtObj, result);
-    expect(docs[0].toObject()).toMatchObject(result);
-  });
-
-  test("Verify email of new tutor user", async () => {
-    const user = await User.findOne({ email: "ben@example.com" });
-    const jwtObj = await confirmUserEmail(null, {
-      emailConfirmId: user.emailConfirmId,
-    });
-    testJwtObj(jwtObj, result);
-    const final = await User.findOne({ email: "ben@example.com" });
-    expect(final.registrationStatus).toBe("PENDING_REVIEW");
   });
 });
