@@ -89,6 +89,13 @@ form {
     border: 3px solid var(--main-gold-color);
   }
 
+  &.cancelled {
+    border: 3px solid #ff3e3e;
+    h2 {
+      text-decoration: line-through;
+    }
+  }
+
   &.square {
     border-radius: 0;
   }

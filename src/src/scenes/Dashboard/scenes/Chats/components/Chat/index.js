@@ -76,6 +76,8 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
     setMessage(e.target.value);
   };
 
+  const getNameById = (id) => chatInfo.users.find((u) => u._id === id).name;
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.length === 0) return;
@@ -168,11 +170,7 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
                           {message.header && (
                             <p className={messageStyles.header}>
                               <span className={messageStyles.author}>
-                                {
-                                  chatInfo.users.find(
-                                    (u) => u._id === message.author
-                                  ).name
-                                }
+                                {getNameById(message.author)}
                               </span>
                               <span className={messageStyles.time}>
                                 {format(message.time, "h:mm aa")}
@@ -195,9 +193,43 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
                         </div>
                       )}
                       {message.type === "NEW_SESSION" && (
-                        <div className={messageStyles.NewSession}>
+                        <div className={messageStyles.SessionUpdates}>
                           <Link to={`/dashboard/sessions/${message.sessionId}`}>
-                            <h4>New Session created</h4>
+                            <h4>
+                              New Session created by{" "}
+                              {getNameById(message.author)}
+                            </h4>
+                            <p>
+                              {format(
+                                message.sessionTime,
+                                "d MMMM yyyy h:mm aa"
+                              )}
+                            </p>
+                          </Link>
+                        </div>
+                      )}
+                      {message.type === "NEW_SESSION_REQUEST" && (
+                        <div className={messageStyles.SessionUpdates}>
+                          <Link to={`/dashboard/sessions/${message.sessionId}`}>
+                            <h4>
+                              New Session requested by{" "}
+                              {getNameById(message.author)}
+                            </h4>
+                            <p>
+                              {format(
+                                message.sessionTime,
+                                "d MMMM yyyy h:mm aa"
+                              )}
+                            </p>
+                          </Link>
+                        </div>
+                      )}
+                      {message.type === "CANCEL_SESSION" && (
+                        <div className={messageStyles.SessionUpdates}>
+                          <Link to={`/dashboard/sessions/${message.sessionId}`}>
+                            <h4>
+                              Session cancelled by {getNameById(message.author)}
+                            </h4>
                             <p>
                               {format(
                                 message.sessionTime,

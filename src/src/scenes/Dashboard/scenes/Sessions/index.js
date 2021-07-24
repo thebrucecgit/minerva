@@ -13,6 +13,7 @@ import {
   faTimesCircle,
   faCheckCircle,
   faExclamationTriangle,
+  faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSIONS = loader("./graphql/GetSessions.gql");
@@ -88,6 +89,7 @@ const Sessions = ({ currentUser }) => {
                       !isOld &&
                       isAfter(new Date(), session.startTime) &&
                       isAfter(session.endTime, new Date()),
+                    cancelled: session.status === "CANCEL",
                   })}
                 >
                   <div className="header">
@@ -106,6 +108,9 @@ const Sessions = ({ currentUser }) => {
                             icon={faExclamationTriangle}
                             className={styles.unconfirmed}
                           />
+                        )}
+                        {session.status === "CANCEL" && (
+                          <FontAwesomeIcon icon={faTimes} />
                         )}
                         {isOld &&
                           session.tutees.some(
