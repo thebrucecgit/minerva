@@ -2,6 +2,7 @@ import WebSocket from "ws";
 import * as yup from "yup";
 import authenticate from "./authenticate";
 import { differenceInMilliseconds } from "date-fns";
+import { nanoid } from "nanoid";
 
 import User from "./modules/user/model";
 import onMessage from "./modules/chat/onMessage";
@@ -53,6 +54,7 @@ export function send(ws, event) {
 }
 
 export async function broadcast(data, endUsers, sender) {
+  if (!data._id) data._id = nanoid(11);
   const event = await eventSchema.validate(data);
   // Send to users who are in channel and connected, excluding sender
   const users = [...endUsers].filter((u) => u !== sender);
