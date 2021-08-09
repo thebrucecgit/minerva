@@ -44,6 +44,13 @@ mutation UpdateSession(
       behaviourTags
       behaviourComment
     }
+    review {
+      tutee
+      rating
+      occurred
+      reason
+      comment
+    }
     settings {
       online
       studentEditNotes

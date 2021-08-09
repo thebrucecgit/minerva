@@ -1,0 +1,11 @@
+mutation ReviewSession($id: ID!, $review: ReviewIn!) {
+  reviewSession(id: $id, review: $review) {
+    review {
+      tutee
+      rating
+      occurred
+      reason
+      comment
+    }
+  }
+}

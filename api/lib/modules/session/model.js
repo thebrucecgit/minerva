@@ -24,6 +24,18 @@ const sessionSchema = Schema({
       ref: "User",
     },
   ],
+  review: [
+    {
+      tutee: {
+        type: String,
+        ref: "User",
+      },
+      rating: Number, // out of 5.0 scale
+      occurred: String,
+      reason: String,
+      comment: String,
+    },
+  ],
   attendance: [
     {
       tutee: {

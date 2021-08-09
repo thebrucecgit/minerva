@@ -31,6 +31,13 @@ input AttendanceIn {
   behaviourComment: String
 }
 
+input ReviewIn {
+  rating: Float
+  occurred: String
+  reason: String
+  comment: String
+}
+
 input PfpIn {
   type: String!
   url: String!

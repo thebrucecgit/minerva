@@ -16,6 +16,14 @@ export default gql`
     behaviourGood: Boolean
   }
 
+  type Review {
+    tutee: ID!
+    rating: Float
+    occurred: String
+    reason: String
+    comment: String
+  }
+
   "The location of a session or class"
   type Location {
     address: String
@@ -59,6 +67,13 @@ export default gql`
     behaviourGood: Boolean
   }
 
+  input ReviewIn {
+    rating: Float
+    occurred: String
+    reason: String
+    comment: String
+  }
+
   input LocationIn {
     address: String
     coords: CoordIn
@@ -86,6 +101,7 @@ export default gql`
     cancellation: SessionCancellation!
     status: String!
     userResponses: [SessionUserResponse!]
+    review: [Review!]!
   }
 
   extend type Query {
@@ -118,5 +134,6 @@ export default gql`
     cancelSession(id: ID!, reason: String!): Session
     confirmSession(id: ID!): Session
     rejectSession(id: ID!): Session
+    reviewSession(id: ID!, review: ReviewIn!): Session
   }
 `;

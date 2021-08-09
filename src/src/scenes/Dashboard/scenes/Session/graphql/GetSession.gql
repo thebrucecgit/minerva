@@ -33,6 +33,13 @@ query GetSession($id: ID!) {
       behaviourTags
       behaviourComment
     }
+    review {
+      tutee
+      rating
+      occurred
+      reason
+      comment
+    }
     settings {
       online
       studentEditNotes

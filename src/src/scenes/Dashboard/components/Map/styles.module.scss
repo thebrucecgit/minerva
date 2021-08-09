@@ -1,4 +1,4 @@
-input:not([type="checkbox"]).MapInput {
+input:not([type="checkbox"]):not([type="radio"]).MapInput {
   margin: 10px;
   position: relative;
   max-width: 600px;

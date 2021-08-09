@@ -10,6 +10,7 @@ import { ApolloError } from "apollo-server";
 import { nanoid } from "nanoid";
 
 import {
+  assertAuthenticated,
   assertGroupAuthorization,
   assertTutor,
   assertUser,
@@ -58,6 +59,10 @@ export default {
     attendance(session, _, { user }) {
       if (session.tutors.includes(user._id)) return session.attendance;
       else return session.attendance.filter((att) => att.tutee === user._id);
+    },
+    review(session, _, { user }) {
+      if (session.tutors.includes(user._id)) return session.review;
+      else return session.review.filter((rev) => rev.tutee === user._id);
     },
   },
   Mutation: {
@@ -316,6 +321,21 @@ export default {
         id,
         {
           $push: { userResponses: { user: user._id, response: "REJECT" } },
+        },
+        { new: true }
+      );
+    },
+    async reviewSession(_, { id, review }, { user }) {
+      const session = await Session.findById(id);
+      assertAuthenticated(user);
+      if (!session.tutees.includes(user._id))
+        throw new Error("Not allowed to create review");
+      if (session.review.some((r) => r.tutee === user._id))
+        throw new Error("Tutee can't review more than once");
+      return await Session.findByIdAndUpdate(
+        id,
+        {
+          $push: { review: { ...review, tutee: user._id } },
         },
         { new: true }
       );

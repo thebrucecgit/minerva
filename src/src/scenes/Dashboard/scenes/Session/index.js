@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { loader } from "graphql.macro";
 import classNames from "classnames";
 import { useQuery, useMutation } from "@apollo/client";
-import { format } from "date-fns";
+import { format, isAfter } from "date-fns";
 import ReactQuill from "react-quill";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,6 +18,7 @@ import Menu from "../../components/Menu";
 import Tutors from "../../components/Tutors";
 import Map from "../../components/Map";
 import Modal from "../../../../components/Modal";
+import Review from "./components/Review";
 import reactQuillModules from "../reactQuillModules";
 
 import useMenu from "../../hooks/useMenu";
@@ -72,6 +73,7 @@ const Session = ({ currentUser }) => {
     length: true,
   });
 
+  const [sessionEnded, setSessionEnded] = useState(false);
   const [editEnabled, setEditEnabled] = useState(false);
   const [rootClick, menuBind] = useMenu(false);
 
@@ -177,11 +179,20 @@ const Session = ({ currentUser }) => {
   };
 
   useEffect(() => {
+    let timerId;
     if (data) {
       const attendance = {};
       data.getSession.attendance.forEach(
         (attend) => (attendance[attend.tutee] = attend)
       );
+      const ended = isAfter(new Date(), data.getSession.endTime);
+      setSessionEnded(ended);
+      if (!ended) {
+        timerId = setTimeout(() => {
+          setSessionEnded(true);
+        }, data.getSession.endTime - new Date());
+      }
+
       setSessionInfo((st) => ({
         ...st,
         ...data.getSession,
@@ -189,6 +200,9 @@ const Session = ({ currentUser }) => {
         attendance,
       }));
     }
+    return () => {
+      clearTimeout(timerId);
+    };
   }, [data]);
 
   const settingsBind = usePreferences({
@@ -448,6 +462,14 @@ const Session = ({ currentUser }) => {
             )}
           </>
         )}
+
+        {sessionEnded &&
+          sessionInfo.tutees.some(
+            (tutee) => tutee._id === currentUser.user._id
+          ) &&
+          !sessionInfo.review?.some(
+            (r) => r.tutee === currentUser.user._id
+          ) && <Review id={id} setSessionInfo={setSessionInfo} />}
 
         <p className={styles.padding}>
           <Link to={`/dashboard/classes/${sessionInfo.class._id}`}>
