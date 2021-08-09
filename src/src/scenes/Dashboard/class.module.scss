@@ -79,7 +79,14 @@
 }
 
 .section {
-  .cardBody {
+  .username {
+    display: flex;
+    justify-content: space-between;
+    background-color: #fff;
+    color: #000;
+  }
+
+  .behaviour {
     display: flex;
   }
 

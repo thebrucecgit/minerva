@@ -29,6 +29,9 @@ query GetSession($id: ID!) {
       tutee
       attended
       reason
+      behaviourGood
+      behaviourTags
+      behaviourComment
     }
     settings {
       online

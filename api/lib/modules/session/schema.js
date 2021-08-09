@@ -11,6 +11,9 @@ export default gql`
     tutee: ID!
     attended: Boolean!
     reason: String
+    behaviourTags: [String]
+    behaviourComment: String
+    behaviourGood: Boolean
   }
 
   "The location of a session or class"
@@ -51,6 +54,9 @@ export default gql`
     tutee: ID!
     attended: Boolean
     reason: String
+    behaviourTags: [String]
+    behaviourComment: String
+    behaviourGood: Boolean
   }
 
   input LocationIn {

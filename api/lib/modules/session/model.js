@@ -35,6 +35,9 @@ const sessionSchema = Schema({
         default: false,
       },
       reason: String,
+      behaviourTags: [String],
+      behaviourComment: String,
+      behaviourGood: Boolean,
     },
   ],
   location: {

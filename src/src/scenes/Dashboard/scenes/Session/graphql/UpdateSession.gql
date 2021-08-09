@@ -40,6 +40,9 @@ mutation UpdateSession(
       tutee
       attended
       reason
+      behaviourGood
+      behaviourTags
+      behaviourComment
     }
     settings {
       online

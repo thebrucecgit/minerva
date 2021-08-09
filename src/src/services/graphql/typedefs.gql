@@ -26,6 +26,9 @@ input AttendanceIn {
   tutee: ID!
   attended: Boolean
   reason: String
+  behaviourGood: Boolean
+  behaviourTags: [String]
+  behaviourComment: String
 }
 
 input PfpIn {
