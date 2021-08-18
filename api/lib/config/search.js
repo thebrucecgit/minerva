@@ -13,8 +13,8 @@ const indexSchema = yup.object().shape({
   yearGroup: yup.number().integer(),
   school: yup.string(),
   biography: yup.string(),
-  academicsTutoring: yup.array().of(yup.string()),
-  extrasTutoring: yup.array().of(yup.string()),
+  academics: yup.array().of(yup.string()),
+  extras: yup.array().of(yup.string()),
   pfp: yup.object().shape({
     type: yup.string(),
     url: yup.string(),
@@ -29,6 +29,8 @@ export const FIELDS = "name yearGroup school biography academics extras pfp";
 export function docToRecord(doc) {
   const tutor = { ...doc };
   tutor.objectID = doc._id;
+  tutor.academics = doc.academicsTutoring;
+  tutor.extras = doc.extrasTutoring;
   delete tutor._id;
   return indexSchema.validateSync(tutor, { stripUnknown: true });
 }

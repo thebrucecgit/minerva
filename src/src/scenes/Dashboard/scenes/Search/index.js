@@ -35,8 +35,8 @@ const Search = ({ currentUser }) => {
         <div className="ais-SearchPage">
           <div className="ais-Refinements">
             <Menu attribute="school" />
-            <RefinementList attribute="academicsTutoring" />
-            <RefinementList attribute="extrasTutoring" />
+            <RefinementList attribute="academics" />
+            <RefinementList attribute="extras" />
           </div>
           <div>
             <Configure hitsPerPage={3} />
