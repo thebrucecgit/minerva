@@ -5,7 +5,6 @@ import classNames from "classnames";
 import { useQuery, useMutation } from "@apollo/client";
 import { format, isAfter } from "date-fns";
 import ReactQuill from "react-quill";
-import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import Loader from "../../../../components/Loader";
@@ -25,6 +24,9 @@ import useMenu from "../../hooks/useMenu";
 import useEdits from "../../hooks/useEdits";
 import useModal from "../../hooks/useModal";
 import usePreferences from "../../hooks/usePreferences";
+import useCancelSession from "./hooks/useCancelSession";
+import useRequestResponse from "./hooks/useRequestResponse";
+import useDeleteSession from "./hooks/useDeleteSession";
 
 import styles from "../../class.module.scss";
 import "react-quill/dist/quill.snow.css";
@@ -42,16 +44,10 @@ import {
 
 const GET_SESSION = loader("./graphql/GetSession.gql");
 const UPDATE_SESSION = loader("./graphql/UpdateSession.gql");
-const DELETE_SESSION = loader("./graphql/DeleteSession.gql");
-
-const CONFIRM_SESSION = loader("./graphql/ConfirmSession.gql");
-const REJECT_SESSION = loader("./graphql/RejectSession.gql");
-const CANCEL_SESSION = loader("./graphql/CancelSession.gql");
 
 const toastId = {};
 
 const Session = ({ currentUser }) => {
-  const history = useHistory();
   const { id } = useParams();
 
   const [sessionInfo, setSessionInfo] = useState({});
@@ -81,15 +77,20 @@ const Session = ({ currentUser }) => {
     variables: { id },
   });
 
-  // To store the loading status of requests
-  const loadingRequests = {};
-
   const [updateSession] = useMutation(UPDATE_SESSION);
-  const [deleteSessionReq] = useMutation(DELETE_SESSION);
 
-  const [confirmSessionReq] = useMutation(CONFIRM_SESSION);
-  const [rejectSessionReq] = useMutation(REJECT_SESSION);
-  const [cancelSessionReq] = useMutation(CANCEL_SESSION);
+  const [
+    cancelSession,
+    openCancellation,
+    cancellationBinds,
+    cancellationReason,
+    onReasonChange,
+  ] = useCancelSession({ id, setSessionInfo });
+  const [requestResponse] = useRequestResponse({ id, setSessionInfo });
+  const [deleteSession, openDeletion, deletionBinds] = useDeleteSession({
+    id,
+    classId: sessionInfo.class._id,
+  });
 
   const saveInfo = async (name, { resetUpdate = true } = {}) => {
     try {
@@ -221,88 +222,6 @@ const Session = ({ currentUser }) => {
     setUpdate((st) => ({ ...st, notes: editor.getContents() }));
   };
 
-  const deleteSession = async () => {
-    try {
-      toastId.deletion = toast("Deleting session...", { autoClose: false });
-      await deleteSessionReq({ variables: { id } });
-      toast.update(toastId.deletion, {
-        render: "Session successfully deleted",
-        type: toast.TYPE.SUCCESS,
-        autoClose: 2000,
-      });
-      history.replace(`/dashboard/classes/${sessionInfo.class._id}`);
-    } catch (e) {
-      toast.update(toastId.deletion, {
-        render: e.message,
-        type: toast.TYPE.ERROR,
-        autoClose: 5000,
-      });
-    }
-  };
-
-  const cancelSession = async (e) => {
-    e.preventDefault();
-    try {
-      toastId.cancellation = toast("Cancelling session...", {
-        autoClose: false,
-      });
-      const { data } = await cancelSessionReq({
-        variables: { id, reason: cancellationReason },
-      });
-      setSessionInfo((info) => ({
-        ...info,
-        ...data.cancelSession,
-      }));
-      cancellationBinds.onClose();
-      toast.update(toastId.cancellation, {
-        render: "Session successfully cancelled",
-        type: toast.TYPE.SUCCESS,
-        autoClose: 2000,
-      });
-    } catch (e) {
-      toast.update(toastId.cancellation, {
-        render: e.message,
-        type: toast.TYPE.ERROR,
-        autoClose: 5000,
-      });
-    }
-  };
-
-  const requestResponse = async (reject) => {
-    try {
-      toastId.requestResponse = toast(
-        `${reject ? "Rejecting" : "Confirming"} session...`
-      );
-      loadingRequests.requestResponse = true;
-
-      if (reject) {
-        const { data } = await rejectSessionReq({ variables: { id } });
-        setSessionInfo((st) => ({
-          ...st,
-          ...data.rejectSession,
-        }));
-      } else {
-        const { data } = await confirmSessionReq({ variables: { id } });
-        setSessionInfo((st) => ({
-          ...st,
-          ...data.confirmSession,
-        }));
-      }
-
-      toast.update(toastId.requestResponse, {
-        render: `Successfully ${reject ? "rejected" : "confirmed"} session`,
-        type: toast.TYPE.SUCCESS,
-        autoClose: 2000,
-      });
-    } catch (e) {
-      toast.update(toastId.requestResponse, {
-        render: e.message,
-        type: toast.TYPE.ERROR,
-        autoClose: 5000,
-      });
-    }
-  };
-
   const toggleEdit = () => {
     setEditEnabled((st) => !st);
   };
@@ -318,13 +237,6 @@ const Session = ({ currentUser }) => {
     "attendance",
     modalHooks
   );
-  const [openDeletion, deletionBinds] = useModal(false);
-  const [openCancellation, cancellationBinds] = useModal(false);
-  const [cancellationReason, setCancellationReason] = useState("");
-
-  const onReasonChange = (e) => {
-    setCancellationReason(e.target.value);
-  };
 
   const onTimeChange = (startTime) => {
     setUpdate((st) => ({
@@ -447,14 +359,12 @@ const Session = ({ currentUser }) => {
                   className="btn"
                   name="confirm"
                   onClick={() => requestResponse(false)}
-                  disabled={loadingRequests.requestResponse}
                 >
                   Confirm <FontAwesomeIcon icon={faCheck} />
                 </button>
                 <button
                   className="btn danger"
                   onClick={() => requestResponse(true)}
-                  disabled={loadingRequests.requestResponse}
                 >
                   Reject <FontAwesomeIcon icon={faTimes} />
                 </button>
@@ -588,6 +498,7 @@ const Session = ({ currentUser }) => {
               name="reason"
               required
               onChange={onReasonChange}
+              value={cancellationReason}
               placeholder="eg. Jimmy is feeling unwell"
             />
             <button className="btn danger">Cancel Session</button>
