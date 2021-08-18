@@ -40,6 +40,7 @@ const Login = ({ login, currentUser }) => {
     try {
       setLoading(true);
       const { email, password } = fields;
+      if (!email || !password) throw new Error("Missing email or password");
       await login(email, password);
       setLoading(false);
       history.replace("/dashboard");
@@ -66,6 +67,7 @@ const Login = ({ login, currentUser }) => {
               autoComplete="email"
               value={fields.email || ""}
               onChange={onFieldChange}
+              required
             />
           </div>
           <div className="field">
@@ -76,6 +78,7 @@ const Login = ({ login, currentUser }) => {
               autoComplete="current-password"
               value={fields.password || ""}
               onChange={onFieldChange}
+              required
             />
           </div>
           <button className="btn">
