@@ -27,8 +27,6 @@ export default async function login(_, { email, password, tokenId }) {
         url: info.picture,
       };
 
-    console.log(info.picture);
-
     user = await User.findOneAndUpdate(
       { $or: [{ googleId: info.sub }, { email: info.email }] },
       newUser,
