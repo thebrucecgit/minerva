@@ -83,14 +83,20 @@ function PersonalInfo({ currentUser }) {
   };
 
   const handleChangeUpdate = (e) => {
-    setUpdates(user);
+    setUpdates({
+      ...user,
+      applyTutor: ["PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"].includes(
+        user.tutor?.status
+      ),
+    });
     setUpdate(true);
   };
 
   const onChange = (e) => {
     setUpdates((st) => ({
       ...st,
-      [e.target.name]: e.target.value,
+      [e.target.name]:
+        e.target.type === "checkbox" ? e.target.checked : e.target.value,
     }));
   };
 
@@ -253,38 +259,109 @@ function PersonalInfo({ currentUser }) {
       </div>
 
       <div>
-        <label htmlFor="academicsTutoring">Academic subjects to tutor: </label>
-        {update ? (
-          <TagsSelect
-            settings={{
-              placeholder: "eg. English",
-              whitelist: selections.academic,
-            }}
-            onChange={(e) => onTagsChange(e, "academicsTutoring")}
-            defaultValue={updates.academicsTutoring}
-            name="academicsTutoring"
+        <div className="checkbox">
+          <input
+            type="checkbox"
+            name="applyTutor"
+            id="applyTutor"
+            checked={
+              update
+                ? updates.applyTutor
+                : ["PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"].includes(
+                    user.tutor?.status
+                  )
+            }
+            onChange={onChange}
+            disabled={!update}
+            noValidate
           />
-        ) : (
-          <Tags tags={user.academicsTutoring} />
-        )}
+          <label htmlFor="applyTutor">I would like to tutor others</label>
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="extrasLearning">Extra-curriculars to tutor: </label>
-        {update ? (
-          <TagsSelect
-            settings={{
-              placeholder: "eg. Coding",
-              whitelist: selections.extra,
-            }}
-            onChange={(e) => onTagsChange(e, "extrasTutoring")}
-            defaultValue={updates.extrasTutoring}
-            name="extrasTutoring"
-          />
-        ) : (
-          <Tags tags={user.extrasTutoring} />
-        )}
-      </div>
+      {((update && updates.applyTutor) ||
+        (!update &&
+          ["PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"].includes(
+            user.tutor?.status
+          ))) && (
+        <>
+          {user.tutor.status === "COMPLETE" && (
+            <p>
+              Deselecting the above checkbox will mean you'll need to reapply to
+              be a tutor
+            </p>
+          )}
+          <div>
+            <p>Application status: {user.tutor.status}</p>
+            {user.tutor.status === "COMPLETE" && (
+              <p>
+                You may need to logout and log back in for all changes to take
+                effect.
+              </p>
+            )}
+
+            {update && (
+              <p>
+                Note that your application to be a tutor will be reviewed by an
+                Academe moderator.
+              </p>
+            )}
+
+            <label htmlFor="academicsTutoring">
+              Academic subjects to tutor:
+            </label>
+            {update ? (
+              <TagsSelect
+                settings={{
+                  placeholder: "eg. English",
+                  whitelist: selections.academic,
+                }}
+                onChange={(e) => onTagsChange(e, "academicsTutoring")}
+                defaultValue={updates.academicsTutoring}
+                name="academicsTutoring"
+              />
+            ) : (
+              <Tags tags={user.academicsTutoring} />
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="extrasLearning">Extra-curriculars to tutor: </label>
+            {update ? (
+              <TagsSelect
+                settings={{
+                  placeholder: "eg. Coding",
+                  whitelist: selections.extra,
+                }}
+                onChange={(e) => onTagsChange(e, "extrasTutoring")}
+                defaultValue={updates.extrasTutoring}
+                name="extrasTutoring"
+              />
+            ) : (
+              <Tags tags={user.extrasTutoring} />
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="grades">
+              Please link to a copy of your latest school grades or other
+              evidence of abilities relevant to the subjects you wish to tutor
+            </label>
+            {update ? (
+              <input
+                type="text"
+                name="grades"
+                id="grades"
+                value={updates.grades ?? ""}
+                onChange={onChange}
+                noValidate
+              />
+            ) : (
+              <p>{user.tutor?.grades}</p>
+            )}
+          </div>
+        </>
+      )}
 
       {update ? (
         <>

@@ -9,6 +9,8 @@ mutation updateUser(
   $extrasLearning: [String!]
   $academicsTutoring: [String!]
   $extrasTutoring: [String!]
+  $applyTutor: Boolean
+  $grades: String
 ) {
   updateUser(
     id: $id
@@ -21,6 +23,8 @@ mutation updateUser(
     academicsTutoring: $academicsTutoring
     extrasTutoring: $extrasTutoring
     school: $school
+    applyTutor: $applyTutor
+    grades: $grades
   ) {
     _id
     name
@@ -29,6 +33,10 @@ mutation updateUser(
       type
       url
       cloudinaryPublicId
+    }
+    tutor {
+      status
+      grades
     }
     yearGroup
     biography

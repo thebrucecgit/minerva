@@ -5,10 +5,8 @@ export default async function reviewUser(_, { id, approval, message }) {
   const user = await User.findOneAndUpdate(
     { _id: id },
     {
-      tutor: {
-        status: approval ? "COMPLETE" : "FAILED_REVIEW",
-        message,
-      },
+      "tutor.status": approval ? "COMPLETE" : "FAILED_REVIEW",
+      "tutor.message": message,
     },
     { new: true, lean: true, projection: FIELDS }
   );

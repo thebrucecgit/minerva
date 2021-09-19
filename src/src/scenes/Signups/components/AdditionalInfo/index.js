@@ -133,7 +133,7 @@ const AdditionalInfo = ({
               </p>
               <div className={styles.field} data-test="academicsTutoring">
                 <label>
-                  Add academic subjects that you want to tutor others in:{" "}
+                  Add academic subjects that you want to tutor others in:
                 </label>
                 {/* {errors.academicsTutoring && (
               <p className={styles.invalid}>{errors.academics}</p>

@@ -20,9 +20,12 @@ export function assertUser(reqUser, targetUser) {
 export function assertUserOrTutor(reqUser, targetUser) {
   assertAuthenticated(reqUser);
 
-  if (reqUser._id === targetUser._id) return true;
-  if (reqUser.tutor.status === "COMPLETE") return true;
-  if (targetUser.tutor.status === "COMPLETE") return true;
+  if (
+    reqUser._id === targetUser._id ||
+    reqUser.tutor.status === "COMPLETE" ||
+    targetUser.tutor.status === "COMPLETE"
+  )
+    return true;
 
   throw new ApolloError("User unauthorized for this field", 401);
 }

@@ -86,6 +86,8 @@ export default gql`
       academicsTutoring: [String!]
       extrasTutoring: [String!]
       biography: String
+      applyTutor: Boolean
+      grades: String
     ): User!
     confirmUserEmail(emailConfirmId: String!): UserReq!
     resetPassword(email: String!): Boolean

@@ -8,6 +8,10 @@ query GetUser {
       url
       cloudinaryPublicId
     }
+    tutor {
+      status
+      grades
+    }
     yearGroup
     biography
     academicsLearning
