@@ -7,7 +7,7 @@ const AuthHelpers = ({ children }) => {
 
   const [currentUser, setCurrentUser] = useState(() => {
     const userInfoJSON = localStorage.getItem("Auth");
-    if (!userInfoJSON) return {};
+    if (!userInfoJSON) return null;
     try {
       const currentUser = JSON.parse(userInfoJSON);
       if (Date.now() > currentUser.exp * 1000) {
@@ -20,7 +20,7 @@ const AuthHelpers = ({ children }) => {
       } else return currentUser;
     } catch (e) {
       console.error(e);
-      return {};
+      return null;
     }
   });
 
