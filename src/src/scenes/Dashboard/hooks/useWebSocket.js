@@ -31,6 +31,8 @@ const useWebSocket = ({ jwt }) => {
     let connectTimer;
 
     try {
+      if (!jwt) throw new Error("Not logged in.");
+
       const auth = new URLSearchParams({ token: jwt });
       ws = new WebSocket(`${REACT_APP_WEBSOCKET_URI}?${auth.toString()}`);
 
