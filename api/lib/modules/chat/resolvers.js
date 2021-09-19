@@ -41,7 +41,7 @@ export default {
   },
   Chat: {
     async class(chat) {
-      await chat.populate("class").execPopulate();
+      await chat.populate("class");
       return chat.class;
     },
     async users(chat) {

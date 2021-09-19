@@ -66,7 +66,7 @@ chatSchema.methods.getUsers = async function () {
     const req = await this.populate({
       path: "class",
       select: "tutors tutees users",
-    }).execPopulate();
+    });
     return req.class.users;
   } else {
     return this.users;

@@ -147,7 +147,7 @@ userSchema.methods.getChats = async function () {
     path: "classes",
     select: "chat",
     match: { "preferences.enableChat": true },
-  }).execPopulate();
+  });
   const classesChats = classes.map((classInfo) => classInfo.chat);
   return [...this.personalChats, ...classesChats];
 };

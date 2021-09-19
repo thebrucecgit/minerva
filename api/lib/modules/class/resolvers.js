@@ -36,31 +36,29 @@ export default {
   },
   Class: {
     async sessions(classDoc, { time = new Date(), old = false, limit = 10 }) {
-      await classDoc
-        .populate({
-          path: "sessions",
-          match: {
-            endTime: { [old ? "$lte" : "$gt"]: time },
-          },
-          limit,
-          options: {
-            sort: { startTime: old ? -1 : 1 },
-          },
-        })
-        .execPopulate();
+      await classDoc.populate({
+        path: "sessions",
+        match: {
+          endTime: { [old ? "$lte" : "$gt"]: time },
+        },
+        limit,
+        options: {
+          sort: { startTime: old ? -1 : 1 },
+        },
+      });
 
       return classDoc.sessions;
     },
     async tutees(classDoc) {
-      await classDoc.populate("tutees").execPopulate();
+      await classDoc.populate("tutees");
       return classDoc.tutees;
     },
     async tutors(classDoc) {
-      await classDoc.populate("tutors").execPopulate();
+      await classDoc.populate("tutors");
       return classDoc.tutors;
     },
     async chat(classDoc) {
-      await classDoc.populate("chat").execPopulate();
+      await classDoc.populate("chat");
       return classDoc.chat;
     },
   },

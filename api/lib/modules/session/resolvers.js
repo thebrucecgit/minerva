@@ -45,15 +45,15 @@ export default {
   },
   Session: {
     async class(session) {
-      await session.populate("class").execPopulate();
+      await session.populate("class");
       return session.class;
     },
     async tutors(session) {
-      await session.populate("tutors").execPopulate();
+      await session.populate("tutors");
       return session.tutors;
     },
     async tutees(session) {
-      await session.populate("tutees").execPopulate();
+      await session.populate("tutees");
       return session.tutees;
     },
     attendance(session, _, { user }) {
@@ -190,12 +190,11 @@ export default {
       }
 
       if (edits.settings?.syncTutorsWithClass) {
-        await session
-          .populate({
-            path: "class",
-            select: "tutors",
-          })
-          .execPopulate();
+        await session.populate({
+          path: "class",
+          select: "tutors",
+        });
+
         edits.tutors = session.class.tutors;
       }
 

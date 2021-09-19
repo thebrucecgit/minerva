@@ -15,7 +15,7 @@
     "google-auth-library": "^7.1.2",
     "graphql": "^15.5.1",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.15",
+    "mongoose": "^6.0.6",
     "nanoid": "^3.1.23",
     "ws": "^7.5.0",
     "yup": "^0.32.9"
