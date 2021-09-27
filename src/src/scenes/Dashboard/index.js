@@ -2,7 +2,7 @@ import React from "react";
 import useAuth from "../../hooks/useAuth";
 import { Switch, Route, Redirect } from "react-router-dom";
 
-import useWebSocket from "./hooks/useWebSocket";
+import useChat from "./hooks/useChat";
 
 import Appbar from "./components/Appbar";
 import Main from "./scenes/Main";
@@ -24,7 +24,7 @@ const Dashboard = ({ location, match, authService }) => {
   const { currentUser } = authService;
   useAuth(currentUser?.user?.registrationStatus, ["app"]);
 
-  const ws = useWebSocket(currentUser);
+  const ws = useChat(currentUser);
 
   const { path } = match;
 
