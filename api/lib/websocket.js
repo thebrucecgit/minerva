@@ -136,7 +136,6 @@ export function init(server) {
   });
 
   const interval = setInterval(() => {
-    console.log(`${wss.clients.size} client(s) are connected via WebSocket.`);
     wss.clients.forEach((ws) => {
       if (ws.isAlive === false) return ws.terminate();
 
