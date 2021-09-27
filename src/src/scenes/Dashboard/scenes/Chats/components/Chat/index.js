@@ -160,6 +160,11 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
                   </h4>
                   {day[1].map((message) => (
                     <div key={message._id}>
+                      {message.type === "CREATION" && (
+                        <div className={messageStyles.SessionUpdates}>
+                          <h4>Chat created</h4>
+                        </div>
+                      )}
                       {message.type === "MESSAGE" && (
                         <div
                           className={classNames(
