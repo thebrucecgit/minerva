@@ -22,9 +22,11 @@ import styles from "./styles.module.scss";
 
 const Dashboard = ({ location, match, authService }) => {
   const { currentUser } = authService;
-  useAuth(currentUser?.user?.registrationStatus, ["app"]);
+  const authorized = useAuth(currentUser?.user?.registrationStatus, ["app"]);
 
   const ws = useChat(currentUser);
+
+  if (!authorized) return <div>Not Authorized.</div>;
 
   const { path } = match;
 

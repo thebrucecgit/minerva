@@ -25,13 +25,13 @@ const unbind = (eventType, handler) => {
   if (ind !== -1) eventListeners[eventType].splice(ind, 1);
 };
 
-const useWebSocket = ({ jwt }) => {
+const useWebSocket = (currentUser) => {
   const connect = useCallback(() => {
     let connectTimer;
 
-    if (!jwt) throw new Error("Not logged in.");
+    if (!currentUser?.jwt) throw new Error("Not logged in.");
 
-    const auth = new URLSearchParams({ token: jwt });
+    const auth = new URLSearchParams({ token: currentUser.jwt });
     ws = new WebSocket(`${REACT_APP_WEBSOCKET_URI}?${auth.toString()}`);
 
     ws.onopen = () => {
@@ -91,7 +91,7 @@ const useWebSocket = ({ jwt }) => {
       clearTimeout(connectTimer);
       if (errorToast) toast.dismiss(errorToast);
     };
-  }, [jwt]);
+  }, [currentUser?.jwt]);
 
   useEffect(() => {
     try {
