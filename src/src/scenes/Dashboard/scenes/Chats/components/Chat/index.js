@@ -76,8 +76,6 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
     setMessage(e.target.value);
   };
 
-  const getNameById = (id) => chatInfo.users.find((u) => u._id === id).name;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.length === 0) return;
@@ -131,6 +129,8 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
   if (loading) return <p>Loading</p>;
 
   const chatInfo = data.getChat;
+
+  const getNameById = (id) => chatInfo.users.find((u) => u._id === id)?.name;
 
   return (
     <div className={styles.Chat} onClick={rootClick}>
