@@ -30,5 +30,9 @@ const server = http.createServer(app);
 websocket.init(server);
 
 server.listen(PORT ?? 5000, () => {
-  console.log(`🚀  Server ready at ${DOMAIN}${apolloServer.graphqlPath}`);
+  console.log(
+    `🚀  Server ready at ${DOMAIN}${apolloServer.graphqlPath} on port ${
+      PORT ?? 5000
+    }`
+  );
 });
