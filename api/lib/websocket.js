@@ -83,7 +83,7 @@ export function init(server) {
   wss = new WebSocket.Server({
     noServer: true,
     path: "/ws",
-    maxPayload: 200000, // 200 kB
+    maxPayload: 20000, // 20 kB
   });
 
   wss.on("connection", (ws) => {
@@ -136,11 +136,12 @@ export function init(server) {
   });
 
   const interval = setInterval(() => {
+    console.log(`${wss.clients.size} client(s) are connected via WebSocket.`);
     wss.clients.forEach((ws) => {
       if (ws.isAlive === false) return ws.terminate();
 
       ws.isAlive = false;
-      ws.ping(() => {});
+      ws.ping();
     });
   }, 30000);
 
@@ -165,4 +166,6 @@ export function init(server) {
       socket.destroy();
     }
   });
+
+  return wss;
 }
