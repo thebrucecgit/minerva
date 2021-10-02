@@ -98,7 +98,7 @@ describe("Creation and deletion", () => {
     await classDoc.save();
     let err;
     try {
-      const startTime = new Date(1687917600000); // Wed Jun 28 2023 14:00:00 GMT+1200
+      const startTime = new Date(1687917600000); // Wednesday, June 28, 2023 at 2:00:00 PM GMT+12
       await resolvers.Mutation.instantiateSession(
         null,
         {
@@ -120,7 +120,7 @@ describe("Creation and deletion", () => {
     classDoc.preferences.studentInstantiation = true;
     classDoc.preferences.studentAgreeSession = false;
     await classDoc.save();
-    const startTime = new Date(1687917600000); // Wed Jun 28 2023 14:00:00 GMT+1200
+    const startTime = new Date(1687917600000); // Wednesday, June 28, 2023 at 2:00:00 PM GMT+12
     await resolvers.Mutation.instantiateSession(
       null,
       {
@@ -136,7 +136,7 @@ describe("Creation and deletion", () => {
         request: false,
         user: "John Smith",
         className: "Sunday Afternoon Maths",
-        sessionTime: "2:00 PM, Wednesday 28 June 2023",
+        sessionTime: "Wednesday, June 28, 2023 at 2:00:00 PM GMT+12",
         // sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
       },
       from: "no-reply@academe.co.nz",

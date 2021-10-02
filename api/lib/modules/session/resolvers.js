@@ -3,7 +3,7 @@ import Class from "../class/model";
 import User from "../user/model";
 import Chat from "../chat/model";
 import { addMinutes } from "date-fns";
-import { format } from "date-fns-tz";
+import datetime from "../../config/datetime";
 import * as websocket from "../../websocket";
 import sgMail from "../../config/email";
 import { ApolloError } from "apollo-server";
@@ -106,9 +106,7 @@ export default {
         sessionTime: session.startTime,
         text: `New session ${
           classDoc.preferences.studentAgreeSessions && "requested "
-        } on ${format(session.startTime, "h:mm aa, EEEE d MMMM yyyy", {
-          timeZone: "Pacific/Auckland",
-        })} for ${classDoc.name}`,
+        } on ${datetime.format(session.startTime)} for ${classDoc.name}`,
         time: new Date(),
         author: user._id,
       };
@@ -138,9 +136,7 @@ export default {
           request: classDoc.preferences.studentAgreeSessions,
           user: user.name,
           className: classDoc.name,
-          sessionTime: format(session.startTime, "h:mm aa, EEEE d MMMM yyyy", {
-            timeZone: "Pacific/Auckland",
-          }),
+          sessionTime: datetime.format(session.startTime),
           sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
         },
         from: "no-reply@academe.co.nz",
@@ -244,10 +240,7 @@ export default {
         className: session.class.name,
         sessionId: session._id,
         sessionTime: session.startTime,
-        text: `Session on ${format(
-          session.startTime,
-          "h:mm aa, EEEE d MMMM yyyy"
-        )} is cancelled.`,
+        text: `Session on ${datetime.format(session.startTime)} is cancelled.`,
         time: new Date(),
         author: user._id,
       };
@@ -267,13 +260,7 @@ export default {
         "name email"
       );
 
-      const sessionTime = format(
-        session.startTime,
-        "h:mm aa, EEEE d MMMM yyyy",
-        {
-          timeZone: "Pacific/Auckland",
-        }
-      );
+      const sessionTime = datetime.format(startTime);
 
       await sgMail.send({
         dynamicTemplateData: {
