@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build-swc": "swc lib --source-maps --copy-files -d dist",
-    "build": "rm -r dist && npm run build-swc",
+    "build": "rm -rf dist && npm run build-swc",
     "serve": "npm run build && npm start",
     "watch": "nodemon --watch ./lib --exec npm run serve",
     "start": "node ./dist/server",
