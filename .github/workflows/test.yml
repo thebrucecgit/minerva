@@ -31,4 +31,5 @@ jobs:
         env:
           NODE_ENV: test
           TEST_URI: mongodb://127.0.0.1:27017/academetest
+          JWT_SECRET: test
         run: npm test
