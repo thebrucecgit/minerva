@@ -35,16 +35,6 @@ jobs:
           JWT_SECRET: test
           FRONTEND_DOMAIN: http://localhost
         run: npm test
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: ./api
-
-    steps:
-      - uses: actions/checkout@v2
       - name: Dockerhub login
         run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_ACCESS_TOKEN}}
       - name: Build the Docker image
