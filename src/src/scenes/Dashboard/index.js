@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import useChat from "./hooks/useChat";
 
 import Appbar from "./components/Appbar";
+import AppbarToggle from "./components/AppbarToggle";
 import Main from "./scenes/Main";
 import Search from "./scenes/Search";
 import Tutors from "./scenes/Tutors";
@@ -24,6 +25,11 @@ const Dashboard = ({ location, match, authService }) => {
   const { currentUser } = authService;
   const authorized = useAuth(currentUser?.user?.registrationStatus, ["app"]);
 
+  const [appbarOpen, setAppbarOpen] = useState(false);
+  const toggleAppbar = () => {
+    setAppbarOpen((st) => !st);
+  };
+
   const ws = useChat(currentUser);
 
   if (!authorized) return <div>Not Authorized.</div>;
@@ -34,7 +40,16 @@ const Dashboard = ({ location, match, authService }) => {
 
   return (
     <div className={styles.Dashboard}>
-      <Appbar {...pageBinds} />
+      <Appbar
+        {...pageBinds}
+        appbarOpen={appbarOpen}
+        setAppbarOpen={setAppbarOpen}
+      />
+      <AppbarToggle
+        {...pageBinds}
+        appbarOpen={appbarOpen}
+        toggleAppbar={toggleAppbar}
+      />
       <div className={styles.content}>
         <Switch>
           <Route exact path={path}>

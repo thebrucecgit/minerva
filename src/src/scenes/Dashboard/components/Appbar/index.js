@@ -1,17 +1,89 @@
 import React from "react";
 import { Link, NavLink } from "react-router-dom";
-import styles from "./styles.module.scss";
-
+import styled from "styled-components";
+import mediaQuery from "../../../../styles/sizes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   faHome,
   faUser,
   faUserShield,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Appbar = ({ currentUser }) => {
+const StyledAppbar = styled.div`
+  top: 0;
+  left: ${(props) => (props.appbarOpen ? "0" : "-100%")};
+  position: fixed;
+  background-color: #ffeb78;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 250px;
+  height: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  transition: left 200ms;
+
+  ${mediaQuery("lg")`
+    left: 0;
+    position: sticky;
+  `}
+`;
+
+const AppbarSection = styled(NavLink)`
+  font-size: 1.4rem;
+  padding: 1rem 1.5rem;
+  transition: background-color 200ms ease;
+  text-transform: uppercase;
+  color: black;
+  display: block;
+
+  &:hover {
+    background-color: rgba(231, 207, 67, 1);
+  }
+
+  &.active {
+    background: rgb(237, 219, 115);
+    background: linear-gradient(
+      90deg,
+      rgba(237, 219, 115, 1) 0%,
+      rgba(231, 207, 67, 1) 100%
+    );
+  }
+
+  h3 {
+    margin: 0;
+  }
+`;
+
+const CloseMenu = styled.div`
+  font-size: 1.4rem;
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  ${mediaQuery("lg")`
+    display: none;
+  `}
+`;
+
+const OtherLinks = styled.div`
+  margin-top: auto;
+  margin-bottom: 0;
+  padding: 0.8rem 1.5rem;
+`;
+
+const Appbar = ({ currentUser, appbarOpen, setAppbarOpen }) => {
+  const closeMenu = () => setAppbarOpen(false);
+
   return (
-    <div className={styles.Sidebar}>
+    <StyledAppbar appbarOpen={appbarOpen}>
+      <CloseMenu onClick={closeMenu}>
+        Close Menu <FontAwesomeIcon icon={faTimes} />
+      </CloseMenu>
+
       <div>
         {[
           {
@@ -39,18 +111,18 @@ const Appbar = ({ currentUser }) => {
             link: "/dashboard/chats",
           },
         ].map((section) => (
-          <NavLink
+          <AppbarSection
             to={section.link}
             key={section.name}
-            activeClassName={styles.active}
-            className={styles.section}
+            activeClassName="active"
+            onClick={closeMenu}
             exact
           >
             <h3>{section.name}</h3>
-          </NavLink>
+          </AppbarSection>
         ))}
       </div>
-      <div className={styles.home}>
+      <OtherLinks>
         {currentUser.user.admin?.status && (
           <Link to="/admin">
             <p>
@@ -68,8 +140,8 @@ const Appbar = ({ currentUser }) => {
             Academe <FontAwesomeIcon icon={faHome} />
           </p>
         </Link>
-      </div>
-    </div>
+      </OtherLinks>
+    </StyledAppbar>
   );
 };
 
