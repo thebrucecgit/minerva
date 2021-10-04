@@ -5,7 +5,9 @@
   padding: 2rem 0;
   > .container {
     background: white;
-    padding: 2rem 4rem;
+    @include md {
+      padding: 2rem 4rem;
+    }
   }
   h2 {
     text-shadow: 3px 3px var(--main-gold-color);
