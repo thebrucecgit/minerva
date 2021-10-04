@@ -9,7 +9,7 @@
   grid-gap: 2.5rem;
 
   @include md {
-    grid-template: 2fr 1fr;
+    grid-template-columns: 2fr 1fr;
     padding: 3rem;
   }
 
