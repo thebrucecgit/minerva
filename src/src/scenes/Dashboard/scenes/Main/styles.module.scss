@@ -1,11 +1,17 @@
 @import "../../variables";
+@import "../../../../styles/sizes";
 
 .upper {
   background-image: url(../../../../media/memphis-colorful.png);
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr;
+  padding: 1rem;
   grid-gap: 2.5rem;
-  padding: 3rem;
+
+  @include md {
+    grid-template: 2fr 1fr;
+    padding: 3rem;
+  }
 
   h1 {
     text-shadow: 2px 2px var(--main-gold-color);

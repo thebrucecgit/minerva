@@ -1,9 +1,15 @@
+@import "../../../../styles/sizes";
+
 .Classes {
   padding: 2rem 4rem;
 }
 
 .classes_grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 3rem;
+
+  @include md {
+    grid-template-columns: 1fr 1fr;
+  }
 }

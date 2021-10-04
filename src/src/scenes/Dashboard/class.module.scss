@@ -1,13 +1,19 @@
 @import "variables";
+@import "../../styles/sizes";
 
 .Class {
   background-image: url(../../media/geometry.png);
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 1fr;
   grid-gap: 3rem;
-  padding: 2rem 4rem;
+  padding: 1rem 2rem;
   height: 100%;
   box-sizing: border-box;
+
+  @include md {
+    grid-template-columns: 3fr 1fr;
+    padding: 2rem 4rem;
+  }
 
   h1,
   .name {
