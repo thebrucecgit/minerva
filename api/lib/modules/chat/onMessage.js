@@ -20,7 +20,7 @@ export default async function onMessage(event, ws) {
 
   await Chat.updateOne({ _id: event.channel }, { $push: { messages: event } });
 
-  await broadcast(event, users, ws.user);
+  await broadcast(event, users, ws.user, ws.id);
 
   send(ws, {
     type: "MESSAGE_RESOLVE",

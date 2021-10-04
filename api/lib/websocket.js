@@ -53,30 +53,43 @@ export function send(ws, event) {
   ws.send(JSON.stringify(event));
 }
 
-export async function broadcast(data, endUsers, sender) {
+export async function broadcast(
+  data,
+  users,
+  senderUserId = "",
+  senderWsId = ""
+) {
   if (!data._id) data._id = nanoid(11);
   const event = await eventSchema.validate(data);
   // Send to users who are in channel and connected, excluding sender
-  const users = [...endUsers].filter((u) => u !== sender);
+
+  const sentUsers = new Set();
 
   if (typeof wss?.clients !== "undefined") {
     for (const client of wss.clients) {
       if (
-        client.user !== sender && // Not original sender
+        client.id !== senderWsId && // Not original sender client
         users.includes(client.user) && // In the user list
         client.readyState === WebSocket.OPEN // Socket is open
       ) {
         // Send event
         send(client, event);
-
-        // Remove from `users`
-        users.splice(users.indexOf(client.user), 1);
+        sentUsers.add(client.user);
       }
     }
   }
 
   // Save to users' inboxes for those in list but not connected
-  await User.updateMany({ _id: { $in: users } }, { $push: { inbox: event } });
+  await User.updateMany(
+    {
+      _id: {
+        $in: users.filter(
+          (user) => user._id !== senderUserId && !sentUsers.has(user._id)
+        ),
+      },
+    },
+    { $push: { inbox: event } }
+  );
 }
 
 export function init(server) {
@@ -88,6 +101,7 @@ export function init(server) {
 
   wss.on("connection", (ws) => {
     ws.isAlive = true;
+    ws.id = nanoid();
 
     ws.on("pong", heartbeat);
 
