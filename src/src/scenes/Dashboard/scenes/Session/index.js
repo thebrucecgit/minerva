@@ -89,7 +89,7 @@ const Session = ({ currentUser }) => {
   const [requestResponse] = useRequestResponse({ id, setSessionInfo });
   const [deleteSession, openDeletion, deletionBinds] = useDeleteSession({
     id,
-    classId: sessionInfo.class._id,
+    classId: sessionInfo.class?._id,
   });
 
   const saveInfo = async (name, { resetUpdate = true } = {}) => {

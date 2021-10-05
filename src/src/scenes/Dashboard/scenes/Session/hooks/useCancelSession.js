@@ -1,4 +1,4 @@
-import useState from "react";
+import { useState } from "react";
 import { useMutation } from "@apollo/client";
 import useModal from "../../../hooks/useModal";
 import { loader } from "graphql.macro";
