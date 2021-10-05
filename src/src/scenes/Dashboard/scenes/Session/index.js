@@ -374,12 +374,19 @@ const Session = ({ currentUser }) => {
         )}
 
         {sessionEnded &&
+          sessionInfo.status !== "CANCEL" &&
           sessionInfo.tutees.some(
             (tutee) => tutee._id === currentUser.user._id
           ) &&
           !sessionInfo.review?.some(
             (r) => r.tutee === currentUser.user._id
           ) && <Review id={id} setSessionInfo={setSessionInfo} />}
+
+        {sessionInfo.review?.some((r) => r.tutee === currentUser.user._id) && (
+          <p className={styles.padding}>
+            <FontAwesomeIcon icon={faCheck} /> You have reviewed this session!
+          </p>
+        )}
 
         <p className={styles.padding}>
           <Link to={`/dashboard/classes/${sessionInfo.class._id}`}>
