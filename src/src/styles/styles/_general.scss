@@ -76,7 +76,7 @@ select {
   }
 }
 
-input:not([type="checkbox"]):not([type="radio"]) {
+input {
   font-size: 1rem;
   padding: 0.5em;
   display: block;
@@ -91,6 +91,10 @@ input:not([type="checkbox"]):not([type="radio"]) {
   transition: border-color 300ms;
   &:hover {
     border-color: var(--main-gold-color);
+  }
+  &[type="checkbox"],
+  &[type="radio"] {
+    border: none;
   }
 }
 

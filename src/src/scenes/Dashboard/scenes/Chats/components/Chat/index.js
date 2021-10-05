@@ -1,21 +1,105 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, NavLink } from "react-router-dom";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/client";
 import { format, startOfDay, parseISO, differenceInMinutes } from "date-fns";
 import { toast } from "react-toastify";
-import classNames from "classnames";
 import Error from "../../../../../../components/Error";
 import Menu from "../../../../components/Menu";
 import useMenu from "../../../../hooks/useMenu";
+import Message from "../Message";
+import { faChevronLeft, faUsers } from "@fortawesome/free-solid-svg-icons";
+import scrollbar from "styles/scrollbar";
 
-import messageStyles from "./message.module.scss";
-import styles from "../../styles.module.scss";
-
+import styled from "styled-components";
+import mediaQuery from "styles/sizes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUsers, faRedo } from "@fortawesome/free-solid-svg-icons";
 
 const GET_CHAT = loader("./graphql/GetChat.gql");
+
+const StyledChat = styled.div`
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+
+  ${mediaQuery("lg")`
+    position: relative;
+    width: auto;
+  `}
+
+  .scrollDown {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    z-index: 1;
+    display: none;
+    &.showDown {
+      display: block;
+    }
+  }
+`;
+
+const ChatHeader = styled.div`
+  display: flex;
+  padding: 0 1rem;
+  color: #fff;
+  background-color: #000;
+
+  h2 {
+    margin: 1rem 0;
+  }
+`;
+
+const ChatHeaderUsers = styled.div`
+  margin-left: auto;
+`;
+
+const ChatMessageInput = styled.form`
+  display: flex;
+  input {
+    margin: 10px 0;
+    max-width: 100%;
+    margin-right: 10px;
+  }
+`;
+
+const MessageContent = styled.div`
+  overflow-y: scroll;
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  background: linear-gradient(
+    to right,
+    rgb(240, 240, 240) 0%,
+    rgb(247, 247, 247) 100%
+  );
+
+  ${scrollbar}
+`;
+
+const MessageGroup = styled.div`
+  padding: 1rem 2rem;
+`;
+
+const NoMessages = styled(MessageGroup)`
+  text-align: center;
+`;
+
+const DateBreaker = styled.h4`
+  font-weight: normal;
+  width: 100%;
+  text-align: center;
+`;
+
+const BackButton = styled(NavLink)`
+  margin-right: 1rem;
+  ${mediaQuery("lg")`
+    display: none;
+  `}
+`;
 
 const Chat = ({ sendMessage, ws, currentUser }) => {
   const { channel } = useParams();
@@ -133,139 +217,53 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
   const getNameById = (id) => chatInfo.users.find((u) => u._id === id)?.name;
 
   return (
-    <div className={styles.Chat} onClick={rootClick}>
-      <div className={styles.header}>
+    <StyledChat onClick={rootClick}>
+      <ChatHeader>
         <h2>
+          <BackButton to="/dashboard/chats">
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </BackButton>
           {chatInfo.bindToClass
             ? chatInfo.class.name
             : chatInfo.users.map((u) => u.name).join(", ")}
         </h2>
-        <div className={styles.usersToggle}>
+        <ChatHeaderUsers>
           <Menu {...menuBinds} icon={faUsers}>
             {chatInfo.users.map((u) => (
               <div key={u._id}>{u.name}</div>
             ))}
           </Menu>
+        </ChatHeaderUsers>
+      </ChatHeader>
+      <MessageContent ref={messageElem}>
+        {/* empty div needed for default scroll to bottom */}
+        <div>
+          {dayMessages.length ? (
+            dayMessages.map((day) => (
+              <MessageGroup key={day[0]}>
+                <DateBreaker>
+                  {format(parseISO(day[0]), "d MMMM yyyy")}
+                </DateBreaker>
+                {day[1].map((message) => (
+                  <Message
+                    key={message._id}
+                    message={message}
+                    getNameById={getNameById}
+                    handleRetryMessage={handleRetryMessage}
+                  />
+                ))}
+              </MessageGroup>
+            ))
+          ) : (
+            <NoMessages>There are no messages in this chat yet.</NoMessages>
+          )}
         </div>
-      </div>
-      <div className={messageStyles.MessageWrapper}>
-        <div className={messageStyles.MessageContent} ref={messageElem}>
-          {/* div needed for default scroll to bottom */}
-          <div>
-            {dayMessages.length ? (
-              dayMessages.map((day) => (
-                <div key={day[0]} className={messageStyles.MessageGroup}>
-                  <h4 className={messageStyles.date}>
-                    {format(parseISO(day[0]), "d MMMM yyyy")}
-                  </h4>
-                  {day[1].map((message) => (
-                    <div key={message._id}>
-                      {message.type === "CREATION" && (
-                        <div className={messageStyles.SessionUpdates}>
-                          <h4>Chat created</h4>
-                        </div>
-                      )}
-                      {message.type === "MESSAGE" && (
-                        <div
-                          className={classNames(
-                            { [messageStyles.me]: message.me },
-                            messageStyles.Message
-                          )}
-                        >
-                          {message.header && (
-                            <p className={messageStyles.header}>
-                              <span className={messageStyles.author}>
-                                {getNameById(message.author)}
-                              </span>
-                              <span className={messageStyles.time}>
-                                {format(message.time, "h:mm aa")}
-                              </span>
-                            </p>
-                          )}
-                          <p className={messageStyles.text}>{message.text}</p>
-                          {message.failed && (
-                            <p
-                              className={classNames(
-                                "error",
-                                messageStyles.retry
-                              )}
-                              onClick={() => handleRetryMessage(message._id)}
-                            >
-                              <FontAwesomeIcon icon={faRedo} /> Message failed
-                              to send
-                            </p>
-                          )}
-                        </div>
-                      )}
-                      {message.type === "NEW_SESSION" && (
-                        <div className={messageStyles.SessionUpdates}>
-                          <Link to={`/dashboard/sessions/${message.sessionId}`}>
-                            <h4>
-                              New Session created by{" "}
-                              {getNameById(message.author)}
-                            </h4>
-                            <p>
-                              {format(
-                                message.sessionTime,
-                                "d MMMM yyyy h:mm aa"
-                              )}
-                            </p>
-                          </Link>
-                        </div>
-                      )}
-                      {message.type === "NEW_SESSION_REQUEST" && (
-                        <div className={messageStyles.SessionUpdates}>
-                          <Link to={`/dashboard/sessions/${message.sessionId}`}>
-                            <h4>
-                              New Session requested by{" "}
-                              {getNameById(message.author)}
-                            </h4>
-                            <p>
-                              {format(
-                                message.sessionTime,
-                                "d MMMM yyyy h:mm aa"
-                              )}
-                            </p>
-                          </Link>
-                        </div>
-                      )}
-                      {message.type === "CANCEL_SESSION" && (
-                        <div className={messageStyles.SessionUpdates}>
-                          <Link to={`/dashboard/sessions/${message.sessionId}`}>
-                            <h4>
-                              Session cancelled by {getNameById(message.author)}
-                            </h4>
-                            <p>
-                              {format(
-                                message.sessionTime,
-                                "d MMMM yyyy h:mm aa"
-                              )}
-                            </p>
-                          </Link>
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              ))
-            ) : (
-              <div
-                className={classNames(
-                  messageStyles.MessageGroup,
-                  messageStyles.NoMessages
-                )}
-              >
-                There are no messages in this chat yet.
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-      <form onSubmit={handleSubmit} className={styles.messageField}>
+      </MessageContent>
+      <ChatMessageInput onSubmit={handleSubmit}>
         <input type="text" onChange={editMessage} value={message} />
         <button className="btn">Send</button>
-      </form>
-    </div>
+      </ChatMessageInput>
+    </StyledChat>
   );
 };
 
