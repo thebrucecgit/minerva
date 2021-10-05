@@ -4,6 +4,9 @@ function Main() {
   return (
     <div>
       <h2>Admin Dashboard</h2>
+      <Link to="/">
+        <button className="btn">Home</button>
+      </Link>
       <Link to="/admin/review">
         <button className="btn">Review Pending Tutors</button>
       </Link>
