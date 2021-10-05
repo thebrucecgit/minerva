@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import mediaQuery from "../../../../styles/sizes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faSignOutAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
 import {
   faHome,
   faUser,
@@ -130,7 +130,7 @@ const Appbar = ({ currentUser, appbarOpen, setAppbarOpen }) => {
             </p>
           </Link>
         )}
-        <Link to="/dashboard/me">
+        <Link to="/dashboard/me" onClick={closeMenu}>
           <p>
             User Profile <FontAwesomeIcon icon={faUser} />
           </p>
@@ -138,6 +138,11 @@ const Appbar = ({ currentUser, appbarOpen, setAppbarOpen }) => {
         <Link to="/">
           <p>
             Academe <FontAwesomeIcon icon={faHome} />
+          </p>
+        </Link>
+        <Link to="/auth/logout">
+          <p>
+            Logout <FontAwesomeIcon icon={faSignOutAlt} />
           </p>
         </Link>
       </OtherLinks>
