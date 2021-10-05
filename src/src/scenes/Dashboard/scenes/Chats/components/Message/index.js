@@ -61,6 +61,10 @@ export default function Message({ message, getNameById, handleRetryMessage }) {
       return (
         <SessionUpdate>
           <h4>Chat created</h4>
+          <p>
+            Please note that this conversation may be accessed by Academe
+            administrators.
+          </p>
         </SessionUpdate>
       );
     case "MESSAGE":
