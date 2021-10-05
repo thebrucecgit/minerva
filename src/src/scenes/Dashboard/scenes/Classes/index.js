@@ -62,6 +62,7 @@ const Classes = ({ currentUser }) => {
   if (loading) return <Loader />;
 
   const classes = data.getClassesOfUser;
+  const publicClasses = data.getPublicClasses;
 
   return (
     <div className={styles.Classes}>
@@ -80,6 +81,18 @@ const Classes = ({ currentUser }) => {
           ))
         ) : (
           <p>You are not part of any class.</p>
+        )}
+      </div>
+
+      <h1>Public classes</h1>
+
+      <div className={styles.classes_grid}>
+        {publicClasses.length ? (
+          publicClasses.map((classInfo, ind) => (
+            <ClassSection classInfo={classInfo} key={ind} />
+          ))
+        ) : (
+          <p>There are no public classes available currently.</p>
         )}
       </div>
 

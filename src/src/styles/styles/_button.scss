@@ -40,9 +40,14 @@
     }
   }
   &.danger {
-    background: #dc3545;
+    background-color: #dc3545;
     color: #fff;
     $shadow: #b82b39;
+    box-shadow: 1px 1px $shadow, 2px 2px $shadow, 3px 3px $shadow;
+  }
+  &.success {
+    background-color: #34f775;
+    $shadow: #39e271;
     box-shadow: 1px 1px $shadow, 2px 2px $shadow, 3px 3px $shadow;
   }
   &:disabled {

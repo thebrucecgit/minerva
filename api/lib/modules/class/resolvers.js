@@ -17,7 +17,8 @@ export default {
     async getClass(_, { id }, { user }) {
       const classData = await Class.findById(id);
 
-      assertGroupAuthorization(user, classData.users);
+      if (!classData.preferences.publicClass)
+        assertGroupAuthorization(user, classData.users);
 
       return classData;
     },
@@ -32,6 +33,11 @@ export default {
         null,
         { limit }
       );
+    },
+    async getPublicClasses(_, { limit = 6 }) {
+      return await Class.find({ "preferences.publicClass": true }, null, {
+        limit,
+      }).lean();
     },
   },
   Class: {
@@ -83,6 +89,20 @@ export default {
       });
 
       return newClass;
+    },
+    async joinClass(_, { id }, { user }) {
+      const classInfo = await Class.findById(id, "preferences.publicClass");
+      if (!classInfo.preferences.publicClass)
+        throw new ApolloError("Class not public", 403);
+
+      const newInfo = await Class.findByIdAndUpdate(
+        id,
+        {
+          $addToSet: { tutees: user._id },
+        },
+        { new: true }
+      );
+      return newInfo;
     },
     async updateClass(_, args, { user }) {
       assertTutor(user);

@@ -6,12 +6,12 @@ import { loader } from "graphql.macro";
 import { format } from "date-fns";
 import TagsEdit from "@yaireo/tagify/dist/react.tagify";
 import ReactQuill from "react-quill";
-import Loader from "../../../../components/Loader";
-import Modal from "../../../../components/Modal";
+import Loader from "components/Loader";
+import Modal from "components/Modal";
 
 import reactQuillModules from "../reactQuillModules";
 import Map from "../../components/Map";
-import Tags from "../../../../components/Tags";
+import Tags from "components/Tags";
 import Tutors from "../../components/Tutors";
 import EditButton from "../../components/EditButton";
 import Menu from "../../components/Menu";
@@ -28,8 +28,9 @@ import useSeeAllSessions from "./hooks/useSeeAllSessions";
 import useDeleteClass from "./hooks/useDeleteClass";
 import useLeaveClass from "./hooks/useLeaveClass";
 import useSaveInfo from "./hooks/useSaveInfo";
+import useJoinClass from "./hooks/useJoinClass";
 
-import selections from "../../../../config/whitelist.json";
+import selections from "config/whitelist.json";
 
 import "@yaireo/tagify/dist/tagify.css";
 import "react-quill/dist/quill.snow.css";
@@ -154,6 +155,7 @@ const Class = ({ currentUser }) => {
   );
   const deleteClass = useDeleteClass(id);
   const leaveClass = useLeaveClass(id);
+  const joinClass = useJoinClass(id, setClassInfo);
 
   const onDescriptionChange = (content, delta, source, editor) => {
     if (!disabled.description)
@@ -192,6 +194,8 @@ const Class = ({ currentUser }) => {
   if (loading || !classInfo.name) return <Loader />;
 
   const isTutor = classInfo.tutors.some((c) => c._id === currentUser.user._id);
+  const inClass =
+    isTutor || classInfo.tutees.some((c) => c._id === currentUser.user._id);
 
   return (
     <div className={styles.Class} onClick={rootClick}>
@@ -228,6 +232,12 @@ const Class = ({ currentUser }) => {
             )}
           </div>
           <div className={styles.edit}>
+            {!inClass && (
+              <button className="btn success" onClick={joinClass}>
+                Join Class
+              </button>
+            )}
+
             {classInfo.preferences.enableChat && classInfo.chat && (
               <Link to={`/dashboard/chats/${classInfo.chat.channel}`}>
                 <button className="btn">
@@ -250,9 +260,11 @@ const Class = ({ currentUser }) => {
                     <FontAwesomeIcon icon={faUserCog} /> Preferences
                   </div>
                 )}
-                <div onClick={openLeave}>
-                  <FontAwesomeIcon icon={faDoorOpen} /> Leave Class
-                </div>
+                {inClass && (
+                  <div onClick={openLeave}>
+                    <FontAwesomeIcon icon={faDoorOpen} /> Leave Class
+                  </div>
+                )}
                 {isTutor && (
                   <div onClick={openDeletion} className="danger">
                     <FontAwesomeIcon icon={faTrashAlt} /> Delete Class
@@ -440,8 +452,9 @@ const Class = ({ currentUser }) => {
         <div className={styles.padding}>
           <h2>Leave Class</h2>
           <p>
-            Are you certain that you want to leave this class? You will have to
-            ask the tutors to regain access.
+            Are you certain that you want to leave this class?{" "}
+            {!classInfo.preferences.publicClass &&
+              "You will have to ask the tutors to regain access."}
           </p>
           <button className="btn danger" onClick={leaveClass}>
             Leave Class

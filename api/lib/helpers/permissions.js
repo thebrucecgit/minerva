@@ -47,7 +47,7 @@ export function assertAdmin(user) {
 }
 
 // Asserts that the user is someone in the class / session / chat or an admin
-export async function assertGroupAuthorization(user, users) {
+export function assertGroupAuthorization(user, users) {
   assertAuthenticated(user);
   if (!users.includes(user._id))
     throw new ApolloError("User unauthorized", 401);

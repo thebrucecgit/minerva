@@ -4,4 +4,9 @@ query GetClasses($userID: ID!) {
     name
     image
   }
+  getPublicClasses(limit: 10) {
+    _id
+    name
+    image
+  }
 }

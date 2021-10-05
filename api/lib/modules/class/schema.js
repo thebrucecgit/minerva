@@ -39,10 +39,12 @@ export default gql`
   extend type Query {
     getClass(id: ID!): Class!
     getClassesOfUser(userID: ID!, limit: Int): [Class!]!
+    getPublicClasses(limit: Int): [Class!]!
   }
 
   extend type Mutation {
     createClass(name: String!): Class!
+    joinClass(id: ID!): Class!
     updateClass(
       id: ID!
       name: String

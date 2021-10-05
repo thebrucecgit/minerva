@@ -1,0 +1,8 @@
+mutation JoinClass($id: ID!) {
+  joinClass(id: $id) {
+    tutees {
+      _id
+      name
+    }
+  }
+}
