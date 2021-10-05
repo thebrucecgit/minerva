@@ -84,7 +84,7 @@ export async function broadcast(
     {
       _id: {
         $in: users.filter(
-          (user) => user._id !== senderUserId && !sentUsers.has(user._id)
+          (user) => user !== senderUserId && !sentUsers.has(user)
         ),
       },
     },
