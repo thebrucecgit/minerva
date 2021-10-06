@@ -14,9 +14,6 @@ const StyledMessage = styled.div`
       ? `
       align-self: flex-end;
       align-items: flex-end;
-      .text {
-        background: var(--main-gold-color);
-      }
     `
       : ""}
 `;
@@ -24,7 +21,7 @@ const StyledMessage = styled.div`
 const MessageText = styled.p`
   margin: 5px 0;
   padding: 10px;
-  background: white;
+  background: ${(props) => (props.me ? "var(--main-gold-color)" : "white")}};
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 `;
@@ -76,7 +73,7 @@ export default function Message({ message, getNameById, handleRetryMessage }) {
               <MessageTime>{format(message.time, "h:mm aa")}</MessageTime>
             </p>
           )}
-          <MessageText>{message.text}</MessageText>
+          <MessageText me={message.me}>{message.text}</MessageText>
           {message.failed && (
             <MessageRetry onClick={() => handleRetryMessage(message._id)}>
               <FontAwesomeIcon icon={faRedo} /> Message failed to send
