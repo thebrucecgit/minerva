@@ -24,7 +24,8 @@ const indexSchema = yup.object().shape({
 
 export default index;
 
-export const FIELDS = "name yearGroup school biography academics extras pfp";
+export const FIELDS =
+  "name yearGroup school biography academicsTutoring extrasTutoring pfp";
 
 export function docToRecord(doc) {
   const tutor = { ...doc };
