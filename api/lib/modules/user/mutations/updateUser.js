@@ -1,3 +1,4 @@
+import querystring from "querystring";
 import { ApolloError } from "apollo-server";
 import User from "../model";
 import userSchema from "../yupSchema";
@@ -13,6 +14,17 @@ export default async function updateUser(_, args, { user }) {
 
   const oldUser = await User.findById(edits.id);
   edits["tutor.grades"] = args.grades;
+
+  if (!args.pfp.url) {
+    edits.pfp = {
+      type: "URL",
+      url: `https://ui-avatars.com/api/?${querystring.stringify({
+        size: "256",
+        background: "fff9bf",
+        name: args.name,
+      })}`,
+    };
+  }
 
   if (args.applyTutor && oldUser.tutor.status === "NONE") {
     edits["tutor.status"] = "PENDING_REVIEW";

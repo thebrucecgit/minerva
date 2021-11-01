@@ -33,6 +33,16 @@ export default async function register(_, args) {
   delete edits.applyTutor;
   delete edits.grades;
 
+  if (!args.pfp.url) {
+    edits.pfp = {
+      type: "URL",
+      url: `https://ui-avatars.com/api/?${querystring.stringify({
+        size: "256",
+        background: "fff9bf",
+        name: args.name,
+      })}`,
+    };
+  }
   if (args.applyTutor) {
     edits["tutor.status"] = "PENDING_REVIEW";
     edits["tutor.grades"] = args.grades;

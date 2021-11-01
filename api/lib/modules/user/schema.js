@@ -8,8 +8,8 @@ export default gql`
   }
 
   input PfpIn {
-    type: String!
-    url: String!
+    type: String
+    url: String
     cloudinaryPublicId: String
   }
 
