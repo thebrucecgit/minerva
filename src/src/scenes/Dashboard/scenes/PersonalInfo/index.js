@@ -51,6 +51,7 @@ function PersonalInfo({ currentUser }) {
         const { data } = await updateUserAPI({
           variables: {
             ...updates,
+            yearGroup: parseInt(updates.yearGroup ?? "13"),
             id: currentUser.user._id,
           },
         });
