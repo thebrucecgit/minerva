@@ -108,8 +108,6 @@ function Signups({ authService }) {
         case "Verification": {
           if (!info.biography)
             newErrors.biography = "Please write about yourself";
-          if (!info.grades || !regex.url.test(info.grades))
-            newErrors.grades = "Please enter a valid link";
           break;
         }
         case "Confirmation": {
