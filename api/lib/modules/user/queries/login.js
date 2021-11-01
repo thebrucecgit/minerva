@@ -21,7 +21,7 @@ export default async function login(_, { email, password, tokenId }) {
       lastAuthenticated: Date.now(),
     };
 
-    if (typeof oldUser.pfp.url === "undefined")
+    if (!oldUser.pfp.url)
       newUser.pfp = {
         type: "URL",
         url: info.picture,
