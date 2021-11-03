@@ -114,6 +114,20 @@ function PersonalInfo({ currentUser }) {
   return (
     <div className={classNames("container", styles.PersonalInfo)}>
       <h1>Personal Information</h1>
+      {update ? (
+        <>
+          <button className="btn" onClick={handleSaveUpdate}>
+            Save
+          </button>
+          <button className="btn danger" onClick={handleCancelUpdate}>
+            Cancel
+          </button>
+        </>
+      ) : (
+        <button className="btn" onClick={handleChangeUpdate}>
+          Edit
+        </button>
+      )}
       <div>
         <label htmlFor="name">Name: </label>
         {update ? (
@@ -362,21 +376,6 @@ function PersonalInfo({ currentUser }) {
             )}
           </div>
         </>
-      )}
-
-      {update ? (
-        <>
-          <button className="btn" onClick={handleSaveUpdate}>
-            Save
-          </button>
-          <button className="btn danger" onClick={handleCancelUpdate}>
-            Cancel
-          </button>
-        </>
-      ) : (
-        <button className="btn" onClick={handleChangeUpdate}>
-          Update
-        </button>
       )}
     </div>
   );
