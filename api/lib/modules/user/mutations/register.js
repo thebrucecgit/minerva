@@ -63,6 +63,9 @@ export default async function register(_, args) {
       { new: true }
     );
   } else {
+    if (args.password.length < 8)
+      throw new UserInputError("Password must have a minimum of 8 characters");
+
     user = await User.create({
       ...edits,
       password: await bcrypt.hash(args.password, 12),

@@ -93,10 +93,10 @@ function Signups({ authService }) {
             newErrors.email = "Email is invalid";
           if (
             strategy === "local" &&
-            (!info.password || !regex.password.test(info.password))
+            (!info.password || info.password.length < 8)
           )
             newErrors.password =
-              "Password needs to be minimum of eight characters with at least one letter and one number";
+              "Password needs to have a minimum of eight characters";
           break;
         }
         case "Additional Info": {
