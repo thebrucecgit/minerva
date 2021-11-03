@@ -10,7 +10,7 @@ mutation Register(
   $academicsTutoring: [String!]
   $extrasTutoring: [String!]
   $biography: String!
-  $grades: String!
+  $grades: String
   $token: String!
   $applyTutor: Boolean!
 ) {

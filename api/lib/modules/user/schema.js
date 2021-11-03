@@ -28,7 +28,7 @@ export default gql`
     registrationStatus: String!
     name: String!
     email: String!
-    pfp: Pfp
+    pfp: Pfp!
     yearGroup: Int!
     school: String!
     academicsLearning: [String!]!

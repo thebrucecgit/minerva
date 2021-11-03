@@ -225,14 +225,14 @@ function Signups({ authService }) {
 
   // After form is completed
   const onSubmit = (e) => {
-    const validated = validate("Confirmation");
-    if (!validated) return;
+    if (submissionPending || !validate("Confirmation")) return;
     setSubmissionPending(true);
     recaptchaRef.current.execute();
   };
 
   const onCaptchaComplete = async (token) => {
     try {
+      recaptchaRef.current.reset();
       const { user } = await authService.register({
         ...info,
         yearGroup: parseInt(info.yearGroup),

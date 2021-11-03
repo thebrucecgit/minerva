@@ -7,6 +7,7 @@ import userSchema from "../yupSchema";
 
 import { UserInputError } from "apollo-server";
 import { createUserObject } from "../helpers";
+import getAvatar from "../../../helpers/getAvatar";
 
 const { FRONTEND_DOMAIN, CAPTCHA_SECRET_KEY, NODE_ENV } = process.env;
 
@@ -33,14 +34,10 @@ export default async function register(_, args) {
   delete edits.applyTutor;
   delete edits.grades;
 
-  if (!args.pfp.url) {
+  if (!args.pfp?.url) {
     edits.pfp = {
       type: "URL",
-      url: `https://ui-avatars.com/api/?${querystring.stringify({
-        size: "256",
-        background: "fff9bf",
-        name: args.name,
-      })}`,
+      url: getAvatar(args.name),
     };
   }
   if (args.applyTutor) {

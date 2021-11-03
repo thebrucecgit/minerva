@@ -51,7 +51,6 @@ describe("Registering a new user via email", () => {
     academicsTutoring: [],
     extrasTutoring: [],
     biography: "I'm an interested mammal",
-    // grades: "---",
   };
 
   const result = {
@@ -72,7 +71,6 @@ describe("Registering a new user via email", () => {
     biography: "I'm an interested mammal",
     classes: [],
     sessions: [],
-    // grades: "---",
   };
 
   test("Register new user", async () => {

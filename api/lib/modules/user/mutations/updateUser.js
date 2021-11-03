@@ -3,6 +3,7 @@ import { ApolloError } from "apollo-server";
 import User from "../model";
 import userSchema from "../yupSchema";
 import index, { docToRecord } from "../../../config/search";
+import getAvatar from "../../../helpers/getAvatar";
 
 export default async function updateUser(_, args, { user }) {
   if (args.id !== user._id) throw new ApolloError("Unauthorized", 401);
@@ -18,11 +19,7 @@ export default async function updateUser(_, args, { user }) {
   if (!args.pfp.url) {
     edits.pfp = {
       type: "URL",
-      url: `https://ui-avatars.com/api/?${querystring.stringify({
-        size: "256",
-        background: "fff9bf",
-        name: args.name,
-      })}`,
+      url: getAvatar(args.name),
     };
   }
 
