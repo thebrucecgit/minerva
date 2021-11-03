@@ -42,12 +42,8 @@ export async function addDocToRecord(doc) {
 }
 
 export async function indexAll() {
-  try {
-    const docs = await User.find({ "tutor.status": "COMPLETE" }, FIELDS).lean();
-    const tutors = docs.map(docToRecord);
-    await index.saveObjects(tutors);
-    console.log("success in reindexing tutors");
-  } catch (e) {
-    console.error(e);
-  }
+  const docs = await User.find({ "tutor.status": "COMPLETE" }, FIELDS).lean();
+  const tutors = docs.map(docToRecord);
+  await index.saveObjects(tutors);
+  console.log("Reindexed tutors");
 }

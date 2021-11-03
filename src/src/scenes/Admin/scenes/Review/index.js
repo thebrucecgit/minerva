@@ -14,12 +14,22 @@ function Review() {
   const [reviewUserReq] = useMutation(REVIEW_TUTOR);
 
   const onClick = async (id, approval) => {
+    let toastId;
     try {
-      const res = await reviewUserReq({ variables: { id, approval } });
-      console.log(res);
-      toast.success("Success.");
+      toastId = toast("Sending review...", { autoClose: false });
+      await reviewUserReq({ variables: { id, approval } });
+      toast.update(toastId, {
+        render: "Success",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 3000,
+      });
     } catch (e) {
       console.error(e);
+      toast.update(toastId, {
+        render: e.message,
+        type: toast.TYPE.ERROR,
+        autoClose: 5000,
+      });
     }
   };
 

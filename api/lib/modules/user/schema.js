@@ -97,5 +97,6 @@ export default gql`
       newPassword: String!
     ): UserReq!
     reviewUser(id: ID!, approval: Boolean!, message: String): Boolean
+    indexTutors: Boolean
   }
 `;
