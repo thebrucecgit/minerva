@@ -1,4 +1,4 @@
-import React from "react";
+import { NavLink } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";
@@ -22,6 +22,9 @@ const Tutors = ({ currentUser }) => {
   return (
     <div className="container">
       <h1>Tutors</h1>
+      <p>
+        <NavLink to="/dashboard/search">Search for tutors</NavLink>
+      </p>
       <div className={styles.tutors}>
         {tutors.length > 0 ? (
           tutors.map((tutor) => (
