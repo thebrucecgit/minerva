@@ -31,8 +31,8 @@ function Main() {
   return (
     <div className="container">
       <h2>Admin Dashboard</h2>
-      <Link to="/">
-        <button className="btn">Home</button>
+      <Link to="/dashboard">
+        <button className="btn">Dashboard</button>
       </Link>
       <Link to="/admin/review">
         <button className="btn">Review Pending Tutors</button>
