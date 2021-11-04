@@ -1,6 +1,5 @@
 import User from "./model";
 import Class from "../class/model";
-import { ApolloError } from "apollo-server";
 
 import login from "./queries/login";
 
@@ -10,6 +9,7 @@ import confirmUserEmail from "./mutations/confirmUserEmail";
 import updatePassword from "./mutations/updatePassword";
 import updateUser from "./mutations/updateUser";
 import reviewUser from "./mutations/reviewUser";
+import indexTutors from "./mutations/indexTutors";
 
 import { escapeRegExp } from "./helpers";
 import {
@@ -62,5 +62,6 @@ export default {
     updatePassword,
     updateUser,
     reviewUser,
+    indexTutors,
   },
 };
