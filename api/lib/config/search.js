@@ -4,7 +4,7 @@ import * as yup from "yup";
 
 const { ALGOLIA_APPID, ALGOLIA_ADMIN_API, ALGOLIA_INDEX } = process.env;
 
-const client = algoliasearch(ALGOLIA_APPID, ALGOLIA_ADMIN_API);
+export const client = algoliasearch(ALGOLIA_APPID, ALGOLIA_ADMIN_API);
 const index = client.initIndex(ALGOLIA_INDEX);
 
 const indexSchema = yup.object().shape({

@@ -46,6 +46,7 @@ export default gql`
     jwt: String!
     exp: Int!
     registered: Boolean!
+    algoliaKey: String
     user: User!
   }
 

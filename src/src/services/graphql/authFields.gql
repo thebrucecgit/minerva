@@ -1,0 +1,22 @@
+fragment authFields on UserReq {
+  jwt
+  exp
+  algoliaKey
+  user {
+    _id
+    name
+    pfp {
+      type
+      url
+      cloudinaryPublicId
+    }
+    email
+    registrationStatus
+    tutor {
+      status
+    }
+    admin {
+      status
+    }
+  }
+}

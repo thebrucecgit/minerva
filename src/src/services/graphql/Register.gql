@@ -1,3 +1,4 @@
+#import "./authFields.gql"
 mutation Register(
   $name: String!
   $email: String!
@@ -30,24 +31,6 @@ mutation Register(
     token: $token
     applyTutor: $applyTutor
   ) {
-    jwt
-    exp
-    user {
-      _id
-      name
-      pfp {
-        type
-        url
-        cloudinaryPublicId
-      }
-      email
-      registrationStatus
-      tutor {
-        status
-      }
-      admin {
-        status
-      }
-    }
+    ...authFields
   }
 }

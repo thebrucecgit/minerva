@@ -1,23 +1,6 @@
+#import "./authFields.gql"
 query Login($email: String, $password: String, $tokenId: String) {
   login(email: $email, password: $password, tokenId: $tokenId) {
-    jwt
-    exp
-    user {
-      _id
-      name
-      pfp {
-        type
-        url
-        cloudinaryPublicId
-      }
-      email
-      registrationStatus
-      tutor {
-        status
-      }
-      admin {
-        status
-      }
-    }
+    ...authFields
   }
 }

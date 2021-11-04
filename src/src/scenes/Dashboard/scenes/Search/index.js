@@ -15,17 +15,14 @@ import Menu from "./components/Menu";
 import "instantsearch.css/themes/reset.css";
 import "./styles.scss";
 
-const {
-  REACT_APP_ALGOLIA_APPID,
-  REACT_APP_ALGOLIA_API_KEY,
-  REACT_APP_ALGOLIA_INDEX_NAME,
-} = process.env;
-const searchClient = algoliasearch(
-  REACT_APP_ALGOLIA_APPID,
-  REACT_APP_ALGOLIA_API_KEY
-);
+const { REACT_APP_ALGOLIA_APPID, REACT_APP_ALGOLIA_INDEX_NAME } = process.env;
 
 const Search = ({ currentUser }) => {
+  const searchClient = algoliasearch(
+    REACT_APP_ALGOLIA_APPID,
+    currentUser.algoliaKey
+  );
+
   return (
     <div className="container">
       <InstantSearch
