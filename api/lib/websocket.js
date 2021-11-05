@@ -167,10 +167,11 @@ export function init(server) {
       const { searchParams } = new URL(req.url, DOMAIN);
       const token = searchParams.get("token");
 
-      const { _id } = await authenticate(token);
+      const user = await authenticate(token);
+      if (!user) throw new Error("Not authenticated");
 
       wss.handleUpgrade(req, socket, head, (ws) => {
-        ws.user = _id;
+        ws.user = user._id;
         wss.emit("connection", ws);
       });
     } catch (e) {
