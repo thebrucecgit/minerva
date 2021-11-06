@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { nanoid } from "nanoid";
 import Class from "../class/model";
-import User from "../user/model";
+import ID from "../../types/ID";
 
 const sessionSchema = Schema({
   _id: {
@@ -15,12 +15,14 @@ const sessionSchema = Schema({
   tutors: [
     {
       type: String,
+      get: (value) => new ID(value),
       ref: "User",
     },
   ],
   tutees: [
     {
       type: String,
+      get: (value) => new ID(value),
       ref: "User",
     },
   ],
@@ -28,6 +30,7 @@ const sessionSchema = Schema({
     {
       tutee: {
         type: String,
+        get: (value) => new ID(value),
         ref: "User",
       },
       rating: Number, // out of 5.0 scale
@@ -41,6 +44,7 @@ const sessionSchema = Schema({
       tutee: {
         type: String,
         ref: "User",
+        get: (value) => new ID(value),
       },
       attended: {
         type: Boolean,
@@ -87,6 +91,7 @@ const sessionSchema = Schema({
       user: {
         type: String,
         ref: "User",
+        get: (value) => new ID(value),
         required: true,
       },
       response: {
@@ -100,6 +105,7 @@ const sessionSchema = Schema({
     user: {
       type: String,
       ref: "User",
+      get: (value) => new ID(value),
     },
     cancelled: {
       type: Boolean,
@@ -129,12 +135,18 @@ sessionSchema.virtual("status").get(function () {
     return "REJECT";
 
   // If no response from any tutor
-  if (!userResponses.some((value) => tutors.includes(value.user)))
+  if (
+    !userResponses.some((value) =>
+      tutors.some((tutor) => tutor._id.isEqual(value.user))
+    )
+  )
     return "UNCONFIRM";
 
   // If not every tutee has responded
   if (
-    userResponses.filter((u) => tutees.includes(u.user)).length < tutees.length
+    userResponses.filter((u) =>
+      tutees.some((tutee) => tutee._id.isEqual(u.user))
+    ).length < tutees.length
   )
     return "UNCONFIRM";
 

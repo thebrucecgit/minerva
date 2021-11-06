@@ -45,9 +45,8 @@ export default {
       return chat.class;
     },
     async users(chat) {
-      const userIds = await chat.getUsers();
-      const users = await User.find({ _id: { $in: userIds } });
-      return users;
+      const users = await chat.getUsers();
+      return await User.find({ _id: { $in: users.map((user) => user._id) } });
     },
   },
 };

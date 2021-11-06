@@ -2,23 +2,33 @@ import Chat from "./model";
 import User from "../user/model";
 import { broadcast, send } from "../../websocket";
 import { nanoid } from "nanoid";
+import sgMail from "../../config/email";
+import { differenceInMinutes } from "date-fns";
+
+const { FRONTEND_DOMAIN } = process.env;
 
 export default async function onMessage(event, ws) {
   let reqId = event._id;
 
-  event._id = nanoid(11);
+  event._id = nanoid();
   event.author = ws.user;
   // Save to DB
-  const chat = await Chat.findById(event.channel);
+  const oldChat = await Chat.findById(event.channel, "-messages").populate(
+    "users",
+    "name email"
+  );
+  const users = await oldChat.getUsers();
 
-  const users = await chat.getUsers();
+  if (!users.some((user) => user._id.isEqual(ws.user)))
+    throw new Error("Unauthorized");
 
-  if (!users.includes(ws.user)) throw new Error("Not authorised");
+  const author = await User.findById(ws.user, "name");
+  event.authorName = author.name;
 
-  const { name } = await User.findById(ws.user, "name");
-  event.authorName = name;
-
-  await Chat.updateOne({ _id: event.channel }, { $push: { messages: event } });
+  await Chat.updateOne(
+    { _id: event.channel },
+    { $push: { messages: event }, lastMessageSent: new Date() }
+  );
 
   await broadcast(event, users, ws.user, ws.id);
 
@@ -26,4 +36,29 @@ export default async function onMessage(event, ws) {
     type: "MESSAGE_RESOLVE",
     _id: reqId,
   });
+
+  if (differenceInMinutes(new Date(), oldChat.lastMessageSent) > 10) {
+    const msg = {
+      from: {
+        email: "chat@academe.co.nz",
+        name: "Chat",
+      },
+      subject: `New message from ${author.name}`,
+      templateId: "d-7414703086e342908972b9e187499820",
+      dynamic_template_data: {
+        author: author.name,
+        message: event.text,
+        chatLink: `${FRONTEND_DOMAIN}/dashboard/chats/${event.channel}`,
+      },
+      personalizations: users
+        .filter((user) => !user._id.isEqual(author._id))
+        .map((user) => ({
+          to: user.email,
+          dynamic_template_data: {
+            name: user.name,
+          },
+        })),
+    };
+    await sgMail.send(msg);
+  }
 }

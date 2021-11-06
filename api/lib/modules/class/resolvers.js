@@ -228,7 +228,9 @@ export default {
       const classData = await Class.findById(id);
       assertGroupAuthorization(user, classData.users);
 
-      const isTutor = classData.tutors.includes(user._id);
+      const isTutor = classData.tutors.some((tutor) =>
+        tutor._id.isEqual(user._id)
+      );
 
       if (isTutor && classData.tutors.length === 1)
         throw new Error(

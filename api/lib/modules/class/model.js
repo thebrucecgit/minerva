@@ -1,7 +1,7 @@
 import { Schema, model } from "mongoose";
 import { nanoid } from "nanoid";
 import Session from "../session/model";
-import User from "../user/model";
+import ID from "../../types/ID";
 
 const classSchema = Schema({
   _id: {
@@ -34,12 +34,14 @@ const classSchema = Schema({
   tutees: [
     {
       type: String,
+      get: (value) => new ID(value),
       ref: "User",
     },
   ],
   tutors: [
     {
       type: String,
+      get: (value) => new ID(value),
       ref: "User",
     },
   ],

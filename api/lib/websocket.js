@@ -60,7 +60,10 @@ export async function broadcast(
   senderWsId = ""
 ) {
   if (!data._id) data._id = nanoid(11);
+
+  // internal validation:
   const event = await eventSchema.validate(data);
+
   // Send to users who are in channel and connected, excluding sender
 
   const sentUsers = new Set();
@@ -69,7 +72,7 @@ export async function broadcast(
     for (const client of wss.clients) {
       if (
         client.id !== senderWsId && // Not original sender client
-        users.includes(client.user) && // In the user list
+        users.some((user) => user._id.isEqual(client.user)) && // In the user list
         client.readyState === WebSocket.OPEN // Socket is open
       ) {
         // Send event
@@ -84,7 +87,9 @@ export async function broadcast(
     {
       _id: {
         $in: users.filter(
-          (user) => user !== senderUserId && !sentUsers.has(user)
+          (user) =>
+            !user._id.isEqual(senderUserId) &&
+            !sentUsers.has(user._id.valueOf())
         ),
       },
     },
@@ -171,7 +176,7 @@ export function init(server) {
       if (!user) throw new Error("Not authenticated");
 
       wss.handleUpgrade(req, socket, head, (ws) => {
-        ws.user = user._id;
+        ws.user = user._id.valueOf(); // primitive string value
         wss.emit("connection", ws);
       });
     } catch (e) {

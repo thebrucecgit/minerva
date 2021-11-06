@@ -1,10 +1,12 @@
 import { Schema, model } from "mongoose";
 import { nanoid } from "nanoid";
+import ID from "../../types/ID";
 
 const userSchema = new Schema({
   _id: {
     type: String,
-    default: () => nanoid(11),
+    default: () => new ID(),
+    get: (value) => new ID(value),
   },
   name: {
     type: String,

@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import { nanoid } from "nanoid";
+import ID from "../../types/ID";
 
 const chatSchema = Schema({
   _id: {
@@ -18,9 +19,14 @@ const chatSchema = Schema({
   users: [
     {
       type: String,
+      get: (value) => new ID(value),
       ref: "User",
     },
   ],
+  lastMessageSent: {
+    type: Date,
+    default: new Date(1630000000000), // random time in the past
+  },
   messages: {
     type: [
       {
@@ -51,6 +57,7 @@ const chatSchema = Schema({
         },
         author: {
           type: String,
+          get: (value) => new ID(value),
           ref: "User",
         },
         sessionId: String,
@@ -66,6 +73,10 @@ chatSchema.methods.getUsers = async function () {
     const req = await this.populate({
       path: "class",
       select: "tutors tutees users",
+      populate: {
+        path: "tutors tutees",
+        select: "name email",
+      },
     });
     return req.class.users;
   } else {

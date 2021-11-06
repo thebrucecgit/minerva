@@ -75,7 +75,7 @@ describe("Tutor operations", () => {
     const res = await Class.find({ name: "Genuine Afternoon Session" });
     expect(res.length).toBeGreaterThan(0);
     classId = res[0]._id;
-    expect(res[0].tutors).toContain(tutor._id);
+    expect(res[0].tutors.some((t) => t._id.isEqual(tutor._id))).toBeTruthy();
   });
 
   test("Updates class name", async () => {
@@ -133,7 +133,7 @@ describe("Tutor operations", () => {
     expect(doc.toObject()).toMatchObject(updates);
     session = await Session.findById(session._id);
     expect(session.tutees.length).toBe(doc.tutees.length);
-    expect(session.tutees.toObject()).toContainEqual("2");
+    expect(session.tutees.some((t) => t._id.isEqual("2"))).toBeTruthy();
   });
 
   test("Change class to be online", async () => {

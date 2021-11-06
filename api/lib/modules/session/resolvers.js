@@ -57,12 +57,18 @@ export default {
       return session.tutees;
     },
     attendance(session, _, { user }) {
-      if (session.tutors.includes(user._id)) return session.attendance;
-      else return session.attendance.filter((att) => att.tutee === user._id);
+      if (session.tutors.some((tutor) => tutor._id.isEqual(user._id)))
+        return session.attendance;
+      else
+        return session.attendance.filter((att) =>
+          att.tutee._id.isEqual(user._id)
+        );
     },
     review(session, _, { user }) {
-      if (session.tutors.includes(user._id)) return session.review;
-      else return session.review.filter((rev) => rev.tutee === user._id);
+      if (session.tutors.some((tutor) => tutor._id.isEqual(user._id)))
+        return session.review;
+      else
+        return session.review.filter((rev) => rev.tutee._id.isEqual(user._id));
     },
   },
   Mutation: {
@@ -72,7 +78,7 @@ export default {
 
       if (
         !classDoc.preferences.studentInstantiation &&
-        !classDoc.tutors.includes(user._id)
+        !classDoc.tutors.some((tutor) => tutor._id.isEqual(user._id))
       )
         throw new ApolloError("User unauthorized to instantiate session", 401);
 
@@ -121,7 +127,7 @@ export default {
           { new: true }
         );
       }
-      event._id = nanoid(11);
+      event._id = nanoid();
       // Notify all users except initiator
       await websocket.broadcast(event, session.users, user._id);
 
@@ -151,7 +157,7 @@ export default {
             : "Session"
         } for "${classDoc.name}"`,
         personalizations: users
-          .filter((u) => u._id != user._id)
+          .filter((u) => !u._id.isEqual(user._id))
           .map((user) => ({
             to: {
               email: user.email,
@@ -173,7 +179,7 @@ export default {
 
       assertGroupAuthorization(user, session.users);
 
-      if (!session.tutors.includes(user._id)) {
+      if (!session.tutors.some((tutor) => tutor._id.isEqual(user._id))) {
         if (session.settings.studentEditNotes) {
           // Only edit the notes
           edits = { notes: args.notes };
@@ -215,7 +221,7 @@ export default {
 
       if (
         !session.class.preferences.studentAgreeSessions &&
-        !session.tutors.includes(user._id)
+        !session.tutors.some((tutor) => tutor._id.isEqual(user._id))
       )
         throw new ApolloError("Not authorized to cancel session", 401);
 
@@ -314,7 +320,7 @@ export default {
     async reviewSession(_, { id, review }, { user }) {
       const session = await Session.findById(id);
       assertAuthenticated(user);
-      if (!session.tutees.includes(user._id))
+      if (!session.tutees.some((tutee) => tutee._id.isEqual(user._id)))
         throw new Error("Not allowed to create review");
       if (session.review.some((r) => r.tutee === user._id))
         throw new Error("Tutee can't review more than once");
