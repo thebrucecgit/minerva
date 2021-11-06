@@ -122,7 +122,16 @@ function Signups({ authService }) {
       setErrors(newErrors);
       return Object.values(newErrors).length === 0;
     },
-    [info, strategy]
+    [
+      info.agreement,
+      info.biography,
+      info.email,
+      info.password,
+      info.school,
+      info.yearGroup,
+      info.name,
+      strategy,
+    ]
   );
 
   // Moves onto next strategy
