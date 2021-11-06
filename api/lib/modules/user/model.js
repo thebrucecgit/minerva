@@ -35,7 +35,6 @@ const userSchema = new Schema({
     type: {
       type: String,
       enum: ["URL", "CLOUDINARY"],
-      default: "URL",
     },
     url: {
       type: String,
