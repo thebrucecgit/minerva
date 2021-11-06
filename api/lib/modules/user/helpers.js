@@ -21,10 +21,13 @@ export function createUserObject(user) {
       expiresIn: "1d",
     }),
     exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24, // 1 day
-    algoliaKey: algoliaClient.generateSecuredApiKey(ALGOLIA_SEARCH_API, {
-      filters: `school:"${user.school}"`,
-      userToken: user._id,
-    }),
+    algoliaKey:
+      user.registrationStatus === "COMPLETE"
+        ? algoliaClient.generateSecuredApiKey(ALGOLIA_SEARCH_API, {
+            filters: `school:"${user.school}"`,
+            userToken: user._id,
+          })
+        : null,
     user: user.toObject(),
   };
 }
