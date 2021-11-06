@@ -74,7 +74,7 @@ const BasicInfo = ({
           )}
           <div className={styles.field}>
             <label htmlFor="pfp">Picture:</label>
-            {info.pfp &&
+            {info.pfp?.type &&
               (info.pfp.cloudinaryPublicId ? (
                 <Image
                   publicId={info.pfp.cloudinaryPublicId}
@@ -87,7 +87,7 @@ const BasicInfo = ({
               ))}
 
             <button className="btn" onClick={uploadImage}>
-              {info.pfp ? "Change" : "Upload"}
+              {info.pfp?.type ? "Change" : "Upload"}
             </button>
           </div>
           <button className="btn" onClick={onNext} data-test="basic-info-next">

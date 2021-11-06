@@ -26,6 +26,14 @@ const {
 
 const recaptchaRef = createRef();
 
+const sections = {
+  "Sign In": true,
+  "Basic Info": true,
+  "Additional Info": true,
+  Verification: true,
+  Confirmation: true,
+};
+
 function Signups({ authService }) {
   const history = useHistory();
 
@@ -51,14 +59,6 @@ function Signups({ authService }) {
     null,
     null,
   ]);
-
-  const sections = {
-    "Sign In": true,
-    "Basic Info": true,
-    "Additional Info": true,
-    Verification: true,
-    Confirmation: true,
-  };
 
   const [strategy, setStrategy] = useState("local");
 
@@ -122,7 +122,16 @@ function Signups({ authService }) {
       setErrors(newErrors);
       return Object.values(newErrors).length === 0;
     },
-    [info, strategy]
+    [
+      info.agreement,
+      info.biography,
+      info.email,
+      info.password,
+      info.school,
+      info.yearGroup,
+      info.name,
+      strategy,
+    ]
   );
 
   // Moves onto next strategy
@@ -144,7 +153,6 @@ function Signups({ authService }) {
         setSectionClosed({ ...sections, [newSection]: false });
       }
     },
-    // eslint-disable-next-line
     [validate]
   );
 
@@ -170,7 +178,7 @@ function Signups({ authService }) {
   const uploadImage = useCloudinary(cloudinaryCallback);
 
   const onGoogleSignedIn = (userInfo) => {
-    const userData = authService.currentUser || userInfo;
+    const userData = authService.currentUser ?? userInfo;
     if (!userData) return;
 
     const { user } = userData;
@@ -189,14 +197,11 @@ function Signups({ authService }) {
           ...st,
           name: user.name,
           email: user.email,
-          pfp: {
-            type: "URL",
-            url: user.pfp,
-          },
+          pfp: user.pfp,
         }));
-
         onNext("Sign In");
         setStrategy("google");
+        break;
       }
     }
   };
