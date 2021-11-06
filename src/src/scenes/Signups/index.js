@@ -26,6 +26,14 @@ const {
 
 const recaptchaRef = createRef();
 
+const sections = {
+  "Sign In": true,
+  "Basic Info": true,
+  "Additional Info": true,
+  Verification: true,
+  Confirmation: true,
+};
+
 function Signups({ authService }) {
   const history = useHistory();
 
@@ -51,14 +59,6 @@ function Signups({ authService }) {
     null,
     null,
   ]);
-
-  const sections = {
-    "Sign In": true,
-    "Basic Info": true,
-    "Additional Info": true,
-    Verification: true,
-    Confirmation: true,
-  };
 
   const [strategy, setStrategy] = useState("local");
 
@@ -144,7 +144,6 @@ function Signups({ authService }) {
         setSectionClosed({ ...sections, [newSection]: false });
       }
     },
-    // eslint-disable-next-line
     [validate]
   );
 
@@ -170,7 +169,7 @@ function Signups({ authService }) {
   const uploadImage = useCloudinary(cloudinaryCallback);
 
   const onGoogleSignedIn = (userInfo) => {
-    const userData = authService.currentUser || userInfo;
+    const userData = authService.currentUser ?? userInfo;
     if (!userData) return;
 
     const { user } = userData;
@@ -185,25 +184,28 @@ function Signups({ authService }) {
       }
       default:
       case "GOOGLE_SIGNED_IN": {
+        if (strategy === "google") break;
         setInfo((st) => ({
           ...st,
           name: user.name,
           email: user.email,
-          pfp: {
-            type: "URL",
-            url: user.pfp,
-          },
+          pfp: user.pfp,
         }));
-
         onNext("Sign In");
         setStrategy("google");
+        break;
       }
     }
   };
 
   const [submissionPending, setSubmissionPending] = useState(false);
 
-  useEffect(onGoogleSignedIn, [authService.currentUser, history, onNext]);
+  useEffect(onGoogleSignedIn, [
+    authService.currentUser,
+    history,
+    onNext,
+    strategy,
+  ]);
 
   // Authentication with Google strategy
   const onGoogleSignIn = async ({ tokenId }) => {
