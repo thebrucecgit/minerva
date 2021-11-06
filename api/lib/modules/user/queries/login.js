@@ -21,7 +21,7 @@ export default async function login(_, { email, password, tokenId }) {
       lastAuthenticated: Date.now(),
     };
 
-    if (!oldUser.pfp.url)
+    if (!oldUser?.pfp?.url && info.picture)
       newUser.pfp = {
         type: "URL",
         url: info.picture,
