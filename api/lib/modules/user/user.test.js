@@ -6,8 +6,11 @@ import register from "./mutations/register";
 import confirmUserEmail from "./mutations/confirmUserEmail";
 import updatePassword from "./mutations/updatePassword";
 import resetPassword from "./mutations/resetPassword";
+import updateUser from "./mutations/updateUser";
 import login from "./queries/login";
 import sgMail from "@sendgrid/mail";
+import ID from "../../types/ID";
+import index, { docToRecord } from "../../config/search";
 
 jest.mock("@sendgrid/mail");
 sgMail.send.mockResolvedValue();
@@ -32,46 +35,50 @@ function testJwtObj(jwtObj, desired) {
   expect(jwtObj.exp).toBeGreaterThan(Date.now() / 1000 + 23 * 60 * 60);
 }
 
-describe("Registering a new user via email", () => {
-  const info = {
-    name: "John Smith",
-    email: "JOHN@example.com",
-    password: "John123John",
-    pfp: {
-      type: "CLOUDINARY",
-      url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
-      cloudinaryPublicId:
-        "Academe/karsten-winegeart-1MgX1KQcbj0-unsplash_ohlqzq.jpg",
-    },
-    yearGroup: 12,
-    school: "Example High School",
-    academicsLearning: ["English", "Mathematics"],
-    extrasLearning: ["Coding"],
-    applyTutor: false,
-    academicsTutoring: [],
-    extrasTutoring: [],
-    biography: "I'm an interested mammal",
-  };
+const info = {
+  name: "John Smith",
+  email: "JOHN@example.com",
+  password: "John123John",
+  pfp: {
+    type: "CLOUDINARY",
+    url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
+    cloudinaryPublicId:
+      "Academe/karsten-winegeart-1MgX1KQcbj0-unsplash_ohlqzq.jpg",
+  },
+  yearGroup: 12,
+  school: "Example High School",
+  academicsLearning: ["English", "Mathematics"],
+  extrasLearning: ["Coding"],
+  applyTutor: false,
+  academicsTutoring: [],
+  extrasTutoring: [],
+  biography: "I'm an interested mammal",
+};
 
-  const result = {
-    name: "John Smith",
-    email: "john@example.com",
-    pfp: {
-      type: "CLOUDINARY",
-      url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
-      cloudinaryPublicId:
-        "Academe/karsten-winegeart-1MgX1KQcbj0-unsplash_ohlqzq.jpg",
-    },
-    yearGroup: 12,
-    school: "Example High School",
-    academicsLearning: ["English", "Mathematics"],
-    extrasLearning: ["Coding"],
-    academicsTutoring: [],
-    extrasTutoring: [],
-    biography: "I'm an interested mammal",
-    classes: [],
-    sessions: [],
-  };
+const result = {
+  name: "John Smith",
+  email: "john@example.com",
+  pfp: {
+    type: "CLOUDINARY",
+    url: "https://images.unsplash.com/photo-1601699165292-b3b1acd6472c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=250&h=250&q=80",
+    cloudinaryPublicId:
+      "Academe/karsten-winegeart-1MgX1KQcbj0-unsplash_ohlqzq.jpg",
+  },
+  yearGroup: 12,
+  school: "Example High School",
+  academicsLearning: ["English", "Mathematics"],
+  extrasLearning: ["Coding"],
+  academicsTutoring: [],
+  extrasTutoring: [],
+  biography: "I'm an interested mammal",
+  classes: [],
+  sessions: [],
+};
+
+describe("Registering a new user via email", () => {
+  afterAll(async () => {
+    await User.deleteMany({});
+  });
 
   test("Register new user", async () => {
     const jwtObj = await register(null, info);
@@ -186,5 +193,77 @@ describe("Registering a new user via email", () => {
     testJwtObj(jwtObj, result);
     const final = await User.findOne({ email: "john@example.com" });
     expect(oldPassword).not.toBe(final.password);
+  });
+});
+
+jest.mock("../../config/search");
+index.partialUpdateObject.mockResolvedValue();
+
+describe("Update user details", () => {
+  afterEach(async () => {
+    docToRecord.mockClear();
+    await User.deleteMany({});
+  });
+  test("Unauthorized update", async () => {
+    await User.create({
+      _id: "1",
+      name: "John Smith",
+      biography: "I'm an interested mammal",
+    });
+    let err;
+    try {
+      await updateUser(
+        null,
+        { id: "1", name: "John" },
+        { user: { _id: new ID("2") } }
+      );
+    } catch (e) {
+      err = e;
+    }
+    expect(err.message.toLowerCase()).toMatch(/unauthorized/);
+    const user = await User.findById("1");
+    expect(user.name).toBe("John Smith");
+  });
+  test("Update tutee name", async () => {
+    await User.create({
+      _id: "1",
+      name: "John Smith",
+      biography: "I'm an interested mammal",
+    });
+    await updateUser(
+      null,
+      { id: "1", name: "Sienna Johnson" },
+      { user: { _id: new ID("1") } }
+    );
+    const user = await User.findById("1");
+    expect(user.name).toBe("Sienna Johnson");
+    expect(index.partialUpdateObject.mock.calls.length).toBe(0);
+  });
+  test("Update bio of approved tutor", async () => {
+    await User.create({
+      _id: "1",
+      name: "John Smith",
+      biography: "I'm an interested mammal",
+      "tutor.status": "COMPLETE",
+      academicsTutoring: ["English", "Mathematics"],
+      extrasTutoring: [],
+    });
+    await updateUser(
+      null,
+      {
+        id: "1",
+        biography: "I am available for tutoring on certain days.",
+      },
+      { user: { _id: new ID("1") } }
+    );
+    const user = await User.findById("1");
+    expect(user.biography).toBe("I am available for tutoring on certain days.");
+    expect(docToRecord.mock.calls[0][0]).toMatchObject({
+      _id: "1",
+      name: "John Smith",
+      biography: "I am available for tutoring on certain days.",
+      academicsTutoring: ["English", "Mathematics"],
+      extrasTutoring: [],
+    });
   });
 });
