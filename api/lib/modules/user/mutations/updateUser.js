@@ -1,4 +1,3 @@
-import querystring from "querystring";
 import { ApolloError } from "apollo-server";
 import User from "../model";
 import userSchema from "../yupSchema";
@@ -6,7 +5,7 @@ import index, { docToRecord } from "../../../config/search";
 import getAvatar from "../../../helpers/getAvatar";
 
 export default async function updateUser(_, args, { user }) {
-  if (args.id !== user._id) throw new ApolloError("Unauthorized", 401);
+  if (!user._id.isEqual(args.id)) throw new ApolloError("Unauthorized", 401);
 
   // Verify information
   userSchema.validateSync(args);
@@ -16,26 +15,23 @@ export default async function updateUser(_, args, { user }) {
   const oldUser = await User.findById(edits.id);
   edits["tutor.grades"] = args.grades;
 
-  if (!args.pfp.url) {
+  if (!args.pfp?.url) {
     edits.pfp = {
       type: "URL",
-      url: getAvatar(args.name),
+      url: getAvatar(args.name ?? oldUser.name),
     };
   }
 
-  if (args.applyTutor && oldUser.tutor.status === "NONE") {
+  if (args.applyTutor && oldUser.tutor.status === "NONE")
     edits["tutor.status"] = "PENDING_REVIEW";
-  }
-  if (args.applyTutor === false && oldUser.tutor.status !== "NONE") {
+  else if (args.applyTutor === false && oldUser.tutor.status !== "NONE") {
     if (oldUser.tutor.status === "COMPLETE") await index.deleteObject(edits.id);
     edits["tutor.status"] = "NONE";
   }
   delete edits.applyTutor;
   delete edits.grades;
 
-  const updated = await User.findByIdAndUpdate(edits.id, edits, {
-    new: true,
-  });
+  const updated = await User.findByIdAndUpdate(edits.id, edits, { new: true });
 
   // Update algolia index
   if (updated.tutor.status === "COMPLETE") {
