@@ -8,15 +8,19 @@ import {
 
 export default {
   Query: {
-    async getChat(_, { channel }, { user }) {
-      const chat = await Chat.findById(channel);
+    async getChat(_, { channel, limit = 20, skip = 0 }, { user }) {
+      const chat = await Chat.findById(channel, {
+        messages: {
+          $slice: [-(skip + limit), limit],
+        },
+      });
       assertGroupAuthorization(user, await chat.getUsers());
       return chat;
     },
     async getChatsOfUser(_, { userID }, { user }) {
       const targetUser = await User.findById(userID);
       assertUser(user, targetUser);
-      return await Chat.find({ users: userID });
+      return await Chat.find({ users: userID }, { messages: { $slice: -1 } });
     },
   },
   Mutation: {
@@ -46,7 +50,15 @@ export default {
     },
     async users(chat) {
       const users = await chat.getUsers();
-      return await User.find({ _id: { $in: users.map((user) => user._id) } });
+      const userIds = users.map((user) => user._id);
+      const res = await User.find({ _id: { $in: userIds } }, "name");
+      return userIds.map(
+        (userId) =>
+          res.find((u) => u._id.isEqual(userId)) ?? {
+            _id: userId,
+            name: "Deleted User",
+          }
+      );
     },
   },
 };

@@ -1,5 +1,5 @@
-query GetChat($channel: ID!) {
-  getChat(channel: $channel) {
+query GetChat($channel: ID!, $skip: Int, $limit: Int) {
+  getChat(channel: $channel, skip: $skip, limit: $limit) {
     bindToClass
     users {
       _id

@@ -1,105 +1,39 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams } from "react-router-dom";
 import { loader } from "graphql.macro";
-import { useQuery } from "@apollo/client";
-import { format, startOfDay, parseISO, differenceInMinutes } from "date-fns";
-import { toast } from "react-toastify";
+import { useApolloClient } from "@apollo/client";
+import { format, parseISO } from "date-fns";
 import Error from "../../../../../../components/Error";
 import Menu from "../../../../components/Menu";
 import useMenu from "../../../../hooks/useMenu";
 import Message from "../Message";
-import { faChevronLeft, faUsers } from "@fortawesome/free-solid-svg-icons";
-import scrollbar from "styles/scrollbar";
-
-import styled from "styled-components";
-import mediaQuery from "styles/sizes";
+import {
+  faChevronLeft,
+  faUsers,
+  faCircleNotch,
+} from "@fortawesome/free-solid-svg-icons";
+import { useInView } from "react-intersection-observer";
+import useChatWS from "./hooks/useChatWS";
+import useGroupMessages from "./hooks/useGroupMessages";
+import useHandlers from "./hooks/useHandlers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  StyledChat,
+  ChatHeader,
+  BackButton,
+  ChatHeaderUsers,
+  MessageContent,
+  MessageGroup,
+  DateBreaker,
+  NoMessages,
+  ChatMessageInput,
+  FetchLoad,
+  FetchMore,
+} from "./styles";
+import { toast } from "react-toastify";
 
 const GET_CHAT = loader("./graphql/GetChat.gql");
-
-const StyledChat = styled.div`
-  height: 100vh;
-  width: 100vw;
-  position: fixed;
-  z-index: 6;
-  display: flex;
-  flex-direction: column;
-
-  ${mediaQuery("lg")`
-    position: relative;
-    width: auto;
-  `}
-
-  .scrollDown {
-    position: absolute;
-    right: 10px;
-    bottom: 10px;
-    z-index: 1;
-    display: none;
-    &.showDown {
-      display: block;
-    }
-  }
-`;
-
-const ChatHeader = styled.div`
-  display: flex;
-  padding: 0 1rem;
-  color: #fff;
-  background-color: #000;
-
-  h2 {
-    margin: 1rem 0;
-  }
-`;
-
-const ChatHeaderUsers = styled.div`
-  margin-left: auto;
-`;
-
-const ChatMessageInput = styled.form`
-  display: flex;
-  input {
-    margin: 10px 0;
-    max-width: 100%;
-    margin-right: 10px;
-  }
-`;
-
-const MessageContent = styled.div`
-  overflow-y: scroll;
-  height: 100%;
-  display: flex;
-  flex-direction: column-reverse;
-  background: linear-gradient(
-    to right,
-    rgb(240, 240, 240) 0%,
-    rgb(247, 247, 247) 100%
-  );
-
-  ${scrollbar}
-`;
-
-const MessageGroup = styled.div`
-  padding: 1rem 2rem;
-`;
-
-const NoMessages = styled(MessageGroup)`
-  text-align: center;
-`;
-
-const DateBreaker = styled.h4`
-  font-weight: normal;
-  width: 100%;
-  text-align: center;
-`;
-
-const BackButton = styled(NavLink)`
-  margin-right: 1rem;
-  ${mediaQuery("lg")`
-    display: none;
-  `}
-`;
+const MESSAGES_GROUP = 20;
 
 const Chat = ({ sendMessage, ws, currentUser }) => {
   const { channel } = useParams();
@@ -109,110 +43,77 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
 
   const [rootClick, menuBinds] = useMenu(false);
 
-  const { data, loading, error } = useQuery(GET_CHAT, {
-    variables: { channel },
-  });
+  useChatWS(ws, setMessages);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+  const [chatInfo, setChatInfo] = useState({});
+  const [skip, setSkip] = useState(0);
+
+  const client = useApolloClient();
 
   useEffect(() => {
-    if (ws) {
-      const onMessage = (msg) => {
-        setMessages((msgs) => [...msgs, msg]);
-      };
-
-      const onMessageResolve = ({ _id }) => {
-        setMessages((st) => {
-          const newState = [...st];
-          newState.find((m) => m._id === _id).loading = false;
-          return newState;
+    (async () => {
+      try {
+        const { data } = await client.query({
+          query: GET_CHAT,
+          variables: { channel, skip: 0, limit: MESSAGES_GROUP },
         });
-      };
-
-      const onMessageReject = ({ _id }) => {
-        setMessages((st) => {
-          const newState = [...st];
-          const msg = newState.find((m) => m._id === _id);
-          msg.loading = false;
-          msg.failed = true;
-          return newState;
-        });
-        toast.error("Message failed to send.");
-      };
-
-      ws.bind("MESSAGE", onMessage);
-      ws.bind("MESSAGE_RESOLVE", onMessageResolve);
-      ws.bind("MESSAGE_REJECT", onMessageReject);
-
-      return () => {
-        ws.unbind("MESSAGE", onMessage);
-      };
-    }
-  }, [ws]);
-
-  useEffect(() => {
-    if (data) {
-      const { messages } = data.getChat;
-      setMessages(messages);
-    }
-  }, [data]);
+        setSkip((st) => st + MESSAGES_GROUP);
+        setChatInfo(data.getChat);
+        setMessages(data.getChat.messages);
+      } catch (e) {
+        setError(e);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, [channel, client]);
 
   const editMessage = (e) => {
     e.persist();
     setMessage(e.target.value);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (message.length === 0) return;
-    const evt = sendMessage(channel, message);
-    evt.loading = true;
-    setMessage("");
-    setMessages((st) => [...st, evt]);
-    messageElem.current.scrollTop = messageElem.current.scrollHeight;
-  };
+  const [handleSubmit, handleRetry] = useHandlers({
+    message,
+    channel,
+    sendMessage,
+    setMessage,
+    setMessages,
+    messageElem,
+  });
 
-  const handleRetryMessage = (id) => {
-    const { failed, time } = sendMessage(
-      channel,
-      messages.find((msg) => msg._id === id).text,
-      id
-    );
-    setMessages((st) => {
-      const state = [...st];
-      const msg = state.find((msg) => msg._id === id);
-      msg.failed = failed;
-      msg.time = time;
-      return state;
-    });
-  };
+  const dayMessages = useGroupMessages(messages, currentUser);
+  const [fullyLoaded, setFullyLoaded] = useState(false);
+  const [intersectRef, inView] = useInView({ threshold: 0.5 });
+  useEffect(() => {
+    setFullyLoaded(messages[0]?.type === "CREATION");
+  }, [messages]);
 
-  const dayMessages = useMemo(() => {
-    if (!messages.length) return [];
-    const msgGroup = new Map();
-    for (const message of messages) {
-      const day = startOfDay(message.time).toISOString();
-      if (msgGroup.has(day)) msgGroup.get(day).push(message);
-      else msgGroup.set(day, [message]);
-    }
-    const result = [];
-    for (const m of msgGroup) {
-      const group = m[1].map((g, i) => ({
-        ...g,
-        header: !(
-          m[1][i - 1]?.author === m[1][i].author &&
-          (!m[1][i - 1] ||
-            differenceInMinutes(m[1][i].time, m[1][i - 1].time) < 10)
-        ),
-        me: m[1][i].author === currentUser.user._id,
-      }));
-      result.push([m[0], group]);
-    }
-    return result;
-  }, [messages, currentUser]);
+  const [scrollLoading, setScrollLoading] = useState(false);
+
+  useEffect(() => {
+    if (loading || fullyLoaded || !inView) return;
+    (async () => {
+      setScrollLoading(true);
+      try {
+        const { data } = await client.query({
+          query: GET_CHAT,
+          variables: { channel, skip, limit: MESSAGES_GROUP },
+        });
+        setSkip((st) => st + MESSAGES_GROUP);
+        setMessages((st) => [...data.getChat.messages, ...st]);
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setScrollLoading(false);
+      }
+    })();
+  }, [loading, fullyLoaded, inView, channel, client, skip]);
 
   if (error) return <Error error={error} />;
   if (loading) return <p>Loading</p>;
-
-  const chatInfo = data.getChat;
 
   const getNameById = (id) => chatInfo.users.find((u) => u._id === id)?.name;
 
@@ -238,6 +139,14 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
       <MessageContent ref={messageElem}>
         {/* empty div needed for default scroll to bottom */}
         <div>
+          {!fullyLoaded &&
+            (scrollLoading ? (
+              <FetchLoad>
+                <FontAwesomeIcon icon={faCircleNotch} pulse size="2x" />
+              </FetchLoad>
+            ) : (
+              <FetchMore ref={intersectRef}></FetchMore>
+            ))}
           {dayMessages.length ? (
             dayMessages.map((day) => (
               <MessageGroup key={day[0]}>
@@ -249,7 +158,7 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
                     key={message._id}
                     message={message}
                     getNameById={getNameById}
-                    handleRetryMessage={handleRetryMessage}
+                    handleRetry={handleRetry}
                   />
                 ))}
               </MessageGroup>

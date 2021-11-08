@@ -20,7 +20,7 @@ export default gql`
   }
 
   extend type Query {
-    getChat(channel: ID!): Chat!
+    getChat(channel: ID!, limit: Int, skip: Int): Chat!
     getChatsOfUser(userID: ID!): [Chat!]!
   }
   extend type Mutation {

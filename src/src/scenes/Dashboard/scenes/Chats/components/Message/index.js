@@ -52,7 +52,7 @@ const SessionUpdate = styled.div`
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
 `;
 
-export default function Message({ message, getNameById, handleRetryMessage }) {
+export default function Message({ message, getNameById, handleRetry }) {
   switch (message.type) {
     case "CREATION":
       return (
@@ -75,7 +75,7 @@ export default function Message({ message, getNameById, handleRetryMessage }) {
           )}
           <MessageText me={message.me}>{message.text}</MessageText>
           {message.failed && (
-            <MessageRetry onClick={() => handleRetryMessage(message._id)}>
+            <MessageRetry onClick={() => handleRetry(message._id)}>
               <FontAwesomeIcon icon={faRedo} /> Message failed to send
             </MessageRetry>
           )}

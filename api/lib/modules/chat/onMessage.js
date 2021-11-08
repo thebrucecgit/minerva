@@ -37,7 +37,10 @@ export default async function onMessage(event, ws) {
     _id: reqId,
   });
 
-  if (differenceInMinutes(new Date(), oldChat.lastMessageSent) > 10) {
+  if (
+    differenceInMinutes(new Date(), oldChat.lastMessageSent) > 10 &&
+    users.length > 1
+  ) {
     const msg = {
       from: {
         email: "chat@academe.co.nz",
