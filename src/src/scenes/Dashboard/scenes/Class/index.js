@@ -22,7 +22,6 @@ import Tutees from "./components/Tutees";
 import useMenu from "../../hooks/useMenu";
 import useEdits from "../../hooks/useEdits";
 import useModal from "../../hooks/useModal";
-import useInstantiateSession from "./hooks/useInstantiateSession";
 import usePreferences from "../../hooks/usePreferences";
 import useSeeAllSessions from "./hooks/useSeeAllSessions";
 import useDeleteClass from "./hooks/useDeleteClass";
@@ -87,7 +86,6 @@ const Class = ({ currentUser }) => {
   const [oldSessions, setOldSessions] = useState(false);
   const [editEnabled, setEditEnabled] = useState(false);
   const [rootClick, menuBind] = useMenu(false);
-  const sessionBind = useInstantiateSession();
 
   const {
     loading,
@@ -402,7 +400,6 @@ const Class = ({ currentUser }) => {
 
         {(isTutor || classInfo.preferences.studentInstantiation) && (
           <InstantiateSession
-            {...sessionBind}
             studentAgreeSessions={classInfo.preferences.studentAgreeSessions}
           />
         )}
