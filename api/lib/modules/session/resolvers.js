@@ -137,28 +137,29 @@ export default {
         "name email"
       );
 
-      await sgMail.send({
-        dynamicTemplateData: {
-          request: classDoc.preferences.studentAgreeSessions,
-          user: user.name,
-          className: classDoc.name,
-          sessionTime: datetime.format(session.startTime),
-          sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
-        },
-        from: "no-reply@academe.co.nz",
-        reply_to: {
-          email: "admin@academe.co.nz",
-          name: "Admin",
-        },
-        templateId: "d-f02579026cf84c5194f7135d838e87ad",
-        subject: `New ${
-          classDoc.preferences.studentAgreeSessions
-            ? "Session Request"
-            : "Session"
-        } for "${classDoc.name}"`,
-        personalizations: users
-          .filter((u) => !u._id.isEqual(user._id))
-          .map((user) => ({
+      const otherUsers = users.filter((u) => !u._id.isEqual(user._id));
+
+      if (otherUsers.length > 0)
+        await sgMail.send({
+          dynamicTemplateData: {
+            request: classDoc.preferences.studentAgreeSessions,
+            user: user.name,
+            className: classDoc.name,
+            sessionTime: datetime.format(session.startTime),
+            sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
+          },
+          from: "no-reply@academe.co.nz",
+          reply_to: {
+            email: "admin@academe.co.nz",
+            name: "Admin",
+          },
+          templateId: "d-f02579026cf84c5194f7135d838e87ad",
+          subject: `New ${
+            classDoc.preferences.studentAgreeSessions
+              ? "Session Request"
+              : "Session"
+          } for "${classDoc.name}"`,
+          personalizations: otherUsers.map((user) => ({
             to: {
               email: user.email,
               name: user.name,
@@ -167,7 +168,7 @@ export default {
               name: user.name,
             },
           })),
-      });
+        });
 
       return session;
     },

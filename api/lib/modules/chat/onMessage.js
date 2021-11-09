@@ -37,9 +37,11 @@ export default async function onMessage(event, ws) {
     _id: reqId,
   });
 
+  const otherUsers = users.filter((user) => !user._id.isEqual(author._id));
+
   if (
     differenceInMinutes(new Date(), oldChat.lastMessageSent) > 10 &&
-    users.length > 1
+    otherUsers.length > 0
   ) {
     const msg = {
       from: {
@@ -53,14 +55,12 @@ export default async function onMessage(event, ws) {
         message: event.text,
         chatLink: `${FRONTEND_DOMAIN}/dashboard/chats/${event.channel}`,
       },
-      personalizations: users
-        .filter((user) => !user._id.isEqual(author._id))
-        .map((user) => ({
-          to: user.email,
-          dynamic_template_data: {
-            name: user.name,
-          },
-        })),
+      personalizations: otherUsers.map((user) => ({
+        to: user.email,
+        dynamic_template_data: {
+          name: user.name,
+        },
+      })),
     };
     await sgMail.send(msg);
   }
