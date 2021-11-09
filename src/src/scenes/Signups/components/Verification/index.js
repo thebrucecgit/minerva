@@ -27,7 +27,9 @@ const Verification = ({
         <div className={styles.content}>
           <div className={styles.field}>
             <label htmlFor="biography">
-              Please write a little bit about yourself
+              Please write a bit about yourself — especially if you're signing
+              up as a tutor. Feel free to mention your experiences, hobbies and
+              character strengths.
             </label>
             {errors.biography && (
               <p className={styles.invalid}>{errors.biography}</p>
