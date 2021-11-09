@@ -36,7 +36,7 @@ const Search = ({ currentUser }) => {
             <RefinementList attribute="extras" />
           </div>
           <div>
-            <Configure hitsPerPage={3} />
+            <Configure hitsPerPage={9} />
             <SearchBox autoFocus />
             <PoweredBy />
             <Stats />
