@@ -35,9 +35,9 @@ const AdditionalInfo = ({
         })}
       >
         <div className={styles.content}>
-          <p>Don't worry, you can't change all of this later.</p>
+          <p>Don't worry, you can change all of this later.</p>
           <div className={styles.field}>
-            <label htmlFor="yearGroup">Select your year group: </label>
+            <label htmlFor="yearGroup">Select your year group:</label>
             {errors.yearGroup && (
               <p className={styles.invalid}>{errors.yearGroup}</p>
             )}
@@ -57,7 +57,7 @@ const AdditionalInfo = ({
             </select>
           </div>
           <div className={styles.field}>
-            <label htmlFor="school">Enter your school school's name: </label>
+            <label htmlFor="school">Select your school:</label>
             {errors.school && <p className={styles.invalid}>{errors.school}</p>}
             <select
               name="school"
@@ -75,11 +75,13 @@ const AdditionalInfo = ({
             </select>
           </div>
           <p>
-            Feel free to leave the following two blank if you only want to be a
-            tutor.
+            Feel free to leave the following two <strong>blank</strong> if you
+            only want to be a tutor.
           </p>
           <div className={styles.field} data-test="academicsLearning">
-            <label>Add academic subjects you want support in:</label>
+            <label>
+              Add academic subjects <strong>you want support in</strong>:
+            </label>
             {/* {errors.academicsLearning && (
               <p className={styles.invalid}>{errors.academics}</p>
             )} */}
@@ -96,7 +98,10 @@ const AdditionalInfo = ({
             />
           </div>
           <div className={styles.field} data-test="extrasLearning">
-            <label>Add extra-curricular activities you want support in:</label>
+            <label>
+              Add extra-curricular activities{" "}
+              <strong>you want support in</strong>:
+            </label>
             {/* {errors.extrasLearning && <p className={styles.invalid}>{errors.extra}</p>} */}
             <Tags
               settings={{
@@ -133,7 +138,8 @@ const AdditionalInfo = ({
               </p>
               <div className={styles.field} data-test="academicsTutoring">
                 <label>
-                  Add academic subjects that you want to tutor others in:
+                  Add academic subjects that you want to{" "}
+                  <strong>tutor others in</strong>:
                 </label>
                 {/* {errors.academicsTutoring && (
               <p className={styles.invalid}>{errors.academics}</p>
@@ -152,8 +158,8 @@ const AdditionalInfo = ({
               </div>
               <div className={styles.field} data-test="extrasTutoring">
                 <label>
-                  Add extra-curricular activities that you want to tutor others
-                  in:
+                  Add extra-curricular activities that you want to{" "}
+                  <strong>tutor others in</strong>:
                 </label>
                 {/* {errors.extrasTutoring && <p className={styles.invalid}>{errors.extra}</p>} */}
                 <Tags
