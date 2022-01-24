@@ -14,9 +14,7 @@ query ($id: ID!) {
     yearGroup
     biography
     academicsLearning
-    extrasLearning
     academicsTutoring
-    extrasTutoring
     classes {
       _id
       name

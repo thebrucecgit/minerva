@@ -97,23 +97,6 @@ const AdditionalInfo = ({
               name="academic"
             />
           </div>
-          <div className={styles.field} data-test="extrasLearning">
-            <label>
-              Add extra-curricular activities{" "}
-              <strong>you want support in</strong>:
-            </label>
-            {/* {errors.extrasLearning && <p className={styles.invalid}>{errors.extra}</p>} */}
-            <Tags
-              settings={{
-                ...baseTagifySettings,
-                placeholder: "eg. Programming",
-                whitelist: selections.extra,
-              }}
-              onChange={(e) => onTagsChange(e, "extrasLearning")}
-              defaultValue={info.extrasLearning}
-              name="extrasLearning"
-            />
-          </div>
           <div className={styles.field}>
             {/* {errors.agreement && (
               <p className={styles.invalid}>{errors.agreement}</p>
@@ -154,23 +137,6 @@ const AdditionalInfo = ({
                   onChange={(e) => onTagsChange(e, "academicsTutoring")}
                   defaultValue={info.academicsTutoring}
                   name="academic"
-                />
-              </div>
-              <div className={styles.field} data-test="extrasTutoring">
-                <label>
-                  Add extra-curricular activities that you want to{" "}
-                  <strong>tutor others in</strong>:
-                </label>
-                {/* {errors.extrasTutoring && <p className={styles.invalid}>{errors.extra}</p>} */}
-                <Tags
-                  settings={{
-                    ...baseTagifySettings,
-                    placeholder: "eg. Programming",
-                    whitelist: selections.extra,
-                  }}
-                  onChange={(e) => onTagsChange(e, "extrasTutoring")}
-                  defaultValue={info.extrasTutoring}
-                  name="extrasTutoring"
                 />
               </div>
 

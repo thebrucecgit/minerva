@@ -50,7 +50,6 @@ import {
 
 const SESSIONS_LIMIT = 5;
 const GET_CLASS = loader("./graphql/GetClass.gql");
-const whitelist = [...selections.academic, ...selections.extra];
 
 const Class = ({ currentUser }) => {
   const { id } = useParams();
@@ -221,11 +220,10 @@ const Class = ({ currentUser }) => {
               <TagsEdit
                 settings={{
                   placeholder: "eg. English, Mathematics",
-                  whitelist,
+                  whitelist: selections.academic,
                 }}
                 onChange={(e) => onTagsChange(e, "tags")}
                 defaultValue={update.tags}
-                name="extras"
               />
             )}
           </div>

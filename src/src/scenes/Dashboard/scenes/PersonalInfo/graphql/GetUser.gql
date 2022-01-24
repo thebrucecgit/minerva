@@ -15,9 +15,7 @@ query GetUser {
     yearGroup
     biography
     academicsLearning
-    extrasLearning
     academicsTutoring
-    extrasTutoring
     school
   }
 }

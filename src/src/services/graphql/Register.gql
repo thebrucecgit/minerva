@@ -7,9 +7,7 @@ mutation Register(
   $yearGroup: Int!
   $school: String!
   $academicsLearning: [String!]
-  $extrasLearning: [String!]
   $academicsTutoring: [String!]
-  $extrasTutoring: [String!]
   $biography: String!
   $grades: String
   $token: String!
@@ -23,9 +21,7 @@ mutation Register(
     yearGroup: $yearGroup
     school: $school
     academicsLearning: $academicsLearning
-    extrasLearning: $extrasLearning
     academicsTutoring: $academicsTutoring
-    extrasTutoring: $extrasTutoring
     biography: $biography
     grades: $grades
     token: $token

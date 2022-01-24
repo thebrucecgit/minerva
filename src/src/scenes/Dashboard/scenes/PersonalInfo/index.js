@@ -257,23 +257,6 @@ function PersonalInfo({ currentUser }) {
       </div>
 
       <div>
-        <label htmlFor="extrasLearning">Extra-curriculars to learn: </label>
-        {update ? (
-          <TagsSelect
-            settings={{
-              placeholder: "eg. Coding",
-              whitelist: selections.extra,
-            }}
-            onChange={(e) => onTagsChange(e, "extrasLearning")}
-            defaultValue={updates.extrasLearning}
-            name="extrasLearning"
-          />
-        ) : (
-          <Tags tags={user.extrasLearning} />
-        )}
-      </div>
-
-      <div>
         <div className="checkbox">
           <input
             type="checkbox"
@@ -337,23 +320,6 @@ function PersonalInfo({ currentUser }) {
               />
             ) : (
               <Tags tags={user.academicsTutoring} />
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="extrasLearning">Extra-curriculars to tutor: </label>
-            {update ? (
-              <TagsSelect
-                settings={{
-                  placeholder: "eg. Coding",
-                  whitelist: selections.extra,
-                }}
-                onChange={(e) => onTagsChange(e, "extrasTutoring")}
-                defaultValue={updates.extrasTutoring}
-                name="extrasTutoring"
-              />
-            ) : (
-              <Tags tags={user.extrasTutoring} />
             )}
           </div>
 

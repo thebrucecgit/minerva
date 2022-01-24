@@ -13,9 +13,7 @@ query GetPendingTutors {
     yearGroup
     school
     academicsLearning
-    extrasLearning
     academicsTutoring
-    extrasTutoring
     grades
   }
 }

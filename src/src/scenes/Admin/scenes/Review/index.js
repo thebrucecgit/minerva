@@ -55,12 +55,8 @@ function Review() {
                 </a>
               </p>
 
-              <p>Learning:</p>
-              <Tags tags={tutor.academicsLearning} />
-              <Tags tags={tutor.extrasLearning} />
               <p>Tutoring:</p>
               <Tags tags={tutor.academicsTutoring} />
-              <Tags tags={tutor.extrasTutoring} />
 
               <div className={styles.options}>
                 <button
