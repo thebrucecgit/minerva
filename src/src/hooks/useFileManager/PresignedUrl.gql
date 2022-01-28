@@ -1,0 +1,3 @@
+query PresignedUrl($fileName: String) {
+  getUploadUrl(fileName: $fileName)
+}

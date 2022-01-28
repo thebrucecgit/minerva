@@ -2,13 +2,12 @@ mutation updateUser(
   $id: ID!
   $name: String
   $pfp: PfpIn
-  $yearGroup: Int
+  $yearGroup: String
   $biography: String
   $school: String
-  $academicsLearning: [String!]
   $academicsTutoring: [String!]
   $applyTutor: Boolean
-  $grades: String
+  $academicRecords: [FileMetaIn!]
 ) {
   updateUser(
     id: $id
@@ -16,11 +15,10 @@ mutation updateUser(
     pfp: $pfp
     yearGroup: $yearGroup
     biography: $biography
-    academicsLearning: $academicsLearning
     academicsTutoring: $academicsTutoring
     school: $school
     applyTutor: $applyTutor
-    grades: $grades
+    academicRecords: $academicRecords
   ) {
     _id
     name
@@ -32,11 +30,15 @@ mutation updateUser(
     }
     tutor {
       status
-      grades
+      academicRecords {
+        id
+        name
+        size
+        type
+      }
     }
     yearGroup
     biography
-    academicsLearning
     academicsTutoring
     school
   }

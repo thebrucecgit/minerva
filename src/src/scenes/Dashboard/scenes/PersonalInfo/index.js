@@ -2,17 +2,19 @@ import React, { useState, useEffect, useCallback } from "react";
 import { loader } from "graphql.macro";
 import { useMutation, useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
-import Error from "../../../../components/Error";
-import Loader from "../../../../components/Loader";
-import selections from "../../../../config/whitelist.json";
+import FileManager from "components/FileManager";
+import Error from "components/Error";
+import Loader from "components/Loader";
+import selections from "config/whitelist.json";
 import TagsSelect from "@yaireo/tagify/dist/react.tagify";
-import Tags from "../../../../components/Tags";
+import Tags from "components/Tags";
 import { Image, Transformation } from "cloudinary-react";
 import classNames from "classnames";
 
 import styles from "./styles.module.scss";
 import "@yaireo/tagify/dist/tagify.css";
-import useCloudinary from "../../../../hooks/useCloudinary";
+import useCloudinary from "hooks/useCloudinary";
+import useFileManager from "hooks/useFileManager";
 
 const GET_USER = loader("./graphql/GetUser.gql");
 const UPDATE_USER = loader("./graphql/UpdateUser.gql");
@@ -51,8 +53,8 @@ function PersonalInfo({ currentUser }) {
         const { data } = await updateUserAPI({
           variables: {
             ...updates,
-            yearGroup: parseInt(updates.yearGroup ?? "13"),
             id: currentUser.user._id,
+            academicRecords: updates.tutor?.academicRecords,
           },
         });
         setUser((st) => ({
@@ -86,9 +88,8 @@ function PersonalInfo({ currentUser }) {
   const handleChangeUpdate = (e) => {
     setUpdates({
       ...user,
-      applyTutor: ["PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"].includes(
-        user.tutor?.status
-      ),
+      applyTutor:
+        typeof user.tutor?.status === "string" && user.tutor.status !== "NONE",
     });
     setUpdate(true);
   };
@@ -101,12 +102,33 @@ function PersonalInfo({ currentUser }) {
     }));
   };
 
+  const setFiles = (func) => {
+    setUpdates((st) => ({
+      ...st,
+      tutor: {
+        ...st.tutor,
+        academicRecords: func(st.tutor.academicRecords ?? []),
+      },
+    }));
+  };
+
+  const { processing, fileManagerProps } = useFileManager({
+    edit: update,
+    setFiles,
+    files: update
+      ? updates.tutor?.academicRecords
+      : user.tutor?.academicRecords,
+  });
+
   const onTagsChange = useCallback((e, name) => {
     setUpdates((st) => ({
       ...st,
       [name]: e.detail.tagify.value.map((tag) => tag.value),
     }));
   }, []);
+
+  const userApplyTutor =
+    typeof user.tutor?.status === "string" && user.tutor.status !== "NONE";
 
   if (error) return <Error error={error} />;
   if (loading) return <Loader />;
@@ -116,7 +138,11 @@ function PersonalInfo({ currentUser }) {
       <h1>Personal Information</h1>
       {update ? (
         <>
-          <button className="btn" onClick={handleSaveUpdate}>
+          <button
+            className="btn"
+            onClick={handleSaveUpdate}
+            disabled={processing}
+          >
             Save
           </button>
           <button className="btn danger" onClick={handleCancelUpdate}>
@@ -194,12 +220,12 @@ function PersonalInfo({ currentUser }) {
             <option value="">--SELECT--</option>
             {selections.year.map((year) => (
               <option value={year} key={year}>
-                Year {year}
+                {year}
               </option>
             ))}
           </select>
         ) : (
-          <p>Year {user.yearGroup}</p>
+          <p>{user.yearGroup}</p>
         )}
       </div>
 
@@ -239,36 +265,12 @@ function PersonalInfo({ currentUser }) {
       </div>
 
       <div>
-        <label htmlFor="academicsLearning">Academic subjects to learn: </label>
-        {update ? (
-          <TagsSelect
-            settings={{
-              enforceWhitelist: true,
-              placeholder: "eg. English",
-              whitelist: selections.academic,
-            }}
-            onChange={(e) => onTagsChange(e, "academicsLearning")}
-            defaultValue={updates.academicsLearning}
-            name="academicsLearning"
-          />
-        ) : (
-          <Tags tags={user.academicsLearning} />
-        )}
-      </div>
-
-      <div>
         <div className="checkbox">
           <input
             type="checkbox"
             name="applyTutor"
             id="applyTutor"
-            checked={
-              update
-                ? updates.applyTutor
-                : ["PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"].includes(
-                    user.tutor?.status
-                  )
-            }
+            checked={update ? updates.applyTutor : userApplyTutor}
             onChange={onChange}
             disabled={!update}
             noValidate
@@ -277,11 +279,7 @@ function PersonalInfo({ currentUser }) {
         </div>
       </div>
 
-      {((update && updates.applyTutor) ||
-        (!update &&
-          ["PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"].includes(
-            user.tutor?.status
-          ))) && (
+      {((update && updates.applyTutor) || (!update && userApplyTutor)) && (
         <>
           {user.tutor.status === "COMPLETE" && (
             <p>
@@ -324,22 +322,16 @@ function PersonalInfo({ currentUser }) {
           </div>
 
           <div>
-            <label htmlFor="grades">
+            <label>
               Please link to a copy of your latest school grades or other
               evidence of abilities relevant to the subjects you wish to tutor
             </label>
-            {update ? (
-              <input
-                type="text"
-                name="grades"
-                id="grades"
-                value={updates.grades ?? ""}
-                onChange={onChange}
-                noValidate
-              />
-            ) : (
-              <p>{user.tutor?.grades}</p>
-            )}
+            <FileManager
+              accept=".pdf, .doc, .docx"
+              maxSize={10 * 1000 * 1024} // 10 MB
+              maxFiles={5}
+              {...fileManagerProps}
+            />
           </div>
         </>
       )}

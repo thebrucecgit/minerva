@@ -18,7 +18,7 @@ const Hit = ({ hit, currentUser }) => {
           </h3>
         </Link>
         <p className="details">
-          <Highlight hit={hit} attribute="school" tagName="mark" /> · Year{" "}
+          <Highlight hit={hit} attribute="school" tagName="mark" /> ·{" "}
           {hit.yearGroup}
         </p>
         <Tags tags={hit.academics} />

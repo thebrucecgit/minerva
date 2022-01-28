@@ -50,3 +50,10 @@ input SessionSettingsIn {
   syncTutorsWithClass: Boolean
   syncTuteesWithClass: Boolean
 }
+
+input FileMetaIn {
+  id: ID!
+  name: String
+  size: Int
+  type: String
+}

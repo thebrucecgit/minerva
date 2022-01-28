@@ -32,7 +32,6 @@ export default async function register(_, args) {
   const edits = { ...args };
   delete edits.password;
   delete edits.applyTutor;
-  delete edits.grades;
 
   if (!args.pfp?.url) {
     edits.pfp = {
@@ -42,7 +41,7 @@ export default async function register(_, args) {
   }
   if (args.applyTutor) {
     edits["tutor.status"] = "PENDING_REVIEW";
-    edits["tutor.grades"] = args.grades;
+    edits["tutor.academicRecords"] = args.academicRecords;
   }
 
   // Verify information

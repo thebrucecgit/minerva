@@ -51,9 +51,16 @@ const userSchema = new Schema({
       enum: ["NONE", "PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"],
       default: "NONE",
     },
-    grades: {
-      type: String,
-    },
+    academicRecords: [
+      {
+        id: String,
+        name: String,
+        size: Number,
+        type: {
+          type: String,
+        },
+      },
+    ],
     message: {
       type: String,
     },
@@ -101,7 +108,7 @@ const userSchema = new Schema({
     default: Date.now(),
   },
   yearGroup: {
-    type: Number,
+    type: String,
   },
   school: {
     type: String,

@@ -21,7 +21,8 @@ export default async function updateUser(_, args, { user }) {
       url: getAvatar(args.name ?? oldUser.name),
     };
   }
-
+  edits["tutor.academicRecords"] = edits.academicRecords;
+  delete edits.academicRecords;
   if (args.applyTutor && oldUser.tutor.status === "NONE")
     edits["tutor.status"] = "PENDING_REVIEW";
   else if (args.applyTutor === false && oldUser.tutor.status !== "NONE") {
@@ -29,7 +30,6 @@ export default async function updateUser(_, args, { user }) {
     edits["tutor.status"] = "NONE";
   }
   delete edits.applyTutor;
-  delete edits.grades;
 
   const updated = await User.findByIdAndUpdate(edits.id, edits, { new: true });
 

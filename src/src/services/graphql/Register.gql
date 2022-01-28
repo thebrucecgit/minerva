@@ -4,12 +4,11 @@ mutation Register(
   $email: String!
   $password: String
   $pfp: PfpIn
-  $yearGroup: Int!
+  $yearGroup: String!
   $school: String!
-  $academicsLearning: [String!]
   $academicsTutoring: [String!]
-  $biography: String!
-  $grades: String
+  $biography: String
+  $academicRecords: [FileMetaIn!]
   $token: String!
   $applyTutor: Boolean!
 ) {
@@ -20,10 +19,9 @@ mutation Register(
     pfp: $pfp
     yearGroup: $yearGroup
     school: $school
-    academicsLearning: $academicsLearning
     academicsTutoring: $academicsTutoring
     biography: $biography
-    grades: $grades
+    academicRecords: $academicRecords
     token: $token
     applyTutor: $applyTutor
   ) {

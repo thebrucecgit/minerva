@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useHistory, Link } from "react-router-dom";
-import useAuth from "../../../../hooks/useAuth";
+import { Link } from "react-router-dom";
+import Authenticated from "components/Authenticated";
 import { GoogleLogin } from "react-google-login";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -8,10 +8,6 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import styles from "./styles.module.scss";
 
 const Login = ({ login, currentUser }) => {
-  const history = useHistory();
-
-  useAuth(currentUser?.user?.registrationStatus, ["login"]);
-
   const [error, setError] = useState("");
   const [fields, setFields] = useState({});
   const [loading, setLoading] = useState(false);
@@ -24,7 +20,6 @@ const Login = ({ login, currentUser }) => {
   const onGoogleSignIn = async ({ tokenId }) => {
     try {
       await login(tokenId);
-      history.replace("/dashboard");
     } catch (e) {
       setError(e.message);
     }
@@ -43,7 +38,6 @@ const Login = ({ login, currentUser }) => {
       if (!email || !password) throw new Error("Missing email or password");
       await login(email, password);
       setLoading(false);
-      history.replace("/dashboard");
     } catch (e) {
       setLoading(false);
       setError(e.message);
@@ -52,6 +46,10 @@ const Login = ({ login, currentUser }) => {
 
   return (
     <div className={styles.Login}>
+      <Authenticated
+        registrationStatus={currentUser?.user?.registrationStatus}
+        exclude={["login"]}
+      />
       {error && <p className="error">{error}</p>}
       <div>
         <h1>Sign In</h1>

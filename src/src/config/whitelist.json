@@ -12,7 +12,19 @@
     "Undergrad 3rd Year",
     "Postgrad"
   ],
-  "school": ["Christ's College", "Other"],
+  "school": [
+    "Auckland University of Technology",
+    "Lincoln University",
+    "Massey University",
+    "University of Auckland",
+    "University of Canterbury",
+    "University of Otago",
+    "University of Waikato",
+    "Victoria University of Wellington",
+    "Overseas University",
+    "Christ's College",
+    "Other"
+  ],
   "academic": [
     "Mathematics",
     "English",
@@ -25,6 +37,13 @@
     "General Science",
     "Economics",
     "Accounting",
-    "Financial Literacy"
+    "Financial Literacy",
+    "Chinese",
+    "French",
+    "Spanish",
+    "Te Reo Māori",
+    "Japanese",
+    "Korean",
+    "German"
   ]
 }

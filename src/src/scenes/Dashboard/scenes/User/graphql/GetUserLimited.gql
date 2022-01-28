@@ -13,7 +13,6 @@ query ($id: ID!) {
     }
     yearGroup
     biography
-    academicsLearning
     academicsTutoring
   }
 }

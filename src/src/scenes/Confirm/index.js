@@ -1,8 +1,18 @@
-import useAuth from "../../hooks/useAuth";
+import Authenticated from "components/Authenticated";
+import { useState } from "react";
 
 function Confirm({ authService }) {
   const { currentUser } = authService;
-  useAuth(currentUser?.user?.registrationStatus, ["confirm"]);
+
+  const [loaded, setLoaded] = useState(false);
+  if (!loaded)
+    return (
+      <Authenticated
+        registrationStatus={currentUser?.user?.registrationStatus}
+        exclude={["confirm"]}
+        onLoad={() => setLoaded(true)}
+      />
+    );
 
   return (
     <div>

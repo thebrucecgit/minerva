@@ -51,12 +51,6 @@ const User = ({ currentUser }) => {
 
       <div className={classNames("container", styles.userInfo)}>
         <div>
-          {user.academicsLearning.length > 0 && (
-            <div className={styles.tags}>
-              <FontAwesomeIcon icon={faGraduationCap} size="2x" />
-              <Tags tags={user.academicsLearning} />
-            </div>
-          )}
           {user.academicsTutoring.length > 0 && (
             <div className={styles.tags}>
               <FontAwesomeIcon icon={faGraduationCap} size="2x" />

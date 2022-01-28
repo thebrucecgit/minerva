@@ -1,0 +1,15 @@
+[
+  {
+    "corsRuleName": "AnyOrigin",
+    "allowedOrigins": ["*"],
+    "allowedHeaders": ["*"],
+    "allowedOperations": [
+      "s3_delete",
+      "s3_get",
+      "s3_head",
+      "s3_post",
+      "s3_put"
+    ],
+    "maxAgeSeconds": 3600
+  }
+]

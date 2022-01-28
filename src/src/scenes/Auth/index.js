@@ -1,9 +1,7 @@
-import React, { useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { useApolloClient } from "@apollo/client";
 
 import Navbar from "../../components/Navbar";
-
+import Logout from "./scenes/Logout";
 import Login from "./scenes/Login";
 import EmailConfirmation from "./scenes/EmailConfirmation";
 import PasswordReset from "./scenes/PasswordReset";
@@ -18,17 +16,6 @@ function Auth({ match, location, authService }) {
     resetPassword,
     updatePassword,
   } = authService;
-
-  const client = useApolloClient();
-
-  useEffect(() => {
-    if (location.pathname === `${path}/logout`) {
-      logout();
-      client.resetStore();
-    }
-  }, [path, logout, location.pathname, client]);
-
-  if (location.pathname === `${path}/logout`) return null;
 
   return (
     <div>
@@ -58,6 +45,10 @@ function Auth({ match, location, authService }) {
               resetPassword={resetPassword}
               updatePassword={updatePassword}
             />
+          </Route>
+
+          <Route exact path={`${path}/logout`}>
+            <Logout logout={logout} />
           </Route>
 
           <Route path={path}>

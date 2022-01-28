@@ -8,12 +8,15 @@ query GetPendingTutors {
     }
     tutor {
       status
-      grades
+      academicRecords {
+        id
+        name
+        size
+        type
+      }
     }
     yearGroup
     school
-    academicsLearning
     academicsTutoring
-    grades
   }
 }

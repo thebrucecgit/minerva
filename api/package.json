@@ -1,6 +1,8 @@
 {
   "main": "server.js",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.48.0",
+    "@aws-sdk/s3-request-presigner": "^3.48.0",
     "@babel/runtime": "^7.14.6",
     "@sendgrid/mail": "^7.4.5",
     "algoliasearch": "^4.10.2",

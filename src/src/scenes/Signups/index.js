@@ -37,12 +37,15 @@ const sections = {
 function Signups({ authService }) {
   const history = useHistory();
 
+  const defaultApply =
+    history.location.pathname === "/signup/tutors" ? "tutor" : "tutee";
+
   const [info, setInfo] = useState(() => {
     // If there is saved info, use saved
     try {
       const saved = localStorage.getItem("signup");
       const data = saved ? JSON.parse(saved) : {};
-      data.applyTutor = history.location.pathname === "/signup/tutors";
+      data.applyTutor = defaultApply === "tutor";
       return data;
     } catch (e) {
       console.error(e);
@@ -71,6 +74,9 @@ function Signups({ authService }) {
   useEffect(() => {
     const infoStore = Object.assign({}, info);
     // Don't save password
+    delete infoStore.tempFiles;
+    // Don't store files
+    delete infoStore.academicRecords;
     delete infoStore.password;
     localStorage.setItem("signup", JSON.stringify(infoStore));
   }, [info]);
@@ -106,7 +112,7 @@ function Signups({ authService }) {
           break;
         }
         case "Verification": {
-          if (!info.biography)
+          if (!info.biography && info.applyTutor)
             newErrors.biography = "Please write about yourself";
           break;
         }
@@ -130,6 +136,7 @@ function Signups({ authService }) {
       info.school,
       info.yearGroup,
       info.name,
+      info.applyTutor,
       strategy,
     ]
   );
@@ -246,7 +253,6 @@ function Signups({ authService }) {
       recaptchaRef.current.reset();
       const { user } = await authService.register({
         ...info,
-        yearGroup: parseInt(info.yearGroup),
         token,
       });
 
@@ -298,6 +304,8 @@ function Signups({ authService }) {
             errors={errors}
             onChange={onChange}
             onTagsChange={onTagsChange}
+            defaultApply={defaultApply}
+            setInfo={setInfo}
             onNext={() => onNext("Additional Info")}
           />
           <Verification

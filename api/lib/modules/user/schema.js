@@ -15,11 +15,26 @@ export default gql`
 
   type TutorStatus {
     status: String
-    grades: String
+    academicRecords: [FileMeta!]
   }
 
   type AdminStatus {
     status: Boolean
+  }
+
+  type FileMeta {
+    id: ID!
+    name: String
+    size: Int
+    type: String
+  }
+
+  "File metadata"
+  input FileMetaIn {
+    id: ID!
+    name: String
+    size: Int
+    type: String
   }
 
   "A User (can be a tutor, a tutee or a parent)"
@@ -29,14 +44,11 @@ export default gql`
     name: String!
     email: String!
     pfp: Pfp
-    yearGroup: Int!
+    yearGroup: String!
     school: String!
-    academicsLearning: [String!]!
-    extrasLearning: [String!]
     academicsTutoring: [String!]
-    extrasTutoring: [String!]
     biography: String!
-    grades: String
+    academicRecords: [FileMeta!]
     tutor: TutorStatus
     admin: AdminStatus
   }
@@ -57,6 +69,7 @@ export default gql`
     getPendingTutors: [User!]!
     login(email: String, password: String, tokenId: String): UserReq!
     resetPassword(email: String!): Boolean
+    getUploadUrl(fileName: String): String!
   }
 
   extend type Mutation {
@@ -65,14 +78,11 @@ export default gql`
       email: String!
       password: String
       pfp: PfpIn
-      yearGroup: Int!
+      yearGroup: String!
       school: String!
-      academicsLearning: [String!]
-      extrasLearning: [String!]
       academicsTutoring: [String!]
-      extrasTutoring: [String!]
-      biography: String!
-      grades: String
+      biography: String
+      academicRecords: [FileMetaIn!]
       token: String!
       applyTutor: Boolean!
     ): UserReq!
@@ -80,15 +90,12 @@ export default gql`
       id: ID!
       name: String
       pfp: PfpIn
-      yearGroup: Int
+      yearGroup: String
       school: String
-      academicsLearning: [String!]
-      extrasLearning: [String!]
       academicsTutoring: [String!]
-      extrasTutoring: [String!]
       biography: String
       applyTutor: Boolean
-      grades: String
+      academicRecords: [FileMetaIn!]
     ): User!
     confirmUserEmail(emailConfirmId: String!): UserReq!
     resetPassword(email: String!): Boolean

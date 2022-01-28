@@ -1,6 +1,7 @@
-import React from "react";
 import Tags from "@yaireo/tagify/dist/react.tagify";
 import classNames from "classnames";
+import FileManager from "components/FileManager";
+import useFileManager from "hooks/useFileManager";
 
 import StatusSymbol from "../StatusSymbol";
 import selections from "../../../../config/whitelist.json";
@@ -14,6 +15,8 @@ const AdditionalInfo = ({
   info,
   onTagsChange,
   onChange,
+  setInfo,
+  defaultApply,
   onNext,
 }) => {
   const baseTagifySettings = {
@@ -22,6 +25,18 @@ const AdditionalInfo = ({
       classname: "tagifyDropdown",
     },
   };
+
+  const setFiles = (func) => {
+    setInfo((info) => ({
+      ...info,
+      academicRecords: func(info.academicRecords ?? []),
+    }));
+  };
+  const { processing, fileManagerProps } = useFileManager({
+    edit: true,
+    setFiles,
+    files: info.academicRecords,
+  });
 
   return (
     <section>
@@ -51,7 +66,7 @@ const AdditionalInfo = ({
               <option value="">--SELECT--</option>
               {selections.year.map((year) => (
                 <option value={year} key={year}>
-                  Year {year}
+                  {year}
                 </option>
               ))}
             </select>
@@ -74,50 +89,29 @@ const AdditionalInfo = ({
               ))}
             </select>
           </div>
-          <p>
-            Feel free to leave the following two <strong>blank</strong> if you
-            only want to be a tutor.
-          </p>
-          <div className={styles.field} data-test="academicsLearning">
-            <label>
-              Add academic subjects <strong>you want support in</strong>:
-            </label>
-            {/* {errors.academicsLearning && (
-              <p className={styles.invalid}>{errors.academics}</p>
-            )} */}
-            <Tags
-              settings={{
-                ...baseTagifySettings,
-                enforceWhitelist: true,
-                placeholder: "eg. English",
-                whitelist: selections.academic,
-              }}
-              onChange={(e) => onTagsChange(e, "academicsLearning")}
-              defaultValue={info.academicsLearning}
-              name="academic"
-            />
-          </div>
-          <div className={styles.field}>
-            {/* {errors.agreement && (
-              <p className={styles.invalid}>{errors.agreement}</p>
-            )} */}
-            <div className="checkbox">
-              <input
-                type="checkbox"
-                name="applyTutor"
-                id="applyTutor"
-                checked={info.applyTutor ?? false}
-                onChange={onChange}
-                noValidate
-              />
-              <label htmlFor="applyTutor">I would like to tutor others</label>
+
+          {defaultApply === "tutee" && (
+            <div className={styles.field}>
+              <div className="checkbox">
+                <input
+                  type="checkbox"
+                  name="applyTutor"
+                  id="applyTutor"
+                  checked={info.applyTutor ?? false}
+                  onChange={onChange}
+                  noValidate
+                />
+                <label htmlFor="applyTutor">
+                  I would also like to tutor others
+                </label>
+              </div>
             </div>
-          </div>
+          )}
           {info.applyTutor && (
             <>
               <p>
-                Note that your application to be a tutor will be reviewed by an
-                Academe moderator.
+                Note that your application to be a tutor will be reviewed by a
+                human moderator.
               </p>
               <div className={styles.field} data-test="academicsTutoring">
                 <label>
@@ -139,23 +133,17 @@ const AdditionalInfo = ({
                   name="academic"
                 />
               </div>
-
-              <div className={styles.field}>
-                <label htmlFor="grades">
-                  Please link to a copy of your latest school grades or other
+              <div className={styles.fields}>
+                <label>
+                  Please upload a copy of your latest school grades or other
                   evidence of abilities relevant to the subjects you wish to
                   tutor
                 </label>
-                {errors.grades && (
-                  <p className={styles.invalid}>{errors.grades}</p>
-                )}
-                <input
-                  type="text"
-                  name="grades"
-                  id="grades"
-                  value={info.grades ?? ""}
-                  onChange={onChange}
-                  noValidate
+                <FileManager
+                  accept=".pdf, .doc, .docx"
+                  maxSize={10 * 1000 * 1024} // 10 MB
+                  maxFiles={5}
+                  {...fileManagerProps}
                 />
               </div>
             </>
@@ -163,6 +151,7 @@ const AdditionalInfo = ({
 
           <button
             className="btn"
+            disabled={processing}
             onClick={onNext}
             data-test="additional-info-next"
           >

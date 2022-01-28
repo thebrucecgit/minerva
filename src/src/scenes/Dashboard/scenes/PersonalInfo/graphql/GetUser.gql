@@ -10,11 +10,15 @@ query GetUser {
     }
     tutor {
       status
-      grades
+      academicRecords {
+        id
+        name
+        size
+        type
+      }
     }
     yearGroup
     biography
-    academicsLearning
     academicsTutoring
     school
   }

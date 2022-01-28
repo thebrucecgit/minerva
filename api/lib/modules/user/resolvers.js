@@ -2,6 +2,7 @@ import User from "./model";
 import Class from "../class/model";
 
 import login from "./queries/login";
+import getUploadUrl from "./queries/getUploadUrl";
 
 import register from "./mutations/register";
 import resetPassword from "./mutations/resetPassword";
@@ -54,6 +55,7 @@ export default {
 
       return await User.find({ "tutor.status": "PENDING_REVIEW" });
     },
+    getUploadUrl,
   },
   Mutation: {
     register,

@@ -2,8 +2,9 @@ import { useQuery, useMutation } from "@apollo/client";
 import { loader } from "graphql.macro";
 import styles from "./styles.module.scss";
 import classNames from "classnames";
-import Tags from "../../../../components/Tags";
+import Tags from "components/Tags";
 import { toast } from "react-toastify";
+import FileManager from "components/FileManager";
 
 const GET_TUTORS = loader("./graphql/GET_TUTORS.gql");
 const REVIEW_TUTOR = loader("./graphql/REVIEW_TUTOR.gql");
@@ -48,12 +49,8 @@ function Review() {
                 {tutor.name} / Year {tutor.yearGroup} / {tutor.school}
               </h3>
               <p>{tutor.biography}</p>
-              <p>
-                Grades:{" "}
-                <a href={tutor.tutor.grades} target="_blank" rel="noreferrer">
-                  {tutor.tutor.grades}
-                </a>
-              </p>
+              <p>Academic Records:</p>
+              <FileManager files={tutor.tutor.academicRecords} />
 
               <p>Tutoring:</p>
               <Tags tags={tutor.academicsTutoring} />
