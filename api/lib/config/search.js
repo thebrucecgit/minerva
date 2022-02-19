@@ -19,18 +19,21 @@ const indexSchema = yup.object().shape({
     url: yup.string(),
     cloudinaryPublicId: yup.mixed(),
   }),
-  "tutor.type": yup.string(),
+  type: yup.string(),
+  curricula: yup.array().of(yup.string()),
 });
 
 export default index;
 
 export const FIELDS =
-  "name yearGroup school biography academicsTutoring pfp tutor.type";
+  "name yearGroup school biography pfp tutor.type tutor.curricula tutor.academicsTutoring";
 
 export function docToRecord(doc) {
   const tutor = { ...doc };
   tutor.objectID = doc._id;
-  tutor.academics = doc.academicsTutoring;
+  tutor.type = doc.tutor.type;
+  tutor.academics = doc.tutor.academicsTutoring;
+  tutor.curricula = doc.tutor.curricula;
   delete tutor._id;
   return indexSchema.validateSync(tutor, { stripUnknown: true });
 }
