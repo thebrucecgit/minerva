@@ -22,6 +22,7 @@ const Hit = ({ hit, currentUser }) => {
           {hit.yearGroup}
         </p>
         <Tags tags={hit.academics} />
+        <Tags tags={hit.curricula} />
         <div className="bio">
           <Highlight hit={hit} attribute="biography" tagName="mark" />
         </div>
