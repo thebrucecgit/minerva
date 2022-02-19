@@ -19,7 +19,8 @@ const Hit = ({ hit, currentUser }) => {
         </Link>
         <p className="details">
           <Highlight hit={hit} attribute="school" tagName="mark" /> ·{" "}
-          {hit.yearGroup}
+          {hit.yearGroup} · {hit.price > 0 ? `$${hit.price}` : "Gratis"} ·{" "}
+          {hit.type}
         </p>
         <Tags tags={hit.academics} />
         <Tags tags={hit.curricula} />

@@ -10,6 +10,7 @@ fragment limitedUserInfo on User {
   tutor {
     type
     status
+    price
     academicsTutoring
     curricula
   }

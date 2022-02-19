@@ -17,6 +17,7 @@ export default gql`
     academicsTutoring: [String!]!
     curricula: [String!]!
     academicRecords: [FileMetaIn!]!
+    price: Int
   }
 
   type TutorInfo {
@@ -25,6 +26,7 @@ export default gql`
     academicRecords: [FileMeta!]
     academicsTutoring: [String!]!
     curricula: [String!]!
+    price: Int!
   }
 
   type AdminStatus {

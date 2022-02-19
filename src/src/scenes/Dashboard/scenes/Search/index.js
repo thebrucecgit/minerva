@@ -5,6 +5,7 @@ import {
   Stats,
   Configure,
   PoweredBy,
+  SortBy,
 } from "react-instantsearch-dom";
 
 import SearchBox from "./components/SearchBox";
@@ -32,8 +33,26 @@ const Search = ({ currentUser }) => {
         <div className="ais-SearchPage">
           <div className="ais-Refinements">
             <Menu attribute="school" />
+            <RefinementList attribute="type" />
             <RefinementList attribute="academics" />
             <RefinementList attribute="curricula" />
+            <SortBy
+              defaultRefinement={REACT_APP_ALGOLIA_INDEX_NAME}
+              items={[
+                {
+                  value: REACT_APP_ALGOLIA_INDEX_NAME,
+                  label: "Normal",
+                },
+                {
+                  value: `${REACT_APP_ALGOLIA_INDEX_NAME}_price_desc`,
+                  label: "Sort by highest price",
+                },
+                {
+                  value: `${REACT_APP_ALGOLIA_INDEX_NAME}_price_asc`,
+                  label: "Sort by lowest price",
+                },
+              ]}
+            />
           </div>
           <div>
             <Configure hitsPerPage={9} />

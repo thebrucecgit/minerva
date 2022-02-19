@@ -6,6 +6,8 @@ const { ALGOLIA_APPID, ALGOLIA_ADMIN_API, ALGOLIA_INDEX } = process.env;
 
 export const client = algoliasearch(ALGOLIA_APPID, ALGOLIA_ADMIN_API);
 const index = client.initIndex(ALGOLIA_INDEX);
+const descSortByPrice = client.initIndex(`${ALGOLIA_INDEX}_price_desc`);
+const ascSortByPrice = client.initIndex(`${ALGOLIA_INDEX}_price_asc`);
 
 const indexSchema = yup.object().shape({
   objectID: yup.string().required(),
@@ -21,20 +23,64 @@ const indexSchema = yup.object().shape({
   }),
   type: yup.string(),
   curricula: yup.array().of(yup.string()),
+  price: yup.number(),
+  randomness: yup.number(),
 });
 
 export default index;
 
 export const FIELDS =
-  "name yearGroup school biography pfp tutor.type tutor.curricula tutor.academicsTutoring";
+  "name yearGroup school biography pfp tutor.type tutor.curricula tutor.academicsTutoring tutor.price";
+
+const defaultRankings = [
+  "typo",
+  "geo",
+  "words",
+  "filters",
+  "proximity",
+  "attribute",
+  "exact",
+  "custom",
+];
+
+export async function setSettings() {
+  try {
+    await index.setSettings(
+      {
+        searchableAttributes: [
+          "unordered(name)",
+          "unordered(school)",
+          "unordered(yearGroup)",
+          "unordered(biography)",
+          "unordered(academics)",
+          "unordered(curricula)",
+        ],
+        attributesForFaceting: ["academics", "curricula", "school", "type"],
+        replicas: [`${ALGOLIA_INDEX}_price_desc`, `${ALGOLIA_INDEX}_price_asc`],
+        ranking: [...defaultRankings],
+        customRanking: ["asc(randomness)"],
+      },
+      { forwardToReplicas: true }
+    );
+    await descSortByPrice.setSettings({
+      ranking: ["desc(price)", ...defaultRankings],
+    });
+    await ascSortByPrice.setSettings({
+      ranking: ["asc(price)", ...defaultRankings],
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
 
 export function docToRecord(doc) {
-  const tutor = { ...doc };
+  const tutor = {
+    ...doc,
+    ...doc.tutor,
+    academics: doc.tutor.academicsTutoring,
+    randomness: Math.floor(Math.random() * 100),
+  };
   tutor.objectID = doc._id;
-  tutor.type = doc.tutor.type;
-  tutor.academics = doc.tutor.academicsTutoring;
-  tutor.curricula = doc.tutor.curricula;
-  delete tutor._id;
   return indexSchema.validateSync(tutor, { stripUnknown: true });
 }
 

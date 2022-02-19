@@ -61,6 +61,12 @@ function PersonalInfo({ currentUser }) {
         const { data } = await updateUserAPI({
           variables: {
             ...updates,
+            tutor: updates.tutor
+              ? {
+                  ...updates.tutor,
+                  price: parseInt(updates.tutor.price),
+                }
+              : {},
             id: currentUser.user._id,
           },
         });
@@ -107,11 +113,15 @@ function PersonalInfo({ currentUser }) {
   };
 
   const onChange = (e) => {
-    setUpdates((st) => ({
-      ...st,
-      [e.target.name]:
-        e.target.type === "checkbox" ? e.target.checked : e.target.value,
-    }));
+    setUpdates((st) => {
+      const prev = { ...st };
+      set(
+        prev,
+        e.target.name,
+        e.target.type === "checkbox" ? e.target.checked : e.target.value
+      );
+      return prev;
+    });
   };
 
   const setFiles = (func) => {
@@ -320,6 +330,21 @@ function PersonalInfo({ currentUser }) {
               Academe moderator.
             </p>
           )}
+
+          <div>
+            <label htmlFor="tutor.price">Price per hour:</label>
+            {update ? (
+              <input
+                type="number"
+                value={updates.tutor.price ?? ""}
+                name="tutor.price"
+                onChange={onChange}
+              />
+            ) : (
+              <p>${user.tutor.price}</p>
+            )}
+          </div>
+
           <div>
             <label htmlFor="tutor.academicsTutoring">
               Add academic subjects that you want to{" "}

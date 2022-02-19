@@ -51,6 +51,10 @@ const User = ({ currentUser }) => {
 
       <div className={classNames("container", styles.userInfo)}>
         <div>
+          <h3>${user.tutor.price} per hour</h3>
+        </div>
+
+        <div>
           {user.tutor?.academicsTutoring?.length > 0 && (
             <div className={styles.tags}>
               <FontAwesomeIcon icon={faGraduationCap} size="2x" />

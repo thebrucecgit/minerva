@@ -78,6 +78,10 @@ const userSchema = new Schema({
     message: {
       type: String,
     },
+    price: {
+      type: Number,
+      default: 0,
+    },
   },
   admin: {
     status: {

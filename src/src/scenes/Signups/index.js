@@ -259,6 +259,7 @@ function Signups({ authService }) {
           academicsTutoring: info.academicsTutoring,
           curricula: info.curricula,
           academicRecords: info.academicRecords,
+          price: parseInt(info.price),
         },
       };
       delete request.academicsTutoring;

@@ -128,6 +128,18 @@ const AdditionalInfo = ({
                   </label>
                 </div>
               </div>
+              <div className={styles.field}>
+                <label htmlFor="name">Price per hour:</label>
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  autoComplete="price"
+                  value={info.price ?? ""}
+                  onChange={onChange}
+                  noValidate
+                />
+              </div>
               <div className={styles.field} data-test="academicsTutoring">
                 <label htmlFor="academicsTutoring">
                   Add academic subjects that you want to{" "}

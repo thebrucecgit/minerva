@@ -62,4 +62,5 @@ input TutorInfoIn {
   academicSubjects: [String!]
   curricula: [String!]
   academicRecords: [FileMetaIn!]
+  price: Int
 }

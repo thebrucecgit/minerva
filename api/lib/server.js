@@ -8,12 +8,13 @@ import { connect } from "./config/database";
 import * as websocket from "./websocket";
 import apolloServer from "./apollo";
 
-import { indexAll } from "./config/search";
+import { setSettings } from "./config/search";
 
 const { DOMAIN, PORT, NODE_ENV } = process.env;
 
 // Connect to DB
 connect();
+setSettings();
 
 const app = express();
 app.use(cors());
