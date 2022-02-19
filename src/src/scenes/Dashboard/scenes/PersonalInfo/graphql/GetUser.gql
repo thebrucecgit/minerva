@@ -1,25 +1,6 @@
+#import "./userInfo.gql"
 query GetUser {
   getUser {
-    _id
-    name
-    email
-    pfp {
-      type
-      url
-      cloudinaryPublicId
-    }
-    tutor {
-      status
-      academicRecords {
-        id
-        name
-        size
-        type
-      }
-    }
-    yearGroup
-    biography
-    academicsTutoring
-    school
+    ...userInfo
   }
 }

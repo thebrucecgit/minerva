@@ -9,7 +9,7 @@ import { format } from "date-fns";
 import classNames from "classnames";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGraduationCap } from "@fortawesome/free-solid-svg-icons";
+import { faGraduationCap, faSchool } from "@fortawesome/free-solid-svg-icons";
 
 import Tags from "../../../../components/Tags";
 
@@ -51,10 +51,19 @@ const User = ({ currentUser }) => {
 
       <div className={classNames("container", styles.userInfo)}>
         <div>
-          {user.academicsTutoring.length > 0 && (
+          {user.tutor?.academicsTutoring?.length > 0 && (
             <div className={styles.tags}>
               <FontAwesomeIcon icon={faGraduationCap} size="2x" />
-              <Tags tags={user.academicsTutoring} />
+              <Tags tags={user.tutor.academicsTutoring} />
+            </div>
+          )}
+        </div>
+
+        <div>
+          {user.tutor?.curricula?.length > 0 && (
+            <div className={styles.tags}>
+              <FontAwesomeIcon icon={faSchool} size="2x" />
+              <Tags tags={user.tutor.curricula} />
             </div>
           )}
         </div>

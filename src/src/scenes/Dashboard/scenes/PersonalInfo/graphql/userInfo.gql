@@ -1,0 +1,25 @@
+fragment userInfo on User {
+  _id
+  name
+  email
+  pfp {
+    type
+    url
+    cloudinaryPublicId
+  }
+  tutor {
+    type
+    status
+    academicRecords {
+      id
+      name
+      size
+      type
+    }
+    academicsTutoring
+    curricula
+  }
+  yearGroup
+  biography
+  school
+}

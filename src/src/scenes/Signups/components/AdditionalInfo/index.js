@@ -4,9 +4,16 @@ import FileManager from "components/FileManager";
 import useFileManager from "hooks/useFileManager";
 
 import StatusSymbol from "../StatusSymbol";
-import selections from "../../../../config/whitelist.json";
+import selections from "config/whitelist.json";
 
 import styles from "../../styles.module.scss";
+
+const baseTagifySettings = {
+  dropdown: {
+    enabled: 0,
+    classname: "tagifyDropdown",
+  },
+};
 
 const AdditionalInfo = ({
   sectionStatus,
@@ -19,13 +26,6 @@ const AdditionalInfo = ({
   defaultApply,
   onNext,
 }) => {
-  const baseTagifySettings = {
-    dropdown: {
-      enabled: 0,
-      classname: "tagifyDropdown",
-    },
-  };
-
   const setFiles = (func) => {
     setInfo((info) => ({
       ...info,
@@ -113,14 +113,26 @@ const AdditionalInfo = ({
                 Note that your application to be a tutor will be reviewed by a
                 human moderator.
               </p>
+              <div className={styles.field}>
+                <div className="checkbox">
+                  <input
+                    type="checkbox"
+                    name="tertiary"
+                    id="tertiary"
+                    checked={info.tertiary ?? false}
+                    onChange={onChange}
+                    noValidate
+                  />
+                  <label htmlFor="tertiary">
+                    Check if you're studying at a tertiary level
+                  </label>
+                </div>
+              </div>
               <div className={styles.field} data-test="academicsTutoring">
-                <label>
+                <label htmlFor="academicsTutoring">
                   Add academic subjects that you want to{" "}
                   <strong>tutor others in</strong>:
                 </label>
-                {/* {errors.academicsTutoring && (
-              <p className={styles.invalid}>{errors.academics}</p>
-            )} */}
                 <Tags
                   settings={{
                     ...baseTagifySettings,
@@ -130,7 +142,24 @@ const AdditionalInfo = ({
                   }}
                   onChange={(e) => onTagsChange(e, "academicsTutoring")}
                   defaultValue={info.academicsTutoring}
-                  name="academic"
+                  name="academicsTutoring"
+                />
+              </div>
+              <div className={styles.field} data-test="curricula">
+                <label htmlFor="curricula">
+                  Add curricula that you want to{" "}
+                  <strong>tutor others in</strong>:
+                </label>
+                <Tags
+                  settings={{
+                    ...baseTagifySettings,
+                    enforceWhitelist: true,
+                    placeholder: "eg. NCEA",
+                    whitelist: selections.curricula,
+                  }}
+                  onChange={(e) => onTagsChange(e, "curricula")}
+                  defaultValue={info.curricula}
+                  name="curricula"
                 />
               </div>
               <div className={styles.fields}>

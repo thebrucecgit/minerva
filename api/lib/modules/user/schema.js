@@ -13,9 +13,18 @@ export default gql`
     cloudinaryPublicId: String
   }
 
-  type TutorStatus {
+  input TutorInfoIn {
+    academicsTutoring: [String!]!
+    curricula: [String!]!
+    academicRecords: [FileMetaIn!]!
+  }
+
+  type TutorInfo {
+    type: String!
     status: String
     academicRecords: [FileMeta!]
+    academicsTutoring: [String!]!
+    curricula: [String!]!
   }
 
   type AdminStatus {
@@ -46,10 +55,8 @@ export default gql`
     pfp: Pfp
     yearGroup: String!
     school: String!
-    academicsTutoring: [String!]
     biography: String!
-    academicRecords: [FileMeta!]
-    tutor: TutorStatus
+    tutor: TutorInfo
     admin: AdminStatus
   }
 
@@ -80,11 +87,11 @@ export default gql`
       pfp: PfpIn
       yearGroup: String!
       school: String!
-      academicsTutoring: [String!]
       biography: String
-      academicRecords: [FileMetaIn!]
       token: String!
       applyTutor: Boolean!
+      tertiary: Boolean
+      tutor: TutorInfoIn
     ): UserReq!
     updateUser(
       id: ID!
@@ -92,10 +99,10 @@ export default gql`
       pfp: PfpIn
       yearGroup: String
       school: String
-      academicsTutoring: [String!]
       biography: String
       applyTutor: Boolean
-      academicRecords: [FileMetaIn!]
+      tertiary: Boolean
+      tutor: TutorInfoIn
     ): User!
     confirmUserEmail(emailConfirmId: String!): UserReq!
     resetPassword(email: String!): Boolean

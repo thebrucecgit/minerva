@@ -57,3 +57,9 @@ input FileMetaIn {
   size: Int
   type: String
 }
+
+input TutorInfoIn {
+  academicSubjects: [String!]
+  curricula: [String!]
+  academicRecords: [FileMetaIn!]
+}

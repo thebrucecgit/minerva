@@ -14,9 +14,9 @@ query GetPendingTutors {
         size
         type
       }
+      academicsTutoring
     }
     yearGroup
     school
-    academicsTutoring
   }
 }

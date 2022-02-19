@@ -10,6 +10,7 @@ import TagsSelect from "@yaireo/tagify/dist/react.tagify";
 import Tags from "components/Tags";
 import { Image, Transformation } from "cloudinary-react";
 import classNames from "classnames";
+import { set } from "lodash";
 
 import styles from "./styles.module.scss";
 import "@yaireo/tagify/dist/tagify.css";
@@ -18,6 +19,13 @@ import useFileManager from "hooks/useFileManager";
 
 const GET_USER = loader("./graphql/GetUser.gql");
 const UPDATE_USER = loader("./graphql/UpdateUser.gql");
+
+const baseTagifySettings = {
+  dropdown: {
+    enabled: 0,
+    classname: "tagifyDropdown",
+  },
+};
 
 function PersonalInfo({ currentUser }) {
   const { data, loading, error } = useQuery(GET_USER);
@@ -54,7 +62,6 @@ function PersonalInfo({ currentUser }) {
           variables: {
             ...updates,
             id: currentUser.user._id,
-            academicRecords: updates.tutor?.academicRecords,
           },
         });
         setUser((st) => ({
@@ -88,6 +95,11 @@ function PersonalInfo({ currentUser }) {
   const handleChangeUpdate = (e) => {
     setUpdates({
       ...user,
+      tutor: {
+        ...user.tutor,
+        type: undefined,
+        status: undefined,
+      },
       applyTutor:
         typeof user.tutor?.status === "string" && user.tutor.status !== "NONE",
     });
@@ -121,10 +133,15 @@ function PersonalInfo({ currentUser }) {
   });
 
   const onTagsChange = useCallback((e, name) => {
-    setUpdates((st) => ({
-      ...st,
-      [name]: e.detail.tagify.value.map((tag) => tag.value),
-    }));
+    setUpdates((st) => {
+      const prev = { ...st };
+      set(
+        prev,
+        name,
+        e.detail.tagify.value.map((tag) => tag.value)
+      );
+      return prev;
+    });
   }, []);
 
   const userApplyTutor =
@@ -264,6 +281,8 @@ function PersonalInfo({ currentUser }) {
         )}
       </div>
 
+      <hr />
+
       <div>
         <div className="checkbox">
           <input
@@ -287,37 +306,60 @@ function PersonalInfo({ currentUser }) {
               be a tutor
             </p>
           )}
+          <p>Application status: {user.tutor.status}</p>
+          {user.tutor.status === "COMPLETE" && (
+            <p>
+              You may need to logout and log back in for all changes to take
+              effect.
+            </p>
+          )}
+
+          {update && (
+            <p>
+              Note that your application to be a tutor will be reviewed by an
+              Academe moderator.
+            </p>
+          )}
           <div>
-            <p>Application status: {user.tutor.status}</p>
-            {user.tutor.status === "COMPLETE" && (
-              <p>
-                You may need to logout and log back in for all changes to take
-                effect.
-              </p>
-            )}
-
-            {update && (
-              <p>
-                Note that your application to be a tutor will be reviewed by an
-                Academe moderator.
-              </p>
-            )}
-
-            <label htmlFor="academicsTutoring">
-              Academic subjects to tutor:
+            <label htmlFor="tutor.academicsTutoring">
+              Add academic subjects that you want to{" "}
+              <strong>tutor others in</strong>:
             </label>
             {update ? (
               <TagsSelect
                 settings={{
+                  ...baseTagifySettings,
                   placeholder: "eg. English",
                   whitelist: selections.academic,
+                  enforceWhitelist: true,
                 }}
-                onChange={(e) => onTagsChange(e, "academicsTutoring")}
-                defaultValue={updates.academicsTutoring}
-                name="academicsTutoring"
+                onChange={(e) => onTagsChange(e, "tutor.academicsTutoring")}
+                defaultValue={updates.tutor.academicsTutoring}
+                name="tutor.academicsTutoring"
               />
             ) : (
-              <Tags tags={user.academicsTutoring} />
+              <Tags tags={user.tutor.academicsTutoring} />
+            )}
+          </div>
+
+          <div>
+            <label htmlFor="tutor.curricula">
+              Add curricula that you want to <strong>tutor others in</strong>:
+            </label>
+            {update ? (
+              <TagsSelect
+                settings={{
+                  ...baseTagifySettings,
+                  placeholder: "eg. English",
+                  whitelist: selections.curricula,
+                  enforceWhitelist: true,
+                }}
+                onChange={(e) => onTagsChange(e, "tutor.curricula")}
+                defaultValue={updates.tutor.curricula}
+                name="tutor.curricula"
+              />
+            ) : (
+              <Tags tags={user.tutor.curricula} />
             )}
           </div>
 

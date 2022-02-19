@@ -1,4 +1,5 @@
 import { ApolloError } from "apollo-server";
+import { flatten } from "mongo-dot-notation";
 import User from "../model";
 import userSchema from "../yupSchema";
 import index, { docToRecord } from "../../../config/search";
@@ -13,7 +14,6 @@ export default async function updateUser(_, args, { user }) {
   const edits = { ...args };
 
   const oldUser = await User.findById(edits.id);
-  edits["tutor.grades"] = args.grades;
 
   if (!args.pfp?.url) {
     edits.pfp = {
@@ -21,8 +21,7 @@ export default async function updateUser(_, args, { user }) {
       url: getAvatar(args.name ?? oldUser.name),
     };
   }
-  edits["tutor.academicRecords"] = edits.academicRecords;
-  delete edits.academicRecords;
+
   if (args.applyTutor && oldUser.tutor.status === "NONE")
     edits["tutor.status"] = "PENDING_REVIEW";
   else if (args.applyTutor === false && oldUser.tutor.status !== "NONE") {
@@ -30,8 +29,9 @@ export default async function updateUser(_, args, { user }) {
     edits["tutor.status"] = "NONE";
   }
   delete edits.applyTutor;
-
-  const updated = await User.findByIdAndUpdate(edits.id, edits, { new: true });
+  const updated = await User.findByIdAndUpdate(edits.id, flatten(edits), {
+    new: true,
+  });
 
   // Update algolia index
   if (updated.tutor.status === "COMPLETE") {

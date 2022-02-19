@@ -1,5 +1,6 @@
 import axios from "axios";
 import bcrypt from "bcrypt";
+import { flatten } from "mongo-dot-notation";
 import User from "../model";
 import { nanoid } from "nanoid";
 import sgMail from "../../../config/email";
@@ -41,7 +42,7 @@ export default async function register(_, args) {
   }
   if (args.applyTutor) {
     edits["tutor.status"] = "PENDING_REVIEW";
-    edits["tutor.academicRecords"] = args.academicRecords;
+    edits["tutor.type"] = args.tertiary ? "GENERAL" : "LOCAL";
   }
 
   // Verify information
@@ -54,11 +55,11 @@ export default async function register(_, args) {
     // Google stategy
     user = await User.findByIdAndUpdate(
       existingUser._id,
-      {
+      flatten({
         ...edits,
         confirmed: true,
         registrationStatus: "COMPLETE",
-      },
+      }),
       { new: true }
     );
   } else {

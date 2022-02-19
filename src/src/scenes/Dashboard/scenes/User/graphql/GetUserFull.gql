@@ -1,19 +1,7 @@
+#import "./limitedUserInfo.gql"
 query ($id: ID!) {
   getUser(id: $id) {
-    _id
-    name
-    email
-    pfp {
-      url
-      type
-      cloudinaryPublicId
-    }
-    tutor {
-      status
-    }
-    yearGroup
-    biography
-    academicsTutoring
+    ...limitedUserInfo
     classes {
       _id
       name

@@ -45,5 +45,6 @@
     "Japanese",
     "Korean",
     "German"
-  ]
+  ],
+  "curricula": ["NCEA", "IB", "Cambridge"]
 }

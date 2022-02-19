@@ -44,9 +44,11 @@ function Signups({ authService }) {
     // If there is saved info, use saved
     try {
       const saved = localStorage.getItem("signup");
-      const data = saved ? JSON.parse(saved) : {};
-      data.applyTutor = defaultApply === "tutor";
-      return data;
+      return {
+        applyTutor: defaultApply === "tutor",
+        tertiary: false,
+        ...(saved ? JSON.parse(saved) : {}),
+      };
     } catch (e) {
       console.error(e);
       return {};
@@ -73,10 +75,9 @@ function Signups({ authService }) {
   // Save form to localstorage
   useEffect(() => {
     const infoStore = Object.assign({}, info);
-    // Don't save password
-    delete infoStore.tempFiles;
     // Don't store files
     delete infoStore.academicRecords;
+    // Don't save password
     delete infoStore.password;
     localStorage.setItem("signup", JSON.stringify(infoStore));
   }, [info]);
@@ -251,10 +252,20 @@ function Signups({ authService }) {
   const onCaptchaComplete = async (token) => {
     try {
       recaptchaRef.current.reset();
-      const { user } = await authService.register({
+      const request = {
         ...info,
         token,
-      });
+        tutor: {
+          academicsTutoring: info.academicsTutoring,
+          curricula: info.curricula,
+          academicRecords: info.academicRecords,
+        },
+      };
+      delete request.academicsTutoring;
+      delete request.curricula;
+      delete request.academicRecords;
+
+      const { user } = await authService.register(request);
 
       localStorage.removeItem("signup");
 

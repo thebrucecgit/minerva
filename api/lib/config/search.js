@@ -19,11 +19,13 @@ const indexSchema = yup.object().shape({
     url: yup.string(),
     cloudinaryPublicId: yup.mixed(),
   }),
+  "tutor.type": yup.string(),
 });
 
 export default index;
 
-export const FIELDS = "name yearGroup school biography academicsTutoring pfp";
+export const FIELDS =
+  "name yearGroup school biography academicsTutoring pfp tutor.type";
 
 export function docToRecord(doc) {
   const tutor = { ...doc };

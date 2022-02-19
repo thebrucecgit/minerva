@@ -53,7 +53,7 @@ function Review() {
               <FileManager files={tutor.tutor.academicRecords} />
 
               <p>Tutoring:</p>
-              <Tags tags={tutor.academicsTutoring} />
+              <Tags tags={tutor.tutor.academicsTutoring} />
 
               <div className={styles.options}>
                 <button

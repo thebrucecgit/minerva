@@ -6,11 +6,11 @@ mutation Register(
   $pfp: PfpIn
   $yearGroup: String!
   $school: String!
-  $academicsTutoring: [String!]
   $biography: String
-  $academicRecords: [FileMetaIn!]
+  $tertiary: Boolean!
   $token: String!
   $applyTutor: Boolean!
+  $tutor: TutorInfoIn
 ) {
   register(
     name: $name
@@ -19,11 +19,11 @@ mutation Register(
     pfp: $pfp
     yearGroup: $yearGroup
     school: $school
-    academicsTutoring: $academicsTutoring
     biography: $biography
-    academicRecords: $academicRecords
+    tertiary: $tertiary
     token: $token
     applyTutor: $applyTutor
+    tutor: $tutor
   ) {
     ...authFields
   }

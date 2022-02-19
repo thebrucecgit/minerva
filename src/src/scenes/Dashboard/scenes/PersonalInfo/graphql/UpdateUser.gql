@@ -1,3 +1,4 @@
+#import "./userInfo.gql"
 mutation updateUser(
   $id: ID!
   $name: String
@@ -5,9 +6,9 @@ mutation updateUser(
   $yearGroup: String
   $biography: String
   $school: String
-  $academicsTutoring: [String!]
+  $tertiary: Boolean
   $applyTutor: Boolean
-  $academicRecords: [FileMetaIn!]
+  $tutor: TutorInfoIn
 ) {
   updateUser(
     id: $id
@@ -15,31 +16,11 @@ mutation updateUser(
     pfp: $pfp
     yearGroup: $yearGroup
     biography: $biography
-    academicsTutoring: $academicsTutoring
     school: $school
+    tertiary: $tertiary
     applyTutor: $applyTutor
-    academicRecords: $academicRecords
+    tutor: $tutor
   ) {
-    _id
-    name
-    email
-    pfp {
-      type
-      url
-      cloudinaryPublicId
-    }
-    tutor {
-      status
-      academicRecords {
-        id
-        name
-        size
-        type
-      }
-    }
-    yearGroup
-    biography
-    academicsTutoring
-    school
+    ...userInfo
   }
 }

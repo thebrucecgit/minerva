@@ -1,0 +1,18 @@
+fragment limitedUserInfo on User {
+  _id
+  name
+  email
+  pfp {
+    type
+    url
+    cloudinaryPublicId
+  }
+  tutor {
+    type
+    status
+    academicsTutoring
+    curricula
+  }
+  yearGroup
+  biography
+}

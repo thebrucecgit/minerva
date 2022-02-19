@@ -51,6 +51,20 @@ const userSchema = new Schema({
       enum: ["NONE", "PENDING_REVIEW", "FAILED_REVIEW", "COMPLETE"],
       default: "NONE",
     },
+    type: {
+      type: String,
+      enum: ["LOCAL", "GENERAL"],
+    },
+    academicsTutoring: [
+      {
+        type: String,
+      },
+    ],
+    curricula: [
+      {
+        type: String,
+      },
+    ],
     academicRecords: [
       {
         id: String,
@@ -113,28 +127,12 @@ const userSchema = new Schema({
   school: {
     type: String,
   },
-  academicsLearning: [
-    {
-      type: String,
-    },
-  ],
-  extrasLearning: [
-    {
-      type: String,
-    },
-  ],
-  academicsTutoring: [
-    {
-      type: String,
-    },
-  ],
-  extrasTutoring: [
-    {
-      type: String,
-    },
-  ],
   biography: {
     type: String,
+  },
+  tertiary: {
+    // is the user in a tertiary institution
+    type: Boolean, // only required for tutors
   },
   classes: [
     {
