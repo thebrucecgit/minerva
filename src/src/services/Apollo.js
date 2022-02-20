@@ -1,6 +1,12 @@
 import React from "react";
 
-import { ApolloClient, HttpLink, ApolloLink, ApolloProvider, InMemoryCache } from "@apollo/client";
+import {
+  ApolloClient,
+  HttpLink,
+  ApolloLink,
+  ApolloProvider,
+  InMemoryCache,
+} from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 // import { withClientState } from "apollo-link-state";
 import { loader } from "graphql.macro";
@@ -60,6 +66,7 @@ const Apollo = ({ authHelpers, children }) => {
     defaultOptions: {
       watchQuery: {
         fetchPolicy: "cache-and-network",
+        nextFetchPolicy: "cache-first",
       },
     },
   });

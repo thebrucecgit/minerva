@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/client";
 import { toast } from "react-toastify";
@@ -93,17 +93,14 @@ const chatSort = (a, b) => {
 const Chats = ({ match: { path }, ws, currentUser }) => {
   const [chats, setChats] = useState([]);
 
-  const { data, loading, error } = useQuery(GET_CHATS, {
+  const { loading, error } = useQuery(GET_CHATS, {
     variables: {
       userID: currentUser.user._id,
     },
-  });
-
-  useEffect(() => {
-    if (data) {
+    onCompleted: (data) => {
       setChats([...data.getChatsOfUser].sort(chatSort));
-    }
-  }, [data]);
+    },
+  });
 
   const sendMessage = (channel, text, id) => {
     const evt = {
