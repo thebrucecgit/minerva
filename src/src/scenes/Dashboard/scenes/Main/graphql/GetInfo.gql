@@ -6,12 +6,6 @@ query GetInfo($userID: ID!) {
       address
     }
   }
-  getClassesOfUser(userID: $userID, limit: 1) {
-    _id
-    name
-    image
-    description
-  }
   getTutorsOfUser(userID: $userID, limit: 4) {
     _id
     name

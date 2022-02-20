@@ -99,10 +99,6 @@ const Appbar = ({ currentUser, appbarOpen, setAppbarOpen }) => {
             link: "/dashboard/sessions",
           },
           {
-            name: "Classes",
-            link: "/dashboard/classes",
-          },
-          {
             name: "Tutors",
             link: "/dashboard/tutors",
           },

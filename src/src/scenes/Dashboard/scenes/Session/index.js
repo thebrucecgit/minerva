@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { loader } from "graphql.macro";
 import classNames from "classnames";
 import { useQuery, useMutation } from "@apollo/client";
@@ -387,12 +387,6 @@ const Session = ({ currentUser }) => {
             <FontAwesomeIcon icon={faCheck} /> You have reviewed this session!
           </p>
         )}
-
-        <p className={styles.padding}>
-          <Link to={`/dashboard/classes/${sessionInfo.class._id}`}>
-            {sessionInfo.class.name}
-          </Link>
-        </p>
 
         <div className={styles.flex}>
           <p className={styles.date}>

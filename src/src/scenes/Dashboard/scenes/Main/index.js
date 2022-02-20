@@ -51,7 +51,7 @@ const Main = ({ currentUser }) => {
             </p>
           </div>
         </div>
-        <div className={styles.wrapper}>
+        {/* <div className={styles.wrapper}>
           <h1>Class</h1>
           <div className={styles.group}>
             {data.getClassesOfUser.length > 0 ? (
@@ -74,7 +74,7 @@ const Main = ({ currentUser }) => {
               <Link to="/dashboard/classes">See all</Link>
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
       <div className={styles.lower}>
         <h1>Tutors</h1>

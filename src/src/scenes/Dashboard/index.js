@@ -13,10 +13,10 @@ import Tutors from "./scenes/Tutors";
 import User from "./scenes/User";
 import Sessions from "./scenes/Sessions";
 import Session from "./scenes/Session";
-import Classes from "./scenes/Classes";
-import Class from "./scenes/Class";
+// import Classes from "./scenes/Classes";
+// import Class from "./scenes/Class";
+// import Attendance from "./scenes/Attendance";
 import Chats from "./scenes/Chats";
-import Attendance from "./scenes/Attendance";
 import PersonalInfo from "./scenes/PersonalInfo";
 
 import "./quill.scss";
@@ -78,7 +78,7 @@ const Dashboard = ({ location, match, authService }) => {
           <Route exact path={`${path}/sessions/:id`}>
             <Session {...pageBinds} />
           </Route>
-          <Route exact path={`${path}/classes`}>
+          {/* <Route exact path={`${path}/classes`}>
             <Classes {...pageBinds} />
           </Route>
           <Route exact path={`${path}/classes/:id`}>
@@ -86,7 +86,7 @@ const Dashboard = ({ location, match, authService }) => {
           </Route>
           <Route exact path={`${path}/classes/:id/attendance`}>
             <Attendance {...pageBinds} />
-          </Route>
+          </Route> */}
           <Route exact path={`${path}/me`}>
             <PersonalInfo {...pageBinds} />
           </Route>
