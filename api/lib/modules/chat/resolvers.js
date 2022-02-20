@@ -25,7 +25,7 @@ export default {
   },
   Mutation: {
     async createChat(_, { targets }, { user }) {
-      const targetUsers = [...new Set([...targets, user._id])];
+      const targetUsers = [...new Set([...targets, user._id])].sort();
 
       if (targetUsers.length <= 1)
         throw new Error("Can't message yourself", 400);
@@ -33,10 +33,7 @@ export default {
       return await Chat.findOneAndUpdate(
         {
           bindToClass: false,
-          users: {
-            $all: targetUsers.map((u) => ({ $elemMatch: { $eq: u } })),
-            $size: targetUsers.length,
-          },
+          users: targetUsers,
         },
         { users: targetUsers },
         { upsert: true, new: true, setDefaultsOnInsert: true }
