@@ -1,0 +1,60 @@
+fragment sessionInfo on Session {
+  _id
+  tutors {
+    _id
+    pfp {
+      url
+      type
+      cloudinaryPublicId
+    }
+    name
+  }
+  tutees {
+    _id
+    name
+  }
+  location {
+    address
+    coords {
+      lat
+      lng
+    }
+  }
+  attendance {
+    tutee
+    attended
+    reason
+    behaviourGood
+    behaviourTags
+    behaviourComment
+  }
+  review {
+    tutee
+    rating
+    occurred
+    reason
+    comment
+  }
+  settings {
+    online
+    studentEditNotes
+    syncTutorsWithClass
+    syncTuteesWithClass
+  }
+  price
+  startTime
+  endTime
+  length
+  notes
+  cancellation {
+    user
+    cancelled
+    reason
+    date
+  }
+  status
+  userResponses {
+    user
+    response
+  }
+}

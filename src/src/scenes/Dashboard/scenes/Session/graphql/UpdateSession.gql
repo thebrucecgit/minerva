@@ -1,3 +1,4 @@
+#import "./sessionInfo.gql"
 mutation UpdateSession(
   $id: ID!
   $startTime: Date
@@ -18,47 +19,6 @@ mutation UpdateSession(
     length: $length
     settings: $settings
   ) {
-    _id
-    notes
-    location {
-      address
-      coords {
-        lat
-        lng
-      }
-    }
-    tutors {
-      _id
-      name
-      pfp {
-        url
-        type
-        cloudinaryPublicId
-      }
-    }
-    attendance {
-      tutee
-      attended
-      reason
-      behaviourGood
-      behaviourTags
-      behaviourComment
-    }
-    review {
-      tutee
-      rating
-      occurred
-      reason
-      comment
-    }
-    settings {
-      online
-      studentEditNotes
-      syncTutorsWithClass
-      syncTuteesWithClass
-    }
-    startTime
-    endTime
-    length
+    ...sessionInfo
   }
 }
