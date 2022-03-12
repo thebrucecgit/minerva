@@ -15,8 +15,7 @@ function Navbar({ set, menu = true, dark = false }) {
   return (
     <nav className={classNames(styles.Navbar, { [styles.dark]: dark })}>
       <Link to="/">
-        <img src={logo} alt="Academe Logo" />
-        <h1>Academe</h1>
+        <img src={logo} alt="Minerva Logo" />
       </Link>
       {menu && (
         <div className={styles.menutoggle} onClick={openMenu}>

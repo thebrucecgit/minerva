@@ -14,7 +14,8 @@ const StyledAppbar = styled.div`
   top: 0;
   left: ${(props) => (props.appbarOpen ? "0" : "-100%")};
   position: fixed;
-  background-color: #ffeb78;
+  background-color: #23395b;
+  color: #fff;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 250px;
@@ -37,22 +38,17 @@ const StyledAppbar = styled.div`
 const AppbarSection = styled(NavLink)`
   font-size: 1.4rem;
   padding: 1rem 1.5rem;
-  transition: background-color 200ms ease;
+  transition: background 200ms ease;
   text-transform: uppercase;
-  color: black;
   display: block;
 
   &:hover {
-    background-color: rgba(231, 207, 67, 1);
+    background-color: #677b9a;
   }
 
   &.active {
-    background: rgb(237, 219, 115);
-    background: linear-gradient(
-      90deg,
-      rgba(237, 219, 115, 1) 0%,
-      rgba(231, 207, 67, 1) 100%
-    );
+    background: #677b9a;
+    background: linear-gradient(90deg, #677b9a 0%, #80a1d2 100%);
   }
 
   h3 {
@@ -133,7 +129,7 @@ const Appbar = ({ currentUser, appbarOpen, setAppbarOpen }) => {
         </Link>
         <Link to="/">
           <p>
-            Academe <FontAwesomeIcon icon={faHome} />
+            Minerva Info <FontAwesomeIcon icon={faHome} />
           </p>
         </Link>
         <Link to="/auth/logout">

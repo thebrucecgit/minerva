@@ -27,10 +27,36 @@ const Verification = ({
         <div className={styles.content}>
           <div className={styles.field}>
             <label htmlFor="biography">
-              Please write a bit about yourself — especially if you're signing
-              up as a tutor. Feel free to mention your experiences, hobbies and
-              character strengths.
+              {info.applyTutor ? (
+                <>
+                  <p>
+                    Feel free to be creative, but we recommend the following:{" "}
+                  </p>
+                  <ul>
+                    <li>Your qualifications</li>
+                    <li>What you're currently studying (if you're in Uni)</li>
+                    <li>
+                      Clear up any ambiguity in the curricula or subjects you
+                      tutor
+                    </li>
+                  </ul>
+                  <p>
+                    Eg.{" "}
+                    <em>
+                      I'm a third-year Economics student at the University of
+                      Auckland with 2 years of tutoring experience from high
+                      school. I achieved outstanding scholarships in physics,
+                      chemistry, and English, and would like to help you do the
+                      same! Both online and in-person options work for me. I
+                      look forward to meeting you.
+                    </em>
+                  </p>
+                </>
+              ) : (
+                <p>Feel free to be creative!</p>
+              )}
             </label>
+
             {errors.biography && (
               <p className={styles.invalid}>{errors.biography}</p>
             )}

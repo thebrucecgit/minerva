@@ -12,7 +12,7 @@ import Chat from "./components/Chat";
 import scrollbar from "styles/scrollbar";
 import styled from "styled-components";
 import mediaQuery from "styles/sizes";
-import { ReactComponent as ChatPrompt } from "./media/undraw_team_chat.svg";
+import { ReactComponent as ChatPrompt } from "./media/undraw_work_chat.svg";
 
 const StyledChats = styled.div`
   height: 100vh;

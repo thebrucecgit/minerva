@@ -7,6 +7,7 @@ import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
 import { format } from "date-fns";
 import classNames from "classnames";
+import DMButton from "../../components/DMButton";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGraduationCap, faSchool } from "@fortawesome/free-solid-svg-icons";
@@ -50,6 +51,10 @@ const User = ({ currentUser }) => {
       </div>
 
       <div className={classNames("container", styles.userInfo)}>
+        {currentUser.user._id !== user._id && (
+          <DMButton id={user._id} expanded />
+        )}
+
         <div>
           <h3>${user.tutor.price} per hour</h3>
         </div>

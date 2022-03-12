@@ -281,11 +281,31 @@ function PersonalInfo({ currentUser }) {
       <div>
         <label htmlFor="biography">Biography: </label>
         {update ? (
-          <textarea
-            value={updates.biography}
-            name="biography"
-            onChange={onChange}
-          ></textarea>
+          <>
+            <p>Feel free to be creative, but we recommend the following: </p>
+            <ul>
+              <li>Your qualifications</li>
+              <li>What you're currently studying (if you're in Uni)</li>
+              <li>
+                Clear up any ambiguity in the curricula or subjects you teach.
+              </li>
+            </ul>
+            <p>
+              Eg.{" "}
+              <em>
+                I'm a third-year Economics student at the University of Auckland
+                with 2 years of tutoring experience from high school. I achieved
+                outstanding scholarships in physics, chemistry, and English, and
+                would like to help you do the same! Both online and in-person
+                options work for me. I look forward to meeting you.
+              </em>
+            </p>
+            <textarea
+              value={updates.biography}
+              name="biography"
+              onChange={onChange}
+            ></textarea>
+          </>
         ) : (
           <p>{user.biography}</p>
         )}
@@ -327,7 +347,7 @@ function PersonalInfo({ currentUser }) {
           {update && (
             <p>
               Note that your application to be a tutor will be reviewed by an
-              Academe moderator.
+              Minerva moderator.
             </p>
           )}
 

@@ -41,7 +41,7 @@ const Search = ({ currentUser }) => {
               items={[
                 {
                   value: REACT_APP_ALGOLIA_INDEX_NAME,
-                  label: "Normal",
+                  label: "Default",
                 },
                 {
                   value: `${REACT_APP_ALGOLIA_INDEX_NAME}_price_desc`,

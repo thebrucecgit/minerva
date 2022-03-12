@@ -17,9 +17,8 @@ function Landing() {
       <div className={styles.overlay}>
         <div className={styles.front}>
           <div className={styles.description}>
-            {/* <img src="/media/academe-logo-symbol.png" alt="Academe Logo Symbol"> */}
             <h1>
-              <span>Academe</span>
+              <span>Minerva</span>
             </h1>
             <p>
               We make academic success easy and accessible, resourcing you with

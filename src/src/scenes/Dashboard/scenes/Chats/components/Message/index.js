@@ -59,7 +59,7 @@ export default function Message({ message, getNameById, handleRetry }) {
         <SessionUpdate>
           <h4>Chat created</h4>
           <p>
-            Please note that this conversation may be accessed by Academe
+            Please note that this conversation may be accessed by Minerva
             administrators.
           </p>
         </SessionUpdate>
