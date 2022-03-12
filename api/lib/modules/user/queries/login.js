@@ -45,6 +45,8 @@ export default async function login(_, { email, password, tokenId }) {
     );
 
     if (!user) throw new UserInputError("The email or password is incorrect");
+    if (!user.password)
+      throw new UserInputError("Try signing in via a different method.");
 
     const pass = await bcrypt.compare(password, user.password);
     if (!pass) throw new UserInputError("The email or password is incorrect");
