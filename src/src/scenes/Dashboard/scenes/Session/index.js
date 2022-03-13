@@ -219,7 +219,7 @@ const Session = ({ currentUser }) => {
   });
 
   const onNotesChange = (content, delta, source, editor) => {
-    setUpdate((st) => ({ ...st, notes: editor.getContents() }));
+    setUpdate((st) => ({ ...st, notes: content }));
   };
 
   const toggleEdit = () => {
