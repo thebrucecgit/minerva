@@ -2,10 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUserGraduate,
-  faChevronDown,
-} from "@fortawesome/free-solid-svg-icons";
+import { faUserGraduate } from "@fortawesome/free-solid-svg-icons";
 
 import bookshelves from "./media/bookshelves.jpg";
 
@@ -39,10 +36,6 @@ function Landing() {
           </div>
         </div>
       </div>
-      <a className={styles.scrollprompt} href="#description">
-        <p>Scroll down to learn more</p>
-        <FontAwesomeIcon icon={faChevronDown} size="2x" />
-      </a>
       <img
         className={styles.bookFlipping}
         src={bookshelves}
