@@ -4,6 +4,8 @@ import { Switch, Route, useLocation } from "react-router-dom";
 import Loader from "./components/Loader";
 import { loader } from "./styles/Loader.module.scss";
 
+import Authenticated from "components/Authenticated";
+
 const Home = lazy(() => import("./scenes/Home"));
 const Pages = lazy(() => import("./scenes/Pages"));
 const Signups = lazy(() => import("./scenes/Signups"));
@@ -23,6 +25,8 @@ function ScrollToTop() {
 }
 
 function Routes({ authService }) {
+  const registrationStatus = authService.currentUser?.user?.registrationStatus;
+
   return (
     <Suspense
       fallback={
@@ -45,7 +49,12 @@ function Routes({ authService }) {
         />
 
         <Route exact path="/signup/confirm">
-          <Confirm authService={authService} />
+          <Authenticated
+            registrationStatus={registrationStatus}
+            current={["confirm"]}
+          >
+            <Confirm authService={authService} />
+          </Authenticated>
         </Route>
 
         <Route
@@ -58,11 +67,16 @@ function Routes({ authService }) {
         <Route
           path="/dashboard"
           render={({ match, location }) => (
-            <Dashboard
-              match={match}
-              location={location}
-              authService={authService}
-            />
+            <Authenticated
+              registrationStatus={registrationStatus}
+              current={["app"]}
+            >
+              <Dashboard
+                match={match}
+                location={location}
+                authService={authService}
+              />
+            </Authenticated>
           )}
         />
 

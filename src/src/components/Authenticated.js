@@ -2,28 +2,27 @@ import { Redirect } from "react-router-dom";
 
 export default function Authenticated({
   registrationStatus,
-  exclude = [],
-  onLoad = () => {},
+  current = [],
+  children,
 }) {
   switch (registrationStatus) {
     case "COMPLETE": {
-      if (!exclude.includes("app")) return <Redirect to="/dashboard" />;
+      if (!current.includes("app")) return <Redirect to="/dashboard" />;
       break;
     }
     case "EMAIL_NOT_CONFIRMED": {
-      if (!exclude.includes("confirm"))
+      if (!current.includes("confirm"))
         return <Redirect to="/signup/confirm" />;
       break;
     }
     case "GOOGLE_SIGNED_IN": {
-      if (!exclude.includes("signup")) return <Redirect to="/signup" />;
+      if (!current.includes("signup")) return <Redirect to="/signup" />;
       break;
     }
     default: {
-      if (!exclude.includes("login")) return <Redirect to="/auth" />;
+      if (!current.includes("login")) return <Redirect to="/auth" />;
       break;
     }
   }
-  onLoad();
-  return null;
+  return children;
 }

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Authenticated from "components/Authenticated";
 import { GoogleLogin } from "react-google-login";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -46,10 +45,6 @@ const Login = ({ login, currentUser }) => {
 
   return (
     <div className={styles.Login}>
-      <Authenticated
-        registrationStatus={currentUser?.user?.registrationStatus}
-        exclude={["login"]}
-      />
       {error && <p className="error">{error}</p>}
       <div>
         <h1>Sign In</h1>

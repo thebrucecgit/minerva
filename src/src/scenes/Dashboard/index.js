@@ -3,8 +3,6 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import useChat from "./hooks/useChat";
 
-import Authenticated from "components/Authenticated";
-
 import Appbar from "./components/Appbar";
 import AppbarToggle from "./components/AppbarToggle";
 import Main from "./scenes/Main";
@@ -35,16 +33,6 @@ const Dashboard = ({ location, match, authService }) => {
   const { path } = match;
 
   const pageBinds = { currentUser, ws };
-
-  const [loaded, setLoaded] = useState(false);
-  if (!loaded)
-    return (
-      <Authenticated
-        registrationStatus={currentUser?.user?.registrationStatus}
-        exclude={["app"]}
-        onLoad={() => setLoaded(true)}
-      />
-    );
 
   return (
     <div className={styles.Dashboard}>

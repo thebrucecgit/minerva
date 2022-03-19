@@ -5,6 +5,7 @@ import Logout from "./scenes/Logout";
 import Login from "./scenes/Login";
 import EmailConfirmation from "./scenes/EmailConfirmation";
 import PasswordReset from "./scenes/PasswordReset";
+import Authenticated from "components/Authenticated";
 
 function Auth({ match, location, authService }) {
   const { path } = match;
@@ -23,7 +24,12 @@ function Auth({ match, location, authService }) {
       <div className="container">
         <Switch>
           <Route exact path={path}>
-            <Login login={login} currentUser={currentUser} />
+            <Authenticated
+              registrationStatus={currentUser?.user?.registrationStatus}
+              current={["login"]}
+            >
+              <Login login={login} currentUser={currentUser} />
+            </Authenticated>
           </Route>
 
           <Route path={`${path}/confirm`}>
