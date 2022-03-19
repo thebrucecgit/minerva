@@ -79,7 +79,6 @@ export default async function register(_, args) {
   // validation
   let edits;
   try {
-    console.log(args.password);
     edits = { ...(await userSchema.validate(args)) };
   } catch (e) {
     throw new UserInputError(e.message);
