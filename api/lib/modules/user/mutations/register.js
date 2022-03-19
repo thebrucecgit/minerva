@@ -5,12 +5,60 @@ import User from "../model";
 import { nanoid } from "nanoid";
 import sgMail from "../../../config/email";
 import userSchema from "../yupSchema";
+import { ApolloError } from "apollo-server";
+import * as yup from "yup";
 
 import { UserInputError } from "apollo-server";
 import { createUserObject } from "../helpers";
 import getAvatar from "../../../helpers/getAvatar";
 
+import whitelist from "../../../config/whitelist.json";
+
 const { FRONTEND_DOMAIN, CAPTCHA_SECRET_KEY, NODE_ENV } = process.env;
+
+const userSchema = yup.object().shape({
+  token: yup.string().required(),
+  name: yup.string().min(3).trim(),
+  email: yup.string().trim().lowercase().email(),
+  password: yup.string(),
+  yearGroup: yup.string().oneOf(Object.keys(whitelist.year)),
+  biography: yup.string().trim().min(2),
+  school: yup
+    .string()
+    .required()
+    .when("yearGroup", {
+      is: (val) => whitelist.school[val],
+      then: (schema) =>
+        schema.oneOf(
+          Object.entries(whitelist.school)
+            .filter((s) => s[1])
+            .map((s) => s[0])
+        ),
+      otherwise: (schema) =>
+        schema.oneOf(
+          Object.entries(whitelist.school)
+            .filter((s) => !s[1])
+            .map((s) => s[0])
+        ),
+    }),
+  applyTutor: yup.boolean().required(),
+  tutor: yup.mixed().when("applyTutor", {
+    is: true,
+    then: (schema) =>
+      schema.object({
+        academicsTutoring: yup
+          .array()
+          .of(yup.string())
+          .oneOf(whitelist.academic),
+        curricula: yup.array().of(yup.string()).oneOf(whitelist.curricula),
+        price: yup.number().required().integer().min(0).max(100),
+        online: yup.boolean().required(),
+        location: yup.string().required().oneOf(whitelist.location),
+        academicRecords: yup.array(),
+      }),
+    otherwise: (schema) => schema.nullable(),
+  }),
+});
 
 export default async function register(_, args) {
   if (NODE_ENV === "production") {
@@ -25,12 +73,20 @@ export default async function register(_, args) {
     });
 
     if (!captchaVerification.data.success)
-      throw new Error("Captcha verification failed. ");
+      throw new ApolloError("Captcha verification failed. ");
+  }
+
+  // validation
+  let edits;
+  try {
+    console.log(args.password);
+    edits = { ...(await userSchema.validate(args)) };
+  } catch (e) {
+    throw new UserInputError(e.message);
   }
 
   let user;
   const existingUser = await User.findOne({ email: args.email });
-  const edits = { ...args };
   delete edits.password;
   delete edits.applyTutor;
 
@@ -42,11 +98,8 @@ export default async function register(_, args) {
   }
   if (args.applyTutor) {
     edits["tutor.status"] = "PENDING_REVIEW";
-    edits["tutor.type"] = args.tertiary ? "GENERAL" : "LOCAL";
+    edits["tutor.type"] = whitelist.school[args.school] ? "GENERAL" : "LOCAL";
   }
-
-  // Verify information
-  userSchema.validateSync(edits);
 
   if (existingUser) {
     if (!existingUser.googleId)

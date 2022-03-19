@@ -219,7 +219,8 @@ const Session = ({ currentUser }) => {
   });
 
   const onNotesChange = (content, delta, source, editor) => {
-    setUpdate((st) => ({ ...st, notes: content }));
+    console.log("CALLED");
+    setUpdate((st) => ({ ...st, notes: editor.getContents() }));
   };
 
   const toggleEdit = () => {
@@ -423,7 +424,7 @@ const Session = ({ currentUser }) => {
         {sessionInfo.settings.online ? (
           <a
             className={classNames(styles.padding, styles.videoLink)}
-            href={sessionInfo.class.videoLink}
+            href={sessionInfo.videoLink}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -446,7 +447,7 @@ const Session = ({ currentUser }) => {
           theme={disabled.notes ? null : "snow"}
           readOnly={disabled.notes}
           className={classNames({ disabled: disabled.notes })}
-          value={disabled.notes ? sessionInfo.notes : update.notes}
+          defaultValue={disabled.notes ? sessionInfo.notes : update.notes}
           onChange={onNotesChange}
           modules={reactQuillModules}
         />

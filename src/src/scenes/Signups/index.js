@@ -10,7 +10,8 @@ import AdditionalInfo from "./components/AdditionalInfo";
 import Verification from "./components/Verification";
 import Confirmation from "./components/Confirmation";
 
-import regex from "./regex";
+import useVerification from "./hooks/useVerification";
+import set from "utilities/set";
 
 import styles from "./styles.module.scss";
 import "./tagify.scss";
@@ -46,7 +47,6 @@ function Signups({ authService }) {
       const saved = localStorage.getItem("signup");
       return {
         applyTutor: defaultApply === "tutor",
-        tertiary: false,
         ...(saved ? JSON.parse(saved) : {}),
       };
     } catch (e) {
@@ -54,8 +54,6 @@ function Signups({ authService }) {
       return {};
     }
   });
-
-  const [errors, setErrors] = useState({});
 
   const [sectionStatus, setSectionStatus] = useState([
     null,
@@ -85,62 +83,11 @@ function Signups({ authService }) {
   // On input change
   const onChange = ({ target }) => {
     const value = target.type === "checkbox" ? target.checked : target.value;
-    setInfo((st) => ({ ...st, [target.name]: value }));
+    setInfo((st) => set(st, target.name, value));
   };
 
-  const validate = useCallback(
-    (section) => {
-      const newErrors = {};
-
-      switch (section) {
-        case "Basic Info": {
-          if (!info.name || info.name.length <= 2)
-            newErrors.name = "Name is too short";
-          if (!info.email || !regex.email.test(info.email))
-            newErrors.email = "Email is invalid";
-          if (
-            strategy === "local" &&
-            (!info.password || info.password.length < 8)
-          )
-            newErrors.password =
-              "Password needs to have a minimum of eight characters";
-          break;
-        }
-        case "Additional Info": {
-          if (!info.yearGroup)
-            newErrors.yearGroup = "Please select your year group";
-          if (!info.school) newErrors.school = "Please select your school";
-          break;
-        }
-        case "Verification": {
-          if (!info.biography && info.applyTutor)
-            newErrors.biography = "Please write about yourself";
-          break;
-        }
-        case "Confirmation": {
-          if (!info.agreement)
-            newErrors.agreement = "You must agree to the terms";
-          break;
-        }
-        default:
-          break;
-      }
-
-      setErrors(newErrors);
-      return Object.values(newErrors).length === 0;
-    },
-    [
-      info.agreement,
-      info.biography,
-      info.email,
-      info.password,
-      info.school,
-      info.yearGroup,
-      info.name,
-      info.applyTutor,
-      strategy,
-    ]
-  );
+  const [errors, setErrors] = useState({});
+  const validate = useVerification(info, strategy, setErrors);
 
   // Moves onto next strategy
   const onNext = useCallback(
@@ -165,11 +112,16 @@ function Signups({ authService }) {
   );
 
   // Saves info on tags changing
-  const onTagsChange = useCallback((e, name) => {
-    setInfo((st) => ({
-      ...st,
-      [name]: e.detail.tagify.value.map((tag) => tag.value),
-    }));
+  const onTagsChange = useCallback((e, name, select) => {
+    setInfo((st) =>
+      set(
+        st,
+        name,
+        select
+          ? e.detail.tagify.value?.[0].value
+          : e.detail.tagify.value.map((t) => t.value)
+      )
+    );
   }, []);
 
   const cloudinaryCallback = useCallback((result) => {
@@ -255,16 +207,8 @@ function Signups({ authService }) {
       const request = {
         ...info,
         token,
-        tutor: {
-          academicsTutoring: info.academicsTutoring,
-          curricula: info.curricula,
-          academicRecords: info.academicRecords,
-          price: parseInt(info.price),
-        },
       };
-      delete request.academicsTutoring;
-      delete request.curricula;
-      delete request.academicRecords;
+      request.tutor.price = parseInt(request.tutor.price);
 
       const { user } = await authService.register(request);
 

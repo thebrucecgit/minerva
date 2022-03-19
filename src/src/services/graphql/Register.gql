@@ -7,7 +7,6 @@ mutation Register(
   $yearGroup: String!
   $school: String!
   $biography: String
-  $tertiary: Boolean!
   $token: String!
   $applyTutor: Boolean!
   $tutor: TutorInfoIn
@@ -20,7 +19,6 @@ mutation Register(
     yearGroup: $yearGroup
     school: $school
     biography: $biography
-    tertiary: $tertiary
     token: $token
     applyTutor: $applyTutor
     tutor: $tutor

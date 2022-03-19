@@ -8,6 +8,8 @@ import Error from "../../../../components/Error";
 import { Switch, Route, NavLink, useRouteMatch } from "react-router-dom";
 
 import Chat from "./components/Chat";
+import useCreateSession from "./hooks/useCreateSession";
+import CreateSession from "scenes/Dashboard/components/CreateSession";
 
 import scrollbar from "styles/scrollbar";
 import styled from "styled-components";
@@ -31,7 +33,6 @@ const StyledChats = styled.div`
 const ChatList = styled.div`
   height: 100vh;
   width: 100vw;
-  background-image: url(../../../../media/geometry.png);
   overflow-y: auto;
   padding: 0 1rem;
   background: white;
@@ -131,6 +132,8 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
     }
   };
 
+  const createSessionMethods = useCreateSession();
+
   const { isExact: showChatlist } = useRouteMatch(path);
 
   if (error) return <Error error={error} />;
@@ -176,9 +179,16 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
           </NoSelection>
         </Route>
         <Route exact path={`${path}/:channel`}>
-          <Chat sendMessage={sendMessage} ws={ws} currentUser={currentUser} />
+          <Chat
+            sendMessage={sendMessage}
+            ws={ws}
+            currentUser={currentUser}
+            createSession={createSessionMethods.create}
+          />
         </Route>
       </Switch>
+
+      <CreateSession {...createSessionMethods} currentUser={currentUser} />
     </StyledChats>
   );
 };

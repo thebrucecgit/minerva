@@ -24,7 +24,7 @@ export function createUserObject(user) {
     algoliaKey:
       user.registrationStatus === "COMPLETE"
         ? algoliaClient.generateSecuredApiKey(ALGOLIA_SEARCH_API, {
-            filters: `school:"${user.school}"`,
+            filters: `school:"${user.school}" OR type:"GENERAL"`,
             userToken: user._id,
           })
         : null,

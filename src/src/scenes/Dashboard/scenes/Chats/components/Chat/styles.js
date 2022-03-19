@@ -2,12 +2,12 @@ import { NavLink } from "react-router-dom";
 import styled from "styled-components";
 import scrollbar from "styles/scrollbar";
 import mediaQuery from "styles/sizes";
+import geometryImg from "media/geometry.png";
 
 export const StyledChat = styled.div`
   height: 100vh;
   width: 100vw;
   position: fixed;
-  z-index: 6;
   display: flex;
   flex-direction: column;
 
@@ -39,7 +39,7 @@ export const ChatHeader = styled.div`
   }
 `;
 
-export const ChatHeaderUsers = styled.div`
+export const ChatHeaderRight = styled.div`
   margin-left: auto;
 `;
 
@@ -57,11 +57,7 @@ export const MessageContent = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column-reverse;
-  background: linear-gradient(
-    to right,
-    rgb(240, 240, 240) 0%,
-    rgb(247, 247, 247) 100%
-  );
+  background-image: url(${geometryImg});
 
   ${scrollbar}
 `;

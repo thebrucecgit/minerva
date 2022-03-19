@@ -38,14 +38,13 @@ fragment sessionInfo on Session {
   settings {
     online
     studentEditNotes
-    syncTutorsWithClass
-    syncTuteesWithClass
   }
   price
   startTime
   endTime
   length
   notes
+  videoLink
   cancellation {
     user
     cancelled

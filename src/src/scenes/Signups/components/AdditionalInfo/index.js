@@ -5,6 +5,7 @@ import useFileManager from "hooks/useFileManager";
 
 import StatusSymbol from "../StatusSymbol";
 import selections from "config/whitelist.json";
+import set from "utilities/set";
 
 import styles from "../../styles.module.scss";
 
@@ -12,6 +13,7 @@ const baseTagifySettings = {
   dropdown: {
     enabled: 0,
     classname: "tagifyDropdown",
+    maxItems: 100,
   },
 };
 
@@ -26,16 +28,14 @@ const AdditionalInfo = ({
   defaultApply,
   onNext,
 }) => {
-  const setFiles = (func) => {
-    setInfo((info) => ({
-      ...info,
-      academicRecords: func(info.academicRecords ?? []),
-    }));
-  };
   const { processing, fileManagerProps } = useFileManager({
     edit: true,
-    setFiles,
-    files: info.academicRecords,
+    files: info.tutor?.academicRecords,
+    setFiles(func) {
+      setInfo((info) =>
+        set(info, "tutor.academicRecords", func(info.academicRecords ?? []))
+      );
+    },
   });
 
   return (
@@ -64,30 +64,31 @@ const AdditionalInfo = ({
               noValidate
             >
               <option value="">--SELECT--</option>
-              {selections.year.map((year) => (
+              {Object.keys(selections.year).map((year) => (
                 <option value={year} key={year}>
                   {year}
                 </option>
               ))}
             </select>
           </div>
-          <div className={styles.field}>
+
+          <div className={styles.field} data-test="school">
             <label htmlFor="school">Select your school:</label>
-            {errors.school && <p className={styles.invalid}>{errors.school}</p>}
-            <select
+            {errors.yearGroup && (
+              <p className={styles.invalid}>{errors.school}</p>
+            )}
+            <Tags
+              settings={{
+                ...baseTagifySettings,
+                enforceWhitelist: true,
+                placeholder: "eg. Burnside High School",
+                whitelist: Object.keys(selections.school),
+                mode: "select",
+              }}
+              onChange={(e) => onTagsChange(e, "school", true)}
+              defaultValue={info.school ?? ""}
               name="school"
-              id="school"
-              value={info.school ?? ""}
-              onChange={onChange}
-              noValidate
-            >
-              <option value="">--SELECT--</option>
-              {selections.school.map((school, ind) => (
-                <option value={school} key={ind}>
-                  {school}
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           {defaultApply === "tutee" && (
@@ -101,9 +102,7 @@ const AdditionalInfo = ({
                   onChange={onChange}
                   noValidate
                 />
-                <label htmlFor="applyTutor">
-                  I would also like to tutor others
-                </label>
+                <label htmlFor="applyTutor">I would like to tutor others</label>
               </div>
             </div>
           )}
@@ -117,25 +116,42 @@ const AdditionalInfo = ({
                 <div className="checkbox">
                   <input
                     type="checkbox"
-                    name="tertiary"
-                    id="tertiary"
-                    checked={info.tertiary ?? false}
+                    name="tutor.online"
+                    id="online"
+                    checked={info.tutor?.online ?? false}
                     onChange={onChange}
                     noValidate
                   />
-                  <label htmlFor="tertiary">
-                    Check if you're studying at a tertiary level
+                  <label htmlFor="online">
+                    I am willing to tutor online (virtually)
                   </label>
                 </div>
               </div>
+
+              <div className={styles.field} data-test="location">
+                <label htmlFor="location">Select your location:</label>
+                <Tags
+                  settings={{
+                    ...baseTagifySettings,
+                    enforceWhitelist: true,
+                    placeholder: "eg. Wellington",
+                    whitelist: selections.location,
+                    mode: "select",
+                  }}
+                  onChange={(e) => onTagsChange(e, "tutor.location", true)}
+                  defaultValue={info.tutor?.location ?? ""}
+                  name="tutor.location"
+                />
+              </div>
+
               <div className={styles.field}>
                 <label htmlFor="name">Price per hour:</label>
                 <input
                   type="number"
                   id="price"
-                  name="price"
+                  name="tutor.price"
                   autoComplete="price"
-                  value={info.price ?? ""}
+                  value={info.tutor?.price ?? ""}
                   onChange={onChange}
                   noValidate
                 />
@@ -152,9 +168,9 @@ const AdditionalInfo = ({
                     placeholder: "eg. English",
                     whitelist: selections.academic,
                   }}
-                  onChange={(e) => onTagsChange(e, "academicsTutoring")}
-                  defaultValue={info.academicsTutoring}
-                  name="academicsTutoring"
+                  onChange={(e) => onTagsChange(e, "tutor.academicsTutoring")}
+                  defaultValue={info.tutor?.academicsTutoring}
+                  name="tutor.academicsTutoring"
                 />
               </div>
               <div className={styles.field} data-test="curricula">
@@ -169,9 +185,9 @@ const AdditionalInfo = ({
                     placeholder: "eg. NCEA",
                     whitelist: selections.curricula,
                   }}
-                  onChange={(e) => onTagsChange(e, "curricula")}
-                  defaultValue={info.curricula}
-                  name="curricula"
+                  onChange={(e) => onTagsChange(e, "tutor.curricula")}
+                  defaultValue={info.tutor?.curricula}
+                  name="tutor.curricula"
                 />
               </div>
               <div className={styles.fields}>

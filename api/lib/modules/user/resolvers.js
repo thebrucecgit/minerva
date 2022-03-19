@@ -50,6 +50,15 @@ export default {
 
       return await User.find({ _id: { $in: tutors } }, null, { limit });
     },
+    async getTutors(_, __, { user }) {
+      return await User.find(
+        {
+          "tutor.status": "COMPLETE",
+          $or: [{ "tutor.type": "NATIONAL" }, { school: user.school }],
+        },
+        "name"
+      );
+    },
     async getPendingTutors(_, {}, { user }) {
       assertAdmin(user);
 

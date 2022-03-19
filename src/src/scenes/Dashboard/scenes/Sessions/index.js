@@ -130,19 +130,11 @@ const Sessions = ({ currentUser }) => {
                       </h2>
                     </Link>
                     <div className={styles.description}>
-                      Run by {session.tutors.map((t) => t.name).join(", ")} as
-                      part of{" "}
-                      <Link to={`/dashboard/classes/${session.class._id}`}>
-                        <strong>{session.class.name}</strong>
-                      </Link>
+                      Run by {session.tutors.map((t) => t.name).join(", ")}
                     </div>
                   </div>
                   <div className="body">
-                    <p>
-                      {session.class.preferences.online
-                        ? "Online"
-                        : session.location.address}
-                    </p>
+                    <p>{session.location.address}</p>
                   </div>
                 </div>
               </div>

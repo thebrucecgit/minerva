@@ -3,13 +3,10 @@ import { useParams } from "react-router-dom";
 import { loader } from "graphql.macro";
 import { useApolloClient } from "@apollo/client";
 import { format, parseISO } from "date-fns";
-import Error from "../../../../../../components/Error";
-import Menu from "../../../../components/Menu";
-import useMenu from "../../../../hooks/useMenu";
+import Error from "components/Error";
 import Message from "../Message";
 import {
   faChevronLeft,
-  faUsers,
   faCircleNotch,
 } from "@fortawesome/free-solid-svg-icons";
 import { useInView } from "react-intersection-observer";
@@ -21,7 +18,7 @@ import {
   StyledChat,
   ChatHeader,
   BackButton,
-  ChatHeaderUsers,
+  ChatHeaderRight,
   MessageContent,
   MessageGroup,
   DateBreaker,
@@ -35,13 +32,11 @@ import { toast } from "react-toastify";
 const GET_CHAT = loader("./graphql/GetChat.gql");
 const MESSAGES_GROUP = 20;
 
-const Chat = ({ sendMessage, ws, currentUser }) => {
+const Chat = ({ sendMessage, ws, currentUser, createSession }) => {
   const { channel } = useParams();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState("");
   const messageElem = useRef(null);
-
-  const [rootClick, menuBinds] = useMenu(false);
 
   useChatWS(ws, setMessages);
 
@@ -112,13 +107,17 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
     })();
   }, [loading, fullyLoaded, inView, channel, client, skip]);
 
+  const createSessionFromChat = () => {
+    createSession(chatInfo.users);
+  };
+
   if (error) return <Error error={error} />;
   if (loading) return <p>Loading</p>;
 
   const getNameById = (id) => chatInfo.users.find((u) => u._id === id)?.name;
 
   return (
-    <StyledChat onClick={rootClick}>
+    <StyledChat>
       <ChatHeader>
         <h2>
           <BackButton to="/dashboard/chats">
@@ -128,13 +127,12 @@ const Chat = ({ sendMessage, ws, currentUser }) => {
             ? chatInfo.class.name
             : chatInfo.users.map((u) => u.name).join(", ")}
         </h2>
-        <ChatHeaderUsers>
-          <Menu {...menuBinds} icon={faUsers}>
-            {chatInfo.users.map((u) => (
-              <div key={u._id}>{u.name}</div>
-            ))}
-          </Menu>
-        </ChatHeaderUsers>
+
+        <ChatHeaderRight>
+          <button className="btn" onClick={createSessionFromChat}>
+            New Session
+          </button>
+        </ChatHeaderRight>
       </ChatHeader>
       <MessageContent ref={messageElem}>
         {/* empty div needed for default scroll to bottom */}

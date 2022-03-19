@@ -48,7 +48,10 @@ export default {
     async users(chat) {
       const users = await chat.getUsers();
       const userIds = users.map((user) => user._id);
-      const res = await User.find({ _id: { $in: userIds } }, "name");
+      const res = await User.find(
+        { _id: { $in: userIds } },
+        "name tutor.status"
+      );
       return userIds.map(
         (userId) =>
           res.find((u) => u._id.isEqual(userId)) ?? {

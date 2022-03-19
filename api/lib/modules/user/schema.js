@@ -14,10 +14,12 @@ export default gql`
   }
 
   input TutorInfoIn {
-    academicsTutoring: [String!]!
-    curricula: [String!]!
-    academicRecords: [FileMetaIn!]!
+    academicsTutoring: [String!]
+    curricula: [String!]
+    academicRecords: [FileMetaIn!]
     price: Int
+    online: Boolean
+    location: String
   }
 
   type TutorInfo {
@@ -27,6 +29,8 @@ export default gql`
     academicsTutoring: [String!]!
     curricula: [String!]!
     price: Int!
+    online: Boolean
+    location: String
   }
 
   type AdminStatus {
@@ -75,6 +79,7 @@ export default gql`
     getUser(id: ID): User!
     getUsers(value: String!): [User!]
     getTutorsOfUser(userID: ID!, limit: Int): [User!]
+    getTutors: [User!]!
     getPendingTutors: [User!]!
     login(email: String, password: String, tokenId: String): UserReq!
     resetPassword(email: String!): Boolean
@@ -92,7 +97,6 @@ export default gql`
       biography: String
       token: String!
       applyTutor: Boolean!
-      tertiary: Boolean
       tutor: TutorInfoIn
     ): UserReq!
     updateUser(
@@ -103,7 +107,6 @@ export default gql`
       school: String
       biography: String
       applyTutor: Boolean
-      tertiary: Boolean
       tutor: TutorInfoIn
     ): User!
     confirmUserEmail(emailConfirmId: String!): UserReq!

@@ -4,6 +4,9 @@ query GetChat($channel: ID!, $skip: Int, $limit: Int) {
     users {
       _id
       name
+      tutor {
+        status
+      }
     }
     class {
       name

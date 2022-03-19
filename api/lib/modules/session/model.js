@@ -72,20 +72,21 @@ const sessionSchema = Schema({
       type: Boolean,
       default: false,
     },
-    syncTutorsWithClass: {
-      type: Boolean,
-      default: true,
-    },
-    syncTuteesWithClass: {
-      type: Boolean,
-      default: true,
-    },
+    // syncTutorsWithClass: {
+    //   type: Boolean,
+    //   default: true,
+    // },
+    // syncTuteesWithClass: {
+    //   type: Boolean,
+    //   default: true,
+    // },
   },
   pricePerTutee: Number,
   startTime: Date,
   endTime: Date,
   length: Number, // in minutes
   notes: String,
+  videoLink: String,
   userResponses: [
     {
       user: {

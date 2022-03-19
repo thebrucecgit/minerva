@@ -12,6 +12,7 @@ fragment authFields on UserReq {
     }
     email
     registrationStatus
+    school
     tutor {
       status
     }

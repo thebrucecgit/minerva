@@ -16,16 +16,10 @@ import Tags from "../../../../components/Tags";
 
 import styles from "./styles.module.scss";
 
-const GET_USER_FULL = loader("./graphql/GetUserFull.gql");
-const GET_USER_LIMITED = loader("./graphql/GetUserLimited.gql");
+const GET_USER = loader("./graphql/GetUser.gql");
 
 const User = ({ currentUser }) => {
   const { id } = useParams();
-
-  // const fullAccess = currentUser.user._id === id;
-  const fullAccess = false;
-
-  const GET_USER = fullAccess ? GET_USER_FULL : GET_USER_LIMITED;
 
   const { data, error, loading } = useQuery(GET_USER, { variables: { id } });
 
@@ -43,9 +37,9 @@ const User = ({ currentUser }) => {
               <div key={i}>{s}</div>
             ))}
           </h1>
-          <p className={styles.userType}>{`${
-            user.tutor.status === "COMPLETE" ? "Tutor, " : ""
-          }Year ${user.yearGroup}`}</p>
+          <p className={styles.userType}>
+            {user.yearGroup} at {user.school}
+          </p>
         </div>
         <ProfilePicture pfp={user.pfp} alt={user.name} width="400" />
       </div>
@@ -80,7 +74,7 @@ const User = ({ currentUser }) => {
         <h2>Biography</h2>
         <p>{user.biography}</p>
 
-        {fullAccess && (
+        {/* {fullAccess && (
           <>
             <h2>Classes</h2>
             <div className={styles.classes}>
@@ -120,7 +114,7 @@ const User = ({ currentUser }) => {
               )}
             </div>
           </>
-        )}
+        )} */}
 
         <p>
           <a

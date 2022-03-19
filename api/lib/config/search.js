@@ -21,8 +21,10 @@ const indexSchema = yup.object().shape({
     url: yup.string(),
     cloudinaryPublicId: yup.mixed(),
   }),
-  type: yup.string(),
+  type: yup.string().oneOf(["GENERAL", "LOCAL"]),
   curricula: yup.array().of(yup.string()),
+  location: yup.string(),
+  online: yup.boolean(),
   price: yup.number(),
   randomness: yup.number(),
 });
@@ -30,7 +32,7 @@ const indexSchema = yup.object().shape({
 export default index;
 
 export const FIELDS =
-  "name yearGroup school biography pfp tutor.type tutor.curricula tutor.academicsTutoring tutor.price";
+  "name yearGroup school biography pfp tutor.type tutor.curricula tutor.academicsTutoring tutor.price tutor.location tutor.online";
 
 const defaultRankings = [
   "typo",
@@ -54,8 +56,16 @@ export async function setSettings() {
           "unordered(biography)",
           "unordered(academics)",
           "unordered(curricula)",
+          "unordered(location)",
         ],
-        attributesForFaceting: ["academics", "curricula", "school", "type"],
+        attributesForFaceting: [
+          "academics",
+          "curricula",
+          "school",
+          "type",
+          "location",
+          "online",
+        ],
         replicas: [`${ALGOLIA_INDEX}_price_desc`, `${ALGOLIA_INDEX}_price_asc`],
         ranking: [...defaultRankings],
         customRanking: ["asc(randomness)"],

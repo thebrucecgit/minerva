@@ -16,11 +16,8 @@ const Settings = ({ onSubmit, onChange, update }) => {
             onChange={onChange}
           />
           <label htmlFor="online">
-            Online class
-            <div className="small">
-              If checked, this class occurs online. Otherwise, this class occurs
-              in-person at the set location.
-            </div>
+            Online session
+            <div className="small">This session occurs online</div>
           </label>
         </div>
         <div className="field checkbox">
@@ -33,7 +30,7 @@ const Settings = ({ onSubmit, onChange, update }) => {
           />
           <label htmlFor="studentEditNotes">Allow tutees to edit notes</label>
         </div>
-        <div className="field checkbox">
+        {/* <div className="field checkbox">
           <input
             type="checkbox"
             name="syncTutorsWithClass"
@@ -66,7 +63,7 @@ const Settings = ({ onSubmit, onChange, update }) => {
               be edited to something different to the class.
             </div>
           </label>
-        </div>
+        </div> */}
         <button className="btn">Save</button>
       </form>
     </div>

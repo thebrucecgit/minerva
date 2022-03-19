@@ -8,6 +8,7 @@ import * as websocket from "../../websocket";
 import sgMail from "../../config/email";
 import { ApolloError } from "apollo-server";
 import { nanoid } from "nanoid";
+import axios from "axios";
 
 import {
   assertAuthenticated,
@@ -15,6 +16,8 @@ import {
   assertTutor,
   assertUser,
 } from "../../helpers/permissions";
+
+import createSession from "./mutations/createSession";
 
 const { FRONTEND_DOMAIN } = process.env;
 
@@ -172,6 +175,7 @@ export default {
 
       return session;
     },
+    createSession,
     async updateSession(_, args, { user }) {
       const edits = { ...args };
       if (args.startTime && args.length)
@@ -192,13 +196,16 @@ export default {
         }
       }
 
-      if (edits.settings?.syncTutorsWithClass) {
-        await session.populate({
-          path: "class",
-          select: "tutors",
+      if (edits.settings?.online && !session.videoLink) {
+        const { data } = await axios({
+          method: "post",
+          url: "https://api.join.skype.com/v1/meetnow/guest",
+          data: {
+            title: session.name,
+          },
         });
 
-        edits.tutors = session.class.tutors;
+        edits.videoLink = data.joinLink;
       }
 
       return await Session.findByIdAndUpdate(args.id, edits, {

@@ -10,7 +10,7 @@ import TagsSelect from "@yaireo/tagify/dist/react.tagify";
 import Tags from "components/Tags";
 import { Image, Transformation } from "cloudinary-react";
 import classNames from "classnames";
-import { set } from "lodash";
+import set from "lodash/set";
 
 import styles from "./styles.module.scss";
 import "@yaireo/tagify/dist/tagify.css";

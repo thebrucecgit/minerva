@@ -17,12 +17,5 @@ query GetSessions($userID: ID!, $old: Boolean!) {
     tutees {
       _id
     }
-    class {
-      _id
-      name
-      preferences {
-        online
-      }
-    }
   }
 }

@@ -39,8 +39,6 @@ export default gql`
   "Settings for this session (inherits from class initially)"
   type SessionSettings {
     studentEditNotes: Boolean!
-    syncTutorsWithClass: Boolean!
-    syncTuteesWithClass: Boolean!
     online: Boolean!
   }
 
@@ -53,8 +51,6 @@ export default gql`
 
   input SessionSettingsIn {
     studentEditNotes: Boolean
-    syncTutorsWithClass: Boolean
-    syncTuteesWithClass: Boolean
     online: Boolean
   }
 
@@ -87,7 +83,7 @@ export default gql`
   "An instance of a class, occurring at a specified time"
   type Session {
     _id: ID!
-    class: Class!
+    class: Class
     attendance: [Attendance!]!
     tutors: [User!]!
     tutees: [User!]!
@@ -98,6 +94,7 @@ export default gql`
     length: Int
     notes: String
     settings: SessionSettings
+    videoLink: String
     cancellation: SessionCancellation!
     status: String!
     userResponses: [SessionUserResponse!]
@@ -116,6 +113,13 @@ export default gql`
 
   extend type Mutation {
     instantiateSession(classId: ID!, startTime: Date!, length: Int!): Session!
+    createSession(
+      name: String!
+      tutors: [ID!]!
+      tutees: [ID!]!
+      startTime: Date!
+      length: Int!
+    ): Session!
     updateSession(
       id: ID!
       class: ID

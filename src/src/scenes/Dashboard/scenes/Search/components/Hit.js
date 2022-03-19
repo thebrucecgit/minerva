@@ -4,22 +4,33 @@ import { Link } from "react-router-dom";
 import ProfilePicture from "../../../components/ProfilePicture";
 import Tags from "../../../../../components/Tags";
 import styled from "styled-components";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSignal } from "@fortawesome/free-solid-svg-icons";
 
 const TutorCard = styled.div`
   img {
     object-fit: cover;
     width: 100%;
   }
-  border-radius: 5px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(29, 107, 255, 0.1);
+  transition: all 200ms ease;
+  &:hover {
+    box-shadow: 0 0 10px rgba(29, 107, 255, 0.2);
+    border-radius: 20px;
+  }
 `;
 
 const TutorBody = styled.div`
   padding: 1rem;
   h3 {
+    font-size: 1.3rem;
     margin: 0;
   }
+`;
+
+const TutorEdu = styled.div`
+  margin: 1rem 0;
 `;
 
 const Hit = ({ hit, currentUser }) => {
@@ -32,12 +43,26 @@ const Hit = ({ hit, currentUser }) => {
         <Link to={`/dashboard/tutors/${hit.objectID}`}>
           <h3>
             <Highlight hit={hit} attribute="name" tagName="mark" /> ·{" "}
-            {hit.price > 0 ? `$${hit.price}` : "Gratis"}
+            {hit.price > 0 ? `$${hit.price}` : "Gratis"}{" "}
+            {hit.online && <FontAwesomeIcon icon={faSignal} />}
           </h3>
         </Link>
-        <p className="details">
-          <Highlight hit={hit} attribute="school" tagName="mark" /> ·{" "}
-          {hit.yearGroup} · {hit.type}
+        <TutorEdu>
+          <div>
+            {hit.school === currentUser.user.school ? (
+              <strong>
+                <Highlight hit={hit} attribute="school" tagName="mark" />
+              </strong>
+            ) : (
+              <Highlight hit={hit} attribute="school" tagName="mark" />
+            )}
+          </div>
+          <div>{hit.yearGroup}</div>
+        </TutorEdu>
+
+        <p>
+          {hit.biography?.slice(0, 120)}
+          {hit.biography?.length > 120 && "..."}
         </p>
         <Tags tags={hit.academics} color="#a9e4f5" />
         <Tags tags={hit.curricula} color="#a6baf4" />

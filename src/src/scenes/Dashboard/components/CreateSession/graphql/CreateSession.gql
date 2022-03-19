@@ -1,0 +1,17 @@
+mutation CreateSession(
+  $name: String!
+  $tutors: [ID!]!
+  $tutees: [ID!]!
+  $startTime: Date!
+  $length: Int!
+) {
+  createSession(
+    name: $name
+    tutors: $tutors
+    tutees: $tutees
+    startTime: $startTime
+    length: $length
+  ) {
+    _id
+  }
+}
