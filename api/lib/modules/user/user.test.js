@@ -45,13 +45,9 @@ const info = {
     cloudinaryPublicId:
       "Academe/karsten-winegeart-1MgX1KQcbj0-unsplash_ohlqzq.jpg",
   },
-  yearGroup: 12,
-  school: "Example High School",
-  academicsLearning: ["English", "Mathematics"],
-  extrasLearning: ["Coding"],
+  yearGroup: "Year 12",
+  school: "Christ's College",
   applyTutor: false,
-  academicsTutoring: [],
-  extrasTutoring: [],
   biography: "I'm an interested mammal",
 };
 
@@ -64,15 +60,9 @@ const result = {
     cloudinaryPublicId:
       "Academe/karsten-winegeart-1MgX1KQcbj0-unsplash_ohlqzq.jpg",
   },
-  yearGroup: 12,
-  school: "Example High School",
-  academicsLearning: ["English", "Mathematics"],
-  extrasLearning: ["Coding"],
-  academicsTutoring: [],
-  extrasTutoring: [],
+  yearGroup: "Year 12",
+  school: "Christ's College",
   biography: "I'm an interested mammal",
-  classes: [],
-  sessions: [],
 };
 
 describe("Registering a new user via email", () => {
@@ -245,8 +235,7 @@ describe("Update user details", () => {
       name: "John Smith",
       biography: "I'm an interested mammal",
       "tutor.status": "COMPLETE",
-      academicsTutoring: ["English", "Mathematics"],
-      extrasTutoring: [],
+      "tutor.academicsTutoring": ["English", "Mathematics"],
     });
     await updateUser(
       null,
@@ -262,8 +251,9 @@ describe("Update user details", () => {
       _id: "1",
       name: "John Smith",
       biography: "I am available for tutoring on certain days.",
-      academicsTutoring: ["English", "Mathematics"],
-      extrasTutoring: [],
+      tutor: {
+        academicsTutoring: ["English", "Mathematics"],
+      },
     });
   });
 });
