@@ -1,8 +1,8 @@
-# Academe MERN Web-App
+# Minerva MERN Web-App
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9528a7d2-bd0d-412c-a9dd-240271a8642b/deploy-status)](https://app.netlify.com/sites/academe/deploys)
 
-Academe is a non-profit organization dedicated to providing quality tutoring at an affordable price. This is the platform for Academe: A MERN-stack web application that enables tutors and tutees to connect and learn, online or in-person.
+Minerva is a non-profit organization dedicated to providing quality tutoring at an affordable price. This is the platform for Minerva: A MERN-stack web application that enables tutors and tutees to connect and learn, online or in-person.
 
 ## Features
 
