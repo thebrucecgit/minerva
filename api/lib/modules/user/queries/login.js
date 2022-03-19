@@ -16,7 +16,7 @@ export default async function login(_, { email, password, tokenId }) {
     const newUser = {
       email: info.email,
       googleId: info.sub,
-      name: info.name,
+      name: oldUser?.name ?? info.name,
       registrationStatus: oldUser?.registrationStatus ?? "GOOGLE_SIGNED_IN",
       lastAuthenticated: Date.now(),
     };
