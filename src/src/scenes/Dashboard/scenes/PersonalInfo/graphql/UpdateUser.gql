@@ -6,7 +6,6 @@ mutation updateUser(
   $yearGroup: String
   $biography: String
   $school: String
-  $tertiary: Boolean
   $applyTutor: Boolean
   $tutor: TutorInfoIn
 ) {
@@ -17,7 +16,6 @@ mutation updateUser(
     yearGroup: $yearGroup
     biography: $biography
     school: $school
-    tertiary: $tertiary
     applyTutor: $applyTutor
     tutor: $tutor
   ) {

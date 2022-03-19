@@ -10,7 +10,7 @@ import TagsSelect from "@yaireo/tagify/dist/react.tagify";
 import Tags from "components/Tags";
 import { Image, Transformation } from "cloudinary-react";
 import classNames from "classnames";
-import set from "lodash/set";
+import set from "utilities/set";
 
 import styles from "./styles.module.scss";
 import "@yaireo/tagify/dist/tagify.css";
@@ -24,6 +24,7 @@ const baseTagifySettings = {
   dropdown: {
     enabled: 0,
     classname: "tagifyDropdown",
+    maxItems: 100,
   },
 };
 
@@ -113,15 +114,13 @@ function PersonalInfo({ currentUser }) {
   };
 
   const onChange = (e) => {
-    setUpdates((st) => {
-      const prev = { ...st };
+    setUpdates((st) =>
       set(
-        prev,
+        st,
         e.target.name,
         e.target.type === "checkbox" ? e.target.checked : e.target.value
-      );
-      return prev;
-    });
+      )
+    );
   };
 
   const setFiles = (func) => {
@@ -142,16 +141,16 @@ function PersonalInfo({ currentUser }) {
       : user.tutor?.academicRecords,
   });
 
-  const onTagsChange = useCallback((e, name) => {
-    setUpdates((st) => {
-      const prev = { ...st };
+  const onTagsChange = useCallback((e, name, select) => {
+    setUpdates((st) =>
       set(
-        prev,
+        st,
         name,
-        e.detail.tagify.value.map((tag) => tag.value)
-      );
-      return prev;
-    });
+        select
+          ? e.detail.tagify.value?.[0].value
+          : e.detail.tagify.value.map((t) => t.value)
+      )
+    );
   }, []);
 
   const userApplyTutor =
@@ -245,7 +244,7 @@ function PersonalInfo({ currentUser }) {
             noValidate
           >
             <option value="">--SELECT--</option>
-            {selections.year.map((year) => (
+            {Object.keys(selections.year).map((year) => (
               <option value={year} key={year}>
                 {year}
               </option>
@@ -259,20 +258,18 @@ function PersonalInfo({ currentUser }) {
       <div>
         <label htmlFor="school">School: </label>
         {update ? (
-          <select
-            name="school"
-            id="school"
+          <TagsSelect
+            settings={{
+              ...baseTagifySettings,
+              enforceWhitelist: true,
+              placeholder: "eg. Burnside High School",
+              whitelist: Object.keys(selections.school),
+              mode: "select",
+            }}
+            onChange={(e) => onTagsChange(e, "school", true)}
             value={updates.school ?? ""}
-            onChange={onChange}
-            noValidate
-          >
-            <option value="">--SELECT--</option>
-            {selections.school.map((school, ind) => (
-              <option value={school} key={ind}>
-                {school}
-              </option>
-            ))}
-          </select>
+            name="school"
+          />
         ) : (
           <p>{user.school}</p>
         )}
