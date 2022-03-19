@@ -30,40 +30,6 @@ const Settings = ({ onSubmit, onChange, update }) => {
           />
           <label htmlFor="studentEditNotes">Allow tutees to edit notes</label>
         </div>
-        {/* <div className="field checkbox">
-          <input
-            type="checkbox"
-            name="syncTutorsWithClass"
-            id="syncTutorsWithClass"
-            checked={update.syncTutorsWithClass}
-            onChange={onChange}
-          />
-          <label htmlFor="syncTutorsWithClass">
-            Synchronise tutors with class
-            <div className="small">
-              If checked, changes of tutors in the parent class will be
-              reflected in this session. Otherwise, tutors in this session may
-              be edited to something different to the class.
-            </div>
-          </label>
-        </div>
-        <div className="field checkbox">
-          <input
-            type="checkbox"
-            name="syncTuteesWithClass"
-            id="syncTuteesWithClass"
-            checked={update.syncTuteesWithClass}
-            onChange={onChange}
-          />
-          <label htmlFor="syncTuteesWithClass">
-            Synchronise tutees with class
-            <div className="small">
-              If checked, changes of tutees in the parent class will be
-              reflected in this session. Otherwise, tutees in this session may
-              be edited to something different to the class.
-            </div>
-          </label>
-        </div> */}
         <button className="btn">Save</button>
       </form>
     </div>
