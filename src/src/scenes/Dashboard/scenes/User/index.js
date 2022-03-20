@@ -115,16 +115,6 @@ const User = ({ currentUser }) => {
             </div>
           </>
         )} */}
-
-        <p>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href={`mailto:${user.email}`}
-          >
-            {user.email}
-          </a>
-        </p>
       </div>
     </div>
   );
