@@ -13,7 +13,6 @@ import styled from "styled-components";
 import InfiniteHits from "./components/InfiniteHits";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import geometryImg from "media/geometry.png";
 
 import "instantsearch.css/themes/reset.css";
 import "./styles.scss";
@@ -25,7 +24,7 @@ const Header = styled.h1`
 `;
 
 const Selections = styled.div`
-  background-image: url(${geometryImg});
+  background-color: #f5f5f5;
   display: flex;
   flex-wrap: wrap;
   column-gap: 1.5rem;
@@ -94,13 +93,13 @@ const Search = ({ currentUser }) => {
           {/* <SearchBox autoFocus /> */}
           <Selections>
             <span>
-              Curricula <MenuSelect attribute="curricula" />
+              <strong>Curricula</strong> <MenuSelect attribute="curricula" />
             </span>
             <span>
-              Subjects <MenuSelect attribute="academics" />
+              <strong>Subjects</strong> <MenuSelect attribute="academics" />
             </span>
             <span>
-              Locations <MenuSelect attribute="location" />
+              <strong>Locations</strong> <MenuSelect attribute="location" />
             </span>
           </Selections>
 

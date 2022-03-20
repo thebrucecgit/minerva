@@ -42,9 +42,8 @@ const Hit = ({ hit, currentUser }) => {
       <TutorBody>
         <Link to={`/dashboard/tutors/${hit.objectID}`}>
           <h3>
-            <Highlight hit={hit} attribute="name" tagName="mark" /> ·{" "}
-            {hit.price > 0 ? `$${hit.price}` : "Gratis"}{" "}
-            {hit.online && <FontAwesomeIcon icon={faSignal} />}
+            <Highlight hit={hit} attribute="name" tagName="mark" /> · $
+            {hit.price} {hit.online && <FontAwesomeIcon icon={faSignal} />}
           </h3>
         </Link>
         <TutorEdu>

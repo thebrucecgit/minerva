@@ -41,8 +41,12 @@ export default function CreateSession({ isOpen, close, users }) {
       const { data } = await createSession({
         variables: {
           name,
-          tutors: users.filter((u) => u.tutor.status === "COMPLETE"),
-          tutees: users.filter((u) => u.tutor.status !== "COMPLETE"),
+          tutors: users
+            .filter((u) => u.tutor.status === "COMPLETE")
+            .map((u) => u._id),
+          tutees: users
+            .filter((u) => u.tutor.status !== "COMPLETE")
+            .map((u) => u._id),
           startTime: time,
           length: parseInt(length),
         },

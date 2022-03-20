@@ -45,6 +45,7 @@ export const ChatHeaderRight = styled.div`
 
 export const ChatMessageInput = styled.form`
   display: flex;
+  margin-right: 10px;
   input {
     margin: 10px 0;
     max-width: 100%;

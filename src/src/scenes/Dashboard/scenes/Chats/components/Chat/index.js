@@ -8,6 +8,7 @@ import Message from "../Message";
 import {
   faChevronLeft,
   faCircleNotch,
+  faPaperPlane,
 } from "@fortawesome/free-solid-svg-icons";
 import { useInView } from "react-intersection-observer";
 import useChatWS from "./hooks/useChatWS";
@@ -53,6 +54,7 @@ const Chat = ({ sendMessage, ws, currentUser, createSession }) => {
         const { data } = await client.query({
           query: GET_CHAT,
           variables: { channel, skip: 0, limit: MESSAGES_GROUP },
+          fetchPolicy: "network-only",
         });
         setSkip((st) => st + MESSAGES_GROUP);
         setChatInfo(data.getChat);
@@ -129,9 +131,11 @@ const Chat = ({ sendMessage, ws, currentUser, createSession }) => {
         </h2>
 
         <ChatHeaderRight>
-          <button className="btn" onClick={createSessionFromChat}>
-            New Session
-          </button>
+          {currentUser.user.tutor?.status === "COMPLETE" && (
+            <button className="btn" onClick={createSessionFromChat}>
+              New Session
+            </button>
+          )}
         </ChatHeaderRight>
       </ChatHeader>
       <MessageContent ref={messageElem}>
@@ -168,7 +172,9 @@ const Chat = ({ sendMessage, ws, currentUser, createSession }) => {
       </MessageContent>
       <ChatMessageInput onSubmit={handleSubmit}>
         <input type="text" onChange={editMessage} value={message} />
-        <button className="btn">Send</button>
+        <button className="btn small" disabled={message.length === 0}>
+          <FontAwesomeIcon icon={faPaperPlane} />
+        </button>
       </ChatMessageInput>
     </StyledChat>
   );
