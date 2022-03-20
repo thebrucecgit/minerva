@@ -60,7 +60,7 @@ export default gql`
     email: String!
     pfp: Pfp
     yearGroup: String!
-    school: String!
+    school: String
     biography: String!
     tutor: TutorInfo
     admin: AdminStatus
