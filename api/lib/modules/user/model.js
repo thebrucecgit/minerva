@@ -136,10 +136,6 @@ const userSchema = new Schema({
   biography: {
     type: String,
   },
-  tertiary: {
-    // is the user in a tertiary institution
-    type: Boolean, // only required for tutors
-  },
   classes: [
     {
       type: String,
