@@ -47,16 +47,21 @@ const Hit = ({ hit, currentUser }) => {
           </h3>
         </Link>
         <TutorEdu>
-          <div>
-            {hit.school === currentUser.user.school ? (
-              <strong>
-                <Highlight hit={hit} attribute="school" tagName="mark" />
-              </strong>
-            ) : (
+          <em>
+            {hit.online && "Online"}
+            {hit.online && hit.location && " & "}
+            {hit.location}
+          </em>
+        </TutorEdu>
+        <TutorEdu>
+          {hit.school === currentUser.user.school ? (
+            <strong>
               <Highlight hit={hit} attribute="school" tagName="mark" />
-            )}
-          </div>
-          <div>{hit.yearGroup}</div>
+            </strong>
+          ) : (
+            <Highlight hit={hit} attribute="school" tagName="mark" />
+          )}
+          , {hit.yearGroup}
         </TutorEdu>
 
         <p>
