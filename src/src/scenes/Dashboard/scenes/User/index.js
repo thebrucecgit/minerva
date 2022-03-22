@@ -1,22 +1,93 @@
 import React from "react";
 import ProfilePicture from "../../components/ProfilePicture";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";
 import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
-import { format } from "date-fns";
-import classNames from "classnames";
 import DMButton from "../../components/DMButton";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGraduationCap, faSchool } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faGraduationCap,
+  faSchool,
+  faMapMarker,
+} from "@fortawesome/free-solid-svg-icons";
 
 import Tags from "../../../../components/Tags";
 
-import styles from "./styles.module.scss";
+import styled from "styled-components";
+import mediaQuery from "styles/sizes";
 
 const GET_USER = loader("./graphql/GetUser.gql");
+
+const Header = styled.div`
+  background: #161925;
+  display: flex;
+  margin-bottom: 4rem;
+  flex-direction: column;
+
+  ${mediaQuery("md")`
+    flex-direction: row;
+  `}
+
+  img {
+    margin-left: auto;
+    ${mediaQuery("md")`
+      align-self: flex-end;
+      margin-right: -20px;
+      margin-bottom: -20px;
+    `}
+    width: 100%;
+    height: auto;
+    max-width: 350px;
+  }
+`;
+
+const Bar = styled.div`
+  color: #fff;
+  padding: 3rem;
+  text-transform: uppercase;
+  h1 {
+    font-size: 6rem;
+    margin: 0;
+  }
+`;
+
+const Description = styled.p`
+  font-size: 1.2rem;
+`;
+
+const UserInfo = styled.div`
+  margin-bottom: 4rem;
+
+  ${mediaQuery("md")`
+    display: grid;
+    grid-template-columns: 65% 35%;
+    column-gap: 1rem;
+  `}
+`;
+
+const Biography = styled.div`
+  padding: 3rem;
+  background-color: #f7f7f7;
+  box-shadow: 20px -20px #23395b;
+`;
+
+const UserDetails = styled.div`
+  padding: 3rem;
+`;
+
+const Price = styled.h3`
+  font-size: 2rem;
+`;
+
+const StyledTags = styled.div`
+  display: flex;
+  margin-bottom: 1rem;
+  column-gap: 1rem;
+`;
 
 const User = ({ currentUser }) => {
   const { id } = useParams();
@@ -29,93 +100,59 @@ const User = ({ currentUser }) => {
   const user = data.getUser;
 
   return (
-    <div className={styles.User}>
-      <div className={styles.header}>
-        <div className={styles.bar}>
+    <div className="container">
+      <Header>
+        <Bar>
           <h1>
             {user.name.split(" ").map((s, i) => (
               <div key={i}>{s}</div>
             ))}
           </h1>
-          <p className={styles.userType}>
+          <Description>
             {user.yearGroup} at {user.school}
-          </p>
-        </div>
-        <ProfilePicture pfp={user.pfp} alt={user.name} width="400" />
-      </div>
+          </Description>
+        </Bar>
+        <ProfilePicture pfp={user.pfp} alt={user.name} width="350" />
+      </Header>
+      <UserInfo>
+        <Biography>
+          <p>{user.biography}</p>
+        </Biography>
 
-      <div className={classNames("container", styles.userInfo)}>
-        {currentUser.user._id !== user._id && (
-          <DMButton id={user._id} expanded />
-        )}
+        <UserDetails>
+          <Price>${user.tutor.price} per hour</Price>
 
-        <div>
-          <h3>${user.tutor.price} per hour</h3>
-        </div>
-
-        <div>
           {user.tutor?.academicsTutoring?.length > 0 && (
-            <div className={styles.tags}>
+            <StyledTags>
               <FontAwesomeIcon icon={faGraduationCap} size="2x" />
               <Tags tags={user.tutor.academicsTutoring} />
-            </div>
+            </StyledTags>
           )}
-        </div>
 
-        <div>
           {user.tutor?.curricula?.length > 0 && (
-            <div className={styles.tags}>
+            <StyledTags>
               <FontAwesomeIcon icon={faSchool} size="2x" />
               <Tags tags={user.tutor.curricula} />
-            </div>
+            </StyledTags>
           )}
-        </div>
 
-        <h2>Biography</h2>
-        <p>{user.biography}</p>
+          {user.tutor?.online && (
+            <p>
+              <FontAwesomeIcon icon={faCheck} /> Can tutor online
+            </p>
+          )}
+          {user.tutor?.location && (
+            <p>
+              <FontAwesomeIcon icon={faMapMarker} /> Can tutor in{" "}
+              {user.tutor.location}
+            </p>
+          )}
 
-        {/* {fullAccess && (
-          <>
-            <h2>Classes</h2>
-            <div className={styles.classes}>
-              {user.classes.length ? (
-                user.classes.map((classInfo, i) => (
-                  <div key={i} className="card">
-                    <Link to={`/dashboard/classes/${classInfo._id}`}>
-                      <img src={classInfo.image} alt="" />
-                      <div className="body">
-                        <h3>{classInfo.name}</h3>
-                      </div>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p>This user has no classes.</p>
-              )}
-            </div>
-
-            <h2>Sessions</h2>
-            <div className={styles.sessions}>
-              {user.sessions.length ? (
-                user.sessions.map((session, i) => (
-                  <div key={i} className="card">
-                    <Link to={`/dashboard/sessions/${session._id}`}>
-                      <div className="body">
-                        <h3>
-                          {format(session.startTime, "EEEE, d MMMM yyyy")}
-                        </h3>
-                        <p>{format(session.startTime, "h:mm aa")}</p>
-                      </div>
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p>This user has no sessions.</p>
-              )}
-            </div>
-          </>
-        )} */}
-      </div>
+          {currentUser.user._id !== user._id && (
+            <DMButton id={user._id} expanded />
+          )}
+        </UserDetails>
+      </UserInfo>
     </div>
   );
 };
