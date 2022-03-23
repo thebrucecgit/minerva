@@ -349,6 +349,45 @@ function PersonalInfo({ currentUser }) {
           )}
 
           <div>
+            <div className="checkbox">
+              <input
+                type="checkbox"
+                name="tutor.online"
+                id="online"
+                checked={
+                  (update ? updates.tutor?.online : user.tutor?.online) ?? false
+                }
+                onChange={onChange}
+                noValidate
+                disabled={!update}
+              />
+              <label htmlFor="online">
+                I am willing to tutor online (virtually)
+              </label>
+            </div>
+          </div>
+
+          <div data-test="location">
+            <label htmlFor="tutor.location">Select your location:</label>
+            {update ? (
+              <TagsSelect
+                settings={{
+                  ...baseTagifySettings,
+                  enforceWhitelist: true,
+                  placeholder: "eg. Wellington",
+                  whitelist: selections.location,
+                  mode: "select",
+                }}
+                onChange={(e) => onTagsChange(e, "tutor.location", true)}
+                defaultValue={updates.tutor?.location ?? ""}
+                name="tutor.location"
+              />
+            ) : (
+              <p>{user.tutor?.location}</p>
+            )}
+          </div>
+
+          <div>
             <label htmlFor="tutor.price">Price per hour:</label>
             {update ? (
               <input

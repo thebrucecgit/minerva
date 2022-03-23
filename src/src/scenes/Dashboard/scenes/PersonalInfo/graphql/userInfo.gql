@@ -19,6 +19,8 @@ fragment userInfo on User {
     academicsTutoring
     curricula
     price
+    location
+    online
   }
   yearGroup
   biography
