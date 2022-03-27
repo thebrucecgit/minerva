@@ -28,7 +28,7 @@ const Settings = ({ onSubmit, onChange, update }) => {
             checked={update.studentEditNotes}
             onChange={onChange}
           />
-          <label htmlFor="studentEditNotes">Allow tutees to edit notes</label>
+          <label htmlFor="studentEditNotes">Allow students to edit notes</label>
         </div>
         <button className="btn">Save</button>
       </form>
