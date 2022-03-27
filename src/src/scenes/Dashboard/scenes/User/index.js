@@ -72,11 +72,14 @@ const UserInfo = styled.div`
 const Biography = styled.div`
   padding: 3rem;
   background-color: #f7f7f7;
-  box-shadow: 20px -20px #23395b;
+  box-shadow: 20px 20px #23395b;
 `;
 
 const UserDetails = styled.div`
   padding: 3rem;
+  h3 {
+    margin-top: 0;
+  }
 `;
 
 const Price = styled.h3`
@@ -120,30 +123,30 @@ const User = ({ currentUser }) => {
         </Biography>
 
         <UserDetails>
-          <Price>${user.tutor.price} per hour</Price>
+          <Price>${user.tutor?.price} per hour</Price>
 
           {user.tutor?.academicsTutoring?.length > 0 && (
             <StyledTags>
-              <FontAwesomeIcon icon={faGraduationCap} size="2x" />
+              <FontAwesomeIcon icon={faGraduationCap} size="2x" fixedWidth />
               <Tags tags={user.tutor.academicsTutoring} />
             </StyledTags>
           )}
 
           {user.tutor?.curricula?.length > 0 && (
             <StyledTags>
-              <FontAwesomeIcon icon={faSchool} size="2x" />
-              <Tags tags={user.tutor.curricula} />
+              <FontAwesomeIcon icon={faSchool} size="2x" fixedWidth />
+              <Tags color="#a6baf4" tags={user.tutor.curricula} />
             </StyledTags>
           )}
 
           {user.tutor?.online && (
             <p>
-              <FontAwesomeIcon icon={faCheck} /> Can tutor online
+              <FontAwesomeIcon icon={faCheck} fixedWidth /> Can tutor online
             </p>
           )}
           {user.tutor?.location && (
             <p>
-              <FontAwesomeIcon icon={faMapMarker} /> Can tutor in{" "}
+              <FontAwesomeIcon icon={faMapMarker} fixedWidth /> Can tutor in{" "}
               {user.tutor.location}
             </p>
           )}
