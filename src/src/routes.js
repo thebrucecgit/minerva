@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from "react";
-import { Switch, Route, useLocation, Redirect } from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 
 import Loader from "./components/Loader";
 import { loader } from "./styles/Loader.module.scss";
