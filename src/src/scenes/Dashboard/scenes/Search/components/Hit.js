@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import ProfilePicture from "../../../components/ProfilePicture";
 import Tags from "../../../../../components/Tags";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignal } from "@fortawesome/free-solid-svg-icons";
 
 const TutorCard = styled.div`
   img {
@@ -43,13 +41,13 @@ const Hit = ({ hit, currentUser }) => {
         <Link to={`/dashboard/tutors/${hit.objectID}`}>
           <h3>
             <Highlight hit={hit} attribute="name" tagName="mark" /> · $
-            {hit.price} {hit.online && <FontAwesomeIcon icon={faSignal} />}
+            {hit.price}
           </h3>
         </Link>
         <TutorEdu>
           <em>
             {hit.online && "Online"}
-            {hit.online && hit.location && " & "}
+            {hit.online && hit.location && ", "}
             {hit.location}
           </em>
         </TutorEdu>
