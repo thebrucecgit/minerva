@@ -37,8 +37,10 @@ function Routes({ authService }) {
       <ScrollToTop />
       <Switch>
         <Route exact path="/">
-          <Redirect to="/dashboard" />
-          {/* <Home authService={authService} /> */}
+          {() => {
+            window.location.replace(process.env.REACT_APP_INFO_SITE);
+            return null;
+          }}
         </Route>
 
         <Route

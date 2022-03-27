@@ -1,5 +1,4 @@
-import React from "react";
-
+import { Link } from "react-router-dom";
 import logo from "../../media/logo.png";
 import styled from "styled-components";
 
@@ -27,9 +26,9 @@ const StyledNavbar = styled.nav`
 function Navbar() {
   return (
     <StyledNavbar>
-      <a href={process.env.REACT_APP_INFO_SITE}>
+      <Link to="/">
         <img src={logo} alt="Minerva Logo" />
-      </a>
+      </Link>
     </StyledNavbar>
   );
 }
