@@ -127,7 +127,10 @@ const Chat = ({ sendMessage, ws, currentUser, createSession }) => {
           </BackButton>
           {chatInfo.bindToClass
             ? chatInfo.class.name
-            : chatInfo.users.map((u) => u.name).join(", ")}
+            : chatInfo.users
+                .filter((u) => u._id !== currentUser.user._id)
+                .map((u) => u.name)
+                .join(", ")}
         </h2>
 
         <ChatHeaderRight>

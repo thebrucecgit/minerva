@@ -152,7 +152,10 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
               <h4>
                 {chat.bindToClass
                   ? chat.class.name
-                  : chat.users.map((u) => u.name).join(", ")}
+                  : chat.users
+                      .filter((u) => u._id !== currentUser.user._id)
+                      .map((u) => u.name)
+                      .join(", ")}
               </h4>
               {/* display last message */}
               {chat.messages.length > 0 &&
