@@ -2,9 +2,7 @@
 
 .Footer {
   padding: 30px 5%;
-  // background: var(--main-repeating-pattern);
-  background: rgb(20, 20, 20);
-  color: var(--main-gold-color);
+  background-color: #161925;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -12,15 +10,7 @@
     margin-top: 15px;
   }
   p {
-    font-size: 0.9em;
-    a,
-    a:visited {
-      color: #fff8d1;
-    }
-    a:hover {
-      color: #ffee8b;
-      border-bottom: 1px solid #ffee8b;
-    }
+    color: #fff;
   }
   h6 {
     font-size: 1.2em;

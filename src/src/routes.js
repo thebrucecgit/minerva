@@ -1,12 +1,11 @@
 import React, { Suspense, lazy, useEffect } from "react";
-import { Switch, Route, useLocation } from "react-router-dom";
+import { Switch, Route, useLocation, Redirect } from "react-router-dom";
 
 import Loader from "./components/Loader";
 import { loader } from "./styles/Loader.module.scss";
 
 import Authenticated from "components/Authenticated";
 
-const Home = lazy(() => import("./scenes/Home"));
 const Pages = lazy(() => import("./scenes/Pages"));
 const Signups = lazy(() => import("./scenes/Signups"));
 const Confirm = lazy(() => import("./scenes/Confirm"));
@@ -38,7 +37,8 @@ function Routes({ authService }) {
       <ScrollToTop />
       <Switch>
         <Route exact path="/">
-          <Home authService={authService} />
+          <Redirect to="/dashboard" />
+          {/* <Home authService={authService} /> */}
         </Route>
 
         <Route

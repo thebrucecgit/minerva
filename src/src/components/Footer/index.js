@@ -18,39 +18,9 @@ function Footer() {
             Bruce Chen
           </a>
         </p>
-        <Link to="/services">
-          <button className="btn secondary">I want to get tutored</button>
+        <Link to="/signup">
+          <button className="btn">Sign up</button>
         </Link>
-      </div>
-      <div>
-        <h6>Company</h6>
-        <p>
-          <Link to="/about-us">About Us</Link>
-        </p>
-        <p>
-          <Link to="/privacy-policy">Privacy Policy</Link>
-        </p>
-        <p>
-          <Link to="/terms-of-service">Terms of Service</Link>
-        </p>
-      </div>
-      <div>
-        <h6>Services</h6>
-        <p>
-          <Link to="/services">Overview</Link>
-        </p>
-        <p>
-          <Link to="/services/academic-studies">Academic Studies</Link>
-        </p>
-        <p>
-          <Link to="/services/extra-curriculars">Extra-Curriculars</Link>
-        </p>
-      </div>
-      <div>
-        <h6>Tutors</h6>
-        <p>
-          <Link to="/tutors">Tutors</Link>
-        </p>
       </div>
     </div>
   );
