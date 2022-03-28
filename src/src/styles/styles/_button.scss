@@ -8,57 +8,40 @@
   display: block;
   background-color: var(--main-gold-color);
   border-radius: 5px;
-  box-shadow: 1px 1px var(--secondary-gold-color),
-    2px 2px var(--secondary-gold-color), 3px 3px var(--secondary-gold-color);
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
   color: #000;
   font-weight: 300;
   letter-spacing: 1px;
   position: relative;
   margin: 10px 0;
+  transition: 200ms all ease;
   &:hover {
-    box-shadow: 2px 2px var(--secondary-gold-color);
-    top: 1px;
-    left: 1px;
-  }
-  &:active {
-    box-shadow: none;
-    top: 3px;
-    left: 3px;
+    background-color: #76cff5;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.15);
   }
   &.secondary {
-    background: #fff;
-    box-shadow: 1px 1px #eee, 2px 2px #eee, 3px 3px #eee;
+    background-color: #fff;
     &:hover {
-      box-shadow: 2px 2px #eee;
-      top: 1px;
-      left: 1px;
-    }
-    &:active {
-      box-shadow: none;
-      top: 3px;
-      left: 3px;
+      background-color: #fafafa;
     }
   }
   &.danger {
     background-color: #dc3545;
     color: #fff;
-    $shadow: #b82b39;
-    box-shadow: 1px 1px $shadow, 2px 2px $shadow, 3px 3px $shadow;
+    &:hover {
+      background-color: #b82b39;
+    }
   }
   &.success {
     background-color: #34f775;
+    &:hover {
+      background-color: #39e271;
+    }
     $shadow: #39e271;
-    box-shadow: 1px 1px $shadow, 2px 2px $shadow, 3px 3px $shadow;
   }
   &:disabled {
     cursor: not-allowed;
     background: #eee;
-    $shadow: #ddd;
-    box-shadow: 1px 1px $shadow, 2px 2px $shadow, 3px 3px $shadow;
-    &:hover {
-      top: 0;
-      left: 0;
-    }
   }
   &.small {
     padding: 15px 20px;
