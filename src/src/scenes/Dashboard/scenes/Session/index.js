@@ -442,7 +442,9 @@ const Session = ({ currentUser }) => {
           </>
         )}
 
-        <h2 className={styles.padding}>What we did</h2>
+        <h2 className={classNames(styles.padding, styles.sessionNotesHeader)}>
+          Session notes
+        </h2>
         <ReactQuill
           theme={disabled.notes ? null : "snow"}
           readOnly={disabled.notes}
