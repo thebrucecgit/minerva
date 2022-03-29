@@ -456,7 +456,7 @@ const Session = ({ currentUser }) => {
         )}
 
         <h2 className={classNames(styles.padding, styles.sessionNotesHeader)}>
-          Session notes
+          Session Notes
         </h2>
         <ReactQuill
           theme={disabled.notes ? null : "snow"}
