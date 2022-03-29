@@ -37,9 +37,9 @@ import {
   faUserCog,
   faUnlock,
   faTrashAlt,
-  faPhoneVolume,
   faCheck,
   faTimes,
+  faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSION = loader("./graphql/GetSession.gql");
@@ -441,7 +441,12 @@ const Session = ({ currentUser }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Join Video Call <FontAwesomeIcon icon={faPhoneVolume} />
+            <div className={styles.videoLinkPrompt}>
+              This session is online! Click here to join the video call.
+            </div>
+            <div className={styles.videoLinkIcon}>
+              <FontAwesomeIcon icon={faVideo} />
+            </div>
           </a>
         ) : (
           <>

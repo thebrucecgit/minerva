@@ -65,13 +65,30 @@
 
   .videoLink {
     display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
     margin: 1rem 0;
-    padding: 1rem $text-padding;
+    padding: 0;
     border-radius: 5px;
+    overflow: hidden;
     background-color: rgb(242, 242, 242);
+    display: flex;
+    transition: 200ms background-color ease;
     &:hover {
       background-color: rgb(238, 238, 238);
     }
+  }
+
+  .videoLinkPrompt {
+    padding: 1rem $text-padding;
+  }
+
+  .videoLinkIcon {
+    align-self: stretch;
+    margin-left: auto;
+    padding: 1rem $text-padding;
+    background: linear-gradient(#23395b, #6090da);
+    color: #fff;
   }
 
   .attendanceBtn {
