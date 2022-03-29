@@ -8,6 +8,10 @@ const sessionSchema = Schema({
     type: String,
     default: () => nanoid(11),
   },
+  name: {
+    type: String,
+    default: "Unnamed Class",
+  },
   class: {
     type: String,
     ref: "Class",

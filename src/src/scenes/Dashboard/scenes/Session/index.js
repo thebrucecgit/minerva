@@ -52,6 +52,7 @@ const Session = ({ currentUser }) => {
 
   const [sessionInfo, setSessionInfo] = useState({});
   const [update, setUpdate] = useState({
+    name: "",
     tutors: "",
     location: "",
     notes: "",
@@ -61,6 +62,7 @@ const Session = ({ currentUser }) => {
   });
 
   const [disabled, setDisabled] = useState({
+    name: true,
     tutors: true,
     location: true,
     notes: true,
@@ -277,33 +279,18 @@ const Session = ({ currentUser }) => {
     <div className={styles.Class} onClick={rootClick}>
       <div>
         <div className={styles.flex}>
-          {disabled.startTime ? (
-            <h1>{format(sessionInfo.startTime, "EEEE, d MMMM yyyy")}</h1>
+          {disabled.name ? (
+            <h1>{sessionInfo.name}</h1>
           ) : (
-            <>
-              <DatePicker
-                selected={update.startTime}
-                onChange={onTimeChange}
-                showTimeSelect
-                timeFormat="h:mm aa"
-                timeIntervals={15}
-                timeCaption="Time"
-                dateFormat="d MMMM yyyy h:mm aa"
-              />
-              <select
-                name="length"
-                value={update.length}
-                onChange={onInfoChange}
-              >
-                <option value="30">30 Minutes</option>
-                <option value="45">45 Minutes</option>
-                <option value="60">60 Minutes</option>
-                <option value="90">90 Minutes</option>
-                <option value="120">120 Minutes</option>
-              </select>
-            </>
+            <input
+              type="text"
+              name="name"
+              value={update.name}
+              onChange={onInfoChange}
+            />
           )}
-          <Edit type={["startTime", "length"]} />
+
+          <Edit type="name" />
         </div>
         {sessionInfo.status === "REJECT" && (
           <div className="alert danger">
@@ -340,7 +327,7 @@ const Session = ({ currentUser }) => {
               ) && <>A tutor needs to confirm this session. </>}
               {unconfirmedTutees.length > 0 && (
                 <>
-                  This session has not yet been confirmed by these tutees:{" "}
+                  This session has not yet been confirmed by these students:{" "}
                   <ul>
                     {unconfirmedTutees.map((user) => (
                       <li key={user._id}>
@@ -391,11 +378,37 @@ const Session = ({ currentUser }) => {
 
         <div className={styles.flex}>
           <p className={styles.date}>
-            {`${format(sessionInfo.startTime, "h:mm aa")} - ${format(
-              sessionInfo.endTime,
-              "h:mm aa"
-            )}`}
+            {disabled.startTime ? (
+              `${format(sessionInfo.startTime, "EEEE, d MMMM yyyy")}, ${format(
+                sessionInfo.startTime,
+                "h:mm aa"
+              )} - ${format(sessionInfo.endTime, "h:mm aa")}`
+            ) : (
+              <div className={styles.flex}>
+                <DatePicker
+                  selected={update.startTime}
+                  onChange={onTimeChange}
+                  showTimeSelect
+                  timeFormat="h:mm aa"
+                  timeIntervals={15}
+                  timeCaption="Time"
+                  dateFormat="d MMMM yyyy h:mm aa"
+                />
+                <select
+                  name="length"
+                  value={update.length}
+                  onChange={onInfoChange}
+                >
+                  <option value="30">30 Minutes</option>
+                  <option value="45">45 Minutes</option>
+                  <option value="60">60 Minutes</option>
+                  <option value="90">90 Minutes</option>
+                  <option value="120">120 Minutes</option>
+                </select>
+              </div>
+            )}
           </p>
+          <Edit type={["startTime", "length"]} />
           <div className={styles.edit}>
             {isTutor && (
               <Menu {...menuBind}>

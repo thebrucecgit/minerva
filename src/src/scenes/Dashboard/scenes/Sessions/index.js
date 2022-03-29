@@ -6,7 +6,8 @@ import Error from "../../../../components/Error";
 import { Link } from "react-router-dom";
 import { format, isAfter } from "date-fns";
 import classNames from "classnames";
-
+import styled from "styled-components";
+import mediaQuery from "styles/sizes";
 import styles from "./styles.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -17,6 +18,18 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const GET_SESSIONS = loader("./graphql/GetSessions.gql");
+
+const SessionsGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 3rem;
+  ${mediaQuery("md")`
+    grid-template-columns: repeat(2, 1fr);
+  `}
+  ${mediaQuery("lg")`
+    grid-template-columns: repeat(3, 1fr);
+  `}
+`;
 
 const Sessions = ({ currentUser }) => {
   const [isOld, setIsOld] = useState(false);
@@ -77,7 +90,7 @@ const Sessions = ({ currentUser }) => {
         </div>
       </form>
 
-      <div className={styles.sessions_grid}>
+      <SessionsGrid>
         {sessions.length ? (
           sessions
             .filter((session) => session.status !== "REJECT")
@@ -102,11 +115,11 @@ const Sessions = ({ currentUser }) => {
                       }
                     >
                       <h2>
-                        {format(session.startTime, "EEEE, d MMMM yyyy")}{" "}
+                        {session.name}{" "}
                         {session.status === "UNCONFIRM" && (
                           <FontAwesomeIcon
                             icon={faExclamationTriangle}
-                            className={styles.unconfirmed}
+                            color="#ffcc00"
                           />
                         )}
                         {session.status === "CANCEL" && (
@@ -129,12 +142,17 @@ const Sessions = ({ currentUser }) => {
                           )}
                       </h2>
                     </Link>
-                    <div className={styles.description}>
-                      Run by {session.tutors.map((t) => t.name).join(", ")}
-                    </div>
+                    <p>{format(session.startTime, "EEEE, d MMMM yyyy")}</p>
+                    <p>Run by {session.tutors.map((t) => t.name).join(", ")}</p>
                   </div>
                   <div className="body">
-                    <p>{session.location.address}</p>
+                    <p>
+                      {session.settings?.online
+                        ? "Online"
+                        : session.location.address || (
+                            <em>Location to be decided</em>
+                          )}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -142,7 +160,7 @@ const Sessions = ({ currentUser }) => {
         ) : (
           <p>You have no upcoming sessions.</p>
         )}
-      </div>
+      </SessionsGrid>
     </div>
   );
 };

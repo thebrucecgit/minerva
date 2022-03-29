@@ -83,6 +83,7 @@ export default gql`
   "An instance of a class, occurring at a specified time"
   type Session {
     _id: ID!
+    name: String!
     class: Class
     attendance: [Attendance!]!
     tutors: [User!]!
@@ -122,6 +123,7 @@ export default gql`
     ): Session!
     updateSession(
       id: ID!
+      name: String
       class: ID
       attendance: [AttendanceIn!]
       tutors: [ID!]

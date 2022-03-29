@@ -1,5 +1,6 @@
 fragment sessionInfo on Session {
   _id
+  name
   tutors {
     _id
     pfp {

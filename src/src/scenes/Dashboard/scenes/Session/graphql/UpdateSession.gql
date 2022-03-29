@@ -1,6 +1,7 @@
 #import "./sessionInfo.gql"
 mutation UpdateSession(
   $id: ID!
+  $name: String
   $startTime: Date
   $length: Int
   $notes: String
@@ -11,6 +12,7 @@ mutation UpdateSession(
 ) {
   updateSession(
     id: $id
+    name: $name
     notes: $notes
     location: $location
     tutors: $tutors

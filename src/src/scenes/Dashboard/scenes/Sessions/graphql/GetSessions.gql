@@ -1,6 +1,7 @@
 query GetSessions($userID: ID!, $old: Boolean!) {
   getSessionsOfUser(userID: $userID, limit: 10, old: $old) {
     _id
+    name
     startTime
     endTime
     status
@@ -10,6 +11,9 @@ query GetSessions($userID: ID!, $old: Boolean!) {
     attendance {
       tutee
       attended
+    }
+    settings {
+      online
     }
     tutors {
       name
