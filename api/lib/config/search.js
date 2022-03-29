@@ -23,8 +23,8 @@ const indexSchema = yup.object().shape({
   }),
   type: yup.string().oneOf(["GENERAL", "LOCAL"]),
   curricula: yup.array().of(yup.string()),
-  location: yup.string(),
-  online: yup.boolean(),
+  location: yup.string().nullable(),
+  online: yup.boolean().nullable(),
   price: yup.number(),
   randomness: yup.number(),
 });
