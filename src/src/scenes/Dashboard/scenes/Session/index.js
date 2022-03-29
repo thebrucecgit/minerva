@@ -475,7 +475,7 @@ const Session = ({ currentUser }) => {
       <div className={styles.column}>
         <Tutors
           Edit={Edit}
-          showEdit={!sessionInfo.settings.syncTutorsWithClass}
+          showEdit={false} // TODO: REFACTOR TUTORS
           tutorsDisabled={disabled.tutors}
           tutors={sessionInfo.tutors}
           update={update.tutors}

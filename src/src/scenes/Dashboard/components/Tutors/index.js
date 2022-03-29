@@ -32,22 +32,24 @@ const SortableItem = SortableElement(
         <ProfilePicture pfp={tutor.pfp} alt={tutor.name} width="400" />
       )}
       <div className={classNames("body", styles.cardBody)}>
-        <h3>{tutor.name}</h3>
-        <div className={styles.userButtons}>
-          {editEnabled ? (
-            <>
-              <button
-                className="btn danger small"
-                onClick={deleteTutor}
-                data-id={tutor._id}
-              >
-                <FontAwesomeIcon icon={faTrashAlt} />
-              </button>
-              <DragHandle />
-            </>
-          ) : (
-            tutor._id !== user._id && <DMButton id={tutor._id} />
-          )}
+        <div className={styles.flex}>
+          <h3>{tutor.name}</h3>
+          <div className={styles.userButtons}>
+            {editEnabled ? (
+              <>
+                <button
+                  className="btn danger small"
+                  onClick={deleteTutor}
+                  data-id={tutor._id}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </button>
+                <DragHandle />
+              </>
+            ) : (
+              tutor._id !== user._id && <DMButton id={tutor._id} />
+            )}
+          </div>
         </div>
       </div>
     </Link>
