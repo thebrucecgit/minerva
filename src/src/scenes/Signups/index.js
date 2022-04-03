@@ -45,10 +45,7 @@ function Signups({ authService }) {
     // If there is saved info, use saved
     try {
       const saved = localStorage.getItem("signup");
-      return {
-        applyTutor: defaultApply === "tutor",
-        ...(saved ? JSON.parse(saved) : {}),
-      };
+      return saved ? JSON.parse(saved) : {};
     } catch (e) {
       console.error(e);
       return {};
@@ -87,7 +84,7 @@ function Signups({ authService }) {
   };
 
   const [errors, setErrors] = useState({});
-  const validate = useVerification(info, strategy, setErrors);
+  const validate = useVerification(info, strategy, setErrors, defaultApply);
 
   // Moves onto next strategy
   const onNext = useCallback(
@@ -206,6 +203,7 @@ function Signups({ authService }) {
       recaptchaRef.current.reset();
       const request = {
         ...info,
+        applyTutor: defaultApply,
         token,
       };
       request.tutor.price = parseInt(request.tutor.price);
@@ -271,6 +269,7 @@ function Signups({ authService }) {
             errors={errors}
             onChange={onChange}
             onNext={() => onNext("Verification")}
+            defaultApply={defaultApply}
           />
           <Confirmation
             sectionStatus={sectionStatus[4]}

@@ -91,22 +91,7 @@ const AdditionalInfo = ({
             />
           </div>
 
-          {defaultApply === "tutee" && (
-            <div className={styles.field}>
-              <div className="checkbox">
-                <input
-                  type="checkbox"
-                  name="applyTutor"
-                  id="applyTutor"
-                  checked={info.applyTutor ?? false}
-                  onChange={onChange}
-                  noValidate
-                />
-                <label htmlFor="applyTutor">I would like to tutor others</label>
-              </div>
-            </div>
-          )}
-          {info.applyTutor && (
+          {defaultApply === "tutor" && (
             <>
               <p>
                 Note that your application to be a tutor will be reviewed by a
@@ -129,7 +114,9 @@ const AdditionalInfo = ({
               </div>
 
               <div className={styles.field} data-test="location">
-                <label htmlFor="location">Select your location:</label>
+                <label htmlFor="location">
+                  If you are willing to tutor in person, select your location:
+                </label>
                 <Tags
                   settings={{
                     ...baseTagifySettings,

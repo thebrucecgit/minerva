@@ -1,7 +1,12 @@
 import regex from "../regex";
 import selections from "config/whitelist.json";
 
-export default function useVerification(info, strategy, setErrors) {
+export default function useVerification(
+  info,
+  strategy,
+  setErrors,
+  defaultApply
+) {
   const validate = (section) => {
     const newErrors = {};
 
@@ -33,7 +38,7 @@ export default function useVerification(info, strategy, setErrors) {
         break;
       }
       case "Verification": {
-        if (!info.biography && info.applyTutor)
+        if (!info.biography && defaultApply)
           newErrors.biography = "Please write about yourself";
         break;
       }

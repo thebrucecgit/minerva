@@ -12,6 +12,7 @@ const Verification = ({
   info,
   onChange,
   onNext,
+  defaultApply,
 }) => {
   return (
     <section>
@@ -27,7 +28,7 @@ const Verification = ({
         <div className={styles.content}>
           <div className={styles.field}>
             <label htmlFor="biography">
-              {info.applyTutor ? (
+              {defaultApply ? (
                 <>
                   <p>
                     Feel free to be creative, but we recommend the following:{" "}
