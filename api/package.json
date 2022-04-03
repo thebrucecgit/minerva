@@ -6,20 +6,20 @@
     "@babel/runtime": "^7.14.6",
     "@sendgrid/mail": "^7.4.5",
     "algoliasearch": "^4.10.2",
-    "apollo-server": "^2.25.2",
-    "axios": "^0.21.1",
+    "apollo-server": "^3.6.7",
+    "axios": "^0.26.1",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "date-fns": "^2.22.1",
-    "dotenv": "^10.0.0",
+    "dotenv": "^16.0.0",
     "express": "^4.17.1",
     "google-auth-library": "^7.1.2",
-    "graphql": "^15.5.1",
+    "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongo-dot-notation": "^2.0.0",
     "mongoose": "^6.0.6",
     "nanoid": "^3.1.23",
-    "ws": "^7.5.0",
+    "ws": "^8.5.0",
     "yup": "^0.32.9"
   },
   "scripts": {
@@ -35,8 +35,8 @@
   "devDependencies": {
     "@swc/cli": "^0.1.46",
     "@swc/core": "^1.2.62",
-    "@swc/jest": "^0.1.2",
+    "@swc/jest": "^0.2.20",
     "jest": "^27.0.5",
-    "mongodb-memory-server": "^6.9.6"
+    "mongodb-memory-server": "^8.4.2"
   }
 }

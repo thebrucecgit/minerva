@@ -123,7 +123,7 @@ export function init(server) {
     async function onEvent(data) {
       let reqId;
       try {
-        const event = await receivedEventSchema.validate(data);
+        const event = await receivedEventSchema.validate(data.toString());
         reqId = event._id;
 
         // Rate limiting

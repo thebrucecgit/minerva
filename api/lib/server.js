@@ -10,27 +10,29 @@ import apolloServer from "./apollo";
 
 import { setSettings } from "./config/search";
 
-const { DOMAIN, PORT, NODE_ENV } = process.env;
+const { FRONTEND_DOMAIN, DOMAIN, PORT, NODE_ENV } = process.env;
 
-// Connect to DB
-connect();
-setSettings();
+async function startServer() {
+  // Connect to DB
+  await connect();
+  await setSettings();
 
-const app = express();
-app.use(cors());
+  const app = express();
+  app.use(cors({ origin: FRONTEND_DOMAIN }));
 
-app.get("/", (req, res) => res.send("You have reached Academe servers."));
+  app.get("/", (req, res) => res.send("You have reached Minerva servers."));
 
-apolloServer.applyMiddleware({ app });
+  const httpServer = http.createServer(app);
+  websocket.init(httpServer);
 
-const server = http.createServer(app);
+  const server = apolloServer(httpServer);
+  await server.start();
+  server.applyMiddleware({ app });
 
-websocket.init(server);
-
-server.listen(PORT ?? 5000, () => {
+  await new Promise((resolve) => httpServer.listen(PORT ?? 5000, resolve));
   console.log(
-    `🚀  Server ready at ${DOMAIN}${apolloServer.graphqlPath} on port ${
-      PORT ?? 5000
-    }`
+    `🚀  Server ready at ${DOMAIN}${server.graphqlPath} on port ${PORT ?? 5000}`
   );
-});
+}
+
+startServer();
