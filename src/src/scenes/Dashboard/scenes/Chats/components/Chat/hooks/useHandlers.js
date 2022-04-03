@@ -11,7 +11,6 @@ export default function useHandlers({
     if (message.length === 0) return;
     const evt = sendMessage(channel, message);
     evt.loading = true;
-    console.log(evt);
     setMessage("");
     setMessages((st) => [...st, evt]);
     messageElem.current.scrollTop = messageElem.current.scrollHeight;
