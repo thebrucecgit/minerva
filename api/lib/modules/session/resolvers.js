@@ -8,7 +8,6 @@ import * as websocket from "../../websocket";
 import sgMail from "../../config/email";
 import { ApolloError } from "apollo-server";
 import { nanoid } from "nanoid";
-import axios from "axios";
 
 import {
   assertAuthenticated,
@@ -18,6 +17,7 @@ import {
 } from "../../helpers/permissions";
 
 import createSession from "./mutations/createSession";
+import updateSession from "./mutations/updateSession";
 
 const { FRONTEND_DOMAIN } = process.env;
 
@@ -59,19 +59,13 @@ export default {
       await session.populate("tutees");
       return session.tutees;
     },
-    attendance(session, _, { user }) {
+    tuteeReviews(session, _, { user }) {
       if (session.tutors.some((tutor) => tutor._id.isEqual(user._id)))
-        return session.attendance;
-      else
-        return session.attendance.filter((att) =>
-          att.tutee._id.isEqual(user._id)
-        );
+        return session.tuteeReviews;
+      return session.tuteeReviews.filter((r) => r.user._id.isEqual(user._id));
     },
-    review(session, _, { user }) {
-      if (session.tutors.some((tutor) => tutor._id.isEqual(user._id)))
-        return session.review;
-      else
-        return session.review.filter((rev) => rev.tutee._id.isEqual(user._id));
+    tutorReviews(session, _, { user }) {
+      return session.tutorReviews.filter((r) => r.user._id.isEqual(user._id));
     },
   },
   Mutation: {
@@ -176,42 +170,7 @@ export default {
       return session;
     },
     createSession,
-    async updateSession(_, args, { user }) {
-      const edits = { ...args };
-      if (args.startTime && args.length)
-        edits.endTime = addMinutes(args.startTime, args.length);
-      const session = await Session.findById(args.id);
-
-      assertGroupAuthorization(user, session.users);
-
-      if (!session.tutors.some((tutor) => tutor._id.isEqual(user._id))) {
-        if (session.settings.studentEditNotes) {
-          // Only edit the notes
-          edits = { notes: args.notes };
-        } else {
-          throw new ApolloError(
-            "Tutees are not permitted to edit in this session",
-            401
-          );
-        }
-      }
-
-      if (edits.settings?.online && !session.videoLink) {
-        const { data } = await axios({
-          method: "post",
-          url: "https://api.join.skype.com/v1/meetnow/guest",
-          data: {
-            title: session.name,
-          },
-        });
-
-        edits.videoLink = data.joinLink;
-      }
-
-      return await Session.findByIdAndUpdate(args.id, edits, {
-        new: true,
-      });
-    },
+    updateSession,
     async deleteSession(_, { id }, { user }) {
       const session = await Session.findById(id);
       if (!session) throw new ApolloError("Session not found", 404);
@@ -222,19 +181,13 @@ export default {
       await session.remove();
     },
     async cancelSession(_, { id, reason }, { user }) {
-      let session = await Session.findById(id).populate("class");
+      let session = await Session.findById(id);
       if (!session) throw new ApolloError("Session not found", 404);
 
       assertGroupAuthorization(user, session.users);
 
-      if (
-        !session.class.preferences.studentAgreeSessions &&
-        !session.tutors.some((tutor) => tutor._id.isEqual(user._id))
-      )
-        throw new ApolloError("Not authorized to cancel session", 401);
-
       if (session.cancellation.cancelled)
-        throw new ApolloError("Session is already cancelled");
+        throw new ApolloError("Session is already cancelled.");
 
       session = await Session.findByIdAndUpdate(
         id,
@@ -249,39 +202,21 @@ export default {
         { new: true, populate: "class" }
       );
 
-      const event = {
-        type: "CANCEL_SESSION",
-        className: session.class.name,
-        sessionId: session._id,
-        sessionTime: session.startTime,
-        text: `Session on ${datetime.format(session.startTime)} is cancelled.`,
-        time: new Date(),
-        author: user._id,
-      };
-
-      // Insert event into chat
-      if (session.class.preferences.enableChat) {
-        await Chat.findByIdAndUpdate(session.class.chat, {
-          $push: { messages: event },
-        });
-        // Notify all users except initiator
-        await websocket.broadcast(event, session.users, user._id);
-      }
-
       // Email all users
       const users = await User.find(
         { _id: { $in: session.users } },
         "name email"
       );
 
-      const sessionTime = datetime.format(startTime);
+      const sessionTime = datetime.format(session.startTime);
 
       await sgMail.send({
         dynamicTemplateData: {
           user: user.name,
-          className: session.class.name,
+          sessionName: session.name,
           sessionTime,
           sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
+          reason,
         },
         from: "no-reply@academe.co.nz",
         reply_to: {
@@ -289,7 +224,7 @@ export default {
           name: "Admin",
         },
         templateId: "d-66761a69d047412289cbb4dffeb82b38",
-        subject: `Cancelled Session on ${sessionTime} for "${session.class.name}"`,
+        subject: `Session Cancellation: ${session.name}`,
         personalizations: users.map((user) => ({
           to: {
             email: user.email,
@@ -328,14 +263,25 @@ export default {
     async reviewSession(_, { id, review }, { user }) {
       const session = await Session.findById(id);
       assertAuthenticated(user);
-      if (!session.tutees.some((tutee) => tutee._id.isEqual(user._id)))
-        throw new Error("Not allowed to create review");
-      if (session.review.some((r) => r.tutee === user._id))
-        throw new Error("Tutee can't review more than once");
+
+      const isTutor = session.tutors.some((t) => t._id.isEqual(user._id));
+
+      if (
+        (!isTutor &&
+          session.tuteeReviews.some((r) => r.user.isEqual(user._id))) ||
+        (isTutor && session.tutorReviews.some((r) => r.user.isEqual(user._id)))
+      )
+        throw new Error("You can't review more than once");
+
       return await Session.findByIdAndUpdate(
         id,
         {
-          $push: { review: { ...review, tutee: user._id } },
+          $push: {
+            [isTutor ? "tutorReviews" : "tuteeReviews"]: {
+              ...review,
+              user: user._id,
+            },
+          },
         },
         { new: true }
       );

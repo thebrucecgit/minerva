@@ -3,19 +3,11 @@ import { useQuery } from "@apollo/client";
 import { loader } from "graphql.macro";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";
-import { Link } from "react-router-dom";
-import { format, isAfter } from "date-fns";
-import classNames from "classnames";
+import { isAfter } from "date-fns";
 import styled from "styled-components";
 import mediaQuery from "styles/sizes";
 import styles from "./styles.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTimesCircle,
-  faCheckCircle,
-  faExclamationTriangle,
-  faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import SessionSummary from "../../components/SessionSummary";
 
 const GET_SESSIONS = loader("./graphql/GetSessions.gql");
 
@@ -26,7 +18,7 @@ const SessionsGrid = styled.div`
   ${mediaQuery("md")`
     grid-template-columns: repeat(2, 1fr);
   `}
-  ${mediaQuery("lg")`
+  ${mediaQuery("xl")`
     grid-template-columns: repeat(3, 1fr);
   `}
 `;
@@ -71,6 +63,9 @@ const Sessions = ({ currentUser }) => {
   if (error) return <Error error={error} />;
   if (loading) return <Loader />;
 
+  if (!data) {
+    console.log(data);
+  }
   const sessions = data.getSessionsOfUser;
 
   return (
@@ -92,71 +87,13 @@ const Sessions = ({ currentUser }) => {
 
       <SessionsGrid>
         {sessions.length ? (
-          sessions
-            .filter((session) => session.status !== "REJECT")
-            .map((session) => (
-              <div key={session._id}>
-                <div
-                  className={classNames("card", {
-                    current:
-                      !isOld &&
-                      isAfter(new Date(), session.startTime) &&
-                      isAfter(session.endTime, new Date()),
-                    cancelled: session.status === "CANCEL",
-                  })}
-                >
-                  <div className="header">
-                    <Link
-                      to={`/dashboard/sessions/${session._id}`}
-                      title={
-                        session.status === "UNCONFIRM"
-                          ? "This session is not confirmed yet."
-                          : ""
-                      }
-                    >
-                      <h2>
-                        {session.name}{" "}
-                        {session.status === "UNCONFIRM" && (
-                          <FontAwesomeIcon
-                            icon={faExclamationTriangle}
-                            color="#ffcc00"
-                          />
-                        )}
-                        {session.status === "CANCEL" && (
-                          <FontAwesomeIcon icon={faTimes} />
-                        )}
-                        {isOld &&
-                          session.tutees.some(
-                            (s) => s._id === currentUser.user._id
-                          ) && (
-                            <FontAwesomeIcon
-                              className={classNames(styles.attended, {
-                                [styles.true]: session.attendance.length,
-                              })}
-                              icon={
-                                session.attendance.length
-                                  ? faCheckCircle
-                                  : faTimesCircle
-                              }
-                            />
-                          )}
-                      </h2>
-                    </Link>
-                    <p>{format(session.startTime, "EEEE, d MMMM yyyy")}</p>
-                    <p>Run by {session.tutors.map((t) => t.name).join(", ")}</p>
-                  </div>
-                  <div className="body">
-                    <p>
-                      {session.settings?.online
-                        ? "Online"
-                        : session.location.address || (
-                            <em>Location to be decided</em>
-                          )}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))
+          sessions.map((session) => (
+            <SessionSummary
+              key={session._id}
+              session={session}
+              currentUser={currentUser}
+            />
+          ))
         ) : (
           <p>You have no upcoming sessions.</p>
         )}

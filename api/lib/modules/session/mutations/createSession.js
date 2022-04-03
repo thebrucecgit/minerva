@@ -53,17 +53,13 @@ export default async function createSession(
     await sgMail.send({
       dynamicTemplateData: {
         user: user.name,
-        sessionName: name,
+        sessionName: session.name,
         sessionTime: datetime.format(session.startTime),
         sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
       },
       from: "no-reply@academe.co.nz",
-      reply_to: {
-        email: "admin@academe.co.nz",
-        name: "Admin",
-      },
       templateId: "d-e2dc24a92d804398b0e5312f621285e4",
-      subject: `New Session Request for "${name}"`,
+      subject: `New Session Request for "${session.name}"`,
       personalizations: otherUsers.map((user) => ({
         to: {
           email: user.email,

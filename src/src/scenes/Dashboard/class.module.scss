@@ -29,14 +29,8 @@
     max-width: 100%;
   }
 
-  .edit {
-    display: flex;
-    justify-content: flex-end;
+  .menu {
     margin: 10px $text-padding 10px auto;
-
-    button {
-      margin: 0 0 0 10px;
-    }
   }
 
   .date {
@@ -172,12 +166,5 @@
     &:hover {
       background: #eee;
     }
-  }
-}
-
-.requestResponse {
-  display: flex;
-  > button {
-    margin-right: 1rem;
   }
 }

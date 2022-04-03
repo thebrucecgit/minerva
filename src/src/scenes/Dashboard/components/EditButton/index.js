@@ -1,9 +1,16 @@
-import React from "react";
-
+import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenAlt, faSave, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-import styles from "../../class.module.scss";
+const StyledEdit = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin: 10px 1.5rem;
+
+  button {
+    margin: 0 0 0 10px;
+  }
+`;
 
 const EditButton = ({
   disabled,
@@ -27,7 +34,7 @@ const EditButton = ({
 
     if (enabledOverride ?? editEnabled)
       return (
-        <div className={styles.edit}>
+        <StyledEdit>
           {(Array.isArray(type) ? disabled[type[0]] : disabled[type]) ? (
             <button className="btn small" onClick={onEdit}>
               <FontAwesomeIcon icon={faPenAlt} />
@@ -42,7 +49,7 @@ const EditButton = ({
               </button>
             </>
           )}
-        </div>
+        </StyledEdit>
       );
     return null;
   };

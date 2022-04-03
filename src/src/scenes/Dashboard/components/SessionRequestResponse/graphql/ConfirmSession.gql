@@ -1,7 +1,9 @@
 mutation ConfirmSession($id: ID!) {
   confirmSession(id: $id) {
+    _id
     status
     userResponses {
+      _id
       user
       response
     }

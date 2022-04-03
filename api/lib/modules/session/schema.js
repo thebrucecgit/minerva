@@ -2,22 +2,14 @@ import { gql } from "apollo-server";
 
 export default gql`
   type SessionUserResponse {
+    _id: ID!
     user: ID!
     response: String! # Enum "CONFIRM" or "REJECT"
   }
 
-  "Recording attendance of a class"
-  type Attendance {
-    tutee: ID!
-    attended: Boolean!
-    reason: String
-    behaviourTags: [String]
-    behaviourComment: String
-    behaviourGood: Boolean
-  }
-
   type Review {
-    tutee: ID!
+    _id: ID!
+    user: ID!
     rating: Float
     occurred: String
     reason: String
@@ -54,15 +46,6 @@ export default gql`
     online: Boolean
   }
 
-  input AttendanceIn {
-    tutee: ID!
-    attended: Boolean
-    reason: String
-    behaviourTags: [String]
-    behaviourComment: String
-    behaviourGood: Boolean
-  }
-
   input ReviewIn {
     rating: Float
     occurred: String
@@ -85,7 +68,6 @@ export default gql`
     _id: ID!
     name: String!
     class: Class
-    attendance: [Attendance!]!
     tutors: [User!]!
     tutees: [User!]!
     location: Location
@@ -99,7 +81,8 @@ export default gql`
     cancellation: SessionCancellation!
     status: String!
     userResponses: [SessionUserResponse!]
-    review: [Review!]!
+    tuteeReviews: [Review!]!
+    tutorReviews: [Review!]!
   }
 
   extend type Query {
@@ -125,7 +108,6 @@ export default gql`
       id: ID!
       name: String
       class: ID
-      attendance: [AttendanceIn!]
       tutors: [ID!]
       tutees: [ID!]
       location: LocationIn

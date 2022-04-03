@@ -1,5 +1,6 @@
 mutation CancelSession($id: ID!, $reason: String!) {
   cancelSession(id: $id, reason: $reason) {
+    _id
     cancellation {
       user
       cancelled

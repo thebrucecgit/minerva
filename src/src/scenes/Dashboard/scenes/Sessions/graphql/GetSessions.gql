@@ -8,10 +8,6 @@ query GetSessions($userID: ID!, $old: Boolean!) {
     location {
       address
     }
-    attendance {
-      tutee
-      attended
-    }
     settings {
       online
     }
@@ -20,6 +16,19 @@ query GetSessions($userID: ID!, $old: Boolean!) {
     }
     tutees {
       _id
+    }
+    tuteeReviews {
+      _id
+      user
+    }
+    tutorReviews {
+      _id
+      user
+    }
+    userResponses {
+      _id
+      user
+      response
     }
   }
 }

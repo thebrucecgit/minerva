@@ -10,7 +10,6 @@ import DatePicker from "react-datepicker";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";
 
-import Attendance from "./components/Attendance";
 import Settings from "./components/Settings";
 import EditButton from "../../components/EditButton";
 import Menu from "../../components/Menu";
@@ -25,7 +24,6 @@ import useEdits from "../../hooks/useEdits";
 import useModal from "../../hooks/useModal";
 import usePreferences from "../../hooks/usePreferences";
 import useCancelSession from "./hooks/useCancelSession";
-import useRequestResponse from "./hooks/useRequestResponse";
 import useDeleteSession from "./hooks/useDeleteSession";
 
 import styles from "../../class.module.scss";
@@ -37,10 +35,10 @@ import {
   faUserCog,
   faUnlock,
   faTrashAlt,
-  faCheck,
   faTimes,
   faVideo,
 } from "@fortawesome/free-solid-svg-icons";
+import SessionRequestResponse from "scenes/Dashboard/components/SessionRequestResponse";
 
 const GET_SESSION = loader("./graphql/GetSession.gql");
 const UPDATE_SESSION = loader("./graphql/UpdateSession.gql");
@@ -88,7 +86,6 @@ const Session = ({ currentUser }) => {
     cancellationReason,
     onReasonChange,
   ] = useCancelSession({ id, setSessionInfo });
-  const [requestResponse] = useRequestResponse({ id, setSessionInfo });
   const [deleteSession, openDeletion, deletionBinds] = useDeleteSession({
     id,
     classId: sessionInfo.class?._id,
@@ -184,10 +181,6 @@ const Session = ({ currentUser }) => {
   useEffect(() => {
     let timerId;
     if (data) {
-      const attendance = {};
-      data.getSession.attendance.forEach(
-        (attend) => (attendance[attend.tutee] = attend)
-      );
       const ended = isAfter(new Date(), data.getSession.endTime);
       setSessionEnded(ended);
       if (!ended) {
@@ -200,7 +193,6 @@ const Session = ({ currentUser }) => {
         ...st,
         ...data.getSession,
         notes: JSON.parse(data.getSession.notes),
-        attendance,
       }));
     }
     return () => {
@@ -221,7 +213,6 @@ const Session = ({ currentUser }) => {
   });
 
   const onNotesChange = (content, delta, source, editor) => {
-    console.log("CALLED");
     setUpdate((st) => ({ ...st, notes: editor.getContents() }));
   };
 
@@ -235,11 +226,6 @@ const Session = ({ currentUser }) => {
   };
 
   const [openSettings, settingsBinds] = useModal(false, "settings", modalHooks);
-  const [openAttendances, attendancesBinds] = useModal(
-    false,
-    "attendance",
-    modalHooks
-  );
 
   const onTimeChange = (startTime) => {
     setUpdate((st) => ({
@@ -268,9 +254,6 @@ const Session = ({ currentUser }) => {
   if (loading || !sessionInfo.startTime) return <Loader />;
 
   const users = [...sessionInfo.tutees, ...sessionInfo.tutors];
-  const unconfirmedTutees = sessionInfo.tutees.filter(
-    (user) => !sessionInfo.userResponses.some((res) => res.user === user._id)
-  );
   const isTutor = sessionInfo.tutors.some(
     (t) => t._id === currentUser.user._id
   );
@@ -322,58 +305,49 @@ const Session = ({ currentUser }) => {
         {sessionInfo.status === "UNCONFIRM" && (
           <>
             <div className="alert warning">
-              {!sessionInfo.userResponses.some((res) =>
-                sessionInfo.tutors.some((u) => u._id === res.user)
-              ) && <>A tutor needs to confirm this session. </>}
-              {unconfirmedTutees.length > 0 && (
-                <>
-                  This session has not yet been confirmed by these students:{" "}
-                  <ul>
-                    {unconfirmedTutees.map((user) => (
+              <>
+                This session has not yet been confirmed by the following:{" "}
+                <ul>
+                  {users
+                    .filter(
+                      (user) =>
+                        !sessionInfo.userResponses.some(
+                          (res) => res.user === user._id
+                        )
+                    )
+                    .map((user) => (
                       <li key={user._id}>
                         {user.name}{" "}
                         {user._id === currentUser.user._id && "(you)"}
                       </li>
                     ))}
-                  </ul>
-                </>
-              )}
+                </ul>
+              </>
             </div>
             {!sessionInfo.userResponses.some(
               (res) => res.user === currentUser.user._id
             ) && (
-              <div className={styles.requestResponse}>
-                <button
-                  className="btn"
-                  name="confirm"
-                  onClick={() => requestResponse(false)}
-                >
-                  Confirm <FontAwesomeIcon icon={faCheck} />
-                </button>
-                <button
-                  className="btn danger"
-                  onClick={() => requestResponse(true)}
-                >
-                  Reject <FontAwesomeIcon icon={faTimes} />
-                </button>
-              </div>
+              <SessionRequestResponse
+                onChange={(sessionData) =>
+                  setSessionInfo((st) => ({ ...st, ...sessionData }))
+                }
+                id={id}
+              />
             )}
           </>
         )}
 
-        {sessionEnded &&
-          sessionInfo.status !== "CANCEL" &&
-          sessionInfo.tutees.some(
-            (tutee) => tutee._id === currentUser.user._id
-          ) &&
-          !sessionInfo.review?.some(
-            (r) => r.tutee === currentUser.user._id
-          ) && <Review id={id} setSessionInfo={setSessionInfo} />}
-
-        {sessionInfo.review?.some((r) => r.tutee === currentUser.user._id) && (
-          <p className={styles.padding}>
-            <FontAwesomeIcon icon={faCheck} /> You have reviewed this session!
-          </p>
+        {sessionEnded && sessionInfo.status !== "CANCEL" && (
+          <Review
+            id={id}
+            isTutor={isTutor}
+            currentUser={currentUser}
+            tutorReviews={sessionInfo.tutorReviews}
+            tuteeReviews={sessionInfo.tuteeReviews}
+            onChange={(change) =>
+              setSessionInfo((st) => ({ ...st, ...change }))
+            }
+          />
         )}
 
         <div className={styles.flex}>
@@ -408,29 +382,31 @@ const Session = ({ currentUser }) => {
               </div>
             )}
           </p>
-          <Edit type={["startTime", "length"]} />
-          <div className={styles.edit}>
-            {isTutor && (
-              <Menu {...menuBind}>
-                <>
-                  <div onClick={toggleEdit}>
-                    <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
-                    {editEnabled ? "Lock Edits" : "Edit Page"}
-                  </div>
-                  <div onClick={openSettings}>
-                    <FontAwesomeIcon icon={faUserCog} /> Settings
-                  </div>
-                  {sessionInfo.status !== "CANCEL" && (
-                    <div onClick={openCancellation}>
-                      <FontAwesomeIcon icon={faTimes} /> Cancel Session
-                    </div>
-                  )}
-                  <div onClick={openDeletion}>
-                    <FontAwesomeIcon icon={faTrashAlt} /> Delete Session
-                  </div>
-                </>
-              </Menu>
-            )}
+          <Edit type={["startTime", "length"]} editEnabled />
+          <div className={styles.menu}>
+            <Menu {...menuBind}>
+              {isTutor && (
+                <div onClick={toggleEdit}>
+                  <FontAwesomeIcon icon={editEnabled ? faUnlock : faPenAlt} />{" "}
+                  {editEnabled ? "Lock Edits" : "Edit Page"}
+                </div>
+              )}
+              {isTutor && (
+                <div onClick={openSettings}>
+                  <FontAwesomeIcon icon={faUserCog} /> Settings
+                </div>
+              )}
+              {sessionInfo.status !== "CANCEL" && (
+                <div onClick={openCancellation}>
+                  <FontAwesomeIcon icon={faTimes} /> Cancel Session
+                </div>
+              )}
+              {isTutor && (
+                <div onClick={openDeletion}>
+                  <FontAwesomeIcon icon={faTrashAlt} /> Delete Session
+                </div>
+              )}
+            </Menu>
           </div>
         </div>
 
@@ -487,25 +463,10 @@ const Session = ({ currentUser }) => {
           setUpdate={setUpdate}
           user={currentUser.user}
         />
-        {isTutor && (
-          <button className="btn" onClick={openAttendances}>
-            Attendance
-          </button>
-        )}
       </div>
 
       <Modal {...settingsBinds}>
         <Settings {...settingsBind} update={update.settings} />
-      </Modal>
-
-      <Modal {...attendancesBinds}>
-        <Attendance
-          Edit={Edit}
-          update={update}
-          setUpdate={setUpdate}
-          tutees={sessionInfo.tutees}
-          saveInfo={saveInfo}
-        />
       </Modal>
 
       <Modal {...cancellationBinds}>

@@ -21,20 +21,13 @@ fragment sessionInfo on Session {
       lng
     }
   }
-  attendance {
-    tutee
-    attended
-    reason
-    behaviourGood
-    behaviourTags
-    behaviourComment
+  tuteeReviews {
+    _id
+    user
   }
-  review {
-    tutee
-    rating
-    occurred
-    reason
-    comment
+  tutorReviews {
+    _id
+    user
   }
   settings {
     online

@@ -30,9 +30,14 @@ const sessionSchema = Schema({
       ref: "User",
     },
   ],
-  review: [
+  tuteeReviews: [
+    // tutee reviews of session & tutor
     {
-      tutee: {
+      _id: {
+        type: String,
+        default: () => nanoid(11),
+      },
+      user: {
         type: String,
         get: (value) => new ID(value),
         ref: "User",
@@ -43,21 +48,22 @@ const sessionSchema = Schema({
       comment: String,
     },
   ],
-  attendance: [
+  tutorReviews: [
+    // tutor reviews on session & tutee
     {
-      tutee: {
+      _id: {
         type: String,
-        ref: "User",
+        default: () => nanoid(11),
+      },
+      user: {
+        type: String,
         get: (value) => new ID(value),
+        ref: "User",
       },
-      attended: {
-        type: Boolean,
-        default: false,
-      },
+      rating: Number, // out of 5.0 scale
+      occurred: String,
       reason: String,
-      behaviourTags: [String],
-      behaviourComment: String,
-      behaviourGood: Boolean,
+      comment: String,
     },
   ],
   location: {
@@ -139,24 +145,9 @@ sessionSchema.virtual("status").get(function () {
   if (userResponses.some((value) => value.response === "REJECT"))
     return "REJECT";
 
-  // If no response from any tutor
-  if (
-    !userResponses.some((value) =>
-      tutors.some((tutor) => tutor._id.isEqual(value.user))
-    )
-  )
-    return "UNCONFIRM";
-
-  // If not every tutee has responded
-  if (
-    userResponses.filter((u) =>
-      tutees.some((tutee) => tutee._id.isEqual(u.user))
-    ).length < tutees.length
-  )
-    return "UNCONFIRM";
-
-  // If at least one tutor has confirmed and all tutees have confirmed:
-  return "CONFIRM";
+  // every tutor & tutee must have responded
+  if (userResponses.length === tutees.length + tutors.length) return "CONFIRM";
+  return "UNCONFIRM";
 });
 
 const Session = model("Session", sessionSchema);

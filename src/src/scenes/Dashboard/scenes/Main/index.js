@@ -3,10 +3,10 @@ import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { loader } from "graphql.macro";
 import { useQuery } from "@apollo/client";
-import { format } from "date-fns";
 import ProfilePicture from "../../components/ProfilePicture";
 import Loader from "../../../../components/Loader";
 import Error from "../../../../components/Error";
+import SessionSummary from "scenes/Dashboard/components/SessionSummary";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -31,17 +31,12 @@ const Main = ({ currentUser }) => {
           <div className={styles.group}>
             {data.getSessionsOfUser.length > 0 ? (
               data.getSessionsOfUser.map((session) => (
-                <Link
-                  to={`/dashboard/sessions/${session._id}`}
+                <SessionSummary
                   key={session._id}
-                  className="card square y"
-                >
-                  <div className="body">
-                    <h2>{format(session.startTime, "EEEE, d MMMM yyyy")}</h2>
-                    <h3>{format(session.startTime, "h:mm aa")}</h3>
-                    <p>{session.location.address}</p>
-                  </div>
-                </Link>
+                  session={session}
+                  currentUser={currentUser}
+                  onChange={(sessionInfo) => {}}
+                />
               ))
             ) : (
               <p>You have no upcoming sessions.</p>
@@ -51,30 +46,6 @@ const Main = ({ currentUser }) => {
             </p>
           </div>
         </div>
-        {/* <div className={styles.wrapper}>
-          <h1>Class</h1>
-          <div className={styles.group}>
-            {data.getClassesOfUser.length > 0 ? (
-              data.getClassesOfUser.map((classInfo) => (
-                <Link
-                  to={`/dashboard/classes/${classInfo._id}`}
-                  key={classInfo._id}
-                  className="card square y"
-                >
-                  <img src={classInfo.image} alt={classInfo.name} />
-                  <div className="body">
-                    <h2>{classInfo.name}</h2>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <p>You are not part of any class.</p>
-            )}
-            <p>
-              <Link to="/dashboard/classes">See all</Link>
-            </p>
-          </div>
-        </div> */}
       </div>
       <div className={styles.lower}>
         <h1>Tutors</h1>

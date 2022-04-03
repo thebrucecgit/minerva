@@ -62,7 +62,20 @@ const Apollo = ({ authHelpers, children }) => {
       }),
     ]),
     typeDefs,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      typePolicies: {
+        Session: {
+          fields: {
+            location: {
+              merge: true,
+            },
+            settings: {
+              merge: true,
+            },
+          },
+        },
+      },
+    }),
     defaultOptions: {
       watchQuery: {
         fetchPolicy: "cache-and-network",

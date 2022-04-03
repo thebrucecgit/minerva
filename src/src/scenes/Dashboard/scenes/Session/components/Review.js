@@ -3,10 +3,20 @@ import { useState } from "react";
 import ReactStars from "react-rating-stars-component";
 import { loader } from "graphql.macro";
 import { toast } from "react-toastify";
+import styles from "../../../class.module.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
 const REVIEW_SESSION = loader("../graphql/ReviewSession.gql");
 
-function Review({ id, setSessionInfo }) {
+function Review({
+  id,
+  currentUser,
+  isTutor,
+  tuteeReviews = [],
+  tutorReviews = [],
+  onChange = () => {},
+}) {
   const [reviewSessionReq] = useMutation(REVIEW_SESSION);
   const [review, setReview] = useState({});
 
@@ -16,11 +26,7 @@ function Review({ id, setSessionInfo }) {
     try {
       toastId = toast("Processing review...", { autoClose: false });
       const { data } = await reviewSessionReq({ variables: { id, review } });
-
-      setSessionInfo((st) => ({
-        ...st,
-        review: data.reviewSession.review,
-      }));
+      onChange(data.reviewSession);
 
       toast.update(toastId, {
         render: "Review successful",
@@ -36,6 +42,15 @@ function Review({ id, setSessionInfo }) {
     }
   };
 
+  const allReviews = [...tuteeReviews, ...tutorReviews];
+
+  if (allReviews?.some((r) => r.user === currentUser.user._id))
+    return (
+      <p className={styles.padding}>
+        <FontAwesomeIcon icon={faCheck} /> You have reviewed this session!
+      </p>
+    );
+
   return (
     <form className="alert" onSubmit={onHandleSubmit}>
       <p>How did the session go?</p>
@@ -43,7 +58,7 @@ function Review({ id, setSessionInfo }) {
         {[
           "The session occurred as expected",
           "I didn't attend",
-          "The tutor(s) didn't attend",
+          `The ${isTutor ? "tutee(s)" : "tutor(s)"} didn't attend`,
         ].map((r, i) => (
           <div className="checkbox" key={i}>
             <input
@@ -72,7 +87,11 @@ function Review({ id, setSessionInfo }) {
           />
         </>
       )}
-      <p>Overall quality of session: </p>
+      <p>
+        {isTutor
+          ? "How satisfactory was the student's participation?"
+          : "Overall quality of session:"}
+      </p>
       <ReactStars
         value={review.rating}
         size={30}

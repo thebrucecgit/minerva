@@ -22,15 +22,6 @@ input ClassPreferenceIn {
   enableChat: Boolean
 }
 
-input AttendanceIn {
-  tutee: ID!
-  attended: Boolean
-  reason: String
-  behaviourGood: Boolean
-  behaviourTags: [String]
-  behaviourComment: String
-}
-
 input ReviewIn {
   rating: Float
   occurred: String

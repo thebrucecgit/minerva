@@ -1,11 +1,12 @@
 mutation ReviewSession($id: ID!, $review: ReviewIn!) {
   reviewSession(id: $id, review: $review) {
-    review {
-      tutee
-      rating
-      occurred
-      reason
-      comment
+    tuteeReviews {
+      _id
+      user
+    }
+    tutorReviews {
+      _id
+      user
     }
   }
 }

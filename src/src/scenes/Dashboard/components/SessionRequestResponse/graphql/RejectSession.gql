@@ -1,7 +1,9 @@
 mutation RejectSession($id: ID!) {
   rejectSession(id: $id) {
+    _id
     status
     userResponses {
+      _id
       user
       response
     }

@@ -1,9 +1,26 @@
 query GetInfo($userID: ID!) {
   getSessionsOfUser(userID: $userID, limit: 2) {
     _id
+    name
     startTime
+    endTime
+    status
     location {
       address
+    }
+    settings {
+      online
+    }
+    tutors {
+      name
+    }
+    tutees {
+      _id
+    }
+    userResponses {
+      _id
+      user
+      response
     }
   }
   getTutorsOfUser(userID: $userID, limit: 4) {
