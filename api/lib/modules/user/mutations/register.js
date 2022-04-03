@@ -4,7 +4,6 @@ import { flatten } from "mongo-dot-notation";
 import User from "../model";
 import { nanoid } from "nanoid";
 import sgMail from "../../../config/email";
-import userSchema from "../yupSchema";
 import { ApolloError } from "apollo-server";
 import * as yup from "yup";
 
