@@ -20,8 +20,10 @@ export default function useChatWS(ws, setMessages) {
       setMessages((st) => {
         const newState = [...st];
         const msg = newState.find((m) => m._id === _id);
-        msg.loading = false;
-        msg.failed = true;
+        if (msg) {
+          msg.loading = false;
+          msg.failed = true;
+        }
         return newState;
       });
       toast.error("Message failed to send.");
