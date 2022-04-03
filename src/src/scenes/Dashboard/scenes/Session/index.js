@@ -117,12 +117,6 @@ const Session = ({ currentUser }) => {
             variables.tutors = update.tutors.map((tutor) => tutor._id);
             break;
           }
-          case "attendance": {
-            variables.attendance = Object.entries(update.attendance).map(
-              ([tutee, info]) => ({ ...info, tutee })
-            );
-            break;
-          }
           case "length": {
             variables.length = parseInt(update.length);
             break;
@@ -153,11 +147,6 @@ const Session = ({ currentUser }) => {
       const { data } = await updateSession({ variables });
 
       data.updateSession.notes = JSON.parse(data.updateSession.notes);
-      const attendance = {};
-      data.updateSession.attendance.forEach(
-        (attend) => (attendance[attend.tutee] = attend)
-      );
-      data.updateSession.attendance = attendance;
 
       setSessionInfo((st) => ({
         ...st,

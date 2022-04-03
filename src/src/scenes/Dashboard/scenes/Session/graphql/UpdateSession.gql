@@ -7,7 +7,6 @@ mutation UpdateSession(
   $notes: String
   $location: LocationIn
   $tutors: [ID!]
-  $attendance: [AttendanceIn!]
   $settings: SessionSettingsIn
 ) {
   updateSession(
@@ -16,7 +15,6 @@ mutation UpdateSession(
     notes: $notes
     location: $location
     tutors: $tutors
-    attendance: $attendance
     startTime: $startTime
     length: $length
     settings: $settings

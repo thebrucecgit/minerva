@@ -45,17 +45,6 @@ export default function SessionSummary({ session, currentUser }) {
               [...session.tuteeReviews, ...session.tutorReviews].every(
                 (r) => r.user !== currentUser.user._id
               ) && <FontAwesomeIcon icon={faCommentDots} color="#ffcc00" />}
-            {/* {isOld &&
-              session.tutees.some((s) => s._id === currentUser.user._id) && (
-                <FontAwesomeIcon
-                  className={classNames(styles.attended, {
-                    [styles.true]: session.attendance.length,
-                  })}
-                  icon={
-                    session.attendance.length ? faCheckCircle : faTimesCircle
-                  }
-                />
-              )} */}
           </h2>
         </Link>
         <p>{format(session.startTime, "EEEE, d MMMM yyyy")}</p>
