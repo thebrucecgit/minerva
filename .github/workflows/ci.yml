@@ -28,14 +28,14 @@ jobs:
         run: npm ci
       - name: Build application
         run: npm run build --if-present
-      - name: Test application
-        env:
-          NODE_ENV: test
-          TEST_URI: mongodb://127.0.0.1:27017/minervatest
-          JWT_SECRET: test
-          FRONTEND_DOMAIN: http://localhost
-          ALGOLIA_SEARCH_API: test
-        run: npm test
+      # - name: Test application
+      #   env:
+      #     NODE_ENV: test
+      #     TEST_URI: mongodb://127.0.0.1:27017/minervatest
+      #     JWT_SECRET: test
+      #     FRONTEND_DOMAIN: http://localhost
+      #     ALGOLIA_SEARCH_API: test
+      #   run: npm test
       - name: Dockerhub login
         run: docker login -u ${{secrets.DOCKER_USER}} -p ${{secrets.DOCKER_ACCESS_TOKEN}}
       - name: Build the Docker image
