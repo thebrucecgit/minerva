@@ -15,7 +15,7 @@ const AuthHelpers = ({ children }) => {
           autoClose: false,
         });
         localStorage.removeItem("Auth");
-        history.replace("/");
+        history.replace("/auth");
         return null;
       } else return currentUser;
     } catch (e) {
@@ -27,7 +27,7 @@ const AuthHelpers = ({ children }) => {
   function logout() {
     setCurrentUser(null);
     localStorage.removeItem("Auth");
-    history.replace("/auth");
+    history.replace("/");
   }
 
   function storeUserInfo(userInfo) {
