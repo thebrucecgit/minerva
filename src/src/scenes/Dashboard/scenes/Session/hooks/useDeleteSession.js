@@ -23,7 +23,7 @@ function useDeleteSession({ id, classId }) {
         type: toast.TYPE.SUCCESS,
         autoClose: 2000,
       });
-      history.replace(`/dashboard/classes/${classId}`);
+      history.replace(`/dashboard/sessions`);
     } catch (e) {
       toast.update(toastId, {
         render: e.message,
