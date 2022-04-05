@@ -5,7 +5,7 @@ import Chat from "../chat/model";
 import { addMinutes } from "date-fns";
 import datetime from "../../config/datetime";
 import * as websocket from "../../websocket";
-import sgMail from "../../config/email";
+import send from "../../config/email";
 import { ApolloError } from "apollo-server";
 import { nanoid } from "nanoid";
 
@@ -69,106 +69,6 @@ export default {
     },
   },
   Mutation: {
-    async instantiateSession(_, { classId, startTime, length }, { user }) {
-      const classDoc = await Class.findById(classId);
-      assertGroupAuthorization(user, classDoc.users);
-
-      if (
-        !classDoc.preferences.studentInstantiation &&
-        !classDoc.tutors.some((tutor) => tutor._id.isEqual(user._id))
-      )
-        throw new ApolloError("User unauthorized to instantiate session", 401);
-
-      const session = await Session.create({
-        tutors: classDoc.tutors,
-        tutees: classDoc.tutees,
-        location: classDoc.location,
-        class: classId,
-        startTime,
-        endTime: addMinutes(startTime, length),
-        length,
-        userResponses: classDoc.preferences.studentAgreeSessions
-          ? [{ user: user._id, response: "CONFIRM" }]
-          : [],
-      });
-
-      // Save session to class
-      await Class.updateOne(
-        { _id: classId },
-        {
-          $addToSet: { sessions: session._id },
-        }
-      );
-
-      const event = {
-        type: classDoc.preferences.studentAgreeSessions
-          ? "NEW_SESSION_REQUEST"
-          : "NEW_SESSION",
-        className: classDoc.name,
-        sessionId: session._id,
-        sessionTime: session.startTime,
-        text: `New session ${
-          classDoc.preferences.studentAgreeSessions && "requested "
-        } on ${datetime.format(session.startTime)} for ${classDoc.name}`,
-        time: new Date(),
-        author: user._id,
-      };
-
-      // Insert event into chat
-      if (classDoc.preferences.enableChat) {
-        await Chat.findByIdAndUpdate(
-          classDoc.chat,
-          {
-            $push: { messages: event },
-          },
-          { new: true }
-        );
-      }
-      event._id = nanoid();
-      // Notify all users except initiator
-      await websocket.broadcast(event, session.users, user._id);
-
-      // Email all users
-      const users = await User.find(
-        { _id: { $in: classDoc.users } },
-        "name email"
-      );
-
-      const otherUsers = users.filter((u) => !u._id.isEqual(user._id));
-
-      if (otherUsers.length > 0)
-        await sgMail.send({
-          dynamicTemplateData: {
-            request: classDoc.preferences.studentAgreeSessions,
-            user: user.name,
-            className: classDoc.name,
-            sessionTime: datetime.format(session.startTime),
-            sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
-          },
-          from: "no-reply@academe.co.nz",
-          reply_to: {
-            email: "admin@academe.co.nz",
-            name: "Admin",
-          },
-          templateId: "d-f02579026cf84c5194f7135d838e87ad",
-          subject: `New ${
-            classDoc.preferences.studentAgreeSessions
-              ? "Session Request"
-              : "Session"
-          } for "${classDoc.name}"`,
-          personalizations: otherUsers.map((user) => ({
-            to: {
-              email: user.email,
-              name: user.name,
-            },
-            dynamicTemplateData: {
-              name: user.name,
-            },
-          })),
-        });
-
-      return session;
-    },
     createSession,
     updateSession,
     async deleteSession(_, { id }, { user }) {
@@ -210,7 +110,9 @@ export default {
 
       const sessionTime = datetime.format(session.startTime);
 
-      await sgMail.send({
+      await send({
+        templateId: "d-66761a69d047412289cbb4dffeb82b38",
+        subject: `Session Cancellation: ${session.name}`,
         dynamicTemplateData: {
           user: user.name,
           sessionName: session.name,
@@ -218,13 +120,6 @@ export default {
           sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
           reason,
         },
-        from: "no-reply@academe.co.nz",
-        reply_to: {
-          email: "admin@academe.co.nz",
-          name: "Admin",
-        },
-        templateId: "d-66761a69d047412289cbb4dffeb82b38",
-        subject: `Session Cancellation: ${session.name}`,
         personalizations: users.map((user) => ({
           to: {
             email: user.email,

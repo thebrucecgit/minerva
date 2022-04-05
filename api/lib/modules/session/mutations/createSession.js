@@ -1,7 +1,7 @@
 import User from "../../user/model";
 import Session from "../../session/model";
 import * as websocket from "../../../websocket";
-import sgMail from "../../../config/email";
+import send from "../../../config/email";
 import datetime from "../../../config/datetime";
 import { nanoid } from "nanoid";
 
@@ -50,16 +50,15 @@ export default async function createSession(
   );
 
   if (otherUsers.length > 0)
-    await sgMail.send({
+    await send({
+      templateId: "d-e2dc24a92d804398b0e5312f621285e4",
+      subject: `New Session Request for "${session.name}"`,
       dynamicTemplateData: {
         user: user.name,
         sessionName: session.name,
         sessionTime: datetime.format(session.startTime),
         sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
       },
-      from: "no-reply@academe.co.nz",
-      templateId: "d-e2dc24a92d804398b0e5312f621285e4",
-      subject: `New Session Request for "${session.name}"`,
       personalizations: otherUsers.map((user) => ({
         to: {
           email: user.email,

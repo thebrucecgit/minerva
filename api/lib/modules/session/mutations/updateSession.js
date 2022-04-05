@@ -2,7 +2,7 @@ import axios from "axios";
 import User from "../../user/model";
 import Session from "../../session/model";
 import { assertGroupAuthorization } from "../../../helpers/permissions";
-import sgMail from "../../../config/email";
+import send from "../../../config/email";
 import datetime from "../../../config/datetime";
 import { ApolloError } from "apollo-server";
 import { addMinutes } from "date-fns";
@@ -50,16 +50,15 @@ export default async function updateSession(_, args, { user }) {
     );
 
     if (otherUsers.length > 0)
-      await sgMail.send({
+      await send({
+        templateId: "d-2a2cbf2125464780b5e3e192326f003d",
+        subject: `Session Change for "${session.name}"`,
         dynamicTemplateData: {
           user: user.name,
           sessionName: session.name,
           sessionTime: datetime.format(session.startTime),
           sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
         },
-        from: "no-reply@academe.co.nz",
-        templateId: "d-2a2cbf2125464780b5e3e192326f003d",
-        subject: `Session Change for "${session.name}"`,
         personalizations: otherUsers.map((user) => ({
           to: {
             email: user.email,

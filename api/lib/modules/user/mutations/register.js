@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { flatten } from "mongo-dot-notation";
 import User from "../model";
 import { nanoid } from "nanoid";
-import sgMail from "../../../config/email";
+import send from "../../../config/email";
 import { ApolloError } from "apollo-server";
 import * as yup from "yup";
 
@@ -130,26 +130,19 @@ export default async function register(_, args) {
 
     // Send email confirmation
     const msg = {
+      templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
+      subject: "Minerva Education Email Confirmation",
       to: {
         email: user.email,
         name: user.name,
       },
-      from: {
-        email: "confirmation@academe.co.nz",
-        name: "Academe Email Confirmation",
-      },
-      reply_to: {
-        email: "admin@academe.co.nz",
-        name: "Admin",
-      },
-      templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
       dynamic_template_data: {
         name: user.name,
         confirmLink: confirmLink.href,
       },
     };
 
-    await sgMail.send(msg);
+    await send(msg);
   }
 
   // Return jwt user object

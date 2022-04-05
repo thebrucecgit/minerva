@@ -2,7 +2,7 @@ import Chat from "./model";
 import User from "../user/model";
 import { broadcast, send } from "../../websocket";
 import { nanoid } from "nanoid";
-import sgMail from "../../config/email";
+import emailSend from "../../config/email";
 import { differenceInMinutes } from "date-fns";
 
 const { FRONTEND_DOMAIN } = process.env;
@@ -44,12 +44,8 @@ export default async function onMessage(event, ws) {
     otherUsers.length > 0
   ) {
     const msg = {
-      from: {
-        email: "chat@academe.co.nz",
-        name: "Chat",
-      },
-      subject: `New message from ${author.name}`,
       templateId: "d-7414703086e342908972b9e187499820",
+      subject: `New message from ${author.name}`,
       dynamic_template_data: {
         author: author.name,
         message: event.text,
@@ -62,6 +58,6 @@ export default async function onMessage(event, ws) {
         },
       })),
     };
-    await sgMail.send(msg);
+    await emailSend(msg);
   }
 }
