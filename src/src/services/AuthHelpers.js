@@ -27,7 +27,7 @@ const AuthHelpers = ({ children }) => {
   function logout() {
     setCurrentUser(null);
     localStorage.removeItem("Auth");
-    history.replace("/");
+    history.replace("/auth");
   }
 
   function storeUserInfo(userInfo) {
