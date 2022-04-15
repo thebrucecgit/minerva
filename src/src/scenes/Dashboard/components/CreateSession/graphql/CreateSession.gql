@@ -4,6 +4,8 @@ mutation CreateSession(
   $tutees: [ID!]!
   $startTime: Date!
   $length: Int!
+  $online: Boolean
+  $location: LocationIn
 ) {
   createSession(
     name: $name
@@ -11,6 +13,8 @@ mutation CreateSession(
     tutees: $tutees
     startTime: $startTime
     length: $length
+    online: $online
+    location: $location
   ) {
     _id
   }

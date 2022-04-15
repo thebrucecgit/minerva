@@ -103,6 +103,8 @@ export default gql`
       tutees: [ID!]!
       startTime: Date!
       length: Int!
+      online: Boolean
+      location: LocationIn
     ): Session!
     updateSession(
       id: ID!

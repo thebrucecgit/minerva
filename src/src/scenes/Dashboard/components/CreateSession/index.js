@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import "react-datepicker/dist/react-datepicker.css";
 import Modal from "components/Modal";
 import styled from "styled-components";
+import { LoadScript, Autocomplete } from "@react-google-maps/api";
 // import styles from "../../../class.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -25,11 +26,14 @@ const StyledCreateSession = styled.div`
 export default function CreateSession({ isOpen, close, users }) {
   const history = useHistory();
 
+  const [autoComplete, setAutoComplete] = useState(null);
   const [error, setError] = useState("");
   const [name, setName] = useState("");
   const [time, setTime] = useState(new Date());
   const [length, setLength] = useState("60");
+  const [online, setOnline] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState({});
 
   const [createSession] = useMutation(CREATE_SESSION);
 
@@ -49,6 +53,8 @@ export default function CreateSession({ isOpen, close, users }) {
             .map((u) => u._id),
           startTime: time,
           length: parseInt(length),
+          online,
+          location,
         },
       });
       toast.update(toastId, {
@@ -62,6 +68,32 @@ export default function CreateSession({ isOpen, close, users }) {
       setLoading(false);
       toast.dismiss(toastId);
       setError(e.message);
+    }
+  };
+
+  const onLocationChange = (e) => {
+    e.persist();
+    setLocation((st) => ({
+      ...st.location,
+      address: e.target.value,
+    }));
+  };
+
+  const onPlaceChanged = () => {
+    if (autoComplete !== null) {
+      const place = autoComplete.getPlace();
+
+      const coords = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+
+      setLocation((st) => ({
+        address: `${place.name}, ${place.formatted_address}`,
+        coords,
+      }));
+    } else {
+      console.log("Autocomplete is not loaded yet!");
     }
   };
 
@@ -110,6 +142,53 @@ export default function CreateSession({ isOpen, close, users }) {
           <option value="90">90 Minutes</option>
           <option value="120">120 Minutes</option>
         </select>
+
+        <div className="field checkbox">
+          <input
+            type="checkbox"
+            name="online"
+            id="online"
+            checked={online}
+            onChange={(e) => setOnline(e.target.checked)}
+          />
+          <label htmlFor="online">
+            Online session
+            <div className="small">This session will occur online</div>
+          </label>
+        </div>
+
+        <div className="field">
+          <label htmlFor="location">Location:</label>
+          <LoadScript
+            libraries={["places"]}
+            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+          >
+            <Autocomplete
+              onLoad={(instance) => {
+                setAutoComplete(instance);
+              }}
+              onPlaceChanged={onPlaceChanged}
+              bounds={
+                // Bounds around New Zealand
+                {
+                  east: 179.83,
+                  north: -34.09,
+                  south: -47.37,
+                  west: 164.58,
+                }
+              }
+            >
+              <input
+                type="text"
+                // className={styles.MapInput}
+                disabled={online}
+                value={location.address ?? ""}
+                onChange={onLocationChange}
+              />
+            </Autocomplete>
+          </LoadScript>
+        </div>
+
         {error && <p className="error">{error}</p>}
         <button className="btn" onClick={newSession}>
           Request Session{" "}

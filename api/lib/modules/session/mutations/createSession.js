@@ -12,7 +12,7 @@ const { FRONTEND_DOMAIN } = process.env;
 
 export default async function createSession(
   _,
-  { name, tutors, tutees, startTime, length },
+  { name, tutors, tutees, startTime, length, online, location },
   { user }
 ) {
   const users = [...tutors, ...tutees];
@@ -26,6 +26,8 @@ export default async function createSession(
     startTime,
     endTime: addMinutes(startTime, length),
     length,
+    location,
+    "settings.online": online,
     userResponses: [{ user: user._id, response: "CONFIRM" }],
   });
 
