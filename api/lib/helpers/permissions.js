@@ -3,7 +3,9 @@ import { AuthenticationError, ApolloError } from "apollo-server";
 // Asserts that user is logged in
 export function assertAuthenticated(user) {
   if (user) return true;
-  throw new AuthenticationError("You need to be logged in");
+  throw new AuthenticationError(
+    "You are not logged in, or your login has expired. Try reloading."
+  );
 }
 
 // Asserts that user him/herself or an admin
