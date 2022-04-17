@@ -1,12 +1,15 @@
 import React from "react";
 import classNames from "classnames";
-import { Link } from "react-router-dom";
 
 import StatusSymbol from "../StatusSymbol";
 
 import styles from "../../styles.module.scss";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleNotch,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Confirmation = ({
   sectionStatus,
@@ -14,6 +17,7 @@ const Confirmation = ({
   errors,
   info,
   onChange,
+  onBack,
   onSubmit,
   submissionPending,
 }) => {
@@ -29,6 +33,9 @@ const Confirmation = ({
         })}
       >
         <div className={styles.content}>
+          <button className="btn" onClick={onBack} data-test="basic-info-back">
+            Back <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
           <div className={styles.field}>
             {errors.agreement && (
               <p className={styles.invalid}>{errors.agreement}</p>
@@ -42,11 +49,15 @@ const Confirmation = ({
                 onChange={onChange}
                 noValidate
               />
-              <label htmlFor="agreement">
+              {/* <label htmlFor="agreement">
                 I agree to the the Terms of Services and the{" "}
                 <Link to="/privacy-policy" target="_BLANK">
                   Privacy Policy
                 </Link>
+              </label> */}
+              <label htmlFor="agreement">
+                I agree to use the Minerva platform in a fair and appropriate
+                manner.
               </label>
             </div>
           </div>

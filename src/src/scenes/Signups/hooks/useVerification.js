@@ -38,7 +38,7 @@ export default function useVerification(
         break;
       }
       case "Verification": {
-        if (!info.biography && defaultApply)
+        if (!info.biography && defaultApply === "tutor")
           newErrors.biography = "Please write about yourself";
         break;
       }

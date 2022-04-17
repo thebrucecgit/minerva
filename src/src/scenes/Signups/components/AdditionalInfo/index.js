@@ -6,7 +6,11 @@ import useFileManager from "hooks/useFileManager";
 import StatusSymbol from "../StatusSymbol";
 import selections from "config/whitelist.json";
 import set from "utilities/set";
-
+import {
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from "../../styles.module.scss";
 
 const baseTagifySettings = {
@@ -26,6 +30,7 @@ const AdditionalInfo = ({
   onChange,
   setInfo,
   defaultApply,
+  onBack,
   onNext,
 }) => {
   const { processing, fileManagerProps } = useFileManager({
@@ -50,6 +55,9 @@ const AdditionalInfo = ({
         })}
       >
         <div className={styles.content}>
+          <button className="btn" onClick={onBack} data-test="basic-info-back">
+            Back <FontAwesomeIcon icon={faChevronLeft} />
+          </button>
           <p>Don't worry, you can change all of this later.</p>
           <div className={styles.field}>
             <label htmlFor="yearGroup">Select your year group:</label>
@@ -199,7 +207,7 @@ const AdditionalInfo = ({
             onClick={onNext}
             data-test="additional-info-next"
           >
-            Next
+            Next <FontAwesomeIcon icon={faChevronRight} />
           </button>
         </div>
       </div>

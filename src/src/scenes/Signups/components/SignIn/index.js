@@ -17,7 +17,7 @@ const SignIn = ({
   return (
     <section>
       <div className={styles.header}>
-        <h3>Sign In</h3>
+        <h3>Sign Up</h3>
         <StatusSymbol state={sectionStatus} />
       </div>
       <div
@@ -32,10 +32,11 @@ const SignIn = ({
             onSuccess={onGoogleSignIn}
             onFailure={onGoogleFailed}
             cookiePolicy="single_host_origin"
+            buttonText="Sign up with Google"
           />{" "}
           or{" "}
           <button className="btn" onClick={onNext}>
-            Sign in with email
+            Sign up with email
           </button>
         </div>
       </div>

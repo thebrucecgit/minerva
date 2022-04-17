@@ -18,6 +18,7 @@ import "./tagify.scss";
 import "@yaireo/tagify/dist/tagify.css";
 
 import { ReactComponent as TuteeImg } from "./media/undraw_mathematics.svg";
+import { ReactComponent as TutorImg } from "./media/undraw_teaching.svg";
 
 const {
   NODE_ENV,
@@ -41,16 +42,7 @@ function Signups({ authService }) {
   const defaultApply =
     history.location.pathname === "/signup/tutors" ? "tutor" : "tutee";
 
-  const [info, setInfo] = useState(() => {
-    // If there is saved info, use saved
-    try {
-      const saved = localStorage.getItem("signup");
-      return saved ? JSON.parse(saved) : {};
-    } catch (e) {
-      console.error(e);
-      return {};
-    }
-  });
+  const [info, setInfo] = useState({});
 
   const [sectionStatus, setSectionStatus] = useState([
     null,
@@ -85,6 +77,13 @@ function Signups({ authService }) {
 
   const [errors, setErrors] = useState({});
   const validate = useVerification(info, strategy, setErrors, defaultApply);
+
+  const onBack = (section) => {
+    const sectionsArr = Object.keys(sections);
+    const sectionInd = sectionsArr.indexOf(section);
+    const newSection = sectionsArr[sectionInd - 1];
+    setSectionClosed({ ...sections, [newSection]: false });
+  };
 
   // Moves onto next strategy
   const onNext = useCallback(
@@ -248,7 +247,9 @@ function Signups({ authService }) {
             info={info}
             errors={errors}
             uploadImage={uploadImage}
+            defaultApply={defaultApply}
             onChange={onChange}
+            onBack={() => onBack("Basic Info")}
             onNext={() => onNext("Basic Info")}
           />
           <AdditionalInfo
@@ -260,6 +261,7 @@ function Signups({ authService }) {
             onTagsChange={onTagsChange}
             defaultApply={defaultApply}
             setInfo={setInfo}
+            onBack={() => onBack("Additional Info")}
             onNext={() => onNext("Additional Info")}
           />
           <Verification
@@ -268,6 +270,7 @@ function Signups({ authService }) {
             info={info}
             errors={errors}
             onChange={onChange}
+            onBack={() => onBack("Verification")}
             onNext={() => onNext("Verification")}
             defaultApply={defaultApply}
           />
@@ -276,6 +279,7 @@ function Signups({ authService }) {
             sectionClosed={sectionClosed["Confirmation"]}
             info={info}
             errors={errors}
+            onBack={() => onBack("Confirmation")}
             onChange={onChange}
             onSubmit={onSubmit}
             submissionPending={submissionPending}
@@ -286,9 +290,29 @@ function Signups({ authService }) {
         </p>
       </div>
       <div className={styles.panel}>
-        <h2>Today is another chance to get better</h2>
-        <p>Sign up now.</p>
-        <TuteeImg />
+        {defaultApply === "tutor" ? (
+          <>
+            <h2>Only by giving, are we able to receive.</h2>
+            <p>Sign up as a tutor now. </p>
+            <p>
+              <Link to="/signup">
+                Click here to sign up as a student instead.
+              </Link>
+            </p>
+            <TutorImg />
+          </>
+        ) : (
+          <>
+            <h2>Today is another chance to get better</h2>
+            <p>Sign up as a student now.</p>
+            <p>
+              <Link to="/signup/tutors">
+                Click here to sign up as a tutor instead.
+              </Link>
+            </p>
+            <TuteeImg />
+          </>
+        )}
       </div>
       <ReCAPTCHA
         ref={recaptchaRef}
