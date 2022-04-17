@@ -5,8 +5,9 @@ import send from "../../../config/email";
 import datetime from "../../../config/datetime";
 import { nanoid } from "nanoid";
 
-import { addMinutes } from "date-fns";
+import { addMinutes, differenceInHours, subDays } from "date-fns";
 import { UserInputError } from "apollo-server";
+import agenda from "../../../agenda";
 
 const { FRONTEND_DOMAIN } = process.env;
 
@@ -40,6 +41,11 @@ export default async function createSession(
     time: new Date(),
     author: user._id,
   };
+
+  if (differenceInHours(new Date(), session.startTime) > 30)
+    await agenda.schedule("session reminder", subDays(session.startTime, 1), {
+      sessionId: session._id,
+    });
 
   event._id = nanoid();
   // Notify all users except initiator

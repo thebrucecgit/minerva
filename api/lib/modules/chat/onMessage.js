@@ -46,14 +46,14 @@ export default async function onMessage(event, ws) {
     const msg = {
       templateId: "d-7414703086e342908972b9e187499820",
       subject: `New message from ${author.name}`,
-      dynamic_template_data: {
+      dynamicTemplateData: {
         author: author.name,
         message: event.text,
         chatLink: `${FRONTEND_DOMAIN}/dashboard/chats/${event.channel}`,
       },
       personalizations: otherUsers.map((user) => ({
         to: user.email,
-        dynamic_template_data: {
+        dynamicTemplateData: {
           name: user.name,
         },
       })),

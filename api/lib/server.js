@@ -7,15 +7,17 @@ import { connect } from "./config/database";
 
 import * as websocket from "./websocket";
 import apolloServer from "./apollo";
+import { agendaSetup } from "./agenda";
 
-import { setSettings } from "./config/search";
+import { setSettings as configSearch } from "./config/search";
 
 const { FRONTEND_DOMAIN, DOMAIN, PORT, NODE_ENV } = process.env;
 
 async function startServer() {
   // Connect to DB
-  await connect();
-  await setSettings();
+  const db = await connect();
+  await agendaSetup(db);
+  await configSearch();
 
   const app = express();
   app.use(cors({ origin: FRONTEND_DOMAIN }));

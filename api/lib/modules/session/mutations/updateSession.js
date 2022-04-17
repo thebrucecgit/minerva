@@ -6,6 +6,7 @@ import send from "../../../config/email";
 import datetime from "../../../config/datetime";
 import { ApolloError } from "apollo-server";
 import { addMinutes } from "date-fns";
+import agenda from "../../../agenda";
 
 export default async function updateSession(_, args, { user }) {
   const session = await Session.findById(args.id);
@@ -49,6 +50,16 @@ export default async function updateSession(_, args, { user }) {
       "name email"
     );
 
+    await agenda.cancel({
+      name: "session reminder",
+      "data.sessionId": session._id,
+    });
+
+    if (differenceInHours(new Date(), edits.startTime) > 30)
+      await agenda.schedule("session reminder", subDays(edits.startTime, 1), {
+        sessionId: session._id,
+      });
+
     if (otherUsers.length > 0)
       await send({
         templateId: "d-2a2cbf2125464780b5e3e192326f003d",
@@ -56,7 +67,7 @@ export default async function updateSession(_, args, { user }) {
         dynamicTemplateData: {
           user: user.name,
           sessionName: session.name,
-          sessionTime: datetime.format(session.startTime),
+          sessionTime: datetime.format(edits.startTime),
           sessionURL: `${FRONTEND_DOMAIN}/dashboard/sessions/${session._id}`,
         },
         personalizations: otherUsers.map((user) => ({

@@ -5,6 +5,7 @@
     "@aws-sdk/s3-request-presigner": "^3.48.0",
     "@babel/runtime": "^7.14.6",
     "@sendgrid/mail": "^7.4.5",
+    "agenda": "^4.2.1",
     "algoliasearch": "^4.10.2",
     "apollo-server": "^3.6.7",
     "axios": "^0.26.1",
