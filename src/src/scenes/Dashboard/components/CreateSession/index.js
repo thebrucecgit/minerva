@@ -153,7 +153,9 @@ export default function CreateSession({ isOpen, close, users }) {
           />
           <label htmlFor="online">
             Online session
-            <div className="small">This session will occur online</div>
+            <div className="small">
+              This session will occur online. A Skype link will be provided.
+            </div>
           </label>
         </div>
 
