@@ -73,11 +73,16 @@ const AdditionalInfo = ({
               noValidate
             >
               <option value="">--SELECT--</option>
-              {Object.keys(selections.year).map((year) => (
-                <option value={year} key={year}>
-                  {year}
-                </option>
-              ))}
+              {Object.entries(selections.year)
+                .filter(
+                  ([year, isTertiary]) =>
+                    defaultApply === "tutor" || !isTertiary
+                )
+                .map(([year]) => (
+                  <option value={year} key={year}>
+                    {year}
+                  </option>
+                ))}
             </select>
           </div>
 
@@ -91,12 +96,17 @@ const AdditionalInfo = ({
                 ...baseTagifySettings,
                 enforceWhitelist: true,
                 placeholder: "eg. Burnside High School",
-                whitelist: schools.map((school) => school.name),
                 mode: "select",
               }}
               onChange={(e) => onTagsChange(e, "school", true)}
               defaultValue={info.school ?? ""}
               name="school"
+              whitelist={schools
+                .filter(
+                  (school) =>
+                    defaultApply === "tutor" || school.type === "Secondary"
+                )
+                .map((school) => school.name)}
             />
           </div>
 
