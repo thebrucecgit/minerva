@@ -5,6 +5,7 @@ const PasswordReset = ({ resetPassword, updatePassword }) => {
   const [fields, setFields] = useState({});
   const [reset, setReset] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState("");
 
   const onFieldChange = (e) => {
     e.persist();
@@ -14,12 +15,19 @@ const PasswordReset = ({ resetPassword, updatePassword }) => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (reset) {
-      // validation
-      await updatePassword({
-        ...fields,
-        passwordResetCode: parseInt(fields.passwordResetCode),
-      });
-      setSuccess(true);
+      try {
+        if (fields?.newPassword?.length < 8)
+          throw new Error(
+            "Password needs to have a minimum of eight characters"
+          );
+        await updatePassword({
+          ...fields,
+          passwordResetCode: parseInt(fields.passwordResetCode),
+        });
+        setSuccess(true);
+      } catch (e) {
+        setError(e.message);
+      }
     } else {
       await resetPassword(fields.email);
       setReset(true);
@@ -45,38 +53,42 @@ const PasswordReset = ({ resetPassword, updatePassword }) => {
                 name="email"
                 type="email"
                 autoComplete="email"
-                value={fields.email}
+                value={fields.email ?? ""}
                 disabled={reset}
                 onChange={onFieldChange}
               />
             </div>
-            <div style={{ display: reset ? "inline" : "none" }}>
-              <div className="field">
-                <label htmlFor="resetCode">
-                  Enter a numeric code sent to <b>{fields.email}</b>:
-                </label>
-                <input
-                  type="number"
-                  id="resetCode"
-                  name="passwordResetCode"
-                  value={fields.passwordResetCode}
-                  onChange={onFieldChange}
-                />
-                <p className="small">
-                  Email should arrive within 10 minutes (check spam folder)
-                </p>
-              </div>
-              <div className="field">
-                <label htmlFor="password">New password:</label>
-                <input
-                  name="newPassword"
-                  type="password"
-                  autoComplete="new-password"
-                  value={fields.newPassword}
-                  onChange={onFieldChange}
-                />
-              </div>
-            </div>
+            {reset && (
+              <>
+                <div className="field">
+                  <label htmlFor="resetCode">
+                    Enter a numeric code sent to <b>{fields.email}</b>:
+                  </label>
+                  <input
+                    type="number"
+                    id="resetCode"
+                    name="passwordResetCode"
+                    value={fields.passwordResetCode ?? ""}
+                    onChange={onFieldChange}
+                  />
+                  <p className="small">
+                    Email should arrive within 10 minutes (check spam folder) if
+                    the account exists
+                  </p>
+                </div>
+                <div className="field">
+                  <label htmlFor="password">New password:</label>
+                  <input
+                    name="newPassword"
+                    type="password"
+                    autoComplete="new-password"
+                    value={fields.newPassword ?? ""}
+                    onChange={onFieldChange}
+                  />
+                </div>
+              </>
+            )}
+            {error && <p className="error">{error}</p>}
             <button className="btn">
               {reset ? "Reset Password" : "Send Reset Email"}
             </button>
