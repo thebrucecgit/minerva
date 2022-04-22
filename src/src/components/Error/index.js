@@ -18,7 +18,7 @@ const Error = ({ error }) => {
         <p>
           It's okay.{" "}
           <a
-            href={`mailto:admin@academe.co.nz?subject=Website Error at ${
+            href={`mailto:tutoring@minervaeducation.co.nz?subject=Website Error at ${
               history.location.pathname
             }&body=I came across the error with the message "${
               error.message
@@ -26,7 +26,7 @@ const Error = ({ error }) => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Please notify the Academe administrators
+            Please notify the Minerva administrators
           </a>
           .
         </p>

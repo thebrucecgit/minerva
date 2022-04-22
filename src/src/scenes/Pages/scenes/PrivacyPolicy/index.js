@@ -4,7 +4,8 @@ function PrivacyPolicy() {
   return (
     <div className="Document container">
       <h1>Privacy Policy</h1>
-      <p>
+      <p>To be confirmed.</p>
+      {/* <p>
         Academe is committed to protecting the privacy and accuracy of your
         confidential information to the extent possible, subject to the
         provisions of New Zealand law. Other than as required by laws that
@@ -110,7 +111,7 @@ function PrivacyPolicy() {
       <p>
         If you no longer wish to be contacted for marketing purposes, please
         email <a href="mailto:admin@academe.co.nz">admin@academe.co.nz</a>.
-      </p>
+      </p> */}
     </div>
   );
 }

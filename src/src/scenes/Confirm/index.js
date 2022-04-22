@@ -3,7 +3,7 @@ function Confirm({ authService }) {
 
   return (
     <div>
-      <h1>Welcome to Academe</h1>
+      <h1>Welcome to Minerva!</h1>
       <p>
         You are only a few more clicks away from completing registration. Please
         confirm your email address (<em>{currentUser.user?.email}</em>) by
