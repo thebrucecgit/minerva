@@ -114,7 +114,7 @@ function Signups({ authService }) {
         st,
         name,
         select
-          ? e.detail.tagify.value?.[0].value
+          ? e.detail.tagify.value?.[0]?.value
           : e.detail.tagify.value.map((t) => t.value)
       )
     );

@@ -1,5 +1,6 @@
 import regex from "../regex";
 import selections from "config/whitelist.json";
+import schools from "config/schools";
 
 export default function useVerification(
   info,
@@ -32,7 +33,12 @@ export default function useVerification(
         if (
           info.yearGroup &&
           info.school &&
-          selections.year[info.yearGroup] !== selections.school[info.school]
+          ((selections.year[info.yearGroup] &&
+            schools.find((school) => school.name === info.school).type !==
+              "Tertiary") ||
+            (!selections.year[info.yearGroup] &&
+              schools.find((school) => school.name === info.school).type !==
+                "Secondary"))
         )
           newErrors.yearGroup = "Year group and school appear mismatched.";
         break;

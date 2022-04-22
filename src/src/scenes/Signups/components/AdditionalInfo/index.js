@@ -5,6 +5,7 @@ import useFileManager from "hooks/useFileManager";
 
 import StatusSymbol from "../StatusSymbol";
 import selections from "config/whitelist.json";
+import schools from "config/schools";
 import set from "utilities/set";
 import {
   faChevronLeft,
@@ -90,7 +91,7 @@ const AdditionalInfo = ({
                 ...baseTagifySettings,
                 enforceWhitelist: true,
                 placeholder: "eg. Burnside High School",
-                whitelist: Object.keys(selections.school),
+                whitelist: schools.map((school) => school.name),
                 mode: "select",
               }}
               onChange={(e) => onTagsChange(e, "school", true)}

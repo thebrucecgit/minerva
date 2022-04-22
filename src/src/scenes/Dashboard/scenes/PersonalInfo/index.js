@@ -7,6 +7,7 @@ import Error from "components/Error";
 import Loader from "components/Loader";
 import selections from "config/whitelist.json";
 import TagsSelect from "@yaireo/tagify/dist/react.tagify";
+import LazyTagsSelect from "components/LazyTagsSelect";
 import Tags from "components/Tags";
 import { Image, Transformation } from "cloudinary-react";
 import classNames from "classnames";
@@ -24,7 +25,7 @@ const baseTagifySettings = {
   dropdown: {
     enabled: 0,
     classname: "tagifyDropdown",
-    maxItems: 100,
+    maxItems: 1000,
   },
 };
 
@@ -147,7 +148,7 @@ function PersonalInfo({ currentUser }) {
         st,
         name,
         select
-          ? e.detail.tagify.value?.[0].value
+          ? e.detail.tagify.value?.[0]?.value
           : e.detail.tagify.value.map((t) => t.value)
       )
     );
@@ -258,17 +259,20 @@ function PersonalInfo({ currentUser }) {
       <div>
         <label htmlFor="school">School: </label>
         {update ? (
-          <TagsSelect
+          <LazyTagsSelect
             settings={{
               ...baseTagifySettings,
               enforceWhitelist: true,
               placeholder: "eg. Burnside High School",
-              whitelist: Object.keys(selections.school),
               mode: "select",
             }}
             onChange={(e) => onTagsChange(e, "school", true)}
             value={updates.school ?? ""}
             name="school"
+            getWhitelist={async () => {
+              const { default: schools } = await import("config/schools.json");
+              return schools.map((school) => school.name);
+            }}
           />
         ) : (
           <p>{user.school}</p>
