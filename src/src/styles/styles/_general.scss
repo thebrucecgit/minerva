@@ -44,12 +44,12 @@ p {
 
 p a,
 .link {
+  color: rgb(0, 110, 255);
+  transition: color 300ms;
   &:visited {
     color: rgb(0, 110, 255);
-    transition: color 300ms;
   }
   &:hover {
-    // border-bottom: 1px solid rgb(0, 73, 168);
     color: rgb(0, 73, 168);
     text-decoration: underline;
   }

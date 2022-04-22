@@ -39,13 +39,6 @@ function Auth({ match, location, authService }) {
             />
           </Route>
 
-          {/* <Route path={`${path}/confirm/:emailConfirmId`}>
-            <EmailConfirmation
-              currentUser={currentUser}
-              confirmUserEmail={confirmUserEmail}
-            />
-          </Route> */}
-
           <Route exact path={`${path}/passwordreset`}>
             <PasswordReset
               resetPassword={resetPassword}

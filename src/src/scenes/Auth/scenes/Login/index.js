@@ -48,9 +48,7 @@ const Login = ({ login, currentUser }) => {
       {error && <p className="error">{error}</p>}
       <div>
         <h1>Sign In</h1>
-        <p>
-          <Link to="/auth/passwordreset">Forgot Password</Link>
-        </p>
+
         <form onSubmit={onSubmit}>
           <div className="field">
             <label htmlFor="email">Email: </label>
@@ -73,6 +71,9 @@ const Login = ({ login, currentUser }) => {
               onChange={onFieldChange}
               required
             />
+            <Link to="/auth/passwordreset" className="link">
+              Forgot Password
+            </Link>
           </div>
           <button className="btn">
             Sign In {loading && <FontAwesomeIcon icon={faCircleNotch} spin />}
