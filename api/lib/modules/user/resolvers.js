@@ -2,7 +2,6 @@ import User from "./model";
 import Class from "../class/model";
 
 import login from "./queries/login";
-import getUploadUrl from "./queries/getUploadUrl";
 
 import register from "./mutations/register";
 import resetPassword from "./mutations/resetPassword";
@@ -18,12 +17,15 @@ import {
   assertUserOrTutor,
   assertTutor,
   assertAdmin,
+  assertAuthenticated,
 } from "../../helpers/permissions";
+import { ApolloError } from "apollo-server";
 
 export default {
   Query: {
     login,
     async getUser(_, { id }, { user }) {
+      assertAuthenticated(user);
       if (!id) id = user._id;
       // Not the user himself or a tutor
       const target = await User.findById(id);
@@ -64,7 +66,16 @@ export default {
 
       return await User.find({ "tutor.status": "PENDING_REVIEW" });
     },
-    getUploadUrl,
+  },
+  TutorInfo: {
+    async academicRecords(reqUser, {}, { user }) {
+      if (reqUser._id !== user._id && !user.admin.status)
+        throw new ApolloError(
+          "You do not have permission to access this field"
+        );
+
+      return reqUser.academicRecords;
+    },
   },
   Mutation: {
     register,

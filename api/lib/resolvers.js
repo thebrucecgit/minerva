@@ -3,6 +3,7 @@ import userResolvers from "./modules/user/resolvers";
 import sessionResolvers from "./modules/session/resolvers";
 import classResolvers from "./modules/class/resolvers";
 import chatResolvers from "./modules/chat/resolvers";
+import fileResolvers from "./modules/file/resolvers";
 
 const rootResolvers = {
   Date: new GraphQLScalarType({
@@ -22,4 +23,5 @@ export default [
   sessionResolvers,
   classResolvers,
   chatResolvers,
+  fileResolvers,
 ];

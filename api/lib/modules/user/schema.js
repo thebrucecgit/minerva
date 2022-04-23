@@ -37,21 +37,6 @@ export default gql`
     status: Boolean
   }
 
-  type FileMeta {
-    id: ID!
-    name: String
-    size: Int
-    type: String
-  }
-
-  "File metadata"
-  input FileMetaIn {
-    id: ID!
-    name: String
-    size: Int
-    type: String
-  }
-
   "A User (can be a tutor, a tutee or a parent)"
   type User {
     _id: ID!
@@ -83,7 +68,6 @@ export default gql`
     getPendingTutors: [User!]!
     login(email: String, password: String, tokenId: String): UserReq!
     resetPassword(email: String!): Boolean
-    getUploadUrl(fileName: String): String!
   }
 
   extend type Mutation {
