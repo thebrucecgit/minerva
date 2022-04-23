@@ -18,7 +18,7 @@ const baseTagifySettings = {
   dropdown: {
     enabled: 0,
     classname: "tagifyDropdown",
-    maxItems: 100,
+    maxItems: 1000,
   },
 };
 

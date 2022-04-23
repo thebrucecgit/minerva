@@ -292,7 +292,7 @@ function Signups({ authService }) {
       <div className={styles.panel}>
         {defaultApply === "tutor" ? (
           <>
-            <h2>Only by giving, are we able to receive.</h2>
+            <h2>Share your passion and expertise.</h2>
             <p>Sign up as a tutor now. </p>
             <p>
               <Link to="/signup">
