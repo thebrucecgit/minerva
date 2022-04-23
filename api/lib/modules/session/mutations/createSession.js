@@ -8,6 +8,7 @@ import { nanoid } from "nanoid";
 import { addMinutes, differenceInHours, subDays } from "date-fns";
 import { UserInputError } from "apollo-server";
 import agenda from "../../../agenda";
+import fetchCallLink from "../../../helpers/fetchCallLink";
 
 const { FRONTEND_DOMAIN } = process.env;
 
@@ -30,6 +31,7 @@ export default async function createSession(
     location,
     "settings.online": online,
     userResponses: [{ user: user._id, response: "CONFIRM" }],
+    videoLink: online ? await fetchCallLink(name) : null,
   });
 
   const event = {
@@ -42,8 +44,8 @@ export default async function createSession(
     author: user._id,
   };
 
-  if (differenceInHours(new Date(), session.startTime) > 30)
-    await agenda.schedule("session reminder", subDays(session.startTime, 1), {
+  if (differenceInHours(session.startTime, new Date()) >= 30)
+    await agenda.schedule(subDays(session.startTime, 1), "session reminder", {
       sessionId: session._id,
     });
 

@@ -1,12 +1,14 @@
-import axios from "axios";
 import User from "../../user/model";
 import Session from "../../session/model";
 import { assertGroupAuthorization } from "../../../helpers/permissions";
 import send from "../../../config/email";
 import datetime from "../../../config/datetime";
 import { ApolloError } from "apollo-server";
-import { addMinutes } from "date-fns";
+import { addMinutes, differenceInHours, subDays } from "date-fns";
 import agenda from "../../../agenda";
+import fetchCallLink from "../../../helpers/fetchCallLink";
+
+const { FRONTEND_DOMAIN } = process.env;
 
 export default async function updateSession(_, args, { user }) {
   const session = await Session.findById(args.id);
@@ -55,8 +57,8 @@ export default async function updateSession(_, args, { user }) {
       "data.sessionId": session._id,
     });
 
-    if (differenceInHours(new Date(), edits.startTime) > 30)
-      await agenda.schedule("session reminder", subDays(edits.startTime, 1), {
+    if (differenceInHours(edits.startTime, new Date()) >= 30)
+      await agenda.schedule(subDays(edits.startTime, 1), "session reminder", {
         sessionId: session._id,
       });
 
@@ -82,17 +84,8 @@ export default async function updateSession(_, args, { user }) {
       });
   }
 
-  if (edits.settings?.online && !session.videoLink) {
-    const { data } = await axios({
-      method: "post",
-      url: "https://api.join.skype.com/v1/meetnow/guest",
-      data: {
-        title: session.name,
-      },
-    });
-
-    edits.videoLink = data.joinLink;
-  }
+  if (edits.settings?.online && !session.videoLink)
+    edits.videoLink = await fetchCallLink(session.name);
 
   return await Session.findByIdAndUpdate(args.id, edits, {
     new: true,

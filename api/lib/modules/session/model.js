@@ -128,7 +128,7 @@ const sessionSchema = Schema({
 });
 
 sessionSchema.pre("remove", async function () {
-  await Class.updateOne({ _id: this.class }, { $pull: { sessions: this._id } });
+  await agenda.cancel({ "data.sessionId": this._id });
 });
 
 sessionSchema.virtual("users").get(function () {

@@ -11,6 +11,7 @@ export default function EmailJob(agenda) {
   // If the session isn’t confirmed, remind them to confirm.
   agenda.define("session reminder", async (job) => {
     const session = await Session.findById(job.attrs.data.sessionId);
+    if (!session || !["CONFIRM", "UNCONFIRM"].includes(session.status)) return;
 
     const users = await User.find(
       { _id: { $in: session.users } },
