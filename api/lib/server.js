@@ -20,7 +20,7 @@ async function startServer() {
   await configSearch();
 
   const app = express();
-  app.use(cors({ origin: FRONTEND_DOMAIN }));
+  app.use(cors({ origin: NODE_ENV === "production" ? FRONTEND_DOMAIN : "*" }));
 
   app.get("/", (req, res) => res.send("You have reached Minerva servers."));
 
