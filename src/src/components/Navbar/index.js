@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../../media/logo.png";
+import logo from "../../media/logo.webp";
 import styled from "styled-components";
 
 const StyledNavbar = styled.nav`
