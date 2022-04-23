@@ -299,18 +299,18 @@ function Signups({ authService }) {
                 Click here to sign up as a student instead.
               </Link>
             </p>
-            <TutorImg />
+            <TutorImg width="600px" />
           </>
         ) : (
           <>
-            <h2>Today is another chance to get better</h2>
+            <h2>Today is another chance to get better.</h2>
             <p>Sign up as a student now.</p>
             <p>
               <Link to="/signup/tutors">
                 Click here to sign up as a tutor instead.
               </Link>
             </p>
-            <TuteeImg />
+            <TuteeImg width="600px" />
           </>
         )}
       </div>
