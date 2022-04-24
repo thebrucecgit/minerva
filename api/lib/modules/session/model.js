@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import { nanoid } from "nanoid";
-import Class from "../class/model";
+import agenda from "../../agenda";
 import ID from "../../types/ID";
 
 const sessionSchema = Schema({

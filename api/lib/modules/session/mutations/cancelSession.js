@@ -4,6 +4,7 @@ import { assertGroupAuthorization } from "../../../helpers/permissions";
 import agenda from "../../../agenda";
 import send from "../../../config/email";
 import datetime from "../../../config/datetime";
+import { ApolloError } from "apollo-server";
 
 const { FRONTEND_DOMAIN } = process.env;
 

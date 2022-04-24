@@ -61,14 +61,14 @@ export default {
         "name"
       );
     },
-    async getPendingTutors(_, {}, { user }) {
+    async getPendingTutors(_, __, { user }) {
       assertAdmin(user);
 
       return await User.find({ "tutor.status": "PENDING_REVIEW" });
     },
   },
   TutorInfo: {
-    async academicRecords(reqUser, {}, { user }) {
+    async academicRecords(reqUser, _, { user }) {
       if (reqUser._id !== user._id && !user.admin.status)
         throw new ApolloError(
           "You do not have permission to access this field"

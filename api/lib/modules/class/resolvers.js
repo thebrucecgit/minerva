@@ -3,6 +3,7 @@ import Class from "./model";
 import Session from "../session/model";
 import User from "../user/model";
 import Chat from "../chat/model";
+import { ApolloError } from "apollo-server";
 
 import axios from "axios";
 
@@ -117,7 +118,7 @@ export default {
       const sessionUpdates = [];
 
       // Video call updates
-      if (args.preferences?.hasOwnProperty("online")) {
+      if (Object.prototype.hasOwnProperty.call(args.preferences, "online")) {
         sessionUpdates.push({
           updateMany: {
             filter: {
@@ -144,7 +145,9 @@ export default {
       }
 
       // Chat enabling updates
-      if (args.preferences?.hasOwnProperty("enableChat")) {
+      if (
+        Object.prototype.hasOwnProperty.call(args.preferences, "enableChat")
+      ) {
         if (args.preferences.enableChat) {
           if (!oldClassInfo.chat) {
             const { channel } = await Chat.create({
