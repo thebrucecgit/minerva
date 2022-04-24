@@ -12,4 +12,6 @@ export default async function reviewUser(_, { id, approval, message }) {
   );
 
   if (approval) await addDocToRecord(user);
+
+  return user;
 }

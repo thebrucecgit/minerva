@@ -7,15 +7,22 @@ query GetPendingTutors {
       url
     }
     tutor {
+      type
       status
       academicRecords {
         id
         name
         size
         type
+        link
       }
       academicsTutoring
+      curricula
+      price
+      online
+      location
     }
+    biography
     yearGroup
     school
   }

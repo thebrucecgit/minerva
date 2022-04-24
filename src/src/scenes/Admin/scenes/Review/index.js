@@ -1,13 +1,24 @@
 import { useQuery, useMutation } from "@apollo/client";
 import { loader } from "graphql.macro";
-import styles from "./styles.module.scss";
-import classNames from "classnames";
 import Tags from "components/Tags";
 import { toast } from "react-toastify";
 import FileManager from "components/FileManager";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const GET_TUTORS = loader("./graphql/GET_TUTORS.gql");
 const REVIEW_TUTOR = loader("./graphql/REVIEW_TUTOR.gql");
+
+const StyledTutor = styled.div`
+  padding: 1rem;
+  margin: 1rem 0;
+  background: #eee;
+`;
+
+const Options = styled.div`
+  display: flex;
+  column-gap: 1rem;
+`;
 
 function Review() {
   const { data, loading, error } = useQuery(GET_TUTORS);
@@ -37,40 +48,55 @@ function Review() {
   if (error) return <p>{error.message}</p>;
 
   return (
-    <div className={classNames("container", styles.Review)}>
+    <div className="container">
       <h2>Review Tutors</h2>
+      <Link to="/admin" className="link">
+        Back to admin dashboard
+      </Link>
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <div className={styles.tutor}>
-          {data.getPendingTutors.map((tutor) => (
-            <div key={tutor._id}>
-              <h3>
-                {tutor.name} / Year {tutor.yearGroup} / {tutor.school}
-              </h3>
-              <p>{tutor.biography}</p>
-              <p>Academic Records:</p>
-              <FileManager files={tutor.tutor.academicRecords} />
+        <div>
+          {data.getPendingTutors
+            .filter((tutor) => tutor.tutor.status === "PENDING_REVIEW")
+            .map((tutor) => (
+              <StyledTutor key={tutor._id}>
+                <h3>
+                  {tutor.name} / {tutor.yearGroup} / {tutor.school}
+                </h3>
+                <h4>Biography</h4>
+                <p>{tutor.biography}</p>
 
-              <p>Tutoring:</p>
-              <Tags tags={tutor.tutor.academicsTutoring} />
+                <h4>Location</h4>
+                <p>{tutor.tutor.location ?? "None"}</p>
+                <p>
+                  {tutor.tutor.online
+                    ? "Does tutor online"
+                    : "Does NOT tutor online"}
+                </p>
 
-              <div className={styles.options}>
-                <button
-                  className="btn"
-                  onClick={() => onClick(tutor._id, true)}
-                >
-                  Accept
-                </button>
-                <button
-                  className="btn danger"
-                  onClick={() => onClick(tutor._id, false)}
-                >
-                  Reject
-                </button>
-              </div>
-            </div>
-          ))}
+                <h4>Tutoring</h4>
+                <Tags tags={tutor.tutor.academicsTutoring} />
+                <h4>Curricula</h4>
+                <Tags tags={tutor.tutor.curricula} />
+                <h4>Academic Records:</h4>
+                <FileManager files={tutor.tutor.academicRecords} />
+                <Options>
+                  <button
+                    className="btn"
+                    onClick={() => onClick(tutor._id, true)}
+                  >
+                    Accept
+                  </button>
+                  <button
+                    className="btn danger"
+                    onClick={() => onClick(tutor._id, false)}
+                  >
+                    Reject
+                  </button>
+                </Options>
+              </StyledTutor>
+            ))}
         </div>
       )}
     </div>

@@ -115,7 +115,9 @@ export default function FileManager({
             />
           </Icon>
           <div>
-            <p>{file.name}</p>
+            <a href={file.link} target="_blank" rel="noreferrer">
+              {file.name}
+            </a>
             <FileSize>{prettyBytes(file.size)}</FileSize>
           </div>
           <RightOfFile>

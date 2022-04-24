@@ -1,3 +1,8 @@
 mutation ReviewTutor($id: ID!, $approval: Boolean!, $message: String) {
-  reviewUser(id: $id, approval: $approval, message: $message)
+  reviewUser(id: $id, approval: $approval, message: $message) {
+    _id
+    tutor {
+      status
+    }
+  }
 }

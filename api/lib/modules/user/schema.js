@@ -100,7 +100,7 @@ export default gql`
       passwordResetCode: Int!
       newPassword: String!
     ): UserReq!
-    reviewUser(id: ID!, approval: Boolean!, message: String): Boolean
+    reviewUser(id: ID!, approval: Boolean!, message: String): User!
     indexTutors: Boolean
   }
 `;
