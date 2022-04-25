@@ -15,6 +15,7 @@ fragment userInfo on User {
       name
       size
       type
+      link
     }
     academicsTutoring
     curricula

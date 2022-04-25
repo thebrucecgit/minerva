@@ -10,16 +10,20 @@ import TagsSelect from "@yaireo/tagify/dist/react.tagify";
 import LazyTagsSelect from "components/LazyTagsSelect";
 import Tags from "components/Tags";
 import { Image, Transformation } from "cloudinary-react";
-import classNames from "classnames";
 import set from "utilities/set";
 
-import styles from "./styles.module.scss";
 import "@yaireo/tagify/dist/tagify.css";
 import useCloudinary from "hooks/useCloudinary";
 import useFileManager from "hooks/useFileManager";
+import styled from "styled-components";
 
 const GET_USER = loader("./graphql/GetUser.gql");
 const UPDATE_USER = loader("./graphql/UpdateUser.gql");
+
+const AlignedHeader = styled.h1`
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+`;
 
 const baseTagifySettings = {
   dropdown: {
@@ -67,6 +71,11 @@ function PersonalInfo({ currentUser }) {
               ? {
                   ...updates.tutor,
                   price: parseInt(updates.tutor.price),
+                  academicRecords: updates.tutor.academicRecords.map((r) => {
+                    const n = { ...r };
+                    delete n.link;
+                    return n;
+                  }),
                 }
               : {},
             id: currentUser.user._id,
@@ -161,8 +170,9 @@ function PersonalInfo({ currentUser }) {
   if (loading) return <Loader />;
 
   return (
-    <div className={classNames("container", styles.PersonalInfo)}>
-      <h1>Personal Information</h1>
+    <div className="container">
+      <AlignedHeader>Personal Information</AlignedHeader>
+
       {update ? (
         <>
           <button
@@ -181,108 +191,95 @@ function PersonalInfo({ currentUser }) {
           Edit
         </button>
       )}
-      <div>
-        <label htmlFor="name">Name: </label>
-        {update ? (
-          <input
-            type="text"
-            value={updates.name}
-            name="name"
-            onChange={onChange}
-          />
-        ) : (
-          <p>{user.name}</p>
-        )}
-      </div>
 
-      <div>
-        <label htmlFor="email">Email: </label>
-        {update && "Your email can't be changed. "}
-        <p>{user.email}</p>
-      </div>
+      {update ? (
+        <>
+          <div>
+            <label htmlFor="name">
+              <b>Name:</b>
+            </label>
+            <input
+              type="text"
+              value={updates.name}
+              name="name"
+              onChange={onChange}
+            />
+          </div>
 
-      <div>
-        <label htmlFor="pfp">Picture:</label>
-        {update
-          ? updates.pfp &&
-            (updates.pfp.cloudinaryPublicId ? (
-              <Image
-                publicId={updates.pfp.cloudinaryPublicId}
-                alt="user uploaded profile pic"
-              >
-                <Transformation width="200" crop="scale" />
-              </Image>
-            ) : (
-              <img src={updates.pfp.url} alt="google account profile pic" />
-            ))
-          : user.pfp &&
-            (user.pfp.cloudinaryPublicId ? (
-              <Image
-                publicId={user.pfp.cloudinaryPublicId}
-                alt="user uploaded profile pic"
-              >
-                <Transformation width="200" crop="scale" />
-              </Image>
-            ) : (
-              <img src={user.pfp.url} alt="google account profile pic" />
-            ))}
+          <div>
+            <label htmlFor="email">
+              <b>Email:</b>
+            </label>
+            <em>Your email can't be changed</em>
+            <p>{user.email}</p>
+          </div>
 
-        {update && (
-          <button className="btn" onClick={uploadImage}>
-            {user.pfp ? "Change" : "Upload"}
-          </button>
-        )}
-      </div>
+          <div>
+            <label htmlFor="pfp">
+              <b>Picture:</b>
+            </label>
+            {updates.pfp &&
+              (updates.pfp.cloudinaryPublicId ? (
+                <Image
+                  publicId={updates.pfp.cloudinaryPublicId}
+                  alt="user uploaded profile pic"
+                >
+                  <Transformation width="200" crop="scale" />
+                </Image>
+              ) : (
+                <img src={updates.pfp.url} alt="google account profile pic" />
+              ))}
+            <button className="btn" onClick={uploadImage}>
+              {user.pfp ? "Change" : "Upload"}
+            </button>
+          </div>
 
-      <div>
-        <label htmlFor="yearGroup">Year: </label>
-        {update ? (
-          <select
-            name="yearGroup"
-            id="yearGroup"
-            value={updates.yearGroup ?? ""}
-            onChange={onChange}
-            noValidate
-          >
-            <option value="">--SELECT--</option>
-            {Object.keys(selections.year).map((year) => (
-              <option value={year} key={year}>
-                {year}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <p>{user.yearGroup}</p>
-        )}
-      </div>
+          <div>
+            <label htmlFor="yearGroup">
+              <b>Year:</b>
+            </label>
+            <select
+              name="yearGroup"
+              id="yearGroup"
+              value={updates.yearGroup ?? ""}
+              onChange={onChange}
+              noValidate
+            >
+              <option value="">--SELECT--</option>
+              {Object.keys(selections.year).map((year) => (
+                <option value={year} key={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
 
-      <div>
-        <label htmlFor="school">School: </label>
-        {update ? (
-          <LazyTagsSelect
-            settings={{
-              ...baseTagifySettings,
-              enforceWhitelist: true,
-              placeholder: "eg. Burnside High School",
-              mode: "select",
-            }}
-            onChange={(e) => onTagsChange(e, "school", true)}
-            value={updates.school ?? ""}
-            name="school"
-            getWhitelist={async () => {
-              const { default: schools } = await import("config/schools.json");
-              return schools.map((school) => school.name);
-            }}
-          />
-        ) : (
-          <p>{user.school}</p>
-        )}
-      </div>
-
-      <div>
-        <label htmlFor="biography">Biography: </label>
-        {update ? (
-          <>
+          <div>
+            <label htmlFor="school">
+              <b>School:</b>
+            </label>
+            <LazyTagsSelect
+              settings={{
+                ...baseTagifySettings,
+                enforceWhitelist: true,
+                placeholder: "eg. Burnside High School",
+                mode: "select",
+              }}
+              onChange={(e) => onTagsChange(e, "school", true)}
+              value={updates.school ?? ""}
+              name="school"
+              getWhitelist={async () => {
+                const { default: schools } = await import(
+                  "config/schools.json"
+                );
+                return schools.map((school) => school.name);
+              }}
+            />
+          </div>
+          <div>
+            <label htmlFor="biography">
+              <b>Biography:</b>
+            </label>
             <p>Feel free to be creative, but we recommend the following: </p>
             <ul>
               <li>Your qualifications</li>
@@ -306,11 +303,29 @@ function PersonalInfo({ currentUser }) {
               name="biography"
               onChange={onChange}
             ></textarea>
-          </>
-        ) : (
+          </div>
+        </>
+      ) : (
+        <>
+          <h2>{user.name}</h2>
+          <p>{user.email}</p>
+          {user.pfp &&
+            (user.pfp.cloudinaryPublicId ? (
+              <Image
+                publicId={user.pfp.cloudinaryPublicId}
+                alt="user uploaded profile pic"
+              >
+                <Transformation width="200" crop="scale" />
+              </Image>
+            ) : (
+              <img src={user.pfp.url} alt="google account profile pic" />
+            ))}
+          <p>
+            {user.yearGroup} @ {user.school}
+          </p>
           <p>{user.biography}</p>
-        )}
-      </div>
+        </>
+      )}
 
       <hr />
 
@@ -325,7 +340,9 @@ function PersonalInfo({ currentUser }) {
             disabled={!update}
             noValidate
           />
-          <label htmlFor="applyTutor">I would like to tutor others</label>
+          <label htmlFor="applyTutor">
+            <b>I would like to tutor others</b>
+          </label>
         </div>
       </div>
 
@@ -337,7 +354,9 @@ function PersonalInfo({ currentUser }) {
               be a tutor
             </p>
           )}
-          <p>Application status: {user.tutor.status}</p>
+          <p>
+            <b>Application status: {user.tutor.status}</b>
+          </p>
           {user.tutor.status === "COMPLETE" && (
             <p>
               You may need to logout and log back in for all changes to take
@@ -372,7 +391,9 @@ function PersonalInfo({ currentUser }) {
           </div>
 
           <div data-test="location">
-            <label htmlFor="tutor.location">Select your location:</label>
+            <label htmlFor="tutor.location">
+              <b>Location:</b>
+            </label>
             {update ? (
               <TagsSelect
                 settings={{
@@ -392,7 +413,9 @@ function PersonalInfo({ currentUser }) {
           </div>
 
           <div>
-            <label htmlFor="tutor.price">Price per hour:</label>
+            <label htmlFor="tutor.price">
+              <b>Price per hour:</b>
+            </label>
             {update ? (
               <input
                 type="number"
@@ -407,8 +430,7 @@ function PersonalInfo({ currentUser }) {
 
           <div>
             <label htmlFor="tutor.academicsTutoring">
-              Add academic subjects that you want to{" "}
-              <strong>tutor others in</strong>:
+              <b>Academic subjects</b> that you want to tutor others in:
             </label>
             {update ? (
               <TagsSelect
@@ -429,7 +451,7 @@ function PersonalInfo({ currentUser }) {
 
           <div>
             <label htmlFor="tutor.curricula">
-              Add curricula that you want to <strong>tutor others in</strong>:
+              <b>Curricula</b> that you want to tutor others in:
             </label>
             {update ? (
               <TagsSelect
@@ -450,7 +472,7 @@ function PersonalInfo({ currentUser }) {
 
           <div>
             <label>
-              Please link to a copy of your latest school grades or other
+              Please upload copy of your latest <b>school records</b> or other
               evidence of abilities relevant to the subjects you wish to tutor
             </label>
             <FileManager
