@@ -14,7 +14,7 @@
     "date-fns": "^2.22.1",
     "dotenv": "^16.0.0",
     "express": "^4.17.1",
-    "google-auth-library": "^7.1.2",
+    "google-auth-library": "^8.0.1",
     "graphql": "^16.3.0",
     "jsonwebtoken": "^8.5.1",
     "mongo-dot-notation": "^2.0.0",
