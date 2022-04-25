@@ -67,14 +67,21 @@ export default {
       return await User.find({ "tutor.status": "PENDING_REVIEW" });
     },
   },
+  User: {
+    tutor(reqUser) {
+      // Added property `parentId` so child resolvers can access userId
+      reqUser.tutor.parentId = reqUser._id;
+      return reqUser.tutor;
+    },
+  },
   TutorInfo: {
-    async academicRecords(reqUser, _, { user }) {
-      if (reqUser._id !== user._id && !user.admin.status)
+    academicRecords(tutorInfo, _, { user }) {
+      if (!user._id.isEqual(tutorInfo.parentId) && !user.admin.status)
         throw new ApolloError(
           "You do not have permission to access this field"
         );
 
-      return reqUser.academicRecords;
+      return tutorInfo.academicRecords;
     },
   },
   Mutation: {

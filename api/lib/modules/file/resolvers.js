@@ -21,9 +21,8 @@ export default {
     },
   },
   FileMeta: {
-    async link(fileMeta, _, { user }) {
-      // TODO: Figure out how to give access to the owner of the file as well
-      assertAdmin(user);
+    async link(fileMeta) {
+      // authorization will be handled by parent resolvers
       const command = new GetObjectCommand({
         Bucket: process.env.S3_BUCKET,
         Key: fileMeta.id,
