@@ -1,5 +1,5 @@
 import User from "./model";
-import Class from "../class/model";
+import Session from "../session/model";
 
 import login from "./queries/login";
 
@@ -44,10 +44,10 @@ export default {
       const targetUser = await User.findById(userID);
       assertUser(user, targetUser);
 
-      const classes = await Class.find({ tutees: userID });
+      const sessions = await Session.find({ tutees: userID });
 
       const tutors = [
-        ...new Set(classes.map((classInfo) => classInfo.tutors).flat()),
+        ...new Set(sessions.map((sessionInfo) => sessionInfo.tutors).flat()),
       ];
 
       return await User.find({ _id: { $in: tutors } }, null, { limit });
