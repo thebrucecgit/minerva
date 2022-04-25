@@ -19,7 +19,7 @@ export default async function confirmSession(_, { id }, { user }) {
 
   if (newSession.status === "CONFIRM") {
     const otherUsers = await User.find(
-      { _id: { $in: newSession.users.filter((id) => id !== user._id) } },
+      { _id: { $in: newSession.users.filter((id) => !user._id.isEqual(id)) } },
       "name email"
     );
     await send({

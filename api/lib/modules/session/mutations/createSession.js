@@ -55,7 +55,7 @@ export default async function createSession(
 
   // Email all users
   const otherUsers = await User.find(
-    { _id: { $in: session.users.filter((id) => id !== user._id) } },
+    { _id: { $in: session.users.filter((id) => !user._id.isEqual(id)) } },
     "name email"
   );
 

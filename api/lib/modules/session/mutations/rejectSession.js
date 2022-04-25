@@ -21,7 +21,7 @@ export default async function rejectSession(_, { id }, { user }) {
   );
 
   const otherUsers = await User.find(
-    { _id: { $in: newSession.users.filter((id) => id !== user._id) } },
+    { _id: { $in: newSession.users.filter((id) => !user._id.isEqual(id)) } },
     "name email"
   );
 

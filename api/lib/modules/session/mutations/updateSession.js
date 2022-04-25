@@ -48,7 +48,7 @@ export default async function updateSession(_, args, { user }) {
     edits.userResponses = [{ user: user._id, response: "CONFIRM" }];
     // Email all users
     const otherUsers = await User.find(
-      { _id: { $in: session.users.filter((id) => id !== user._id) } },
+      { _id: { $in: session.users.filter((id) => !user._id.isEqual(id)) } },
       "name email"
     );
 
