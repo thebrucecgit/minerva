@@ -173,21 +173,17 @@ function Signups({ authService }) {
   ]);
 
   // Authentication with Google strategy
-  const onGoogleSignIn = async ({ tokenId }) => {
+  const onGoogleSignIn = async ({ credential }) => {
     try {
-      const userInfo = await authService.login(tokenId);
+      const userInfo = await authService.login(credential);
       onGoogleSignedIn(userInfo);
     } catch (e) {
+      setErrors((errors) => ({
+        ...errors,
+        signIn: e.message,
+      }));
       console.error(e);
     }
-  };
-
-  const onGoogleFailed = (err) => {
-    console.error(err);
-    setErrors((st) => ({
-      ...st,
-      signIn: err.details,
-    }));
   };
 
   // After form is completed
@@ -238,7 +234,6 @@ function Signups({ authService }) {
             errors={errors}
             onNext={() => onNext("Sign In")}
             onGoogleSignIn={onGoogleSignIn}
-            onGoogleFailed={onGoogleFailed}
           />
           <BasicInfo
             sectionStatus={sectionStatus[1]}

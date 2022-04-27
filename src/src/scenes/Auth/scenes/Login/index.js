@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+import GoogleLogin from "components/GoogleLogin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./styles.module.scss";
 
-const Login = ({ login, currentUser }) => {
+const Login = ({ login }) => {
   const [error, setError] = useState("");
   const [fields, setFields] = useState({});
   const [loading, setLoading] = useState(false);
@@ -16,17 +16,12 @@ const Login = ({ login, currentUser }) => {
     setFields((f) => ({ ...f, [e.target.name]: e.target.value }));
   };
 
-  const onGoogleSignIn = async ({ tokenId }) => {
+  const onGoogleSignIn = async ({ credential }) => {
     try {
-      await login(tokenId);
+      await login(credential);
     } catch (e) {
       setError(e.message);
     }
-  };
-
-  const onGoogleFailed = (err) => {
-    console.error(err);
-    setError(err.message);
   };
 
   const onSubmit = async (e) => {
@@ -82,12 +77,7 @@ const Login = ({ login, currentUser }) => {
       </div>
       <p> Or </p>
       <div>
-        <GoogleLogin
-          clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-          onSuccess={onGoogleSignIn}
-          onFailure={onGoogleFailed}
-          cookiePolicy="single_host_origin"
-        />
+        <GoogleLogin onGoogleSignIn={onGoogleSignIn} />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-import { GoogleLogin } from "react-google-login";
+import GoogleLogin from "components/GoogleLogin";
 import StatusSymbol from "../StatusSymbol";
 
 import styles from "../../styles.module.scss";
@@ -12,7 +12,6 @@ const SignIn = ({
   errors,
   onNext,
   onGoogleSignIn,
-  onGoogleFailed,
 }) => {
   return (
     <section>
@@ -26,15 +25,9 @@ const SignIn = ({
         })}
       >
         <div className={classNames(styles.content, styles.strategies)}>
+          <p>Select your method:</p>
           {errors.signIn && <p className={styles.invalid}>{errors.signIn}</p>}
-          <GoogleLogin
-            clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-            onSuccess={onGoogleSignIn}
-            onFailure={onGoogleFailed}
-            cookiePolicy="single_host_origin"
-            buttonText="Sign up with Google"
-          />{" "}
-          or{" "}
+          <GoogleLogin onGoogleSignIn={onGoogleSignIn} text="signup" />
           <button className="btn" onClick={onNext}>
             Sign up with email
           </button>
