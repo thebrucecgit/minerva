@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import http from "http";
 
+import "dd-trace/init";
 import { connect } from "./config/database";
 
 import * as websocket from "./websocket";
