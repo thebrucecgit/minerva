@@ -38,7 +38,8 @@ function Routes({ authService }) {
       <Switch>
         <Route exact path="/">
           {() => {
-            window.location.replace(process.env.REACT_APP_INFO_SITE);
+            if (process.env.NODE_ENV !== "development")
+              window.location.replace(process.env.REACT_APP_INFO_SITE);
             return null;
           }}
         </Route>
