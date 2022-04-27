@@ -452,6 +452,14 @@ const Session = ({ currentUser }) => {
           setUpdate={setUpdate}
           user={currentUser.user}
         />
+        <div>
+          <h2>Students</h2>
+          {sessionInfo.tutees.map((tutee) => (
+            <div key={tutee._id} className="card">
+              <h3 className="body">{tutee.name}</h3>
+            </div>
+          ))}
+        </div>
       </div>
 
       <Modal {...settingsBinds}>
