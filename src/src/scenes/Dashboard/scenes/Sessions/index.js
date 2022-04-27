@@ -61,12 +61,8 @@ const Sessions = ({ currentUser }) => {
   }, [data, isOld, refetch]);
 
   if (error) return <Error error={error} />;
-  if (loading) return <Loader />;
 
-  if (!data) {
-    console.log(data);
-  }
-  const sessions = data.getSessionsOfUser;
+  const sessions = data?.getSessionsOfUser;
 
   return (
     <div className={styles.Sessions}>
@@ -84,20 +80,23 @@ const Sessions = ({ currentUser }) => {
           <label htmlFor="isOld">View old sessions</label>
         </div>
       </form>
-
-      <SessionsGrid>
-        {sessions.length ? (
-          sessions.map((session) => (
-            <SessionSummary
-              key={session._id}
-              session={session}
-              currentUser={currentUser}
-            />
-          ))
-        ) : (
-          <p>You have no upcoming sessions.</p>
-        )}
-      </SessionsGrid>
+      {loading ? (
+        <Loader />
+      ) : (
+        <SessionsGrid>
+          {sessions.length ? (
+            sessions.map((session) => (
+              <SessionSummary
+                key={session._id}
+                session={session}
+                currentUser={currentUser}
+              />
+            ))
+          ) : (
+            <p>You have no upcoming sessions.</p>
+          )}
+        </SessionsGrid>
+      )}
     </div>
   );
 };
