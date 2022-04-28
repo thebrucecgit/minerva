@@ -15,13 +15,12 @@ export default async function confirmSession(_, { id }, { user }) {
       $push: { userResponses: { user: user._id, response: "CONFIRM" } },
     },
     { new: true }
-  );
+  )
+    .populate("tutees", "name email")
+    .populate("tutors", "name email");
 
   if (newSession.status === "CONFIRM") {
-    const otherUsers = await User.find(
-      { _id: { $in: newSession.users.filter((id) => !user._id.isEqual(id)) } },
-      "name email"
-    );
+    const otherUsers = newSession.users.filter((u) => !user._id.isEqual(u._id));
     await send({
       templateId: "d-55a426ab431d4c2db6f726a63b4ff968",
       dynamicTemplateData: {

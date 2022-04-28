@@ -29,14 +29,13 @@ export default async function cancelSession(_, { id, reason }, { user }) {
         date: new Date(),
       },
     },
-    { new: true, populate: "class" }
-  );
+    { new: true }
+  )
+    .populate("tutees", "name email")
+    .populate("tutors", "name email");
 
   // Email all users
-  const otherUsers = await User.find(
-    { _id: { $in: session.users.filter((id) => user._id.isEqual(id)) } },
-    "name email"
-  );
+  const otherUsers = session.users.filter((u) => !user._id.isEqual(u._id));
 
   await send({
     templateId: "d-66761a69d047412289cbb4dffeb82b38",

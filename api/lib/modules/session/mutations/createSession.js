@@ -5,7 +5,12 @@ import send from "../../../config/email";
 import datetime from "../../../config/datetime";
 import { nanoid } from "nanoid";
 
-import { addMinutes, differenceInHours, subDays } from "date-fns";
+import {
+  addMinutes,
+  differenceInHours,
+  differenceInMinutes,
+  subDays,
+} from "date-fns";
 import { UserInputError } from "apollo-server";
 import agenda from "../../../agenda";
 import fetchCallLink from "../../../helpers/fetchCallLink";
@@ -44,22 +49,44 @@ export default async function createSession(
     author: user._id,
   };
 
-  if (differenceInHours(session.startTime, new Date()) >= 30)
+  if (differenceInHours(session.startTime, new Date()) >= 30) {
     await agenda.schedule(subDays(session.startTime, 1), "session reminder", {
       sessionId: session._id,
     });
+  }
+
+  if (differenceInMinutes(session.endTime, new Date()) >= -15) {
+    await agenda.schedule(
+      addMinutes(session.endTime, 15),
+      "session review reminder",
+      {
+        sessionId: session._id,
+      }
+    );
+  }
 
   event._id = nanoid();
   // Notify all users except initiator
   await websocket.broadcast(event, session.users, user._id);
 
   // Email all users
-  const otherUsers = await User.find(
-    { _id: { $in: session.users.filter((id) => !user._id.isEqual(id)) } },
-    "name email"
-  );
+  await session.populate([
+    {
+      path: "tutees",
+      select: "name email",
+    },
+    {
+      path: "tutors",
+      select: "name email",
+    },
+  ]);
 
-  if (otherUsers.length > 0)
+  const otherUsers = session.users.filter((u) => !user._id.isEqual(u._id));
+
+  if (
+    otherUsers.length > 0 &&
+    differenceInMinutes(session.startTime, new Date()) >= 0
+  ) {
     await send({
       templateId: "d-e2dc24a92d804398b0e5312f621285e4",
       subject: `New Session Request for "${session.name}"`,
@@ -79,6 +106,7 @@ export default async function createSession(
         },
       })),
     });
+  }
 
   return session;
 }

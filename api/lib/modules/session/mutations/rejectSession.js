@@ -18,12 +18,11 @@ export default async function rejectSession(_, { id }, { user }) {
       $push: { userResponses: { user: user._id, response: "REJECT" } },
     },
     { new: true }
-  );
+  )
+    .populate("tutees", "name email")
+    .populate("tutors", "name email");
 
-  const otherUsers = await User.find(
-    { _id: { $in: newSession.users.filter((id) => !user._id.isEqual(id)) } },
-    "name email"
-  );
+  const otherUsers = newSession.users.filter((u) => !user._id.isEqual(u._id));
 
   await send({
     templateId: "d-a0e044745b7746428c8c71d2dba59132",
