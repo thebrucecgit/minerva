@@ -1,4 +1,3 @@
-import User from "../../user/model";
 import Session from "../../session/model";
 import * as websocket from "../../../websocket";
 import send from "../../../config/email";

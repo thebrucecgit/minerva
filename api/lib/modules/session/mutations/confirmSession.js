@@ -1,5 +1,4 @@
 import Session from "../model";
-import User from "../../user/model";
 import { assertGroupAuthorization } from "../../../helpers/permissions";
 import send from "../../../config/email";
 import datetime from "../../../config/datetime";
