@@ -1,9 +1,10 @@
+import crypto from "crypto";
 import User from "../model";
 import send from "../../../config/email";
 
 export default async function resetPassword(_, { email }) {
   // Create random 6 digit verification code
-  const passwordResetCode = Math.floor(100000 + Math.random() * 900000);
+  const passwordResetCode = crypto.randomInt(100_000, 1_000_000);
   const user = await User.findOneAndUpdate({ email }, { passwordResetCode });
   if (!user) return;
 
