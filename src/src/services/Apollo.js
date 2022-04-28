@@ -78,7 +78,7 @@ const Apollo = ({ authHelpers, children }) => {
     }),
     defaultOptions: {
       watchQuery: {
-        fetchPolicy: "cache-and-network",
+        fetchPolicy: "network-only",
         nextFetchPolicy: "cache-first",
       },
     },
