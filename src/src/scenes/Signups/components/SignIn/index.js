@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 
-import GoogleLogin from "components/GoogleLogin";
+import { GoogleLogin } from "@react-oauth/google";
 import StatusSymbol from "../StatusSymbol";
 
 import styles from "../../styles.module.scss";
@@ -27,10 +27,12 @@ const SignIn = ({
         <div className={classNames(styles.content, styles.strategies)}>
           <p>Select your method:</p>
           {errors.signIn && <p className={styles.invalid}>{errors.signIn}</p>}
-          <GoogleLogin onGoogleSignIn={onGoogleSignIn} text="signup" />
           <button className="btn" onClick={onNext}>
             Sign up with email
           </button>
+          <div>
+            <GoogleLogin onSuccess={onGoogleSignIn} text="signup_with" />
+          </div>
         </div>
       </div>
     </section>

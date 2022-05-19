@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import GoogleLogin from "components/GoogleLogin";
+import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
@@ -76,9 +76,9 @@ const Login = ({ login }) => {
         </form>
       </div>
       <p> Or </p>
-      <div>
-        <GoogleLogin onGoogleSignIn={onGoogleSignIn} />
-      </div>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <GoogleLogin onSuccess={onGoogleSignIn} />
+      </GoogleOAuthProvider>
     </div>
   );
 };
