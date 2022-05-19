@@ -1,6 +1,7 @@
 import Session from "../modules/session/model";
 import send from "../config/email";
 import datetime from "../config/datetime";
+import { isAfter } from "date-fns";
 
 const { FRONTEND_DOMAIN } = process.env;
 
@@ -12,7 +13,12 @@ export default function EmailJob(agenda) {
     const session = await Session.findById(job.attrs.data.sessionId)
       .populate("tutees", "name email")
       .populate("tutors", "name email");
-    if (!session || !["CONFIRM", "UNCONFIRM"].includes(session.status)) return;
+    if (
+      !session ||
+      !["CONFIRM", "UNCONFIRM"].includes(session.status) ||
+      isAfter(new Date(), session.startTime)
+    )
+      return;
 
     const sessionTime = datetime.format(session.startTime);
     await send({

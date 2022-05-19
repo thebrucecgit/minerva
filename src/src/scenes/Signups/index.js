@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback, createRef } from "react";
+import { useState, useEffect, useCallback, createRef } from "react";
 import { Link, useHistory } from "react-router-dom";
 import useCloudinary from "../../hooks/useCloudinary";
 
 import ReCAPTCHA from "react-google-recaptcha";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 import SignIn from "./components/SignIn";
 import BasicInfo from "./components/BasicInfo";
@@ -133,44 +134,42 @@ function Signups({ authService }) {
   }, []);
   const uploadImage = useCloudinary(cloudinaryCallback);
 
-  const onGoogleSignedIn = (userInfo) => {
-    const userData = authService.currentUser ?? userInfo;
-    if (!userData) return;
+  const onGoogleSignedIn = useCallback(
+    (userInfo) => {
+      const userData = authService.currentUser ?? userInfo;
+      if (!userData) return;
 
-    const { user } = userData;
-    switch (user.registrationStatus) {
-      case "COMPLETE": {
-        history.replace("/dashboard");
-        break;
+      const { user } = userData;
+      switch (user.registrationStatus) {
+        case "COMPLETE": {
+          history.replace("/dashboard");
+          break;
+        }
+        case "EMAIL_NOT_CONFIRMED": {
+          history.replace("/signup/confirm");
+          break;
+        }
+        default:
+        case "GOOGLE_SIGNED_IN": {
+          if (strategy === "google") break;
+          setInfo((st) => ({
+            ...st,
+            name: user.name,
+            email: user.email,
+            pfp: user.pfp,
+          }));
+          onNext("Sign In");
+          setStrategy("google");
+          break;
+        }
       }
-      case "EMAIL_NOT_CONFIRMED": {
-        history.replace("/signup/confirm");
-        break;
-      }
-      default:
-      case "GOOGLE_SIGNED_IN": {
-        if (strategy === "google") break;
-        setInfo((st) => ({
-          ...st,
-          name: user.name,
-          email: user.email,
-          pfp: user.pfp,
-        }));
-        onNext("Sign In");
-        setStrategy("google");
-        break;
-      }
-    }
-  };
+    },
+    [authService.currentUser, history, onNext, strategy]
+  );
 
   const [submissionPending, setSubmissionPending] = useState(false);
 
-  useEffect(onGoogleSignedIn, [
-    authService.currentUser,
-    history,
-    onNext,
-    strategy,
-  ]);
+  useEffect(onGoogleSignedIn, [onGoogleSignedIn]);
 
   // Authentication with Google strategy
   const onGoogleSignIn = async ({ credential }) => {
@@ -198,10 +197,10 @@ function Signups({ authService }) {
       recaptchaRef.current.reset();
       const request = {
         ...info,
-        applyTutor: defaultApply,
+        applyTutor: defaultApply === "tutor",
         token,
       };
-      request.tutor.price = parseInt(request.tutor.price);
+      if (request.tutor) request.tutor.price = parseInt(request.tutor.price);
 
       const { user } = await authService.register(request);
 
@@ -225,101 +224,103 @@ function Signups({ authService }) {
   };
 
   return (
-    <div className={styles.Signups}>
-      <div className={styles.main}>
-        <form onSubmit={formDoNothing}>
-          <SignIn
-            sectionStatus={sectionStatus[0]}
-            sectionClosed={sectionClosed["Sign In"]}
-            errors={errors}
-            onNext={() => onNext("Sign In")}
-            onGoogleSignIn={onGoogleSignIn}
-          />
-          <BasicInfo
-            sectionStatus={sectionStatus[1]}
-            sectionClosed={sectionClosed["Basic Info"]}
-            strategy={strategy}
-            info={info}
-            errors={errors}
-            uploadImage={uploadImage}
-            defaultApply={defaultApply}
-            onChange={onChange}
-            onBack={() => onBack("Basic Info")}
-            onNext={() => onNext("Basic Info")}
-          />
-          <AdditionalInfo
-            sectionStatus={sectionStatus[2]}
-            sectionClosed={sectionClosed["Additional Info"]}
-            info={info}
-            errors={errors}
-            onChange={onChange}
-            onTagsChange={onTagsChange}
-            defaultApply={defaultApply}
-            setInfo={setInfo}
-            onBack={() => onBack("Additional Info")}
-            onNext={() => onNext("Additional Info")}
-          />
-          <Verification
-            sectionStatus={sectionStatus[3]}
-            sectionClosed={sectionClosed["Verification"]}
-            info={info}
-            errors={errors}
-            onChange={onChange}
-            onBack={() => onBack("Verification")}
-            onNext={() => onNext("Verification")}
-            defaultApply={defaultApply}
-          />
-          <Confirmation
-            sectionStatus={sectionStatus[4]}
-            sectionClosed={sectionClosed["Confirmation"]}
-            info={info}
-            errors={errors}
-            onBack={() => onBack("Confirmation")}
-            onChange={onChange}
-            onSubmit={onSubmit}
-            submissionPending={submissionPending}
-          />
-        </form>
-        <p>
-          <Link to="/">Return Home</Link>
-        </p>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+      <div className={styles.Signups}>
+        <div className={styles.main}>
+          <form onSubmit={formDoNothing}>
+            <SignIn
+              sectionStatus={sectionStatus[0]}
+              sectionClosed={sectionClosed["Sign In"]}
+              errors={errors}
+              onNext={() => onNext("Sign In")}
+              onGoogleSignIn={onGoogleSignIn}
+            />
+            <BasicInfo
+              sectionStatus={sectionStatus[1]}
+              sectionClosed={sectionClosed["Basic Info"]}
+              strategy={strategy}
+              info={info}
+              errors={errors}
+              uploadImage={uploadImage}
+              defaultApply={defaultApply}
+              onChange={onChange}
+              onBack={() => onBack("Basic Info")}
+              onNext={() => onNext("Basic Info")}
+            />
+            <AdditionalInfo
+              sectionStatus={sectionStatus[2]}
+              sectionClosed={sectionClosed["Additional Info"]}
+              info={info}
+              errors={errors}
+              onChange={onChange}
+              onTagsChange={onTagsChange}
+              defaultApply={defaultApply}
+              setInfo={setInfo}
+              onBack={() => onBack("Additional Info")}
+              onNext={() => onNext("Additional Info")}
+            />
+            <Verification
+              sectionStatus={sectionStatus[3]}
+              sectionClosed={sectionClosed["Verification"]}
+              info={info}
+              errors={errors}
+              onChange={onChange}
+              onBack={() => onBack("Verification")}
+              onNext={() => onNext("Verification")}
+              defaultApply={defaultApply}
+            />
+            <Confirmation
+              sectionStatus={sectionStatus[4]}
+              sectionClosed={sectionClosed["Confirmation"]}
+              info={info}
+              errors={errors}
+              onBack={() => onBack("Confirmation")}
+              onChange={onChange}
+              onSubmit={onSubmit}
+              submissionPending={submissionPending}
+            />
+          </form>
+          <p>
+            <Link to="/">Return Home</Link>
+          </p>
+        </div>
+        <div className={styles.panel}>
+          {defaultApply === "tutor" ? (
+            <>
+              <h2>Share your passion and expertise.</h2>
+              <p>Sign up as a tutor now. </p>
+              <p>
+                <Link to="/signup">
+                  Click here to sign up as a student instead.
+                </Link>
+              </p>
+              <TutorImg width="600px" />
+            </>
+          ) : (
+            <>
+              <h2>Today is another chance to get better.</h2>
+              <p>Sign up as a student now.</p>
+              <p>
+                <Link to="/signup/tutors">
+                  Click here to sign up as a tutor instead.
+                </Link>
+              </p>
+              <TuteeImg width="600px" />
+            </>
+          )}
+        </div>
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey={
+            NODE_ENV === "development"
+              ? REACT_APP_TEST_CAPTCHA_SITE_KEY
+              : REACT_APP_CAPTCHA_SITE_KEY
+          }
+          size="invisible"
+          onChange={onCaptchaComplete}
+        />
       </div>
-      <div className={styles.panel}>
-        {defaultApply === "tutor" ? (
-          <>
-            <h2>Share your passion and expertise.</h2>
-            <p>Sign up as a tutor now. </p>
-            <p>
-              <Link to="/signup">
-                Click here to sign up as a student instead.
-              </Link>
-            </p>
-            <TutorImg width="600px" />
-          </>
-        ) : (
-          <>
-            <h2>Today is another chance to get better.</h2>
-            <p>Sign up as a student now.</p>
-            <p>
-              <Link to="/signup/tutors">
-                Click here to sign up as a tutor instead.
-              </Link>
-            </p>
-            <TuteeImg width="600px" />
-          </>
-        )}
-      </div>
-      <ReCAPTCHA
-        ref={recaptchaRef}
-        sitekey={
-          NODE_ENV === "development"
-            ? REACT_APP_TEST_CAPTCHA_SITE_KEY
-            : REACT_APP_CAPTCHA_SITE_KEY
-        }
-        size="invisible"
-        onChange={onCaptchaComplete}
-      />
-    </div>
+    </GoogleOAuthProvider>
   );
 }
 
