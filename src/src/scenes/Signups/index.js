@@ -14,7 +14,7 @@ import Confirmation from "./components/Confirmation";
 import useVerification from "./hooks/useVerification";
 import set from "utilities/set";
 
-import styles from "./styles.module.scss";
+import { Signups as StyledSignups, Panel, Main, Form } from "./styles";
 import "./tagify.scss";
 import "@yaireo/tagify/dist/tagify.css";
 
@@ -225,9 +225,9 @@ function Signups({ authService }) {
 
   return (
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-      <div className={styles.Signups}>
-        <div className={styles.main}>
-          <form onSubmit={formDoNothing}>
+      <StyledSignups>
+        <Main>
+          <Form onSubmit={formDoNothing}>
             <SignIn
               sectionStatus={sectionStatus[0]}
               sectionClosed={sectionClosed["Sign In"]}
@@ -279,12 +279,13 @@ function Signups({ authService }) {
               onSubmit={onSubmit}
               submissionPending={submissionPending}
             />
-          </form>
+          </Form>
           <p>
             <Link to="/">Return Home</Link>
           </p>
-        </div>
-        <div className={styles.panel}>
+        </Main>
+
+        <Panel>
           {defaultApply === "tutor" ? (
             <>
               <h2>Share your passion and expertise.</h2>
@@ -308,7 +309,8 @@ function Signups({ authService }) {
               <TuteeImg width="600px" />
             </>
           )}
-        </div>
+        </Panel>
+
         <ReCAPTCHA
           ref={recaptchaRef}
           sitekey={
@@ -319,7 +321,7 @@ function Signups({ authService }) {
           size="invisible"
           onChange={onCaptchaComplete}
         />
-      </div>
+      </StyledSignups>
     </GoogleOAuthProvider>
   );
 }

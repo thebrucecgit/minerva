@@ -1,6 +1,3 @@
-import React from "react";
-import classNames from "classnames";
-
 import StatusSymbol from "../StatusSymbol";
 import {
   faChevronLeft,
@@ -8,7 +5,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import styles from "../../styles.module.scss";
+import { SignupHeader, SignupContent, ErrorText } from "scenes/Signups/styles";
 
 const Verification = ({
   sectionStatus,
@@ -29,63 +26,49 @@ const Verification = ({
 
   return (
     <section>
-      <div className={styles.header}>
+      <SignupHeader>
         <h3>Biography</h3>
         <StatusSymbol state={sectionStatus} />
-      </div>
-      <div
-        className={classNames(styles.body, {
-          [styles.closed]: sectionClosed,
-        })}
-      >
-        <div className={styles.content}>
-          <button className="btn" onClick={onBack} data-test="basic-info-back">
-            Back <FontAwesomeIcon icon={faChevronLeft} />
-          </button>
-          <div className={styles.field}>
-            <label htmlFor="biography">
-              {defaultApply === "tutor" ? (
-                <>
-                  <p>
-                    Feel free to be creative, but we recommend the following:
-                  </p>
-                  <ul>
-                    <li>Your qualifications</li>
-                    <li>What you're currently studying (if you're in Uni)</li>
-                    <li>
-                      Clear up any ambiguity in the curricula or subjects you
-                      tutor
-                    </li>
-                  </ul>
-                </>
-              ) : (
-                <p>Optional, but feel free to be creative! </p>
-              )}
-            </label>
-
-            {errors.biography && (
-              <p className={styles.invalid}>{errors.biography}</p>
+      </SignupHeader>
+      <SignupContent closed={sectionClosed}>
+        <button className="btn" onClick={onBack} data-test="basic-info-back">
+          Back <FontAwesomeIcon icon={faChevronLeft} />
+        </button>
+        <div>
+          <label htmlFor="biography">
+            {defaultApply === "tutor" ? (
+              <>
+                <p>Feel free to be creative, but we recommend the following:</p>
+                <ul>
+                  <li>Your qualifications</li>
+                  <li>What you're currently studying (if you're in Uni)</li>
+                  <li>
+                    Clear up any ambiguity in the curricula or subjects you
+                    tutor
+                  </li>
+                </ul>
+              </>
+            ) : (
+              <p>Optional, but feel free to be creative! </p>
             )}
-            <textarea
-              name="biography"
-              id="biography"
-              rows="5"
-              placeholder={placeholderBio}
-              value={info.biography ?? ""}
-              onChange={onChange}
-              noValidate
-            ></textarea>
-          </div>
+          </label>
 
-          <button
-            className="btn"
-            onClick={onNext}
-            data-test="verification-next"
-          >
-            Next <FontAwesomeIcon icon={faChevronRight} />
-          </button>
+          <ErrorText>{errors.biography}</ErrorText>
+          <textarea
+            name="biography"
+            id="biography"
+            rows="5"
+            placeholder={placeholderBio}
+            value={info.biography ?? ""}
+            onChange={onChange}
+            noValidate
+          ></textarea>
         </div>
-      </div>
+
+        <button className="btn" onClick={onNext} data-test="verification-next">
+          Next <FontAwesomeIcon icon={faChevronRight} />
+        </button>
+      </SignupContent>
     </section>
   );
 };

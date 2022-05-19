@@ -1,10 +1,7 @@
-import React from "react";
-import classNames from "classnames";
-
 import { GoogleLogin } from "@react-oauth/google";
 import StatusSymbol from "../StatusSymbol";
 
-import styles from "../../styles.module.scss";
+import { SignupHeader, SignupContent, ErrorText } from "../../styles";
 
 const SignIn = ({
   sectionStatus,
@@ -15,26 +12,21 @@ const SignIn = ({
 }) => {
   return (
     <section>
-      <div className={styles.header}>
+      <SignupHeader>
         <h3>Sign Up</h3>
         <StatusSymbol state={sectionStatus} />
-      </div>
-      <div
-        className={classNames(styles.body, {
-          [styles.closed]: sectionClosed,
-        })}
-      >
-        <div className={classNames(styles.content, styles.strategies)}>
-          <p>Select your method:</p>
-          {errors.signIn && <p className={styles.invalid}>{errors.signIn}</p>}
-          <button className="btn" onClick={onNext}>
-            Sign up with email
-          </button>
-          <div>
-            <GoogleLogin onSuccess={onGoogleSignIn} text="signup_with" />
-          </div>
-        </div>
-      </div>
+      </SignupHeader>
+      <SignupContent closed={sectionClosed}>
+        <p>Select your method:</p>
+
+        <ErrorText>{errors.signIn}</ErrorText>
+
+        <button className="btn" onClick={onNext}>
+          Sign up with email
+        </button>
+
+        <GoogleLogin onSuccess={onGoogleSignIn} text="signup_with" />
+      </SignupContent>
     </section>
   );
 };
