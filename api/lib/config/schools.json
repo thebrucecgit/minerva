@@ -1,0 +1,3252 @@
+[
+  {
+    "name": "3H School International",
+    "type": "Secondary",
+    "city": "Warkworth",
+    "website": "http://www.3H.School.nz"
+  },
+  {
+    "name": "A1 Student Limited",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.a1student.com"
+  },
+  {
+    "name": "ACG Parnell College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.acgedu.com/nz/parnell"
+  },
+  {
+    "name": "ACG Strathallan",
+    "type": "Secondary",
+    "city": "Karaka",
+    "website": "http://www.acgedu.com/nz/strathallan"
+  },
+  {
+    "name": "ACG Sunderland",
+    "type": "Secondary",
+    "city": "Waitakere",
+    "website": "http://www.acgedu.com/nz/sunderland"
+  },
+  {
+    "name": "ACG Tauranga",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "https://tauranga.acgedu.com/"
+  },
+  {
+    "name": "ADDI Enrichment Academy",
+    "type": "Secondary",
+    "city": "Taupo",
+    "website": "http://www.addi.co.nz"
+  },
+  {
+    "name": "AGE School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.age.school.nz"
+  },
+  {
+    "name": "Aidanfield Christian School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.aidanfield.school.nz/"
+  },
+  {
+    "name": "Akaroa Area School",
+    "type": "Secondary",
+    "city": "Akaroa",
+    "website": "http://akaroa.school.nz/"
+  },
+  {
+    "name": "Al-Madinah School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.al-madinah.school.nz/"
+  },
+  {
+    "name": "Albany Junior High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.ajhs.school.nz"
+  },
+  {
+    "name": "Albany Senior High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.ashs.school.nz"
+  },
+  {
+    "name": "Alfriston College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.alfristoncollege.school.nz"
+  },
+  {
+    "name": "Amana Christian School",
+    "type": "Secondary",
+    "city": "Mosgiel",
+    "website": "http://www.amana.school.nz"
+  },
+  {
+    "name": "Ambury Park Centre",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.amburyparkcentre.org.nz"
+  },
+  {
+    "name": "Amuri Area School",
+    "type": "Secondary",
+    "city": "Culverden",
+    "website": "http://www.amuri.school.nz"
+  },
+  {
+    "name": "Ao Tawhiti Unlimited Discovery",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "https://aotawhiti.school.nz/"
+  },
+  {
+    "name": "Aorere College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.aorere.ac.nz/"
+  },
+  {
+    "name": "Aotea College",
+    "type": "Secondary",
+    "city": "Porirua",
+    "website": "http://www.aotea.school.nz"
+  },
+  {
+    "name": "Aparima College",
+    "type": "Secondary",
+    "city": "Riverton",
+    "website": "http://www.aparima.school.nz"
+  },
+  {
+    "name": "Aquinas College",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.aquinas.school.nz"
+  },
+  {
+    "name": "Ashburton Christian School",
+    "type": "Secondary",
+    "city": "Ashburton",
+    "website": "http://www.ashburtonchristian.school.nz"
+  },
+  {
+    "name": "Ashburton College",
+    "type": "Secondary",
+    "city": "Ashburton",
+    "website": "http://www.ashburtoncollege.school.nz"
+  },
+  {
+    "name": "Atea College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.ateacollege.com"
+  },
+  {
+    "name": "Auckland Girls' Grammar School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.aggs.school.nz"
+  },
+  {
+    "name": "Auckland Grammar",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.ags.school.nz"
+  },
+  {
+    "name": "Auckland International College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.aic.ac.nz"
+  },
+  {
+    "name": "Auckland Senior College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": ""
+  },
+  {
+    "name": "Auckland Seventh-Day Adventist H S",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.asdah.school.nz/"
+  },
+  {
+    "name": "Aurora College",
+    "type": "Secondary",
+    "city": "Invercargill",
+    "website": "http://www.auroracollege.school.nz"
+  },
+  {
+    "name": "Aurora School Alternative",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://aurora.school.nz/"
+  },
+  {
+    "name": "Avondale College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.avcol.school.nz"
+  },
+  {
+    "name": "Avonside Girls' High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.avonside.school.nz"
+  },
+  {
+    "name": "Awatapu College",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.awatapu.school.nz"
+  },
+  {
+    "name": "Baradene College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.baradene.school.nz"
+  },
+  {
+    "name": "Bay of Islands College",
+    "type": "Secondary",
+    "city": "Kawakawa",
+    "website": "http://www.boic.school.nz"
+  },
+  {
+    "name": "Bayfield High School",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.bayfield-high.school.nz/"
+  },
+  {
+    "name": "Bethlehem College",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.beth.school.nz"
+  },
+  {
+    "name": "Birkenhead College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.birkenhead.school.nz/"
+  },
+  {
+    "name": "Bishop Viard College",
+    "type": "Secondary",
+    "city": "Porirua",
+    "website": "http://www.viard.school.nz/"
+  },
+  {
+    "name": "Blue Mountain College",
+    "type": "Secondary",
+    "city": "Tapanui",
+    "website": "https://www.bmc.school.nz/"
+  },
+  {
+    "name": "Botany Downs Secondary College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.bdsc.school.nz"
+  },
+  {
+    "name": "Bream Bay College",
+    "type": "Secondary",
+    "city": "Ruakaka",
+    "website": "http://www.breambaycollege.school.nz/"
+  },
+  {
+    "name": "Broadwood Area School",
+    "type": "Secondary",
+    "city": "Broadwood",
+    "website": "http://broadwood.school.nz"
+  },
+  {
+    "name": "Buller High School",
+    "type": "Secondary",
+    "city": "Westport",
+    "website": "http://www.buller.ac.nz/"
+  },
+  {
+    "name": "Burnside High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.burnside.school.nz"
+  },
+  {
+    "name": "Cambridge High School",
+    "type": "Secondary",
+    "city": "Cambridge",
+    "website": "http://www.camhigh.school.nz"
+  },
+  {
+    "name": "Campion College",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": "http://www.campioncollege.school.nz"
+  },
+  {
+    "name": "Carmel College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.carmel.school.nz/"
+  },
+  {
+    "name": "Cashmere High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.cashmere.school.nz"
+  },
+  {
+    "name": "Catholic Cathedral College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.cathcollege.school.nz"
+  },
+  {
+    "name": "Central Hawkes Bay College",
+    "type": "Secondary",
+    "city": "Waipukurau",
+    "website": "http://www.chbc.school.nz"
+  },
+  {
+    "name": "Central Southland College",
+    "type": "Secondary",
+    "city": "Winton",
+    "website": "http://www.csc.school.nz/"
+  },
+  {
+    "name": "Chanel College",
+    "type": "Secondary",
+    "city": "Masterton",
+    "website": "http://www.chanelcollege.school.nz"
+  },
+  {
+    "name": "Cheviot Area School",
+    "type": "Secondary",
+    "city": "Cheviot",
+    "website": "http://www.cheviot.school.nz/"
+  },
+  {
+    "name": "Chilton Saint James School",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.chilton.school.nz"
+  },
+  {
+    "name": "Christ's College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.christscollege.com"
+  },
+  {
+    "name": "Christchurch Adventist School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.cas.school.nz"
+  },
+  {
+    "name": "Christchurch Boys' High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.cbhs.school.nz"
+  },
+  {
+    "name": "Christchurch Girls' High School -Te Kura o Hine Waiora",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.cghs.school.nz"
+  },
+  {
+    "name": "City Impact Church School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.cityimpactchurch.school.nz"
+  },
+  {
+    "name": "Coastal Taranaki School",
+    "type": "Secondary",
+    "city": "Okato",
+    "website": "http://www.coastaltaranaki.school.nz"
+  },
+  {
+    "name": "Collingwood Area School",
+    "type": "Secondary",
+    "city": "Collingwood",
+    "website": "http://www.collingwood-area.school.nz"
+  },
+  {
+    "name": "Columba College",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.columbacollege.school.nz"
+  },
+  {
+    "name": "Cornerstone Christian School",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.cornerstone.ac.nz"
+  },
+  {
+    "name": "Coromandel Area School",
+    "type": "Secondary",
+    "city": "Coromandel",
+    "website": "http://www.coroarea.school.nz"
+  },
+  {
+    "name": "Craighead Diocesan School",
+    "type": "Secondary",
+    "city": "Timaru",
+    "website": "http://www.craighead.school.nz"
+  },
+  {
+    "name": "Crimson Global Academy",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.crimsononlinehighschool.com"
+  },
+  {
+    "name": "Cromwell College",
+    "type": "Secondary",
+    "city": "Cromwell",
+    "website": "http://www.cromwell.school.nz"
+  },
+  {
+    "name": "Cullinane College",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": "http://www.cullinanecollege.school.nz"
+  },
+  {
+    "name": "Dannevirke High School",
+    "type": "Secondary",
+    "city": "Dannevirke",
+    "website": "http://www.dannevirkehigh.school.nz"
+  },
+  {
+    "name": "Darfield High School",
+    "type": "Secondary",
+    "city": "Darfield",
+    "website": "http://www.darfield.school.nz"
+  },
+  {
+    "name": "Dargaville High School",
+    "type": "Secondary",
+    "city": "Dargaville",
+    "website": "http://www.dargavillehighschool.co.nz"
+  },
+  {
+    "name": "De La Salle College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.delasalle.school.nz"
+  },
+  {
+    "name": "Destiny School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.destinyschool.org/"
+  },
+  {
+    "name": "Dilworth School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.dilworth.school.nz/"
+  },
+  {
+    "name": "Diocesan School For Girls",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.diocesan.school.nz"
+  },
+  {
+    "name": "Drury Christian School",
+    "type": "Secondary",
+    "city": "Drury",
+    "website": "http://www.drurychurch.co.nz/"
+  },
+  {
+    "name": "Dunstan High School",
+    "type": "Secondary",
+    "city": "Alexandra",
+    "website": "http://www.dunstan.school.nz"
+  },
+  {
+    "name": "East Otago High School",
+    "type": "Secondary",
+    "city": "Palmerston",
+    "website": "http://www.eohs.school.nz/"
+  },
+  {
+    "name": "Eden Christian Academy",
+    "type": "Secondary",
+    "city": "Tuakau",
+    "website": "http://www.edenchristianacademy.co.nz"
+  },
+  {
+    "name": "Edgecumbe College",
+    "type": "Secondary",
+    "city": "Edgecumbe",
+    "website": "http://www.edgecumbecollege.school.nz"
+  },
+  {
+    "name": "Edgewater College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.edgewater.school.nz"
+  },
+  {
+    "name": "Elim Christian College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.elim.school.nz"
+  },
+  {
+    "name": "Ellesmere College",
+    "type": "Secondary",
+    "city": "Leeston",
+    "website": "http://www.ellesmere.school.nz"
+  },
+  {
+    "name": "Emmanuel Christian School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.emmanuelchristian.school.nz"
+  },
+  {
+    "name": "Epsom Girls Grammar School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.eggs.school.nz"
+  },
+  {
+    "name": "Excellere College",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.excellerecollege.school.nz"
+  },
+  {
+    "name": "Fairfield College",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.faircol.school.nz"
+  },
+  {
+    "name": "Feilding High School",
+    "type": "Secondary",
+    "city": "Feilding",
+    "website": "http://www.feildinghigh.school.nz"
+  },
+  {
+    "name": "Fiordland College",
+    "type": "Secondary",
+    "city": "Te Anau",
+    "website": "http://www.fiordlandcollege.school.nz/"
+  },
+  {
+    "name": "Flaxmere College",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.flaxmerecollege.co.nz"
+  },
+  {
+    "name": "Forest View High School",
+    "type": "Secondary",
+    "city": "Tokoroa",
+    "website": "http://www.forestviewhigh.school.nz"
+  },
+  {
+    "name": "Francis Douglas Memorial College",
+    "type": "Secondary",
+    "city": "New Plymouth",
+    "website": "http://www.fdmc.school.nz"
+  },
+  {
+    "name": "Fraser High School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.fraser.school.nz"
+  },
+  {
+    "name": "Freyberg High School",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.freyberg.ac.nz"
+  },
+  {
+    "name": "Garin College",
+    "type": "Secondary",
+    "city": "Nelson",
+    "website": "http://www.garincollege.ac.nz"
+  },
+  {
+    "name": "Geraldine High School",
+    "type": "Secondary",
+    "city": "Geraldine",
+    "website": "http://www.geraldinehs.school.nz"
+  },
+  {
+    "name": "Gisborne Boys' High School",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": "http://www.gisboyshigh.school.nz"
+  },
+  {
+    "name": "Gisborne Girls' High School",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": "https://www.gisbornegirlshigh.school.nz"
+  },
+  {
+    "name": "Glendowie College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.gdc.school.nz"
+  },
+  {
+    "name": "Glenfield College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.gc.ac.nz/"
+  },
+  {
+    "name": "Gloriavale Christian School",
+    "type": "Secondary",
+    "city": "Greymouth",
+    "website": ""
+  },
+  {
+    "name": "Golden Bay High School",
+    "type": "Secondary",
+    "city": "Takaka",
+    "website": "http://www.gbh.school.nz"
+  },
+  {
+    "name": "Gore High School",
+    "type": "Secondary",
+    "city": "Gore",
+    "website": "http://www.gore-high.school.nz"
+  },
+  {
+    "name": "Green Bay High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.greenbayhigh.school.nz"
+  },
+  {
+    "name": "Green School New Zealand",
+    "type": "Secondary",
+    "city": "New Plymouth",
+    "website": "https://www.greenschool.org/nz/"
+  },
+  {
+    "name": "Greymouth High School",
+    "type": "Secondary",
+    "city": "Greymouth",
+    "website": "http://www.greyhigh.school.nz"
+  },
+  {
+    "name": "Haeata Community Campus",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.haeata.school.nz"
+  },
+  {
+    "name": "Hagley Community College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.hagley.school.nz"
+  },
+  {
+    "name": "Hamilton Boys' High School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.hbhs.school.nz"
+  },
+  {
+    "name": "Hamilton Christian School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.hcswaikato.school.nz"
+  },
+  {
+    "name": "Hamilton Girls' High School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.hghs.school.nz"
+  },
+  {
+    "name": "Harbour Montessori College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.harbour.school.nz"
+  },
+  {
+    "name": "Hare Krishna School",
+    "type": "Secondary",
+    "city": "Riverhead",
+    "website": "http://www.harekrishna.school.nz"
+  },
+  {
+    "name": "Hastings Boys' High School",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.hastingsboys.school.nz"
+  },
+  {
+    "name": "Hastings Christian School",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.hcs.school.nz"
+  },
+  {
+    "name": "Hastings Girls' High School",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.hastingsgirls.com"
+  },
+  {
+    "name": "Hato Paora College",
+    "type": "Secondary",
+    "city": "Feilding",
+    "website": "http://www.hatopaora.school.nz"
+  },
+  {
+    "name": "Hauraki Plains College",
+    "type": "Secondary",
+    "city": "Ngatea",
+    "website": "http://www.haurakiplains.school.nz"
+  },
+  {
+    "name": "Havelock North High School",
+    "type": "Secondary",
+    "city": "Havelock North",
+    "website": "http://www.hnhs.school.nz"
+  },
+  {
+    "name": "Hawera High School",
+    "type": "Secondary",
+    "city": "Hawera",
+    "website": "http://www.hawerahs.school.nz"
+  },
+  {
+    "name": "Henderson High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.hhs.school.nz"
+  },
+  {
+    "name": "Heretaunga College",
+    "type": "Secondary",
+    "city": "Upper Hutt",
+    "website": "http://www.heretaunga.school.nz"
+  },
+  {
+    "name": "Hillcrest High School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.hillcrest-high.school.nz"
+  },
+  {
+    "name": "Hillmorton High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.hillmorton.school.nz"
+  },
+  {
+    "name": "Hillview Christian School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.hillview.school.nz"
+  },
+  {
+    "name": "Hobsonville Point Secondary School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.hpss.school.nz/"
+  },
+  {
+    "name": "Hohepa School",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.hohepahawkesbay.com/services-and-programmes/school"
+  },
+  {
+    "name": "Horizon School",
+    "type": "Secondary",
+    "city": "Snells Beach",
+    "website": "http://www.horizon.school.nz/"
+  },
+  {
+    "name": "Hornby High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.hornby.school.nz"
+  },
+  {
+    "name": "Horowhenua College",
+    "type": "Secondary",
+    "city": "Levin",
+    "website": "http://www.horowhenua.school.nz"
+  },
+  {
+    "name": "Howick College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.howickcollege.school.nz"
+  },
+  {
+    "name": "Huanui College",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.hc.school.nz/"
+  },
+  {
+    "name": "Hukarere Girls’ College",
+    "type": "Secondary",
+    "city": "Eskdale",
+    "website": "https://www.hukarere.ac.nz/"
+  },
+  {
+    "name": "Huntly College",
+    "type": "Secondary",
+    "city": "Huntly",
+    "website": "http://www.huntlycollege.school.nz"
+  },
+  {
+    "name": "Hurunui College",
+    "type": "Secondary",
+    "city": "Hawarden",
+    "website": "http://www.hurunuicollege.school.nz"
+  },
+  {
+    "name": "Hutt International Boys' School",
+    "type": "Secondary",
+    "city": "Upper Hutt",
+    "website": "http://www.hibs.school.nz"
+  },
+  {
+    "name": "Hutt Valley High School",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.hvhs.school.nz"
+  },
+  {
+    "name": "Hāwera New Year 7-15 School (Proposed opening date: 2023-01-01)",
+    "type": "Secondary",
+    "city": "Hawera",
+    "website": ""
+  },
+  {
+    "name": "Inglewood High School",
+    "type": "Secondary",
+    "city": "Inglewood",
+    "website": "http://www.inglewoodhs.school.nz"
+  },
+  {
+    "name": "Iona College",
+    "type": "Secondary",
+    "city": "Havelock North",
+    "website": "http://www.iona.school.nz"
+  },
+  {
+    "name": "Iqra School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.iqra.school.nz"
+  },
+  {
+    "name": "James Cook High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.jchs.school.nz"
+  },
+  {
+    "name": "James Hargest College",
+    "type": "Secondary",
+    "city": "Invercargill",
+    "website": "http://www.jameshargest.school.nz"
+  },
+  {
+    "name": "John McGlashan College",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.mcglashan.school.nz"
+  },
+  {
+    "name": "John Paul College",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "http://www.jpc.school.nz"
+  },
+  {
+    "name": "John Paul II High School",
+    "type": "Secondary",
+    "city": "Greymouth",
+    "website": "http://www.johnpaul.ac.nz"
+  },
+  {
+    "name": "Kaiapoi High School",
+    "type": "Secondary",
+    "city": "Kaiapoi",
+    "website": "http://www.kaiapoi.school.nz"
+  },
+  {
+    "name": "Kaikohe Christian School",
+    "type": "Secondary",
+    "city": "Kaikohe",
+    "website": "http://www.kcs.school.nz"
+  },
+  {
+    "name": "Kaikorai Valley College",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://kvcollege.co.nz"
+  },
+  {
+    "name": "Kaikoura High School",
+    "type": "Secondary",
+    "city": "Kaikoura",
+    "website": "http://www.kaikourahigh.school.nz"
+  },
+  {
+    "name": "Kaipara College",
+    "type": "Secondary",
+    "city": "Helensville",
+    "website": "http://www.kaipara.school.nz/"
+  },
+  {
+    "name": "Kaitaia Abundant Life School",
+    "type": "Secondary",
+    "city": "Kaitaia",
+    "website": "http://abundantlife.school.nz"
+  },
+  {
+    "name": "Kaitaia College",
+    "type": "Secondary",
+    "city": "Kaitaia",
+    "website": "http://www.kaitaiacollege.school.nz/"
+  },
+  {
+    "name": "Kamo High School",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.kamohigh.school.nz/"
+  },
+  {
+    "name": "Kapiti College",
+    "type": "Secondary",
+    "city": "Raumati Beach",
+    "website": "http://www.kapiticollege.school.nz"
+  },
+  {
+    "name": "Karamea Area School",
+    "type": "Secondary",
+    "city": "Westport",
+    "website": "https://www.karamea.school.nz/"
+  },
+  {
+    "name": "Karamu High School",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.karamu.school.nz"
+  },
+  {
+    "name": "Katikati College",
+    "type": "Secondary",
+    "city": "Katikati",
+    "website": "http://www.katikaticollege.school.nz"
+  },
+  {
+    "name": "Kavanagh College",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.kavanagh.school.nz"
+  },
+  {
+    "name": "Kelston Boys' High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.kbhs.school.nz"
+  },
+  {
+    "name": "Kelston Girls' College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.kelstongirls.school.nz"
+  },
+  {
+    "name": "Kerikeri High School",
+    "type": "Secondary",
+    "city": "Kerikeri",
+    "website": "http://www.kerikerihigh.ac.nz"
+  },
+  {
+    "name": "Kia Aroha College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.kiaaroha.school.nz/"
+  },
+  {
+    "name": "King's College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.kingscollege.school.nz"
+  },
+  {
+    "name": "Kings High School (Dunedin)",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.kingshigh.school.nz"
+  },
+  {
+    "name": "KingsWay School",
+    "type": "Secondary",
+    "city": "Red Beach",
+    "website": "http://www.kingsway.school.nz"
+  },
+  {
+    "name": "Kristin School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.kristin.school.nz/"
+  },
+  {
+    "name": "Kuranui College",
+    "type": "Secondary",
+    "city": "Greytown",
+    "website": "http://kuranuicollege.school.nz"
+  },
+  {
+    "name": "Lake Taupo Christian School",
+    "type": "Secondary",
+    "city": "Taupo",
+    "website": "http://www.ltcs.school.nz"
+  },
+  {
+    "name": "Lawrence Area School",
+    "type": "Secondary",
+    "city": "Lawrence",
+    "website": "http://www.las.school.nz/"
+  },
+  {
+    "name": "Liger Leadership Academy",
+    "type": "Secondary",
+    "city": "Queenstown",
+    "website": "http://www.ligeracademy.org.nz"
+  },
+  {
+    "name": "Lincoln High School",
+    "type": "Secondary",
+    "city": "Lincoln",
+    "website": "http://www.lincoln.school.nz"
+  },
+  {
+    "name": "Lindisfarne College",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.lindisfarne.school.nz"
+  },
+  {
+    "name": "Liston College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.liston.school.nz"
+  },
+  {
+    "name": "Logan Park High School",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.lphs.school.nz"
+  },
+  {
+    "name": "Long Bay College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.longbaycollege.com"
+  },
+  {
+    "name": "Longburn Adventist College",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.lac.school.nz"
+  },
+  {
+    "name": "Lynfield College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.lynfield.school.nz"
+  },
+  {
+    "name": "Lytton High School",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": "http://www.lyttonhigh.com"
+  },
+  {
+    "name": "Mackenzie College",
+    "type": "Secondary",
+    "city": "Fairlie",
+    "website": "http://www.mackcollege.school.nz"
+  },
+  {
+    "name": "Macleans College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.macleans.school.nz"
+  },
+  {
+    "name": "Mahurangi College",
+    "type": "Secondary",
+    "city": "Warkworth",
+    "website": "http://www.mahurangi.school.nz"
+  },
+  {
+    "name": "Mairehau High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.mairehau.school.nz"
+  },
+  {
+    "name": "Makoura College",
+    "type": "Secondary",
+    "city": "Masterton",
+    "website": "http://www.mc.school.nz"
+  },
+  {
+    "name": "Mana College",
+    "type": "Secondary",
+    "city": "Porirua",
+    "website": "http://www.mana.school.nz"
+  },
+  {
+    "name": "Mana Tamariki",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": ""
+  },
+  {
+    "name": "Manawatu College",
+    "type": "Secondary",
+    "city": "Foxton",
+    "website": "http://www.manawatucollege.school.nz"
+  },
+  {
+    "name": "Mangakahia Area School",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.mangakahia.school.nz"
+  },
+  {
+    "name": "Mangere College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.mangere.school.nz"
+  },
+  {
+    "name": "Maniototo Area School",
+    "type": "Secondary",
+    "city": "Ranfurly",
+    "website": "http://www.maniototo.school.nz"
+  },
+  {
+    "name": "Manukau Christian School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.manukauchristian.school.nz/"
+  },
+  {
+    "name": "Manukura",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.manukura.school.nz"
+  },
+  {
+    "name": "Manurewa High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.manurewa.school.nz"
+  },
+  {
+    "name": "Marcellin College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.marcellin.school.nz"
+  },
+  {
+    "name": "Marian College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.mariancollege.school.nz"
+  },
+  {
+    "name": "Marist College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.maristcollege.school.nz"
+  },
+  {
+    "name": "Marlborough Boys' College",
+    "type": "Secondary",
+    "city": "Blenheim",
+    "website": "http://www.marlboroughboys.school.nz"
+  },
+  {
+    "name": "Marlborough Girls' College",
+    "type": "Secondary",
+    "city": "Blenheim",
+    "website": "http://www.mgc.school.nz"
+  },
+  {
+    "name": "Massey High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.masseyhigh.school.nz/"
+  },
+  {
+    "name": "Matamata College",
+    "type": "Secondary",
+    "city": "Matamata",
+    "website": "https://www.matcol.nz/"
+  },
+  {
+    "name": "McAuley High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.mcauleyhigh.school.nz/"
+  },
+  {
+    "name": "Melville High School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.melville-high.school.nz"
+  },
+  {
+    "name": "Menzies College",
+    "type": "Secondary",
+    "city": "Wyndham",
+    "website": "http://www.menzies.school.nz"
+  },
+  {
+    "name": "Mercury Bay Area School",
+    "type": "Secondary",
+    "city": "Whitianga",
+    "website": "http://www.mbas.ac.nz"
+  },
+  {
+    "name": "Michael Park School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.michaelpark.school.nz/"
+  },
+  {
+    "name": "Middleton Grange School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.middleton.school.nz"
+  },
+  {
+    "name": "MindAlive",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": ""
+  },
+  {
+    "name": "Mission Heights Junior College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.mhjc.school.nz"
+  },
+  {
+    "name": "Morrinsville College",
+    "type": "Secondary",
+    "city": "Morrinsville",
+    "website": "http://www.morrcoll.school.nz"
+  },
+  {
+    "name": "Motueka High School",
+    "type": "Secondary",
+    "city": "Motueka",
+    "website": "http://www.motuekahigh.school.nz"
+  },
+  {
+    "name": "Mount Hutt College",
+    "type": "Secondary",
+    "city": "Methven",
+    "website": "http://mounthuttcollege.co.nz"
+  },
+  {
+    "name": "Mount Maunganui College",
+    "type": "Secondary",
+    "city": "Mount Maunganui",
+    "website": "http://www.mmc.school.nz"
+  },
+  {
+    "name": "Mountainview High School",
+    "type": "Secondary",
+    "city": "Timaru",
+    "website": "http://www.mountainview.school.nz/"
+  },
+  {
+    "name": "Mt Albert Grammar School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.mags.school.nz"
+  },
+  {
+    "name": "Mt Aspiring College",
+    "type": "Secondary",
+    "city": "Wanaka",
+    "website": "http://www.mtaspiring.school.nz"
+  },
+  {
+    "name": "Mt Hobson Academy",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.mthobson.school.nz"
+  },
+  {
+    "name": "Mt Roskill Grammar",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.mrgs.school.nz"
+  },
+  {
+    "name": "Murchison Area School",
+    "type": "Secondary",
+    "city": "Murchison",
+    "website": "http://www.murchison.school.nz/"
+  },
+  {
+    "name": "Murupara Area School",
+    "type": "Secondary",
+    "city": "Murupara",
+    "website": "http://www.mas.school.nz"
+  },
+  {
+    "name": "Naenae College",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.naenae-college.school.nz"
+  },
+  {
+    "name": "Napier Boys' High School",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.nbhs.school.nz"
+  },
+  {
+    "name": "Napier Girls' High School",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.nghs.school.nz"
+  },
+  {
+    "name": "Nayland College",
+    "type": "Secondary",
+    "city": "Nelson",
+    "website": "http://www.nayland.school.nz"
+  },
+  {
+    "name": "Nelson College",
+    "type": "Secondary",
+    "city": "Nelson",
+    "website": "http://www.nelsoncollege.school.nz/"
+  },
+  {
+    "name": "Nelson College For Girls",
+    "type": "Secondary",
+    "city": "Nelson",
+    "website": "http://www.ncg.school.nz"
+  },
+  {
+    "name": "New Plymouth Boys' High School",
+    "type": "Secondary",
+    "city": "New Plymouth",
+    "website": "http://www.npbhs.school.nz"
+  },
+  {
+    "name": "New Plymouth Girls' High School",
+    "type": "Secondary",
+    "city": "New Plymouth",
+    "website": "http://www.npghs.school.nz"
+  },
+  {
+    "name": "Newlands College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.newlands.school.nz"
+  },
+  {
+    "name": "Nga Taiatea Wharekura",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.taiatea.school.nz"
+  },
+  {
+    "name": "Nga Tawa Diocesan School",
+    "type": "Secondary",
+    "city": "Marton",
+    "website": "http://www.ngatawa.school.nz"
+  },
+  {
+    "name": "Ngaruawahia High School",
+    "type": "Secondary",
+    "city": "Ngaruawahia",
+    "website": "http://www.ngaruawahiahigh.school.nz/"
+  },
+  {
+    "name": "Ngata Memorial College",
+    "type": "Secondary",
+    "city": "Ruatoria",
+    "website": "http://www.ngatacollege.school.nz"
+  },
+  {
+    "name": "Ngataki School",
+    "type": "Secondary",
+    "city": "Kaitaia",
+    "website": "http://ngataki.school.nz/"
+  },
+  {
+    "name": "Northcote College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.northcote.school.nz"
+  },
+  {
+    "name": "Northern Southland College",
+    "type": "Secondary",
+    "city": "Lumsden",
+    "website": "http://www.nsc.school.nz"
+  },
+  {
+    "name": "Northland College",
+    "type": "Secondary",
+    "city": "Kaikohe",
+    "website": "http://www.northlandcollege.school.nz"
+  },
+  {
+    "name": "Odyssey House School (Auckland)",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.odyssey.org.nz"
+  },
+  {
+    "name": "Okaihau College",
+    "type": "Secondary",
+    "city": "Okaihau",
+    "website": "http://www.okaihau-college.school.nz"
+  },
+  {
+    "name": "One Tree Hill College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.onetreehillcollege.school.nz"
+  },
+  {
+    "name": "OneSchool Global - New Zealand",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.oneschoolglobal.com"
+  },
+  {
+    "name": "Onehunga High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.onehungahigh.school.nz"
+  },
+  {
+    "name": "Onewhero Area School",
+    "type": "Secondary",
+    "city": "Tuakau",
+    "website": "http://www.onewhero.school.nz/"
+  },
+  {
+    "name": "Onslow College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.onslow.school.nz"
+  },
+  {
+    "name": "Opihi College",
+    "type": "Secondary",
+    "city": "Temuka",
+    "website": "http://www.opihicollege.school.nz/"
+  },
+  {
+    "name": "Opononi Area School",
+    "type": "Secondary",
+    "city": "Kaikohe",
+    "website": ""
+  },
+  {
+    "name": "Opotiki College",
+    "type": "Secondary",
+    "city": "Opotiki",
+    "website": "http://www.opotikicol.school.nz"
+  },
+  {
+    "name": "Opunake High School",
+    "type": "Secondary",
+    "city": "Opunake",
+    "website": "http://www.opunake.school.nz/"
+  },
+  {
+    "name": "Orewa College",
+    "type": "Secondary",
+    "city": "Orewa",
+    "website": "https://www.orewacollege.nz/"
+  },
+  {
+    "name": "Ormiston Junior College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.ojc.school.nz"
+  },
+  {
+    "name": "Ormiston Senior College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.ormiston.school.nz/"
+  },
+  {
+    "name": "Otago Boys' High School",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.obhs.school.nz"
+  },
+  {
+    "name": "Otago Girls' High School",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.otagogirls.school.nz"
+  },
+  {
+    "name": "Otahuhu College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.otahuhucollege.school.nz"
+  },
+  {
+    "name": "Otaki College",
+    "type": "Secondary",
+    "city": "Otaki",
+    "website": "http://www.otakicollege.school.nz"
+  },
+  {
+    "name": "Otamatea Christian School",
+    "type": "Secondary",
+    "city": "Maungaturoto",
+    "website": "http://www.otamateachristianschool.com"
+  },
+  {
+    "name": "Otamatea High School",
+    "type": "Secondary",
+    "city": "Maungaturoto",
+    "website": "http://www.otamatea.school.nz"
+  },
+  {
+    "name": "Otumoetai College",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.otc.school.nz"
+  },
+  {
+    "name": "Oxford Area School",
+    "type": "Secondary",
+    "city": "Oxford",
+    "website": "http://www.oxford.school.nz"
+  },
+  {
+    "name": "Pacific Advance Secondary School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://pass.school.nz"
+  },
+  {
+    "name": "Paeroa College",
+    "type": "Secondary",
+    "city": "Paeroa",
+    "website": "http://www.paeroacollege.school.nz"
+  },
+  {
+    "name": "Pakuranga College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.pakuranga.school.nz"
+  },
+  {
+    "name": "Palmerston North Boys' High School",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.pnbhs.school.nz"
+  },
+  {
+    "name": "Palmerston North Girls' High School",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.pnghs.school.nz"
+  },
+  {
+    "name": "Papakura High School",
+    "type": "Secondary",
+    "city": "Papakura",
+    "website": "http://www.papakurahigh.school.nz"
+  },
+  {
+    "name": "Papamoa College",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.papamoacollege.school.nz"
+  },
+  {
+    "name": "Papanui High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.papanui.school.nz/"
+  },
+  {
+    "name": "Papatoetoe High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.papatoetoehigh.school.nz"
+  },
+  {
+    "name": "Paraparaumu College",
+    "type": "Secondary",
+    "city": "Paraparaumu",
+    "website": "http://www.paraparaumucollege.school.nz"
+  },
+  {
+    "name": "Patea Area School",
+    "type": "Secondary",
+    "city": "Patea",
+    "website": "http://www.pateaarea.school.nz"
+  },
+  {
+    "name": "Peace Experiment",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.peace.school.nz"
+  },
+  {
+    "name": "Pinehurst School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.pinehurst.school.nz"
+  },
+  {
+    "name": "Piopio College",
+    "type": "Secondary",
+    "city": "Piopio",
+    "website": "http://www.piopio.school.nz"
+  },
+  {
+    "name": "Pompallier Catholic College",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.pompalliercollege.school.nz"
+  },
+  {
+    "name": "Ponatahi Christian School",
+    "type": "Secondary",
+    "city": "Carterton",
+    "website": "http://www.ponatahi.school.nz/"
+  },
+  {
+    "name": "Porirua College",
+    "type": "Secondary",
+    "city": "Porirua",
+    "website": "http://www.poriruacollege.school.nz"
+  },
+  {
+    "name": "Pukekohe Christian School",
+    "type": "Secondary",
+    "city": "Pukekohe",
+    "website": "http://www.pcschool.co.nz"
+  },
+  {
+    "name": "Pukekohe High School",
+    "type": "Secondary",
+    "city": "Pukekohe",
+    "website": "http://www.pukekohehigh.school.nz"
+  },
+  {
+    "name": "Putaruru College",
+    "type": "Secondary",
+    "city": "Putaruru",
+    "website": "http://www.putarurucollege.school.nz"
+  },
+  {
+    "name": "Queen Charlotte College",
+    "type": "Secondary",
+    "city": "Picton",
+    "website": "http://www.qcc.school.nz"
+  },
+  {
+    "name": "Queen Elizabeth College",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.qec.school.nz"
+  },
+  {
+    "name": "Queen Margaret College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.qmc.school.nz"
+  },
+  {
+    "name": "Queens High School",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.queens.school.nz"
+  },
+  {
+    "name": "Raglan Area School",
+    "type": "Secondary",
+    "city": "Raglan",
+    "website": "http://www.raglanarea.school.nz"
+  },
+  {
+    "name": "Rai Valley Area School",
+    "type": "Secondary",
+    "city": "Rai Valley",
+    "website": "http://www.rai.school.nz"
+  },
+  {
+    "name": "Rangi Ruru Girls' School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.rangiruru.school.nz"
+  },
+  {
+    "name": "Rangiora High School",
+    "type": "Secondary",
+    "city": "Rangiora",
+    "website": "http://www.rangiorahigh.school.nz"
+  },
+  {
+    "name": "Rangiora New Life School",
+    "type": "Secondary",
+    "city": "Rangiora",
+    "website": "http://www.rnls.school.nz"
+  },
+  {
+    "name": "Rangitikei College",
+    "type": "Secondary",
+    "city": "Marton",
+    "website": "http://www.rangitikeicollege.school.nz"
+  },
+  {
+    "name": "Rangitoto College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.rangitoto.school.nz"
+  },
+  {
+    "name": "Raphael House Rudolf Steiner Area School",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.raphaelhouse.school.nz"
+  },
+  {
+    "name": "Rathkeale College",
+    "type": "Secondary",
+    "city": "Masterton",
+    "website": "http://www.rathkeale.school.nz"
+  },
+  {
+    "name": "Reefton Area School",
+    "type": "Secondary",
+    "city": "Reefton",
+    "website": "http://www.ras.school.nz/"
+  },
+  {
+    "name": "Renew School",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.renew.school.nz"
+  },
+  {
+    "name": "Reporoa College",
+    "type": "Secondary",
+    "city": "Reporoa",
+    "website": "http://www.reporoa.school.nz/"
+  },
+  {
+    "name": "Riccarton High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.riccarton.school.nz"
+  },
+  {
+    "name": "Richmond View School",
+    "type": "Secondary",
+    "city": "Blenheim",
+    "website": "http://www.rvs.school.nz"
+  },
+  {
+    "name": "Rodney College",
+    "type": "Secondary",
+    "city": "Wellsford",
+    "website": "http://www.rodneycollege.school.nz"
+  },
+  {
+    "name": "Rolleston College",
+    "type": "Secondary",
+    "city": "Rolleston",
+    "website": "http://www.rollestoncollege.nz"
+  },
+  {
+    "name": "Roncalli College",
+    "type": "Secondary",
+    "city": "Timaru",
+    "website": "http://www.roncalli.school.nz"
+  },
+  {
+    "name": "Rongotai College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.rongotai.school.nz"
+  },
+  {
+    "name": "Rosehill College",
+    "type": "Secondary",
+    "city": "Papakura",
+    "website": "http://www.rosehillcollege.school.nz"
+  },
+  {
+    "name": "Rosmini College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.rosmini.school.nz"
+  },
+  {
+    "name": "Rotorua Boys' High School",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "http://www.rbhs.school.nz"
+  },
+  {
+    "name": "Rotorua Girls' High School",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "http://www.rghs.school.nz"
+  },
+  {
+    "name": "Rotorua Lakes High School",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "http://www.rotorualakes.school.nz"
+  },
+  {
+    "name": "Rototuna Junior High School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.rhs.school.nz"
+  },
+  {
+    "name": "Rototuna Senior High School",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.rhs.school.nz"
+  },
+  {
+    "name": "Roxburgh Area School",
+    "type": "Secondary",
+    "city": "Roxburgh",
+    "website": "http://www.roxburgh.school.nz"
+  },
+  {
+    "name": "Ruapehu College",
+    "type": "Secondary",
+    "city": "Ohakune",
+    "website": "http://www.ruapehucollege.school.nz/"
+  },
+  {
+    "name": "Ruawai College",
+    "type": "Secondary",
+    "city": "Ruawai",
+    "website": "http://www.ruawaicollege.school.nz"
+  },
+  {
+    "name": "Rudolf Steiner School (Chch)",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.ch.steiner.school.nz"
+  },
+  {
+    "name": "Rutherford College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.rutherfordcollege.school.nz"
+  },
+  {
+    "name": "Sacred Heart College (Auckland)",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.sacredheart.school.nz"
+  },
+  {
+    "name": "Sacred Heart College (Lower Hutt)",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.sacredheartcollege.school.nz"
+  },
+  {
+    "name": "Sacred Heart College (Napier)",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.sacredheartnapier.school.nz/Home/"
+  },
+  {
+    "name": "Sacred Heart Girls' College (Ham)",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.shgcham.school.nz"
+  },
+  {
+    "name": "Sacred Heart Girls' College (N Plymouth)",
+    "type": "Secondary",
+    "city": "New Plymouth",
+    "website": "http://www.shgcnp.school.nz"
+  },
+  {
+    "name": "Saint Kentigern College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.saintkentigern.com"
+  },
+  {
+    "name": "Samuel Marsden Collegiate School",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.marsden.school.nz"
+  },
+  {
+    "name": "Sancta Maria College",
+    "type": "Secondary",
+    "city": "Manukau",
+    "website": "http://www.sanctamaria.school.nz"
+  },
+  {
+    "name": "Scots College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.scotscollege.school.nz/"
+  },
+  {
+    "name": "Selwyn College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.selwyn.school.nz"
+  },
+  {
+    "name": "Seven Oaks Secondary School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.sevenoaks.school.nz"
+  },
+  {
+    "name": "Shirley Boys' High School",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.shirley.school.nz"
+  },
+  {
+    "name": "Silverstream Christian School",
+    "type": "Secondary",
+    "city": "Upper Hutt",
+    "website": "http://www.silverstreamchristian.school.nz"
+  },
+  {
+    "name": "Sir Edmund Hillary Collegiate Senior School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.sehc.school.nz"
+  },
+  {
+    "name": "Solway College",
+    "type": "Secondary",
+    "city": "Masterton",
+    "website": "http://www.solwaycollege.school.nz"
+  },
+  {
+    "name": "South Otago High School",
+    "type": "Secondary",
+    "city": "Balclutha",
+    "website": "http://www.sohs.school.nz"
+  },
+  {
+    "name": "South Westland Area School",
+    "type": "Secondary",
+    "city": "Harihari",
+    "website": "http://www.southwestlandarea.school.nz"
+  },
+  {
+    "name": "Southern Cross Campus",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.southerncross.school.nz/"
+  },
+  {
+    "name": "Southland Boys' High School",
+    "type": "Secondary",
+    "city": "Invercargill",
+    "website": "http://www.sbhs.school.nz"
+  },
+  {
+    "name": "Southland Girls' High School",
+    "type": "Secondary",
+    "city": "Invercargill",
+    "website": "http://www.southlandgirls.school.nz"
+  },
+  {
+    "name": "Spotswood College",
+    "type": "Secondary",
+    "city": "New Plymouth",
+    "website": "http://spotswoodcollege.school.nz"
+  },
+  {
+    "name": "Springbank School",
+    "type": "Secondary",
+    "city": "Kerikeri",
+    "website": "http://www.springbank.school.nz"
+  },
+  {
+    "name": "St Andrew's College (Christchurch)",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.stac.school.nz"
+  },
+  {
+    "name": "St Bedes College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.stbedes.school.nz"
+  },
+  {
+    "name": "St Bernard's College",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.sbc.school.nz"
+  },
+  {
+    "name": "St Catherines College (Kilbirnie)",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.stcatherinescollege.school.nz"
+  },
+  {
+    "name": "St Cuthbert's College (Epsom)",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.stcuthberts.school.nz"
+  },
+  {
+    "name": "St Dominic's Catholic College (Henderson)",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.stdoms.ac.nz"
+  },
+  {
+    "name": "St Dominic's College",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": "http://www.sspx.org.nz/?page_id=15"
+  },
+  {
+    "name": "St Hildas Collegiate",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.shcs.school.nz/"
+  },
+  {
+    "name": "St Ignatius of Loyola Catholic College (Proposed opening date: 2024-01-01)",
+    "type": "Secondary",
+    "city": "Drury",
+    "website": ""
+  },
+  {
+    "name": "St John's College (Hastings)",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.stjohns.school.nz/"
+  },
+  {
+    "name": "St John's College (Hillcrest)",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.stjohns-hamilton.school.nz"
+  },
+  {
+    "name": "St Joseph's Maori Girls' College",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.sjmgc.school.nz/"
+  },
+  {
+    "name": "St Kevins College (Oamaru)",
+    "type": "Secondary",
+    "city": "Oamaru",
+    "website": "http://www.stkevins.school.nz"
+  },
+  {
+    "name": "St Margaret's College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.stmargarets.school.nz/"
+  },
+  {
+    "name": "St Mary's College (Ponsonby)",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.stmaryak.school.nz"
+  },
+  {
+    "name": "St Mary's College (Wellington)",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.stmw.school.nz/"
+  },
+  {
+    "name": "St Matthew's Collegiate (Masterton)",
+    "type": "Secondary",
+    "city": "Masterton",
+    "website": "http://www.stmatts.school.nz"
+  },
+  {
+    "name": "St Oran's College",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.storans.school.nz"
+  },
+  {
+    "name": "St Patrick's College (Kilbirnie)",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.stpats.school.nz/"
+  },
+  {
+    "name": "St Patrick's College (Silverstream)",
+    "type": "Secondary",
+    "city": "Upper Hutt",
+    "website": "http://www.stream.school.nz"
+  },
+  {
+    "name": "St Paul's College (Ponsonby)",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.stpaulscollege.co.nz/"
+  },
+  {
+    "name": "St Paul's Collegiate (Hamilton)",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.stpauls.school.nz/"
+  },
+  {
+    "name": "St Peter's College (Epsom)",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.st-peters.school.nz"
+  },
+  {
+    "name": "St Peter's College (Gore)",
+    "type": "Secondary",
+    "city": "Gore",
+    "website": "http://www.stpetersgore.school.nz"
+  },
+  {
+    "name": "St Peter's College (Palmerston North)",
+    "type": "Secondary",
+    "city": "Palmerston North",
+    "website": "http://www.stpeterspn.school.nz"
+  },
+  {
+    "name": "St Peter's School (Cambridge)",
+    "type": "Secondary",
+    "city": "Cambridge",
+    "website": "http://www.stpeters.school.nz"
+  },
+  {
+    "name": "St Thomas of Canterbury College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.stc.school.nz"
+  },
+  {
+    "name": "Stratford High School",
+    "type": "Secondary",
+    "city": "Stratford",
+    "website": "http://www.stratfordhigh.school.nz"
+  },
+  {
+    "name": "TKK Motuhake o Tawhiuau",
+    "type": "Secondary",
+    "city": "Murupara",
+    "website": "http://www.tawhiuau.school.nz"
+  },
+  {
+    "name": "TKKM o Hoani Waititi",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Huiarau",
+    "type": "Secondary",
+    "city": "Ruatahuna",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Hurungaterangi",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Kaikohe",
+    "type": "Secondary",
+    "city": "Kaikohe",
+    "website": "http://www.kurakaikohe.school.nz"
+  },
+  {
+    "name": "TKKM o Kawakawa mai Tawhiti",
+    "type": "Secondary",
+    "city": "Hicks Bay",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Mangere",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.schoolground.co.nz/mangerekura"
+  },
+  {
+    "name": "TKKM o Nga Maungarongo",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.kkmmaungarongo.co.nz"
+  },
+  {
+    "name": "TKKM o Nga Mokopuna",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.tkkmmokopuna.school.nz"
+  },
+  {
+    "name": "TKKM o Nga Uri A Maui",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Ngati Kahungunu Ki Heretaunga",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Ngati Kahungunu o Te Wairoa",
+    "type": "Secondary",
+    "city": "Wairoa",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Ngati Ruanui",
+    "type": "Secondary",
+    "city": "Hawera",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Otepoti",
+    "type": "Secondary",
+    "city": "Dunedin",
+    "website": "http://www.otepoti.school.nz"
+  },
+  {
+    "name": "TKKM o Puau Te Moananui-a-Kiwa",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Pukemiro",
+    "type": "Secondary",
+    "city": "Kaitaia",
+    "website": "http://www.pukemirokura.school.nz/"
+  },
+  {
+    "name": "TKKM o Ruamata",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "http://www.ruamata.school.nz"
+  },
+  {
+    "name": "TKKM o Tamaki Nui A Rua",
+    "type": "Secondary",
+    "city": "Dannevirke",
+    "website": "http://www.tamakinuiarua.school.nz"
+  },
+  {
+    "name": "TKKM o Taumarere",
+    "type": "Secondary",
+    "city": "Moerewa",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Te Ara Hou",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Te Ara Whanui",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Te Koutu",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "http://tekoutu.blogspot.co.nz"
+  },
+  {
+    "name": "TKKM o Te Kura Kokiri",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.kurakokiri.maori.nz"
+  },
+  {
+    "name": "TKKM o Te Raki Paewhenua",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.terakipaewhenua.school.nz/"
+  },
+  {
+    "name": "TKKM o Te Rawhiti Roa",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Te Rito",
+    "type": "Secondary",
+    "city": "Otaki",
+    "website": "http://www.terito.school.nz"
+  },
+  {
+    "name": "TKKM o Te Tonga o Hokianga",
+    "type": "Secondary",
+    "city": "Opononi",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Te Waiu o Ngati Porou",
+    "type": "Secondary",
+    "city": "Ruatoria",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Te Wananga Whare Tapere o Takitimu",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.schoolground.co.nz/kuratakitimu"
+  },
+  {
+    "name": "TKKM o Te Whanau Tahi",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.whanau-tahi.school.nz"
+  },
+  {
+    "name": "TKKM o Tuia te Matangi",
+    "type": "Secondary",
+    "city": "Richmond",
+    "website": "http://www.tuiatematangi.ac.nz"
+  },
+  {
+    "name": "TKKM o Tupoho",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Wairarapa",
+    "type": "Secondary",
+    "city": "Masterton",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Waitaha",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://whakapumau.ac.nz"
+  },
+  {
+    "name": "TKKM o Whakarewa I Te Reo Ki Tuwharetoa",
+    "type": "Secondary",
+    "city": "Taupo",
+    "website": ""
+  },
+  {
+    "name": "TKKM o Whangaroa",
+    "type": "Secondary",
+    "city": "Northland",
+    "website": ""
+  },
+  {
+    "name": "Tai Wananga",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.taiwananga.co.nz"
+  },
+  {
+    "name": "Taieri College",
+    "type": "Secondary",
+    "city": "Mosgiel",
+    "website": "http://www.taieri.school.nz"
+  },
+  {
+    "name": "Taihape Area School",
+    "type": "Secondary",
+    "city": "Taihape",
+    "website": "http://www.tas.school.nz"
+  },
+  {
+    "name": "Taikura Rudolf Steiner School",
+    "type": "Secondary",
+    "city": "Hastings",
+    "website": "http://www.taikurasteiner.school.nz"
+  },
+  {
+    "name": "Taipa Area School",
+    "type": "Secondary",
+    "city": "Taipa",
+    "website": "http://www.taipa.school.nz"
+  },
+  {
+    "name": "Taita College",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.taita.school.nz/"
+  },
+  {
+    "name": "Takapuna Grammar School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.takapuna.school.nz"
+  },
+  {
+    "name": "Tamaki College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.tamaki.ac.nz"
+  },
+  {
+    "name": "Tamatea High School",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.tamatea.school.nz/"
+  },
+  {
+    "name": "Tangaroa College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.tangaroa.school.nz"
+  },
+  {
+    "name": "Tapawera Area School",
+    "type": "Secondary",
+    "city": "Nelson",
+    "website": "http://www.tapawera.school.nz"
+  },
+  {
+    "name": "Taradale High School",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.ths.school.nz"
+  },
+  {
+    "name": "Taranaki Diocesan School for Girls",
+    "type": "Secondary",
+    "city": "Stratford",
+    "website": "https://www.taranakidio.school.nz"
+  },
+  {
+    "name": "Tararua College",
+    "type": "Secondary",
+    "city": "Pahiatua",
+    "website": "http://www.tararuacollege.school.nz/"
+  },
+  {
+    "name": "Tarawera High School",
+    "type": "Secondary",
+    "city": "Kawerau",
+    "website": "http://www.tarawera.school.nz"
+  },
+  {
+    "name": "Tauhara College",
+    "type": "Secondary",
+    "city": "Taupo",
+    "website": "http://www.tauhara.school.nz"
+  },
+  {
+    "name": "Taumarunui High School",
+    "type": "Secondary",
+    "city": "Taumarunui",
+    "website": "http://www.nuihigh.com"
+  },
+  {
+    "name": "Taupo-nui-a-Tia College",
+    "type": "Secondary",
+    "city": "Taupo",
+    "website": "http://www.taupocollege.ac.nz"
+  },
+  {
+    "name": "Tauranga Boys' College",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.tbc.school.nz"
+  },
+  {
+    "name": "Tauranga Girls' College",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.tgc.school.nz"
+  },
+  {
+    "name": "Tauraroa Area School",
+    "type": "Secondary",
+    "city": "Maungakaramea",
+    "website": "http://www.tauraroa.school.nz"
+  },
+  {
+    "name": "Tawa College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.tawacollege.school.nz"
+  },
+  {
+    "name": "Te Aratai College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.linwoodcollege.school.nz"
+  },
+  {
+    "name": "Te Aratika Academy",
+    "type": "Secondary",
+    "city": "Mangateretere",
+    "website": "http://www.tearatika.school.nz"
+  },
+  {
+    "name": "Te Aroha College",
+    "type": "Secondary",
+    "city": "Te Aroha",
+    "website": "http://www.tearoha.school.nz"
+  },
+  {
+    "name": "Te Aute College",
+    "type": "Secondary",
+    "city": "Pukehou",
+    "website": "http://www.teaute.maori.nz"
+  },
+  {
+    "name": "Te Awamutu College",
+    "type": "Secondary",
+    "city": "Te Awamutu",
+    "website": "http://www.tac.school.nz/"
+  },
+  {
+    "name": "Te Karaka Area School",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": "http://tkas.school.nz"
+  },
+  {
+    "name": "Te Kauwhata College",
+    "type": "Secondary",
+    "city": "Te Kauwhata",
+    "website": "http://tkcoll.school.nz"
+  },
+  {
+    "name": "Te Kuiti High School",
+    "type": "Secondary",
+    "city": "Te Kuiti",
+    "website": "http://www.tkhs.school.nz/"
+  },
+  {
+    "name": "Te Kura Kaupapa Maori o Horouta Wananga",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": "http://horoutawananga.nz/"
+  },
+  {
+    "name": "Te Kura Mana Maori o Whangaparaoa",
+    "type": "Secondary",
+    "city": "Opotiki",
+    "website": ""
+  },
+  {
+    "name": "Te Kura Maori o Nga Tapuwae",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.ngatapuwae.school.nz"
+  },
+  {
+    "name": "Te Kura Maori o Porirua",
+    "type": "Secondary",
+    "city": "Porirua",
+    "website": "http://www.kura-porirua.school.nz"
+  },
+  {
+    "name": "Te Kura Maori-a-Rohe o Waiohau",
+    "type": "Secondary",
+    "city": "Whakatane",
+    "website": ""
+  },
+  {
+    "name": "Te Kura Taumata o Panguru",
+    "type": "Secondary",
+    "city": "Panguru",
+    "website": "http://www.panguru.school.nz"
+  },
+  {
+    "name": "Te Kura Toitu o Te Whaiti-nui-a-Toi",
+    "type": "Secondary",
+    "city": "Te Whaiti",
+    "website": ""
+  },
+  {
+    "name": "Te Kura o Hirangi",
+    "type": "Secondary",
+    "city": "Turangi",
+    "website": ""
+  },
+  {
+    "name": "Te Kura o Kokohuia",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": ""
+  },
+  {
+    "name": "Te Kura o Nga Ruahine Rangi",
+    "type": "Secondary",
+    "city": "Mangatoki",
+    "website": ""
+  },
+  {
+    "name": "Te Kura o Te Kao",
+    "type": "Secondary",
+    "city": "Te Kao",
+    "website": "http://www.tekuraotekao.school.nz"
+  },
+  {
+    "name": "Te Kura o Te Whānau-a-Apanui",
+    "type": "Secondary",
+    "city": "Omaio",
+    "website": "http://www.tekuraotewhanauaapanui.school.nz"
+  },
+  {
+    "name": "Te Kura o Waikare",
+    "type": "Secondary",
+    "city": "Kawakawa",
+    "website": "http://www.tekuraowaikare.school.nz/"
+  },
+  {
+    "name": "Te Kura o Waitahanui",
+    "type": "Secondary",
+    "city": "Taupo",
+    "website": "https://www.waitahanui.school.nz/"
+  },
+  {
+    "name": "Te Kura-a-iwi o Whakatupuranga Rua Mano",
+    "type": "Secondary",
+    "city": "Otaki",
+    "website": "http://www.wrm.school.nz"
+  },
+  {
+    "name": "Te Kāpehu Whetū (Tuakana)",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.tkw.ac.nz"
+  },
+  {
+    "name": "Te Kōpuku High",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.tekopuku.school.nz/#home"
+  },
+  {
+    "name": "Te Pa o Rakaihautu",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.rakaihautu.com"
+  },
+  {
+    "name": "Te Pi'ipi'inga Kakano Mai I Rangiatea",
+    "type": "Secondary",
+    "city": "New Plymouth",
+    "website": ""
+  },
+  {
+    "name": "Te Puke High School",
+    "type": "Secondary",
+    "city": "Te Puke",
+    "website": "http://www.tepuke.school.nz/"
+  },
+  {
+    "name": "Te Rangi Aniwaniwa",
+    "type": "Secondary",
+    "city": "Awanui",
+    "website": "http://www.terangianiwaniwa.school.nz"
+  },
+  {
+    "name": "Te Rangihakahaka Centre for Science and Technology",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "https://terangihakahaka.school.nz"
+  },
+  {
+    "name": "Te Waha O Rerekohu Area School",
+    "type": "Secondary",
+    "city": "Te Araroa",
+    "website": "http://www.tewahaorerekohu.school.nz/"
+  },
+  {
+    "name": "Te Wharekura o Arowhenua",
+    "type": "Secondary",
+    "city": "Invercargill",
+    "website": "http://www.arowhenua.school.nz"
+  },
+  {
+    "name": "Te Wharekura o Kirikiriroa",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": ""
+  },
+  {
+    "name": "Te Wharekura o Manaia",
+    "type": "Secondary",
+    "city": "Coromandel",
+    "website": "https://twom.school.nz/"
+  },
+  {
+    "name": "Te Wharekura o Maniapoto",
+    "type": "Secondary",
+    "city": "Te Kuiti",
+    "website": "http://www.maniapoto.school.nz/"
+  },
+  {
+    "name": "Te Wharekura o Manurewa",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.tewharekuraomanurewa.school.nz/"
+  },
+  {
+    "name": "Te Wharekura o Mauao",
+    "type": "Secondary",
+    "city": "Tauranga",
+    "website": "http://www.mauao.school.nz"
+  },
+  {
+    "name": "Te Wharekura o Nga Purapura o Te Aroha",
+    "type": "Secondary",
+    "city": "Te Awamutu",
+    "website": ""
+  },
+  {
+    "name": "Te Wharekura o Ngāti Rongomai",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": ""
+  },
+  {
+    "name": "Te Wharekura o Rakaumangamanga",
+    "type": "Secondary",
+    "city": "Huntly",
+    "website": "http://www.rakaumanga.school.nz"
+  },
+  {
+    "name": "Te Wharekura o Ruatoki",
+    "type": "Secondary",
+    "city": "Whakatane",
+    "website": ""
+  },
+  {
+    "name": "Te Wharekura o Te Kaokaoroa o Patetere",
+    "type": "Secondary",
+    "city": "Putaruru",
+    "website": "http://www.kaokaoroa.school.nz"
+  },
+  {
+    "name": "Te Wharekura o Te Rau Aroha",
+    "type": "Secondary",
+    "city": "Waitoa",
+    "website": ""
+  },
+  {
+    "name": "Te Whata Tau o Putauaki",
+    "type": "Secondary",
+    "city": "Kawerau",
+    "website": "http://www.twtop.school.nz"
+  },
+  {
+    "name": "Thames High School",
+    "type": "Secondary",
+    "city": "Thames",
+    "website": "http://www.thameshigh.school.nz"
+  },
+  {
+    "name": "The Catlins Area School",
+    "type": "Secondary",
+    "city": "Owaka",
+    "website": "http://www.catlins.school.nz"
+  },
+  {
+    "name": "Tikipunga High School",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "https://tikipungahigh.school.nz/"
+  },
+  {
+    "name": "Timaru Boys' High School",
+    "type": "Secondary",
+    "city": "Timaru",
+    "website": "http://www.timaruboys.school.nz"
+  },
+  {
+    "name": "Timaru Christian School",
+    "type": "Secondary",
+    "city": "Timaru",
+    "website": "http://www.timaruchristian.school.nz"
+  },
+  {
+    "name": "Timaru Girls' High School",
+    "type": "Secondary",
+    "city": "Timaru",
+    "website": "http://www.timarugirls.school.nz"
+  },
+  {
+    "name": "Titirangi Rudolf Steiner School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.titirangi.steiner.school.nz"
+  },
+  {
+    "name": "Tokomairiro High School",
+    "type": "Secondary",
+    "city": "Milton",
+    "website": "http://www.tokohigh.school.nz/"
+  },
+  {
+    "name": "Tokoroa High School",
+    "type": "Secondary",
+    "city": "Tokoroa",
+    "website": "http://www.tokoroahigh.school.nz/"
+  },
+  {
+    "name": "Tolaga Bay Area School",
+    "type": "Secondary",
+    "city": "Tolaga Bay",
+    "website": ""
+  },
+  {
+    "name": "Tongariro School",
+    "type": "Secondary",
+    "city": "Turangi",
+    "website": "http://www.tongariro.school.nz"
+  },
+  {
+    "name": "Totara College of Accelerated Learning",
+    "type": "Secondary",
+    "city": "Dannevirke",
+    "website": "https://www.totaracollege.school.nz"
+  },
+  {
+    "name": "Trident High School",
+    "type": "Secondary",
+    "city": "Whakatane",
+    "website": "http://www.trident.school.nz"
+  },
+  {
+    "name": "Tuakau College",
+    "type": "Secondary",
+    "city": "Tuakau",
+    "website": "http://www.tuakaucollege.com"
+  },
+  {
+    "name": "Twizel Area School",
+    "type": "Secondary",
+    "city": "Twizel",
+    "website": "https://twizel.wordpress.com/"
+  },
+  {
+    "name": "Tyndale Park Christian School",
+    "type": "Secondary",
+    "city": "Manukau",
+    "website": "http://www.tyndalepark.school.nz"
+  },
+  {
+    "name": "Tūranga Tangata Rite",
+    "type": "Secondary",
+    "city": "Gisborne",
+    "website": "http://ttr.school.nz/index.html"
+  },
+  {
+    "name": "UP International College New Zealand",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://partnerships.up.education/"
+  },
+  {
+    "name": "Upper Hutt College",
+    "type": "Secondary",
+    "city": "Upper Hutt",
+    "website": "http://www.upperhutt.school.nz"
+  },
+  {
+    "name": "Vanguard Military School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.vanguard.school.nz"
+  },
+  {
+    "name": "Verdon College",
+    "type": "Secondary",
+    "city": "Invercargill",
+    "website": "http://www.verdoncollege.school.nz"
+  },
+  {
+    "name": "Villa Maria College",
+    "type": "Secondary",
+    "city": "Christchurch",
+    "website": "http://www.villa.school.nz"
+  },
+  {
+    "name": "Wa Ora Montessori School",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.waora.school.nz"
+  },
+  {
+    "name": "Waiau Area School",
+    "type": "Secondary",
+    "city": "Tuatapere",
+    "website": "http://www.was.school.nz/"
+  },
+  {
+    "name": "Waiheke High School",
+    "type": "Secondary",
+    "city": "Waiheke Island",
+    "website": "http://www.waihekehigh.school.nz"
+  },
+  {
+    "name": "Waihi College",
+    "type": "Secondary",
+    "city": "Waihi",
+    "website": "http://www.waihicol.school.nz"
+  },
+  {
+    "name": "Waikato Diocesan School For Girls",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.waikatodiocesan.school.nz/"
+  },
+  {
+    "name": "Waikato Waldorf School ( Rudolf Steiner)",
+    "type": "Secondary",
+    "city": "Hamilton",
+    "website": "http://www.waikatowaldorf.school.nz/"
+  },
+  {
+    "name": "Waimate High School",
+    "type": "Secondary",
+    "city": "Waimate",
+    "website": "http://www.waimate-high.school.nz"
+  },
+  {
+    "name": "Waimea College",
+    "type": "Secondary",
+    "city": "Richmond",
+    "website": "http://www.waimea.school.nz/"
+  },
+  {
+    "name": "Wainuiomata High School",
+    "type": "Secondary",
+    "city": "Lower Hutt",
+    "website": "http://www.wainuiomatahigh.school.nz"
+  },
+  {
+    "name": "Waiopehu College",
+    "type": "Secondary",
+    "city": "Levin",
+    "website": "http://www.waiopehu.ac.nz"
+  },
+  {
+    "name": "Wairarapa College",
+    "type": "Secondary",
+    "city": "Masterton",
+    "website": "http://www.waicol.co.nz"
+  },
+  {
+    "name": "Wairoa College",
+    "type": "Secondary",
+    "city": "Wairoa",
+    "website": "http://www.wairoacollege.school.nz"
+  },
+  {
+    "name": "Waitakere College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "https://www.waitakerecollege.school.nz/"
+  },
+  {
+    "name": "Waitaki Boys' High School",
+    "type": "Secondary",
+    "city": "Oamaru",
+    "website": "http://www.waitakibhs.school.nz"
+  },
+  {
+    "name": "Waitaki Girls' High School",
+    "type": "Secondary",
+    "city": "Oamaru",
+    "website": "http://www.waitakigirlshigh.school.nz"
+  },
+  {
+    "name": "Waitara High School",
+    "type": "Secondary",
+    "city": "Waitara",
+    "website": "http://waitarahs.school.nz"
+  },
+  {
+    "name": "Waiuku College",
+    "type": "Secondary",
+    "city": "Waiuku",
+    "website": "http://www.waiuku-college.school.nz/"
+  },
+  {
+    "name": "Wakatipu High School",
+    "type": "Secondary",
+    "city": "Queenstown",
+    "website": "http://www.wakatipu.school.nz"
+  },
+  {
+    "name": "Wellington College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.wellington-college.school.nz"
+  },
+  {
+    "name": "Wellington East Girls' College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.wegc.school.nz"
+  },
+  {
+    "name": "Wellington Girls' College",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.wgc.school.nz"
+  },
+  {
+    "name": "Wellington High School and Com Ed Centre",
+    "type": "Secondary",
+    "city": "Wellington",
+    "website": "http://www.whs.school.nz"
+  },
+  {
+    "name": "Wentworth College",
+    "type": "Secondary",
+    "city": "Whangaparaoa",
+    "website": "http://www.wentworth.school.nz"
+  },
+  {
+    "name": "Wesley College",
+    "type": "Secondary",
+    "city": "Pukekohe",
+    "website": "http://www.wesley.school.nz"
+  },
+  {
+    "name": "Western Heights High School",
+    "type": "Secondary",
+    "city": "Rotorua",
+    "website": "http://www.whhs.school.nz"
+  },
+  {
+    "name": "Western Springs College",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.westernsprings.school.nz"
+  },
+  {
+    "name": "Westlake Boys High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.westlake.school.nz"
+  },
+  {
+    "name": "Westlake Girls' High School",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.westlakegirls.school.nz"
+  },
+  {
+    "name": "Westland High School",
+    "type": "Secondary",
+    "city": "Hokitika",
+    "website": "http://www.westlandhigh.school.nz"
+  },
+  {
+    "name": "Whakatane High School",
+    "type": "Secondary",
+    "city": "Whakatane",
+    "website": "http://www.whakatanehigh.school.nz"
+  },
+  {
+    "name": "Whangamata Area School",
+    "type": "Secondary",
+    "city": "Whangamata",
+    "website": "http://www.whangamata.school.nz/"
+  },
+  {
+    "name": "Whanganui City College",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": "http://www.wcc.school.nz"
+  },
+  {
+    "name": "Whanganui Collegiate School",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": "http://www.collegiate.school.nz"
+  },
+  {
+    "name": "Whanganui Girls' College",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": "http://www.whanganui-girls.school.nz"
+  },
+  {
+    "name": "Whanganui High School",
+    "type": "Secondary",
+    "city": "Whanganui",
+    "website": "http://www.whanganuihigh.school.nz"
+  },
+  {
+    "name": "Whangaparaoa College",
+    "type": "Secondary",
+    "city": "Stanmore Bay",
+    "website": "http://www.wgpcollege.school.nz/"
+  },
+  {
+    "name": "Whangarei Girls' High School",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.wghs.school.nz"
+  },
+  {
+    "name": "Whangaroa College",
+    "type": "Secondary",
+    "city": "Kaeo",
+    "website": "http://www.whangaroacollege.school.nz"
+  },
+  {
+    "name": "Whangārei Boys' High School",
+    "type": "Secondary",
+    "city": "Whangarei",
+    "website": "http://www.wbhs.school.nz"
+  },
+  {
+    "name": "Whitby Collegiate",
+    "type": "Secondary",
+    "city": "Porirua",
+    "website": "https://www.whitbycollegiate.school.nz/"
+  },
+  {
+    "name": "William Colenso College",
+    "type": "Secondary",
+    "city": "Napier",
+    "website": "http://www.colenso.school.nz"
+  },
+  {
+    "name": "Woodford House",
+    "type": "Secondary",
+    "city": "Havelock North",
+    "website": "http://www.woodford.school.nz"
+  },
+  {
+    "name": "Zayed College for Girls",
+    "type": "Secondary",
+    "city": "Auckland",
+    "website": "http://www.zayedcollege.school.nz"
+  },
+  {
+    "name": "Ōtorohanga College",
+    "type": "Secondary",
+    "city": "Otorohanga",
+    "website": "http://www.otocoll.school.nz"
+  },
+  {
+    "name": "Auckland University of Technology",
+    "type": "Tertiary",
+    "city": "Auckland"
+  },
+  {
+    "name": "Lincoln University",
+    "type": "Tertiary",
+    "city": "Lincoln"
+  },
+  {
+    "name": "Massey University",
+    "type": "Tertiary",
+    "city": "Palmerston North"
+  },
+  {
+    "name": "University of Auckland",
+    "type": "Tertiary",
+    "city": "Auckland"
+  },
+  {
+    "name": "University of Canterbury",
+    "type": "Tertiary",
+    "city": "Christchurch"
+  },
+  {
+    "name": "University of Otago",
+    "type": "Tertiary",
+    "city": "Dunedin"
+  },
+  {
+    "name": "University of Waikato",
+    "type": "Tertiary",
+    "city": "Hamilton"
+  },
+  {
+    "name": "Victoria University of Wellington",
+    "type": "Tertiary",
+    "city": "Wellington"
+  },
+  {
+    "name": "Overseas University",
+    "type": "Tertiary"
+  },
+  {
+    "name": "Other (Secondary)",
+    "type": "Secondary"
+  },
+  {
+    "name": "Other (Tertiary)",
+    "type": "Tertiary"
+  }
+]

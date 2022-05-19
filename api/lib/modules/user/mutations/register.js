@@ -12,6 +12,7 @@ import { createUserObject } from "../helpers";
 import getAvatar from "../../../helpers/getAvatar";
 
 import whitelist from "../../../config/whitelist.json";
+import schools from "../../../config/schools.json";
 
 const { FRONTEND_DOMAIN, CAPTCHA_SECRET_KEY, NODE_ENV } = process.env;
 
@@ -29,15 +30,11 @@ const userSchema = yup.object().shape({
       is: (val) => whitelist.school[val],
       then: (schema) =>
         schema.oneOf(
-          Object.entries(whitelist.school)
-            .filter((s) => s[1])
-            .map((s) => s[0])
+          schools.filter((s) => s.type === "Tertiary").map((s) => s.name)
         ),
       otherwise: (schema) =>
         schema.oneOf(
-          Object.entries(whitelist.school)
-            .filter((s) => !s[1])
-            .map((s) => s[0])
+          schools.filter((s) => s.type === "Secondary").map((s) => s.name)
         ),
     }),
   applyTutor: yup.boolean().required(),
