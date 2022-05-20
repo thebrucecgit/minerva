@@ -52,7 +52,7 @@ const Dashboard = ({ location, match, authService }) => {
     setAppbarOpen((st) => !st);
   };
 
-  const [openOnboarding, onboardingBinds] = useModal(false);
+  const [, onboardingBinds] = useModal(false);
 
   const ws = useChat(currentUser);
 
