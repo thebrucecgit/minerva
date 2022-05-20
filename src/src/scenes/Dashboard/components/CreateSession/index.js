@@ -98,7 +98,7 @@ export default function CreateSession({ isOpen, close, users }) {
   };
 
   return (
-    <Modal open={isOpen} onClose={close}>
+    <Modal open={isOpen} closeModal={close}>
       <StyledCreateSession>
         <h2>Create Session</h2>
 

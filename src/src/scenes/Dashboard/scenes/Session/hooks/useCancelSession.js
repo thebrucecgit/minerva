@@ -25,7 +25,7 @@ function useCancelSession({ id, setSessionInfo }) {
         ...info,
         ...data.cancelSession,
       }));
-      binds.onClose();
+      binds.closeModal();
       toast.update(toastId, {
         render: "Session successfully cancelled",
         type: toast.TYPE.SUCCESS,

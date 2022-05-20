@@ -1,21 +1,28 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 const useModal = (initial, name, { onOpen, onClose } = {}) => {
   const [open, setOpen] = useState(initial);
 
-  function openModal(useHook) {
-    if (useHook && onOpen) onOpen(name);
-    setOpen(true);
-  }
+  const openModal = useCallback(
+    (useHook) => {
+      if (useHook && onOpen) onOpen(name);
+      setOpen(true);
+    },
+    [onOpen, name]
+  );
 
-  function closeModal(useHook) {
-    if (useHook && onClose) onClose(name);
-    setOpen(false);
-  }
+  const closeModal = useCallback(
+    (useHook) => {
+      if (useHook && onClose) onClose(name);
+      setOpen(false);
+    },
+    [onClose, name]
+  );
 
   const binds = {
     open,
-    onClose: closeModal,
+    openModal,
+    closeModal,
   };
 
   return [openModal, binds];

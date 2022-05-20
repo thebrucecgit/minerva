@@ -18,7 +18,31 @@ import Chats from "./scenes/Chats";
 import PersonalInfo from "./scenes/PersonalInfo";
 
 import "./quill.scss";
-import styles from "./styles.module.scss";
+import styled from "styled-components";
+import useModal from "./hooks/useModal";
+import Onboarding from "./components/Onboarding";
+
+const StyledDashboard = styled.div`
+  display: flex;
+
+  h1 {
+    font-size: 3rem;
+    margin: 1rem $text-padding;
+  }
+
+  h2 {
+    font-size: 2rem;
+    margin: 0;
+  }
+
+  img {
+    display: block;
+  }
+`;
+
+const Content = styled.div`
+  width: 100%;
+`;
 
 const Dashboard = ({ location, match, authService }) => {
   const { currentUser } = authService;
@@ -28,6 +52,8 @@ const Dashboard = ({ location, match, authService }) => {
     setAppbarOpen((st) => !st);
   };
 
+  const [openOnboarding, onboardingBinds] = useModal(false);
+
   const ws = useChat(currentUser);
 
   const { path } = match;
@@ -35,7 +61,7 @@ const Dashboard = ({ location, match, authService }) => {
   const pageBinds = { currentUser, ws };
 
   return (
-    <div className={styles.Dashboard}>
+    <StyledDashboard>
       <Appbar
         {...pageBinds}
         appbarOpen={appbarOpen}
@@ -46,7 +72,7 @@ const Dashboard = ({ location, match, authService }) => {
         appbarOpen={appbarOpen}
         toggleAppbar={toggleAppbar}
       />
-      <div className={styles.content}>
+      <Content>
         <Switch>
           <Route exact path={path}>
             <Main {...pageBinds} />
@@ -86,8 +112,9 @@ const Dashboard = ({ location, match, authService }) => {
             <Redirect to={location.pathname.replace(path, "")} />
           </Route>
         </Switch>
-      </div>
-    </div>
+      </Content>
+      <Onboarding {...onboardingBinds} currentUser={currentUser} />
+    </StyledDashboard>
   );
 };
 
