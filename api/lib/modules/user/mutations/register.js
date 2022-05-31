@@ -16,7 +16,7 @@ import userSchema from "../yupSchema";
 const { FRONTEND_DOMAIN, CAPTCHA_SECRET_KEY, NODE_ENV } = process.env;
 
 const registerSchema = userSchema.shape({
-  token: yup.string().required(),
+  token: NODE_ENV === "production" ? yup.string().required() : null,
   email: yup.string().trim().lowercase().email(),
   password: yup.string(),
 });

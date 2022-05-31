@@ -18,8 +18,8 @@ sgMail.send.mockResolvedValue();
 let mongod;
 
 beforeAll(async () => {
-  mongod = new MongoMemoryServer();
-  await db.connect(await mongod.getUri());
+  mongod = await MongoMemoryServer.create();
+  await db.connect(mongod.getUri());
 });
 
 afterAll(async () => {
@@ -79,12 +79,8 @@ describe("Registering a new user via email", () => {
         name: "John Smith",
       },
       from: {
-        email: "confirmation@academe.co.nz",
-        name: "Academe Email Confirmation",
-      },
-      reply_to: {
-        email: "admin@academe.co.nz",
-        name: "Admin",
+        email: "no-reply@minervaeducation.co.nz",
+        name: "Minerva Education",
       },
       templateId: "d-6327717732fb4b17bd19727a75a9e5cf",
       dynamic_template_data: {
@@ -154,12 +150,8 @@ describe("Registering a new user via email", () => {
         name: "John Smith",
       },
       from: {
-        email: "passwordreset@academe.co.nz",
-        name: "Academe Password Reset",
-      },
-      reply_to: {
-        email: "admin@academe.co.nz",
-        name: "Admin",
+        email: "no-reply@minervaeducation.co.nz",
+        name: "Minerva Education",
       },
       templateId: "d-02ecc5c486f14da1957ce5e6422cfb9a",
       dynamic_template_data: {
@@ -214,6 +206,7 @@ describe("Update user details", () => {
     const user = await User.findById("1");
     expect(user.name).toBe("John Smith");
   });
+
   test("Update tutee name", async () => {
     await User.create({
       _id: "1",
@@ -222,26 +215,41 @@ describe("Update user details", () => {
     });
     await updateUser(
       null,
-      { id: "1", name: "Sienna Johnson" },
+      {
+        id: "1",
+        name: "Sienna Johnson",
+        yearGroup: "Year 13",
+        school: "St Margaret's College",
+        biography: "",
+      },
       { user: { _id: new ID("1") } }
     );
     const user = await User.findById("1");
     expect(user.name).toBe("Sienna Johnson");
     expect(index.partialUpdateObject.mock.calls.length).toBe(0);
   });
-  test("Update bio of approved tutor", async () => {
+
+  test("Update biography and subjects of approved tutor", async () => {
     await User.create({
       _id: "1",
       name: "John Smith",
       biography: "I'm an interested mammal",
       "tutor.status": "COMPLETE",
       "tutor.academicsTutoring": ["English", "Mathematics"],
+      "tutor.type": "LOCAL",
+      "tutor.curricula": ["NCEA"],
     });
     await updateUser(
       null,
       {
         id: "1",
+        name: "John Smith",
         biography: "I am available for tutoring on certain days.",
+        yearGroup: "Year 13",
+        school: "St Margaret's College",
+        tutor: {
+          academicsTutoring: ["Physics"],
+        },
       },
       { user: { _id: new ID("1") } }
     );
@@ -251,9 +259,36 @@ describe("Update user details", () => {
       _id: "1",
       name: "John Smith",
       biography: "I am available for tutoring on certain days.",
+      yearGroup: "Year 13",
+      school: "St Margaret's College",
       tutor: {
-        academicsTutoring: ["English", "Mathematics"],
+        academicsTutoring: ["Physics"],
       },
     });
+  });
+
+  test("Invalid update of tutee profile", async () => {
+    await User.create({
+      _id: "1",
+      name: "John Smith",
+      biography: "I'm an interested mammal",
+    });
+    try {
+      await updateUser(
+        null,
+        {
+          id: "1",
+          name: "Sienna Johnson",
+          yearGroup: "Year 13",
+          school: "University of Canterbury",
+          biography: "",
+        },
+        { user: { _id: new ID("1") } }
+      );
+    } catch (e) {
+      expect(e.message.toLowerCase()).toMatch(
+        /school must be one of the following values/
+      );
+    }
   });
 });

@@ -14,8 +14,8 @@ jest.mock("@sendgrid/mail");
 let mongod, tutor, tutee, classDoc, chat, session;
 
 beforeAll(async () => {
-  mongod = new MongoMemoryServer();
-  await db.connect(await mongod.getUri());
+  mongod = await MongoMemoryServer.create();
+  await db.connect(mongod.getUri());
 
   tutor = await User.create({
     _id: "1",

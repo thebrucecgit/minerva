@@ -33,16 +33,20 @@ export default async function updateUser(_, args, { user }) {
     edits["tutor.status"] = "NONE";
   }
   delete edits.applyTutor;
-  const updated = await User.findByIdAndUpdate(edits.id, flatten(edits), {
-    new: true,
-  });
+  const updated = (
+    await User.findByIdAndUpdate(edits.id, flatten(edits), {
+      new: true,
+    })
+  ).toObject();
 
   // Update algolia index
   if (updated.tutor.status === "COMPLETE") {
-    await index.partialUpdateObject(docToRecord(updated.toObject()), {
+    await index.partialUpdateObject(docToRecord(updated), {
       createIfNotExists: true,
     });
   }
+
+  if (updated.tutor.status === "NONE") delete updated.tutor;
 
   return updated;
 }

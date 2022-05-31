@@ -3,9 +3,9 @@ import whitelist from "../../config/whitelist.json";
 import schools from "../../config/schools.json";
 
 const userSchema = yup.object({
-  name: yup.string().required().min(3).trim(),
+  name: yup.string().required().trim().min(3),
   yearGroup: yup.string().required().oneOf(Object.keys(whitelist.year)),
-  biography: yup.string().required().trim().min(2),
+  biography: yup.string().trim(),
   school: yup
     .string()
     .required()
@@ -20,7 +20,7 @@ const userSchema = yup.object({
           schools.filter((s) => s.type === "Secondary").map((s) => s.name)
         ),
     }),
-  applyTutor: yup.boolean().required(),
+  applyTutor: yup.boolean().default(false),
   tutor: yup.object().when("applyTutor", {
     is: true,
     then: (schema) =>
