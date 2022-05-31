@@ -12,20 +12,6 @@
     "Undergrad 3rd Year": true,
     "Postgrad": true
   },
-  "school": {
-    "Auckland University of Technology": true,
-    "Lincoln University": true,
-    "Massey University": true,
-    "University of Auckland": true,
-    "University of Canterbury": true,
-    "University of Otago": true,
-    "University of Waikato": true,
-    "Victoria University of Wellington": true,
-    "Overseas University": true,
-    "Christ's College": false,
-    "Other (Secondary)": false,
-    "Other (Tertiary)": true
-  },
   "academic": [
     "Mathematics",
     "English",

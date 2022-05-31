@@ -10,50 +10,15 @@ import * as yup from "yup";
 import { UserInputError } from "apollo-server";
 import { createUserObject } from "../helpers";
 import getAvatar from "../../../helpers/getAvatar";
-
-import whitelist from "../../../config/whitelist.json";
 import schools from "../../../config/schools.json";
+import userSchema from "../yupSchema";
 
 const { FRONTEND_DOMAIN, CAPTCHA_SECRET_KEY, NODE_ENV } = process.env;
 
-const userSchema = yup.object().shape({
+const registerSchema = userSchema.shape({
   token: yup.string().required(),
-  name: yup.string().min(3).trim(),
   email: yup.string().trim().lowercase().email(),
   password: yup.string(),
-  yearGroup: yup.string().oneOf(Object.keys(whitelist.year)),
-  biography: yup.string().trim().min(2),
-  school: yup
-    .string()
-    .required()
-    .when("yearGroup", {
-      is: (val) => whitelist.school[val],
-      then: (schema) =>
-        schema.oneOf(
-          schools.filter((s) => s.type === "Tertiary").map((s) => s.name)
-        ),
-      otherwise: (schema) =>
-        schema.oneOf(
-          schools.filter((s) => s.type === "Secondary").map((s) => s.name)
-        ),
-    }),
-  applyTutor: yup.boolean().required(),
-  tutor: yup.mixed().when("applyTutor", {
-    is: true,
-    then: (schema) =>
-      schema.object({
-        academicsTutoring: yup
-          .array()
-          .of(yup.string())
-          .oneOf(whitelist.academic),
-        curricula: yup.array().of(yup.string()).oneOf(whitelist.curricula),
-        price: yup.number().required().integer().min(0).max(100),
-        online: yup.boolean().required(),
-        location: yup.string().required().oneOf(whitelist.location),
-        academicRecords: yup.array(),
-      }),
-    otherwise: (schema) => schema.nullable(),
-  }),
 });
 
 export default async function register(_, args) {
@@ -75,7 +40,7 @@ export default async function register(_, args) {
   // validation
   let edits;
   try {
-    edits = { ...(await userSchema.validate(args)) };
+    edits = { ...(await registerSchema.validate(args)) };
   } catch (e) {
     throw new UserInputError(e.message);
   }
@@ -93,7 +58,10 @@ export default async function register(_, args) {
   }
   if (args.applyTutor) {
     edits["tutor.status"] = "PENDING_REVIEW";
-    edits["tutor.type"] = whitelist.school[args.school] ? "GENERAL" : "LOCAL";
+    edits["tutor.type"] =
+      schools.find((school) => school.name === args.school).type === "Tertiary"
+        ? "GENERAL"
+        : "LOCAL";
   }
 
   if (existingUser) {

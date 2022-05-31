@@ -4,15 +4,14 @@ import User from "../model";
 import userSchema from "../yupSchema";
 import index, { docToRecord } from "../../../config/search";
 import getAvatar from "../../../helpers/getAvatar";
+import schools from "../../../config/schools.json";
 
 export default async function updateUser(_, args, { user }) {
   if (!user._id.isEqual(args.id)) throw new ApolloError("Unauthorized", 401);
 
-  // Verify information
   userSchema.validateSync(args);
 
   const edits = { ...args };
-
   const oldUser = await User.findById(edits.id);
 
   if (!args.pfp?.url) {
@@ -22,9 +21,14 @@ export default async function updateUser(_, args, { user }) {
     };
   }
 
-  if (args.applyTutor && oldUser.tutor.status === "NONE")
+  if (args.applyTutor && oldUser.tutor.status === "NONE") {
     edits["tutor.status"] = "PENDING_REVIEW";
-  else if (args.applyTutor === false && oldUser.tutor.status !== "NONE") {
+    edits["tutor.type"] =
+      schools.find((school) => school.name === edits.school ?? oldUser.school)
+        .type === "Tertiary"
+        ? "GENERAL"
+        : "LOCAL";
+  } else if (args.applyTutor === false && oldUser.tutor.status !== "NONE") {
     if (oldUser.tutor.status === "COMPLETE") await index.deleteObject(edits.id);
     edits["tutor.status"] = "NONE";
   }

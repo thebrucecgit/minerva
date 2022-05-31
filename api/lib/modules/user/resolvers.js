@@ -28,8 +28,9 @@ export default {
       assertAuthenticated(user);
       if (!id) id = user._id;
       // Not the user himself or a tutor
-      const target = await User.findById(id);
+      const target = (await User.findById(id)).toObject();
       assertUserOrTutor(user, target);
+      if (target.tutor.status === "NONE") delete target.tutor;
       return target;
     },
     async getUsers(_, { value }, { user }) {
@@ -69,6 +70,7 @@ export default {
   },
   User: {
     tutor(reqUser) {
+      if (!reqUser.tutor) return null;
       // Added property `parentId` so child resolvers can access userId
       reqUser.tutor.parentId = reqUser._id;
       return reqUser.tutor;

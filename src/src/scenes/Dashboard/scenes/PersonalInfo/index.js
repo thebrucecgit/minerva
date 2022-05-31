@@ -70,8 +70,10 @@ function PersonalInfo({ currentUser }) {
             tutor: updates.tutor
               ? {
                   ...updates.tutor,
-                  price: parseInt(updates.tutor.price),
-                  academicRecords: updates.tutor.academicRecords.map((r) => {
+                  price: updates.tutor.price
+                    ? parseInt(updates.tutor.price)
+                    : 0,
+                  academicRecords: updates.tutor.academicRecords?.map((r) => {
                     const n = { ...r };
                     delete n.link;
                     return n;
@@ -113,7 +115,7 @@ function PersonalInfo({ currentUser }) {
     setUpdates({
       ...user,
       tutor: {
-        ...user.tutor,
+        ...(user.tutor ?? {}),
         type: undefined,
         status: undefined,
       },
@@ -348,16 +350,16 @@ function PersonalInfo({ currentUser }) {
 
       {((update && updates.applyTutor) || (!update && userApplyTutor)) && (
         <>
-          {user.tutor.status === "COMPLETE" && (
+          {user.tutor?.status === "COMPLETE" && (
             <p>
               Deselecting the above checkbox will mean you'll need to reapply to
               be a tutor
             </p>
           )}
           <p>
-            <b>Application status: {user.tutor.status}</b>
+            <b>Application status: {user.tutor?.status ?? "NONE"}</b>
           </p>
-          {user.tutor.status === "COMPLETE" && (
+          {user.tutor?.status === "COMPLETE" && (
             <p>
               You may need to logout and log back in for all changes to take
               effect.
@@ -424,7 +426,7 @@ function PersonalInfo({ currentUser }) {
                 onChange={onChange}
               />
             ) : (
-              <p>${user.tutor.price}</p>
+              <p>${user.tutor?.price}</p>
             )}
           </div>
 
