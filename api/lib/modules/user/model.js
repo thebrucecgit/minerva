@@ -135,6 +135,7 @@ const userSchema = new Schema({
   },
   biography: {
     type: String,
+    default: "",
   },
   classes: [
     {
