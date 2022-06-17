@@ -66,6 +66,7 @@ export default async function register(_, args) {
 
   if (existingUser) {
     if (!existingUser.googleId)
+      // is this error message a security hazard?
       throw new UserInputError("An user already exists with this email");
 
     // Google stategy
@@ -78,6 +79,21 @@ export default async function register(_, args) {
       }),
       { new: true }
     );
+
+    // Send welcome email
+    if (user.tutor.status === "NONE") {
+      const msg = {
+        templateId: "d-b3807c15e4994fa394e7a739917008ca",
+        to: {
+          email: user.email,
+          name: user.name,
+        },
+        dynamicTemplateData: {
+          name: user.name,
+        },
+      };
+      await send(msg);
+    }
   } else {
     if (args.password.length < 8)
       throw new UserInputError("Password must have a minimum of 8 characters");
