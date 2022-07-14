@@ -24,7 +24,10 @@ const userSchema = new Schema({
   password: {
     type: String,
   },
-  passwordResetCode: Number,
+  passwordReset: {
+    code: Number,
+    requested: Date,
+  },
   registrationStatus: {
     type: String,
     enum: ["GOOGLE_SIGNED_IN", "EMAIL_NOT_CONFIRMED", "COMPLETE"],

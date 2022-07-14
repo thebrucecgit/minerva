@@ -1,5 +1,6 @@
 import User from "../model";
 import bcrypt from "bcrypt";
+import { subDays } from "date-fns";
 
 import { createUserObject } from "../helpers";
 
@@ -8,10 +9,15 @@ export default async function updatePassword(
   { email, passwordResetCode, newPassword },
   { user }
 ) {
-  // TODO
-  const update = user ?? (await User.findOne({ email, passwordResetCode }));
+  const update =
+    user ??
+    (await User.findOne({
+      email,
+      "passwordReset.code": passwordResetCode,
+      "passwordReset.requested": { $gte: subDays(new Date(), 1) },
+    }));
   if (!update) throw new Error("Failed to change password");
-  update.passwordResetCode = undefined;
+  update.passwordReset = undefined;
   update.password = await bcrypt.hash(newPassword, 12);
   await update.save();
   return createUserObject(update);
