@@ -1,13 +1,25 @@
 import { Redirect } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 export default function Authenticated({
   registrationStatus,
   current = [],
   children,
 }) {
+  const location = useLocation();
+
   switch (registrationStatus) {
     case "COMPLETE": {
-      if (!current.includes("app")) return <Redirect to="/dashboard" />;
+      if (!current.includes("app")) {
+        const redirect = new URLSearchParams(location.search).get("redirect");
+        if (
+          redirect &&
+          new URL(document.baseURI).origin ===
+            new URL(redirect, document.baseURI).origin
+        )
+          return <Redirect to={redirect} />;
+        return <Redirect to="/dashboard" />;
+      }
       break;
     }
     case "EMAIL_NOT_CONFIRMED": {
@@ -20,7 +32,12 @@ export default function Authenticated({
       break;
     }
     default: {
-      if (!current.includes("login")) return <Redirect to="/auth" />;
+      if (!current.includes("login")) {
+        const redirect = new URLSearchParams({
+          redirect: location.pathname + location.search,
+        });
+        return <Redirect to={`/auth?${redirect.toString()}`} />;
+      }
       break;
     }
   }
