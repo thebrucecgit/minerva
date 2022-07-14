@@ -31,8 +31,19 @@ const indexSchema = yup.object().shape({
 
 export default index;
 
-export const FIELDS =
-  "name yearGroup school biography pfp tutor.type tutor.curricula tutor.academicsTutoring tutor.price tutor.location tutor.online";
+export const FIELDS = [
+  "name",
+  "yearGroup",
+  "school",
+  "biography",
+  "pfp",
+  "tutor.type",
+  "tutor.curricula",
+  "tutor.academicsTutoring",
+  "tutor.price",
+  "tutor.location",
+  "tutor.online",
+];
 
 const defaultRankings = [
   "typo",
