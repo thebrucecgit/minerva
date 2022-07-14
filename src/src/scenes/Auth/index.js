@@ -28,7 +28,7 @@ function Auth({ match, location, authService }) {
               registrationStatus={currentUser?.user?.registrationStatus}
               current={["login"]}
             >
-              <Login login={login} currentUser={currentUser} />
+              <Login login={login} />
             </Authenticated>
           </Route>
 
