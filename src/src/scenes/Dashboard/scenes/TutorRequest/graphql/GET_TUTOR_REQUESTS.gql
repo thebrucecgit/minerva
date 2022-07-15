@@ -1,0 +1,10 @@
+query GetTutorRequests($userID: ID!) {
+  getRequestsOfUser(userID: $userID, limit: 10) {
+    _id
+    subject
+    curriculum
+    other
+    date
+    status
+  }
+}

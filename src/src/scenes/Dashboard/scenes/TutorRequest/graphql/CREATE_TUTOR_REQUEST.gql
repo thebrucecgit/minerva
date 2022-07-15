@@ -1,0 +1,18 @@
+mutation CreateTutorRequest(
+  $subject: String!
+  $curriculum: String!
+  $other: String
+) {
+  createTutorRequest(
+    subject: $subject
+    curriculum: $curriculum
+    other: $other
+  ) {
+    _id
+    subject
+    curriculum
+    other
+    date
+    status
+  }
+}

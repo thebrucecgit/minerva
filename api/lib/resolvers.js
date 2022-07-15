@@ -2,6 +2,7 @@ import { GraphQLScalarType, Kind } from "graphql";
 import userResolvers from "./modules/user/resolvers";
 import sessionResolvers from "./modules/session/resolvers";
 import classResolvers from "./modules/class/resolvers";
+import tutorRequestResolvers from "./modules/request/resolvers";
 import chatResolvers from "./modules/chat/resolvers";
 import fileResolvers from "./modules/file/resolvers";
 
@@ -22,6 +23,7 @@ export default [
   userResolvers,
   sessionResolvers,
   classResolvers,
+  tutorRequestResolvers,
   chatResolvers,
   fileResolvers,
 ];

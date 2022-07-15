@@ -91,6 +91,10 @@ const Appbar = ({ currentUser, appbarOpen, setAppbarOpen }) => {
             link: "/dashboard/search",
           },
           {
+            name: "Request",
+            link: "/dashboard/request",
+          },
+          {
             name: "My Sessions",
             link: "/dashboard/sessions",
           },

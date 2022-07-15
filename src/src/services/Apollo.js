@@ -74,6 +74,21 @@ const Apollo = ({ authHelpers, children }) => {
             },
           },
         },
+        Query: {
+          fields: {
+            getRequestsOfUser: {
+              merge(existing = [], incoming) {
+                const newArr = [...existing];
+                incoming.forEach((req) => {
+                  const ind = newArr.findIndex((e) => e.__ref === req.__ref);
+                  if (ind >= 0) newArr[ind] = { ...newArr[ind], ...req };
+                  else newArr.unshift(req);
+                });
+                return newArr;
+              },
+            },
+          },
+        },
       },
     }),
     defaultOptions: {

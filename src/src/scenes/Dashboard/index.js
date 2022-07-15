@@ -11,6 +11,7 @@ import Tutors from "./scenes/Tutors";
 import User from "./scenes/User";
 import Sessions from "./scenes/Sessions";
 import Session from "./scenes/Session";
+import TutorRequest from "./scenes/TutorRequest";
 // import Classes from "./scenes/Classes";
 // import Class from "./scenes/Class";
 // import Attendance from "./scenes/Attendance";
@@ -91,6 +92,9 @@ const Dashboard = ({ location, match, authService }) => {
           </Route>
           <Route exact path={`${path}/sessions/:id`}>
             <Session {...pageBinds} />
+          </Route>
+          <Route exact path={`${path}/request`}>
+            <TutorRequest {...pageBinds} />
           </Route>
           {/* <Route exact path={`${path}/classes`}>
             <Classes {...pageBinds} />
