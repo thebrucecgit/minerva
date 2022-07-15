@@ -30,7 +30,7 @@ function Routes({ authService }) {
     <Suspense
       fallback={
         <div className={loader}>
-          <Loader />
+          <Loader instant />
         </div>
       }
     >
