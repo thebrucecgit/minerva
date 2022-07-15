@@ -91,15 +91,15 @@ const Appbar = ({ currentUser, appbarOpen, setAppbarOpen }) => {
             link: "/dashboard/search",
           },
           {
-            name: "Sessions",
+            name: "My Sessions",
             link: "/dashboard/sessions",
           },
           {
-            name: "Tutors",
+            name: "My Tutors",
             link: "/dashboard/tutors",
           },
           {
-            name: "Chats",
+            name: "My Chats",
             link: "/dashboard/chats",
           },
         ].map((section) => (
