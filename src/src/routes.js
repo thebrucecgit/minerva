@@ -2,7 +2,7 @@ import React, { Suspense, lazy, useEffect } from "react";
 import { Switch, Route, useLocation } from "react-router-dom";
 
 import Loader from "./components/Loader";
-import { loader } from "./styles/Loader.module.scss";
+import styles from "./styles/Loader.module.scss";
 
 import Authenticated from "components/Authenticated";
 
@@ -29,7 +29,7 @@ function Routes({ authService }) {
   return (
     <Suspense
       fallback={
-        <div className={loader}>
+        <div className={styles.loader}>
           <Loader instant />
         </div>
       }

@@ -192,7 +192,10 @@ const AdditionalInfo = ({
                 evidence of abilities relevant to the subjects you wish to tutor
               </label>
               <FileManager
-                accept=".pdf, .doc, .docx"
+                accept={{
+                  "application/pdf": [".pdf"],
+                  "application/msword": [".doc"],
+                }}
                 maxSize={10 * 1000 * 1024} // 10 MB
                 maxFiles={5}
                 {...fileManagerProps}
