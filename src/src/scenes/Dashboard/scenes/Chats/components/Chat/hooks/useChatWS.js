@@ -1,17 +1,19 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
-export default function useChatWS(ws, setMessages) {
+export default function useChatWS(ws, setMessages, channel) {
   useEffect(() => {
     if (!ws) return;
     const onMessage = (msg) => {
+      if (msg.channel !== channel) return;
       setMessages((msgs) => [...msgs, msg]);
     };
 
     const onMessageResolve = ({ _id }) => {
       setMessages((st) => {
         const newState = [...st];
-        newState.find((m) => m._id === _id).loading = false;
+        const x = newState.find((m) => m._id === _id);
+        if (x) x.loading = false;
         return newState;
       });
     };
@@ -35,6 +37,8 @@ export default function useChatWS(ws, setMessages) {
 
     return () => {
       ws.unbind("MESSAGE", onMessage);
+      ws.unbind("MESSAGE_RESOLVE", onMessageResolve);
+      ws.unbind("MESSAGE_REJECT", onMessageReject);
     };
-  }, [ws, setMessages]);
+  }, [ws, setMessages, channel]);
 }

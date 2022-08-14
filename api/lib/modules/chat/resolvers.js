@@ -1,5 +1,6 @@
 import Chat from "./model";
 import User from "../user/model";
+import { broadcast } from "../../websocket";
 
 import {
   assertGroupAuthorization,
@@ -30,7 +31,7 @@ export default {
       if (targetUsers.length <= 1)
         throw new Error("Can't message yourself", 400);
 
-      return await Chat.findOneAndUpdate(
+      const chatInfo = await Chat.findOneAndUpdate(
         {
           bindToClass: false,
           users: targetUsers,
@@ -38,6 +39,18 @@ export default {
         { users: targetUsers },
         { upsert: true, new: true, setDefaultsOnInsert: true }
       );
+
+      await broadcast(
+        {
+          type: "CHANNEL_CREATE",
+          time: new Date(),
+          channel: chatInfo._id,
+        },
+        chatInfo.users,
+        user._id
+      );
+
+      return chatInfo;
     },
   },
   Chat: {

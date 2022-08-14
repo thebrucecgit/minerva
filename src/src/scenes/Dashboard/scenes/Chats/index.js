@@ -15,6 +15,7 @@ import scrollbar from "styles/scrollbar";
 import styled from "styled-components";
 import mediaQuery from "styles/sizes";
 import { ReactComponent as ChatPrompt } from "./media/undraw_work_chat.svg";
+import { useEffect } from "react";
 
 const StyledChats = styled.div`
   height: 100vh;
@@ -94,7 +95,7 @@ const chatSort = (a, b) => {
 const Chats = ({ match: { path }, ws, currentUser }) => {
   const [chats, setChats] = useState([]);
 
-  const { loading, error } = useQuery(GET_CHATS, {
+  const { loading, error, refetch } = useQuery(GET_CHATS, {
     variables: {
       userID: currentUser.user._id,
     },
@@ -131,6 +132,29 @@ const Chats = ({ match: { path }, ws, currentUser }) => {
       return evt;
     }
   };
+
+  useEffect(() => {
+    function onMessageReceive(msg) {
+      setChats((chats) => {
+        return chats
+          .map((chat) => {
+            if (chat.channel === msg.channel)
+              return { ...chat, messages: [...chat.messages, msg] };
+            return chat;
+          })
+          .sort(chatSort);
+      });
+    }
+    function onChannelCreate(evt) {
+      refetch();
+    }
+    ws.bind("CHANNEL_CREATE", onChannelCreate);
+    ws.bind("MESSAGE", onMessageReceive);
+    return () => {
+      ws.unbind("CHANNEL_CREATE", onChannelCreate);
+      ws.unbind("MESSAGE", onMessageReceive);
+    };
+  }, [ws, refetch]);
 
   const createSessionMethods = useCreateSession();
 

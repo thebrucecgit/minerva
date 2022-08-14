@@ -39,7 +39,7 @@ const Chat = ({ sendMessage, ws, currentUser, createSession }) => {
   const [message, setMessage] = useState("");
   const messageElem = useRef(null);
 
-  useChatWS(ws, setMessages);
+  useChatWS(ws, setMessages, channel);
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();

@@ -15,6 +15,7 @@ const eventSchema = yup.object().shape({
     .string()
     .required()
     .oneOf([
+      "CHANNEL_CREATE",
       "MESSAGE",
       "INBOX",
       "NEW_SESSION_REQUEST",
